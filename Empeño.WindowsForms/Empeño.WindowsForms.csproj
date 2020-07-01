@@ -1,0 +1,992 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="..\packages\EntityFramework.6.4.4\build\EntityFramework.props" Condition="Exists('..\packages\EntityFramework.6.4.4\build\EntityFramework.props')" />
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{44A17081-2D55-489F-A987-164876CAFB70}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <RootNamespace>Empeño.WindowsForms</RootNamespace>
+    <AssemblyName>Empeño.WindowsForms</AssemblyName>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <Deterministic>true</Deterministic>
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="CircularProgressBar, Version=2.8.0.16, Culture=neutral, PublicKeyToken=310fd07b25df79b3, processorArchitecture=MSIL">
+      <HintPath>..\packages\CircularProgressBar.2.8.0.16\lib\net40\CircularProgressBar.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.4.4\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.4.4\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
+    <Reference Include="FontAwesome.Sharp, Version=5.13.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\FontAwesome.Sharp.5.13.0\lib\net472\FontAwesome.Sharp.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.VisualBasic" />
+    <Reference Include="Microsoft.VisualBasic.PowerPacks, Version=9.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Design" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Deployment" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+    <Reference Include="WinFormAnimation, Version=1.6.0.4, Culture=neutral, PublicKeyToken=310fd07b25df79b3, processorArchitecture=MSIL">
+      <HintPath>..\packages\WinFormAnimation.1.6.0.4\lib\net40\WinFormAnimation.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Data\DataContext.cs" />
+    <Compile Include="Migrations\Configuration.cs" />
+    <Compile Include="SeedDb\ClienteSeedDb.cs" />
+    <Compile Include="SeedDb\PerfilSeedDb.cs" />
+    <Compile Include="Views\frmBienvenida.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\frmBienvenida.Designer.cs">
+      <DependentUpon>frmBienvenida.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Views\frmConfiguracion.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\frmConfiguracion.Designer.cs">
+      <DependentUpon>frmConfiguracion.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Views\frmConfiguracionGeneral.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\frmConfiguracionGeneral.Designer.cs">
+      <DependentUpon>frmConfiguracionGeneral.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Views\frmEmpeno.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\frmEmpeno.Designer.cs">
+      <DependentUpon>frmEmpeno.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Views\frmEmpeño.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\frmEmpeño.Designer.cs">
+      <DependentUpon>frmEmpeño.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Views\frmEmpleados.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\frmEmpleados.Designer.cs">
+      <DependentUpon>frmEmpleados.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Views\frmInicio.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\frmInicio.Designer.cs">
+      <DependentUpon>frmInicio.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Views\frmLogin.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\frmLogin.Designer.cs">
+      <DependentUpon>frmLogin.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Views\frmOscuro.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\frmOscuro.Designer.cs">
+      <DependentUpon>frmOscuro.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Views\frmPrincipal.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\frmPrincipal.Designer.cs">
+      <DependentUpon>frmPrincipal.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="Views\frmBienvenida.resx">
+      <DependentUpon>frmBienvenida.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\frmConfiguracion.resx">
+      <DependentUpon>frmConfiguracion.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\frmConfiguracionGeneral.resx">
+      <DependentUpon>frmConfiguracionGeneral.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\frmEmpeno.resx">
+      <DependentUpon>frmEmpeno.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\frmEmpeño.resx">
+      <DependentUpon>frmEmpeño.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\frmEmpleados.resx">
+      <DependentUpon>frmEmpleados.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\frmInicio.resx">
+      <DependentUpon>frmInicio.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\frmLogin.resx">
+      <DependentUpon>frmLogin.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\frmOscuro.resx">
+      <DependentUpon>frmOscuro.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\frmPrincipal.resx">
+      <DependentUpon>frmPrincipal.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <None Include="packages.config" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Empeño.CommonEF\Empeño.CommonEF.csproj">
+      <Project>{83FA4EA5-0C62-43B3-AA1A-D4E0F43A2B3C}</Project>
+      <Name>Empeño.CommonEF</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\001-placeholder-4.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\003-online-shop-27.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\004-shopping-bag-11.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\005-browser-8.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\006-shopping-bag-10.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\007-piggy-bank-2.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\008-delivery-truck-14.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\011-shopping-bag-9.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\014-online-shop-26.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\016-shopping-cart-9.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\017-id-card.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\018-shopping-cart-8.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\019-phone-call-1.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\020-dollar-5.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\021-calendar.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\023-barcode-5.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\024-delivery-truck-12.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\025-money-10.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\026-placeholder-3.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\027-sold-1.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\029-24-hours-2.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\030-dollar-4.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\031-delivery-truck-11.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\032-shopping-bag-8.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\033-online-shop-25.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\034-wallet-2.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\035-payment-method-2.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\036-shopping-cart-7.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\037-placeholder-2.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\038-like-4.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\039-browser-7.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\042-delivery-truck-10.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\043-sales.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\044-diamond.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\047-quality-3.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\048-folder.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\049-online-shop-24.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\050-invoice-5.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\051-percentage-1.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\052-cloud-computing.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\053-money-9.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\054-shopping-bag-7.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\055-tag-4.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\057-loupe-1.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\058-online-shop-22.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\059-user-2.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\060-deal.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\061-user-1.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\062-shopping-cart-6.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\063-shopping-bag-6.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\064-invoice-4.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\066-invoice-3.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\067-favorite.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\068-credit-card-11.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\069-cash-register-1.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\070-online-shop-20.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\071-sale-2.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\072-new-1.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\073-dollar-3.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\074-money-8.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\075-money-7.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\076-shield-2.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\077-online-shop-19.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\078-credit-card-10.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\079-delivery-truck-9.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\080-online-shop-18.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\082-smartphone-7.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\083-delivery-truck-8.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\084-mouse.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\085-barcode-4.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\086-online-shop-16.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\087-delivery-truck-7.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\088-discount-2.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\089-smartphone-6.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\090-price-tag.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\091-buy-3.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\092-shopping-bag-5.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\094-invoice-2.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\095-online-shop-14.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\096-close-1.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\097-online-shop-13.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\098-tag-3.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\099-telephone-1.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\100-shopping-basket-12.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\101-piggy-bank-1.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\102-buy-2.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\103-online-shop-12.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\106-shopping-basket-11.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\107-online-shop-11.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\108-gift-card.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\109-online-shop-10.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\110-like-3.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\111-percentage.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\113-credit-card-8.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\114-tag-2.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\115-online-shop-8.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\116-delivery-truck-6.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\117-drinks.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\118-premium.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\119-buy-1.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\120-money-5.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\121-delivery-truck-5.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\122-online-shop-7.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\123-shopping-bag-4.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\126-laptop-3.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\127-store-2.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\130-shopping-basket-10.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\132-telemarketer-2.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\133-shop-3.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\134-credit-card-6.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\135-phone-call.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\136-package-3.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\137-shopping-bag-3.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\138-wallet-1.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\141-quality-2.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\142-shopping-basket-9.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\143-laptop-2.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\144-smartphone-5.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\146-tag-1.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\147-buy.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\148-package-2.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\150-chat.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\151-online-shop-4.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\152-money-4.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\154-dollar-2.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\155-exchange-1.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\157-piggy-bank.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\158-shopping-cart-4.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\159-money-3.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\160-shopping-basket-8.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\162-package-1.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\163-telephone.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\164-24-hours-1.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\165-clipboard.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\167-trolley.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\169-clock.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\171-shopping-basket-7.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\172-trophy-1.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\173-shopping-basket-6.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\175-megaphone-1.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\176-gift-1.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\177-barcode-3.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\178-debit-card.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\179-telemarketer.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\180-flask.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\182-credit-card-4.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\183-dollar-1.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\184-exchange.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\185-credit-card-3.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\187-online-shop-2.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\188-route-1.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\189-barcode-2.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\190-money-2.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\191-parachute.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\192-file.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\194-money-1.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\195-smartphone-3.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\196-shopping-cart-2.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\197-shopping-basket-4.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\199-shopping-basket-3.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\201-wallet.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\202-trophy.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\203-discount-1.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\204-like-2.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\205-shop-2.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\206-email.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\207-barcode-1.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\208-tag.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\209-smartphone-2.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\210-list.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\211-browser-6.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\212-loupe.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\213-shirt.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\214-shopping-basket-2.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\215-shopping-bag-2.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\216-shop-1.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\217-shopping-cart-1.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\218-delivery-truck-4.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\219-present.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\220-payment-method-1.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\221-online-shop-1.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\222-route.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\223-browser-5.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\224-cash-register.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\225-open-1.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\226-smartphone-1.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\227-laptop-1.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\228-credit-card-2.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\229-like-1.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\230-qr-code.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\231-rating.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\232-shopping-cart.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\233-browser-4.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\235-package.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\236-shop.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\237-credit-card-1.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\238-browser-3.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\239-pack.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\240-settings.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\242-browser-2.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\243-invoice.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\244-box-1.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\245-like.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\246-smartphone.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\247-shopping-basket-1.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\248-badge.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\249-payment-method.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\250-online-shop.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\251-credit-card.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\253-wishlist.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\254-new.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\256-browser-1.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\257-quality.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\258-tablet-1.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\259-label-2.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\260-delivery-truck-2.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\261-payment.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\262-shopping-bag-1.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\264-call.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\265-24-hours.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\266-milk.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\267-sale.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\268-truck-1.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\269-shopping-bag.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\270-shopping-basket.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\271-browser.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\272-coin.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\273-discount.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\274-truck.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\275-store.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\276-label-1.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\277-cart-1.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\278-contract.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\279-magnifying-glass.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\280-laptop.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\281-sticker-2.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\282-basket-2.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\283-sticker-1.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\284-basket-1.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\285-basket.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\286-placeholder.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\287-sticker.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\288-gift.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\290-bag.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\291-tablet.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\292-box.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\293-delivery-truck-1.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\294-online-shopping-1.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\296-label.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\298-cart.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\299-gifts.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\300-calculator.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\301-user.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\302-sold.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\303-online-shopping.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\304-customer-service.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\305-labels.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\306-shield.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\307-close.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\308-shopping-stand.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\btnBlue.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\btnYellow.png" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>Este proyecto hace referencia a los paquetes NuGet que faltan en este equipo. Use la restauración de paquetes NuGet para descargarlos. Para obtener más información, consulte http://go.microsoft.com/fwlink/?LinkID=322105. El archivo que falta es {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\packages\EntityFramework.6.4.4\build\EntityFramework.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\EntityFramework.6.4.4\build\EntityFramework.props'))" />
+    <Error Condition="!Exists('..\packages\EntityFramework.6.4.4\build\EntityFramework.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\EntityFramework.6.4.4\build\EntityFramework.targets'))" />
+  </Target>
+  <Import Project="..\packages\EntityFramework.6.4.4\build\EntityFramework.targets" Condition="Exists('..\packages\EntityFramework.6.4.4\build\EntityFramework.targets')" />
+</Project>
