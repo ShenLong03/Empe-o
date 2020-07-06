@@ -1,9 +1,12 @@
-﻿using System;
+﻿using Empeño.WindowsForms.Data;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Data.Entity;
 using System.Drawing;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -12,6 +15,7 @@ namespace Empeño.WindowsForms.Views
 {
     public partial class frmLogin : Form
     {
+        DataContext _context = new DataContext();
         public int xClick = 0, yClick = 0;
 
         public frmLogin()
@@ -24,7 +28,7 @@ namespace Empeño.WindowsForms.Views
             if (txtUsuario.Text== "USUARIO")
             {
                 txtUsuario.Text = "";
-                txtUsuario.ForeColor = Color.Black;
+                txtUsuario.ForeColor = Color.White;
             }
         }
 
@@ -42,13 +46,19 @@ namespace Empeño.WindowsForms.Views
             btnAcceder.Focus(); 
         }
 
-        private void btnAcceder_Click(object sender, EventArgs e)
+        private async void btnAcceder_Click(object sender, EventArgs e)
         {
             this.Hide();
-            frmBienvenida bienvenida = new frmBienvenida();
-            bienvenida.ShowDialog();
-            frmInicio inicio = new frmInicio();
-            inicio.Show();
+            var usuario = await _context.User.SingleOrDefaultAsync(u => u.Usuario == txtUsuario.Text && u.Password == txtContrasena.Text);
+
+            if (usuario!=null)
+            {
+                Program.Usuario = usuario;
+                frmBienvenida bienvenida = new frmBienvenida();
+                bienvenida.ShowDialog();
+                frmInicio inicio = new frmInicio();
+                inicio.Show();
+            }
         }
 
         private void txtContrasena_Enter(object sender, EventArgs e)
@@ -56,7 +66,7 @@ namespace Empeño.WindowsForms.Views
             if (txtContrasena.Text == "CONTRASEÑA")
             {
                 txtContrasena.Text = "";
-                txtContrasena.ForeColor = Color.Black;
+                txtContrasena.ForeColor = Color.White;
                 txtContrasena.UseSystemPasswordChar = true;
             }
         }

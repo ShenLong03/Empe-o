@@ -12,6 +12,12 @@
 
         public double Porcentaje { get; set; } = 1;
 
+        public int Mayor { get; set; }
+
+        public int Menor { get; set; }
+
+        public int Igual { get; set; }
+
         public Interes()
         {
             Porcentaje = 1;

@@ -1,4 +1,6 @@
-﻿namespace Empeño.WindowsForms.Views
+﻿using System.Windows.Forms;
+
+namespace Empeño.WindowsForms.Views
 {
     partial class frmInicio
     {
@@ -18,8 +20,7 @@
                 components.Dispose();
             }
             base.Dispose(disposing);
-        }
-
+        }      
         #region Windows Form Designer generated code
 
         /// <summary>
@@ -31,6 +32,7 @@
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmInicio));
             this.panel1 = new System.Windows.Forms.Panel();
+            this.panelSubMenuConfiguracion = new System.Windows.Forms.Panel();
             this.panel2 = new System.Windows.Forms.Panel();
             this.shapeContainer1 = new Microsoft.VisualBasic.PowerPacks.ShapeContainer();
             this.lineShape1 = new Microsoft.VisualBasic.PowerPacks.LineShape();
@@ -46,15 +48,19 @@
             this.btnMinimize = new FontAwesome.Sharp.IconPictureBox();
             this.btnClose = new FontAwesome.Sharp.IconPictureBox();
             this.iconModulo = new FontAwesome.Sharp.IconPictureBox();
-            this.iconButton6 = new FontAwesome.Sharp.IconButton();
             this.iconButton5 = new FontAwesome.Sharp.IconButton();
+            this.mnuSubIntereses = new FontAwesome.Sharp.IconButton();
+            this.mnuSubConfiguracion = new FontAwesome.Sharp.IconButton();
             this.mnuConfiguracion = new FontAwesome.Sharp.IconButton();
-            this.iconButton3 = new FontAwesome.Sharp.IconButton();
+            this.mnuEmpleados = new FontAwesome.Sharp.IconButton();
+            this.iconButton6 = new FontAwesome.Sharp.IconButton();
+            this.mnuEmpeños = new FontAwesome.Sharp.IconButton();
             this.iconButton2 = new FontAwesome.Sharp.IconButton();
             this.mnuInicio = new FontAwesome.Sharp.IconButton();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.pictureBox2 = new System.Windows.Forms.PictureBox();
             this.panel1.SuspendLayout();
+            this.panelSubMenuConfiguracion.SuspendLayout();
             this.panel2.SuspendLayout();
             this.panel3.SuspendLayout();
             this.panelContenedor.SuspendLayout();
@@ -72,10 +78,12 @@
             // panel1
             // 
             this.panel1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(17)))), ((int)(((byte)(2)))), ((int)(((byte)(115)))));
-            this.panel1.Controls.Add(this.iconButton6);
             this.panel1.Controls.Add(this.iconButton5);
+            this.panel1.Controls.Add(this.panelSubMenuConfiguracion);
             this.panel1.Controls.Add(this.mnuConfiguracion);
-            this.panel1.Controls.Add(this.iconButton3);
+            this.panel1.Controls.Add(this.mnuEmpleados);
+            this.panel1.Controls.Add(this.iconButton6);
+            this.panel1.Controls.Add(this.mnuEmpeños);
             this.panel1.Controls.Add(this.iconButton2);
             this.panel1.Controls.Add(this.mnuInicio);
             this.panel1.Controls.Add(this.panel2);
@@ -85,6 +93,17 @@
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(312, 900);
             this.panel1.TabIndex = 0;
+            // 
+            // panelSubMenuConfiguracion
+            // 
+            this.panelSubMenuConfiguracion.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(65)))), ((int)(((byte)(116)))));
+            this.panelSubMenuConfiguracion.Controls.Add(this.mnuSubIntereses);
+            this.panelSubMenuConfiguracion.Controls.Add(this.mnuSubConfiguracion);
+            this.panelSubMenuConfiguracion.Dock = System.Windows.Forms.DockStyle.Top;
+            this.panelSubMenuConfiguracion.Location = new System.Drawing.Point(0, 584);
+            this.panelSubMenuConfiguracion.Name = "panelSubMenuConfiguracion";
+            this.panelSubMenuConfiguracion.Size = new System.Drawing.Size(312, 160);
+            this.panelSubMenuConfiguracion.TabIndex = 9;
             // 
             // panel2
             // 
@@ -158,7 +177,6 @@
             this.panelContenedor.Name = "panelContenedor";
             this.panelContenedor.Size = new System.Drawing.Size(1626, 900);
             this.panelContenedor.TabIndex = 3;
-            this.panelContenedor.MouseMove += new System.Windows.Forms.MouseEventHandler(this.panelContenedor_MouseMove);
             // 
             // panel
             // 
@@ -249,6 +267,123 @@
             this.iconModulo.TabIndex = 0;
             this.iconModulo.TabStop = false;
             // 
+            // iconButton5
+            // 
+            this.iconButton5.Dock = System.Windows.Forms.DockStyle.Top;
+            this.iconButton5.FlatAppearance.BorderSize = 0;
+            this.iconButton5.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.iconButton5.Flip = FontAwesome.Sharp.FlipOrientation.Normal;
+            this.iconButton5.ForeColor = System.Drawing.Color.White;
+            this.iconButton5.IconChar = FontAwesome.Sharp.IconChar.Cogs;
+            this.iconButton5.IconColor = System.Drawing.Color.White;
+            this.iconButton5.IconSize = 32;
+            this.iconButton5.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.iconButton5.Location = new System.Drawing.Point(0, 744);
+            this.iconButton5.Margin = new System.Windows.Forms.Padding(4);
+            this.iconButton5.Name = "iconButton5";
+            this.iconButton5.Padding = new System.Windows.Forms.Padding(3, 0, 0, 0);
+            this.iconButton5.Rotation = 0D;
+            this.iconButton5.Size = new System.Drawing.Size(312, 80);
+            this.iconButton5.TabIndex = 10;
+            this.iconButton5.Text = "Caja";
+            this.iconButton5.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.iconButton5.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
+            this.iconButton5.UseVisualStyleBackColor = true;
+            // 
+            // mnuSubIntereses
+            // 
+            this.mnuSubIntereses.Dock = System.Windows.Forms.DockStyle.Top;
+            this.mnuSubIntereses.FlatAppearance.BorderSize = 0;
+            this.mnuSubIntereses.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.mnuSubIntereses.Flip = FontAwesome.Sharp.FlipOrientation.Normal;
+            this.mnuSubIntereses.ForeColor = System.Drawing.Color.White;
+            this.mnuSubIntereses.IconChar = FontAwesome.Sharp.IconChar.User;
+            this.mnuSubIntereses.IconColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(65)))), ((int)(((byte)(116)))));
+            this.mnuSubIntereses.IconSize = 1;
+            this.mnuSubIntereses.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.mnuSubIntereses.Location = new System.Drawing.Point(0, 80);
+            this.mnuSubIntereses.Margin = new System.Windows.Forms.Padding(4);
+            this.mnuSubIntereses.Name = "mnuSubIntereses";
+            this.mnuSubIntereses.Padding = new System.Windows.Forms.Padding(75, 0, 0, 0);
+            this.mnuSubIntereses.Rotation = 0D;
+            this.mnuSubIntereses.Size = new System.Drawing.Size(312, 80);
+            this.mnuSubIntereses.TabIndex = 10;
+            this.mnuSubIntereses.Text = "Intereses";
+            this.mnuSubIntereses.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.mnuSubIntereses.UseVisualStyleBackColor = true;
+            this.mnuSubIntereses.Click += new System.EventHandler(this.mnuSubIntereses_Click);
+            // 
+            // mnuSubConfiguracion
+            // 
+            this.mnuSubConfiguracion.Dock = System.Windows.Forms.DockStyle.Top;
+            this.mnuSubConfiguracion.FlatAppearance.BorderSize = 0;
+            this.mnuSubConfiguracion.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.mnuSubConfiguracion.Flip = FontAwesome.Sharp.FlipOrientation.Normal;
+            this.mnuSubConfiguracion.ForeColor = System.Drawing.Color.White;
+            this.mnuSubConfiguracion.IconChar = FontAwesome.Sharp.IconChar.Cogs;
+            this.mnuSubConfiguracion.IconColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(65)))), ((int)(((byte)(116)))));
+            this.mnuSubConfiguracion.IconSize = 1;
+            this.mnuSubConfiguracion.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.mnuSubConfiguracion.Location = new System.Drawing.Point(0, 0);
+            this.mnuSubConfiguracion.Margin = new System.Windows.Forms.Padding(4);
+            this.mnuSubConfiguracion.Name = "mnuSubConfiguracion";
+            this.mnuSubConfiguracion.Padding = new System.Windows.Forms.Padding(75, 0, 0, 0);
+            this.mnuSubConfiguracion.Rotation = 0D;
+            this.mnuSubConfiguracion.Size = new System.Drawing.Size(312, 80);
+            this.mnuSubConfiguracion.TabIndex = 9;
+            this.mnuSubConfiguracion.Text = "Configuración General";
+            this.mnuSubConfiguracion.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.mnuSubConfiguracion.UseVisualStyleBackColor = true;
+            this.mnuSubConfiguracion.Click += new System.EventHandler(this.mnuSubConfiguracion_Click);
+            // 
+            // mnuConfiguracion
+            // 
+            this.mnuConfiguracion.Dock = System.Windows.Forms.DockStyle.Top;
+            this.mnuConfiguracion.FlatAppearance.BorderSize = 0;
+            this.mnuConfiguracion.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.mnuConfiguracion.Flip = FontAwesome.Sharp.FlipOrientation.Normal;
+            this.mnuConfiguracion.ForeColor = System.Drawing.Color.White;
+            this.mnuConfiguracion.IconChar = FontAwesome.Sharp.IconChar.Cogs;
+            this.mnuConfiguracion.IconColor = System.Drawing.Color.White;
+            this.mnuConfiguracion.IconSize = 32;
+            this.mnuConfiguracion.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.mnuConfiguracion.Location = new System.Drawing.Point(0, 504);
+            this.mnuConfiguracion.Margin = new System.Windows.Forms.Padding(4);
+            this.mnuConfiguracion.Name = "mnuConfiguracion";
+            this.mnuConfiguracion.Padding = new System.Windows.Forms.Padding(3, 0, 0, 0);
+            this.mnuConfiguracion.Rotation = 0D;
+            this.mnuConfiguracion.Size = new System.Drawing.Size(312, 80);
+            this.mnuConfiguracion.TabIndex = 8;
+            this.mnuConfiguracion.Text = " Configuración";
+            this.mnuConfiguracion.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.mnuConfiguracion.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
+            this.mnuConfiguracion.UseVisualStyleBackColor = true;
+            this.mnuConfiguracion.Click += new System.EventHandler(this.mnuConfiguracion_Click);
+            // 
+            // mnuEmpleados
+            // 
+            this.mnuEmpleados.Dock = System.Windows.Forms.DockStyle.Top;
+            this.mnuEmpleados.FlatAppearance.BorderSize = 0;
+            this.mnuEmpleados.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.mnuEmpleados.Flip = FontAwesome.Sharp.FlipOrientation.Normal;
+            this.mnuEmpleados.ForeColor = System.Drawing.Color.White;
+            this.mnuEmpleados.IconChar = FontAwesome.Sharp.IconChar.Users;
+            this.mnuEmpleados.IconColor = System.Drawing.Color.White;
+            this.mnuEmpleados.IconSize = 32;
+            this.mnuEmpleados.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.mnuEmpleados.Location = new System.Drawing.Point(0, 424);
+            this.mnuEmpleados.Margin = new System.Windows.Forms.Padding(4);
+            this.mnuEmpleados.Name = "mnuEmpleados";
+            this.mnuEmpleados.Padding = new System.Windows.Forms.Padding(3, 0, 0, 0);
+            this.mnuEmpleados.Rotation = 0D;
+            this.mnuEmpleados.Size = new System.Drawing.Size(312, 80);
+            this.mnuEmpleados.TabIndex = 7;
+            this.mnuEmpleados.Text = " Empleados";
+            this.mnuEmpleados.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.mnuEmpleados.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
+            this.mnuEmpleados.UseVisualStyleBackColor = true;
+            this.mnuEmpleados.Click += new System.EventHandler(this.mnuEmpleados_Click);
+            // 
             // iconButton6
             // 
             this.iconButton6.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(16)))), ((int)(((byte)(19)))), ((int)(((byte)(100)))));
@@ -271,76 +406,29 @@
             this.iconButton6.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
             this.iconButton6.UseVisualStyleBackColor = false;
             // 
-            // iconButton5
+            // mnuEmpeños
             // 
-            this.iconButton5.Dock = System.Windows.Forms.DockStyle.Top;
-            this.iconButton5.FlatAppearance.BorderSize = 0;
-            this.iconButton5.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.iconButton5.Flip = FontAwesome.Sharp.FlipOrientation.Normal;
-            this.iconButton5.ForeColor = System.Drawing.Color.White;
-            this.iconButton5.IconChar = FontAwesome.Sharp.IconChar.MoneyBillWave;
-            this.iconButton5.IconColor = System.Drawing.Color.White;
-            this.iconButton5.IconSize = 32;
-            this.iconButton5.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.iconButton5.Location = new System.Drawing.Point(0, 504);
-            this.iconButton5.Margin = new System.Windows.Forms.Padding(4);
-            this.iconButton5.Name = "iconButton5";
-            this.iconButton5.Padding = new System.Windows.Forms.Padding(3, 0, 0, 0);
-            this.iconButton5.Rotation = 0D;
-            this.iconButton5.Size = new System.Drawing.Size(312, 80);
-            this.iconButton5.TabIndex = 5;
-            this.iconButton5.Text = " Caja";
-            this.iconButton5.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.iconButton5.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
-            this.iconButton5.UseVisualStyleBackColor = true;
-            // 
-            // mnuConfiguracion
-            // 
-            this.mnuConfiguracion.Dock = System.Windows.Forms.DockStyle.Top;
-            this.mnuConfiguracion.FlatAppearance.BorderSize = 0;
-            this.mnuConfiguracion.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.mnuConfiguracion.Flip = FontAwesome.Sharp.FlipOrientation.Normal;
-            this.mnuConfiguracion.ForeColor = System.Drawing.Color.White;
-            this.mnuConfiguracion.IconChar = FontAwesome.Sharp.IconChar.Cogs;
-            this.mnuConfiguracion.IconColor = System.Drawing.Color.White;
-            this.mnuConfiguracion.IconSize = 32;
-            this.mnuConfiguracion.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.mnuConfiguracion.Location = new System.Drawing.Point(0, 424);
-            this.mnuConfiguracion.Margin = new System.Windows.Forms.Padding(4);
-            this.mnuConfiguracion.Name = "mnuConfiguracion";
-            this.mnuConfiguracion.Padding = new System.Windows.Forms.Padding(3, 0, 0, 0);
-            this.mnuConfiguracion.Rotation = 0D;
-            this.mnuConfiguracion.Size = new System.Drawing.Size(312, 80);
-            this.mnuConfiguracion.TabIndex = 4;
-            this.mnuConfiguracion.Text = " Configuración";
-            this.mnuConfiguracion.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.mnuConfiguracion.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
-            this.mnuConfiguracion.UseVisualStyleBackColor = true;
-            this.mnuConfiguracion.Click += new System.EventHandler(this.mnuConfiguracion_Click);
-            // 
-            // iconButton3
-            // 
-            this.iconButton3.Dock = System.Windows.Forms.DockStyle.Top;
-            this.iconButton3.FlatAppearance.BorderSize = 0;
-            this.iconButton3.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.iconButton3.Flip = FontAwesome.Sharp.FlipOrientation.Normal;
-            this.iconButton3.ForeColor = System.Drawing.Color.White;
-            this.iconButton3.IconChar = FontAwesome.Sharp.IconChar.DiceD20;
-            this.iconButton3.IconColor = System.Drawing.Color.White;
-            this.iconButton3.IconSize = 32;
-            this.iconButton3.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.iconButton3.Location = new System.Drawing.Point(0, 344);
-            this.iconButton3.Margin = new System.Windows.Forms.Padding(4);
-            this.iconButton3.Name = "iconButton3";
-            this.iconButton3.Padding = new System.Windows.Forms.Padding(3, 0, 0, 0);
-            this.iconButton3.Rotation = 0D;
-            this.iconButton3.Size = new System.Drawing.Size(312, 80);
-            this.iconButton3.TabIndex = 3;
-            this.iconButton3.Text = " Empeños";
-            this.iconButton3.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.iconButton3.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
-            this.iconButton3.UseVisualStyleBackColor = true;
-            this.iconButton3.Click += new System.EventHandler(this.iconButton3_Click);
+            this.mnuEmpeños.Dock = System.Windows.Forms.DockStyle.Top;
+            this.mnuEmpeños.FlatAppearance.BorderSize = 0;
+            this.mnuEmpeños.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.mnuEmpeños.Flip = FontAwesome.Sharp.FlipOrientation.Normal;
+            this.mnuEmpeños.ForeColor = System.Drawing.Color.White;
+            this.mnuEmpeños.IconChar = FontAwesome.Sharp.IconChar.DiceD20;
+            this.mnuEmpeños.IconColor = System.Drawing.Color.White;
+            this.mnuEmpeños.IconSize = 32;
+            this.mnuEmpeños.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.mnuEmpeños.Location = new System.Drawing.Point(0, 344);
+            this.mnuEmpeños.Margin = new System.Windows.Forms.Padding(4);
+            this.mnuEmpeños.Name = "mnuEmpeños";
+            this.mnuEmpeños.Padding = new System.Windows.Forms.Padding(3, 0, 0, 0);
+            this.mnuEmpeños.Rotation = 0D;
+            this.mnuEmpeños.Size = new System.Drawing.Size(312, 80);
+            this.mnuEmpeños.TabIndex = 3;
+            this.mnuEmpeños.Text = " Empeños";
+            this.mnuEmpeños.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.mnuEmpeños.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
+            this.mnuEmpeños.UseVisualStyleBackColor = true;
+            this.mnuEmpeños.Click += new System.EventHandler(this.mnuEmpeños_Click);
             // 
             // iconButton2
             // 
@@ -430,6 +518,7 @@
             this.Load += new System.EventHandler(this.frmInicio_Load);
             this.MouseMove += new System.Windows.Forms.MouseEventHandler(this.frmInicio_MouseMove);
             this.panel1.ResumeLayout(false);
+            this.panelSubMenuConfiguracion.ResumeLayout(false);
             this.panel2.ResumeLayout(false);
             this.panel3.ResumeLayout(false);
             this.panel3.PerformLayout();
@@ -452,9 +541,7 @@
 
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.Panel panel2;
-        private FontAwesome.Sharp.IconButton iconButton5;
-        private FontAwesome.Sharp.IconButton mnuConfiguracion;
-        private FontAwesome.Sharp.IconButton iconButton3;
+        private FontAwesome.Sharp.IconButton mnuEmpeños;
         private FontAwesome.Sharp.IconButton iconButton2;
         private FontAwesome.Sharp.IconButton mnuInicio;
         private System.Windows.Forms.PictureBox pictureBox1;
@@ -474,5 +561,11 @@
         private FontAwesome.Sharp.IconPictureBox btnMaximize;
         private FontAwesome.Sharp.IconPictureBox btnRestore;
         private System.Windows.Forms.PictureBox pictureBox3;
+        private FontAwesome.Sharp.IconButton mnuConfiguracion;
+        private FontAwesome.Sharp.IconButton mnuEmpleados;
+        private FontAwesome.Sharp.IconButton iconButton5;
+        private Panel panelSubMenuConfiguracion;
+        private FontAwesome.Sharp.IconButton mnuSubIntereses;
+        private FontAwesome.Sharp.IconButton mnuSubConfiguracion;
     }
 }
