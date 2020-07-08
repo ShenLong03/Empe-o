@@ -57,12 +57,15 @@ namespace Empeño.WindowsForms.Views
             await _context.SaveChangesAsync();
             await LoadData();
 
-            MessageBox.Show("Datos guardados correctamente");
+            interesId = 0;
+            funciones.ResetForm(panelFormulario);
+            MessageBox.Show("Datos guardados correctamente");         
         }
 
         private async void frmIntereses_Load(object sender, EventArgs e)
         {
             await LoadData();
+
         }
 
         private async Task LoadData()
@@ -70,12 +73,16 @@ namespace Empeño.WindowsForms.Views
             dgvLista.DataSource = await _context.Interes.Select(x=>new 
             {
                 Id=x.InteresId,
-                x.Porcentaje,
-                x.Mayor,
-                x.Menor,
-                x.Igual
+                x.Nombre,
+                Porcentaje=x.Porcentaje + "%",
+                Mayor_que="> " + x.Mayor,
+                Menor_que =x.Menor + " >",
+                Igual_que="= " + x.Igual
             }).ToListAsync();
             lblCantidad.Text = dgvLista.Rows.Count.ToString();
+
+            DataGridViewColumn column = dgvLista.Columns[0];
+            column.Width = 60;
         }
 
         public void DeleteTextbox() 
@@ -149,12 +156,13 @@ namespace Empeño.WindowsForms.Views
             funciones.ResetForm(panelFormulario);            
         }
 
-        private async void btnEditar_Click(object sender, EventArgs e)
+
+        public async Task Editar()
         {
-            if (dgvLista.SelectedRows.Count>0)
+            if (dgvLista.SelectedRows.Count > 0)
             {
                 var interes = await _context.Interes.FindAsync(dgvLista.SelectedRows[0].Cells[0].Value);
-                if (interes!=null)
+                if (interes != null)
                 {
                     interesId = interes.InteresId;
                     txtNombre.Text = interes.Nombre;
@@ -164,8 +172,15 @@ namespace Empeño.WindowsForms.Views
                     txtIgual.Text = interes.Igual.ToString();
 
                     funciones.ShowLabels(panelFormulario);
+                    funciones.BlockTextBox(panelFormulario, true);
+                    funciones.EditTextColor(panelFormulario);
                 }
             }
+        }
+
+        private async void btnEditar_Click(object sender, EventArgs e)
+        {
+            await Editar();
         }
 
         private async void btnEliminar_Click(object sender, EventArgs e)
@@ -207,6 +222,17 @@ namespace Empeño.WindowsForms.Views
         private void txtIgual_TextChanged(object sender, EventArgs e)
         {
            // funciones.ShowLabelName((TextBox)sender, lblIgual);
+        }
+
+        private async void dgvLista_DoubleClick(object sender, EventArgs e)
+        {
+            await Editar();
+        }
+
+        private async void btnVer_Click(object sender, EventArgs e)
+        {
+            await Editar();
+            funciones.BlockTextBox(panelFormulario,false);
         }
     }
 }

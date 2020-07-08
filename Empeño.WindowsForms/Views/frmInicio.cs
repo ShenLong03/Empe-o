@@ -1,5 +1,6 @@
 ﻿namespace Empeño.WindowsForms.Views
 {
+    using Empeño.CommonEF.Entities;
     using FontAwesome.Sharp;
     using System;
     using System.Drawing;
@@ -33,6 +34,10 @@
 
         private void frmInicio_Load(object sender, EventArgs e)
         {
+            //TODO: Quitar esto es solo para forzar el login
+            if (Program.Usuario == null)
+                Program.Usuario = new User { Usuario="djarquin" };
+
             this.Opacity = 0.0;
             hideSubMenu();
             btnRestore.Visible = false;

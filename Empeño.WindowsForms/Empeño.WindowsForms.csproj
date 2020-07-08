@@ -83,6 +83,12 @@
     <Compile Include="Views\frmBienvenida.Designer.cs">
       <DependentUpon>frmBienvenida.cs</DependentUpon>
     </Compile>
+    <Compile Include="Views\frmCambioPassword.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\frmCambioPassword.Designer.cs">
+      <DependentUpon>frmCambioPassword.cs</DependentUpon>
+    </Compile>
     <Compile Include="Views\frmConfiguracionGeneral.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -150,6 +156,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Views\frmBienvenida.resx">
       <DependentUpon>frmBienvenida.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\frmCambioPassword.resx">
+      <DependentUpon>frmCambioPassword.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Views\frmConfiguracionGeneral.resx">
       <DependentUpon>frmConfiguracionGeneral.cs</DependentUpon>

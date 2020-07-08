@@ -15,6 +15,7 @@ namespace Empeño.WindowsForms
 
         public static Form Cargando;
         public static User Usuario;
+        public static User ChangeUserPassword;
         /// <summary>
         /// Punto de entrada principal para la aplicación.
         /// </summary>
@@ -28,7 +29,7 @@ namespace Empeño.WindowsForms
             //END TODO
             Application.SetCompatibleTextRenderingDefault(false);
             //Application.Run(new frmCargando(new Size(800,600), new Point(50,50)));
-            Application.Run(new frmLogin());
+            Application.Run(new frmInicio());
         }
 
         public static void GetCargando(Size size, Point location) 

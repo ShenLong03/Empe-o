@@ -40,7 +40,7 @@ namespace Empeño.WindowsForms.Views
 
         private void frmBienvenida_Load(object sender, EventArgs e)
         {
-            lblUsuario.Text = "djarquin";
+            lblUsuario.Text = Program.Usuario.Usuario;
             this.Opacity = 0.0;
             circularProgressBar1.Value = 0;
             circularProgressBar1.Minimum = 0;

@@ -58,6 +58,34 @@ namespace Empeño.WindowsForms.Funciones
             ShowLabelName(textBox, label);
         }
 
+        public void PlaceHolder(TextBox textBox, Label label, PlaceHolderType type, string placeHolder, bool isPassword)
+        {
+            switch (type)
+            {
+                case PlaceHolderType.Leave:
+                    if (textBox.Text == "")
+                    {
+                        textBox.Text = placeHolder;
+                        textBox.ForeColor = Color.DimGray;
+                        if (isPassword)                        
+                            textBox.UseSystemPasswordChar = false;
+                    }
+                    break;
+                case PlaceHolderType.Enter:
+                    if (textBox.Text == placeHolder)
+                    {
+                        textBox.Text = string.Empty;
+                        textBox.ForeColor = Color.Black;
+                        if (isPassword)
+                            textBox.UseSystemPasswordChar = true;
+                    }
+                    break;
+                default:
+                    break;
+            }
+            ShowLabelName(textBox, label);
+        }
+
         public void ShowLabelName(TextBox textBox, Label label)
         {
             if (string.IsNullOrEmpty(textBox.Text) || textBox.Text != label.Text)
@@ -74,7 +102,6 @@ namespace Empeño.WindowsForms.Funciones
                 }
             }
         }
-
 
         public void ShowLabelName(ComboBox comboBox, Label label)
         {
@@ -97,6 +124,42 @@ namespace Empeño.WindowsForms.Funciones
                 {
                     var textBox = (TextBox)item;
                     textBox.Text = string.Empty;
+                    textBox.UseSystemPasswordChar = false;
+                }
+            }
+        }
+
+        public void EditTextColor(Panel panel)
+        {
+            foreach (var item in panel.Controls)
+            {
+                if (item is TextBox)
+                {
+                    var textBox = (TextBox)item;
+                    textBox.ForeColor = Color.Black;
+                }
+                else if (item is ComboBox)
+                {
+                    var comboBox = (ComboBox)item;
+                    comboBox.ForeColor = Color.Black;
+                }
+            }
+        }
+
+        public void BlockTextColor(Panel panel)
+        {
+            foreach (var item in panel.Controls)
+            {
+                if (item is TextBox)
+                {
+                    var textBox = (TextBox)item;
+                    textBox.ForeColor = Color.DimGray;
+                }
+
+                if (item is ComboBox)
+                {
+                    var comboBox = (ComboBox)item;
+                    comboBox.ForeColor = Color.DimGray;
                 }
             }
         }
@@ -108,7 +171,10 @@ namespace Empeño.WindowsForms.Funciones
                 if (item is Label)
                 {
                     var label = (Label)item;
-                    label.Visible = false;
+                    if (label.Name.StartsWith("lbl"))
+                    {
+                        label.Visible = false;
+                    }                    
                 }
             }
         }
@@ -121,6 +187,40 @@ namespace Empeño.WindowsForms.Funciones
                 {
                     var label = (Label)item;
                     label.Visible = true;
+                }
+            }
+        }
+
+        public void TextBoxColorBlank(Panel panel) 
+        {
+            foreach (var itemLabel in panel.Controls)
+            {
+                if (itemLabel is Label)
+                {
+                    var label = (Label)itemLabel;
+                    var labelText = label.Text;
+
+                    foreach (var itemTextBox in panel.Controls)
+                    {
+                        if (itemTextBox is TextBox)
+                        {
+                            var textBox = (TextBox)itemTextBox;
+                            var textBoxText = textBox.Text;
+                            if (labelText == textBoxText)
+                            {
+                                textBox.ForeColor = Color.DimGray;
+                            }
+                        }
+                        else if (itemTextBox is ComboBox)
+                        {
+                            var comboBox = (ComboBox)itemTextBox;
+                            var textBoxText = comboBox.Text;
+                            if (labelText == textBoxText)
+                            {
+                                comboBox.ForeColor = Color.DimGray;
+                            }
+                        }
+                    }
                 }
             }
         }
@@ -152,9 +252,11 @@ namespace Empeño.WindowsForms.Funciones
 
         public void ResetForm(Panel panel) 
         {
+            BlockTextBox(panel, true);
             ClearTextBoxs(panel);
             HideLabels(panel);
             GetPlaceHolders(panel);
+            BlockTextColor(panel);
         }
 
         public void BlockTextBox(Panel panel, bool block)
@@ -164,9 +266,18 @@ namespace Empeño.WindowsForms.Funciones
                 if (item is TextBox)
                 {
                     var textBox = (TextBox)item;
-                    textBox.Enabled = block;
+                    textBox.Enabled = block;               
+                    textBox.ForeColor = block ? Color.Black : Color.DimGray;
+                }
+                else if (item is ComboBox)
+                {
+                    var comboBox = (ComboBox)item;
+                    comboBox.Enabled = block;
+                    comboBox.ForeColor = block ? Color.Black : Color.DimGray;
                 }
             }
         }
+
+       
     }
 }

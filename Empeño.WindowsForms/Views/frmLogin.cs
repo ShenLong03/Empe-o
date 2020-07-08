@@ -43,21 +43,30 @@ namespace Empeño.WindowsForms.Views
 
         private void frmLogin_Load(object sender, EventArgs e)
         {
-            btnAcceder.Focus(); 
+            btnAcceder.Focus();
+            label2.Visible = false;
+            pictureBox1.Visible = false;
         }
 
         private async void btnAcceder_Click(object sender, EventArgs e)
         {
-            this.Hide();
+            
             var usuario = await _context.User.SingleOrDefaultAsync(u => u.Usuario == txtUsuario.Text && u.Password == txtContrasena.Text);
 
             if (usuario!=null)
             {
+                this.Hide();
                 Program.Usuario = usuario;
                 frmBienvenida bienvenida = new frmBienvenida();
                 bienvenida.ShowDialog();
                 frmInicio inicio = new frmInicio();
                 inicio.Show();
+            }
+            else
+            {
+                label1.Visible = true;
+                label2.Text = "Ingreso Incorrecto";
+                pictureBox1.Visible = true;
             }
         }
 

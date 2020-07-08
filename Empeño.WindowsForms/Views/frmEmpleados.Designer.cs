@@ -41,10 +41,10 @@ namespace Empeño.WindowsForms.Views
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmEmpleados));
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle25 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle26 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle27 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle28 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.panel1 = new System.Windows.Forms.Panel();
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
@@ -66,6 +66,13 @@ namespace Empeño.WindowsForms.Views
             this.panel6 = new System.Windows.Forms.Panel();
             this.tableLayoutPanel5 = new System.Windows.Forms.TableLayoutPanel();
             this.panelFormulario = new System.Windows.Forms.Panel();
+            this.lblPIN = new System.Windows.Forms.Label();
+            this.lblPassword = new System.Windows.Forms.Label();
+            this.lblUsuario = new System.Windows.Forms.Label();
+            this.lblPerfil = new System.Windows.Forms.Label();
+            this.lblTelefono = new System.Windows.Forms.Label();
+            this.lblCorreo = new System.Windows.Forms.Label();
+            this.lblNombre = new System.Windows.Forms.Label();
             this.pictureBox6 = new System.Windows.Forms.PictureBox();
             this.chbActivo = new System.Windows.Forms.CheckBox();
             this.pictureBox8 = new System.Windows.Forms.PictureBox();
@@ -85,17 +92,11 @@ namespace Empeño.WindowsForms.Views
             this.textBox10 = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
             this.panel9 = new System.Windows.Forms.Panel();
+            this.btnCambiarContraseña = new FontAwesome.Sharp.IconButton();
             this.btnCancelar = new FontAwesome.Sharp.IconButton();
             this.btnGuardar = new FontAwesome.Sharp.IconButton();
             this.panel10 = new System.Windows.Forms.Panel();
             this.tableLayoutPanel6 = new System.Windows.Forms.TableLayoutPanel();
-            this.lblTelefono = new System.Windows.Forms.Label();
-            this.lblCorreo = new System.Windows.Forms.Label();
-            this.lblNombre = new System.Windows.Forms.Label();
-            this.lblPerfil = new System.Windows.Forms.Label();
-            this.lblUsuario = new System.Windows.Forms.Label();
-            this.lblPassword = new System.Windows.Forms.Label();
-            this.lblPIN = new System.Windows.Forms.Label();
             this.tableLayoutPanel1.SuspendLayout();
             this.panel1.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
@@ -230,7 +231,7 @@ namespace Empeño.WindowsForms.Views
             this.label1.Location = new System.Drawing.Point(33, 8);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(167, 19);
-            this.label1.TabIndex = 3;
+            this.label1.TabIndex = 1;
             this.label1.Text = "Lista de Empleados";
             // 
             // panel4
@@ -250,24 +251,24 @@ namespace Empeño.WindowsForms.Views
             this.dgvEmpleados.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.dgvEmpleados.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.RaisedHorizontal;
             this.dgvEmpleados.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.None;
-            dataGridViewCellStyle25.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle25.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(17)))), ((int)(((byte)(2)))), ((int)(((byte)(115)))));
-            dataGridViewCellStyle25.Font = new System.Drawing.Font("Century Gothic", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle25.ForeColor = System.Drawing.Color.White;
-            dataGridViewCellStyle25.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(17)))), ((int)(((byte)(2)))), ((int)(((byte)(115)))));
-            dataGridViewCellStyle25.SelectionForeColor = System.Drawing.Color.White;
-            dataGridViewCellStyle25.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dgvEmpleados.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle25;
+            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(17)))), ((int)(((byte)(2)))), ((int)(((byte)(115)))));
+            dataGridViewCellStyle1.Font = new System.Drawing.Font("Century Gothic", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle1.ForeColor = System.Drawing.Color.White;
+            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(17)))), ((int)(((byte)(2)))), ((int)(((byte)(115)))));
+            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.Color.White;
+            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgvEmpleados.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
             this.dgvEmpleados.ColumnHeadersHeight = 60;
             this.dgvEmpleados.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
-            dataGridViewCellStyle26.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle26.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle26.Font = new System.Drawing.Font("Century Gothic", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle26.ForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle26.SelectionBackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle26.SelectionForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle26.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dgvEmpleados.DefaultCellStyle = dataGridViewCellStyle26;
+            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle2.Font = new System.Drawing.Font("Century Gothic", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(196)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
+            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgvEmpleados.DefaultCellStyle = dataGridViewCellStyle2;
             this.dgvEmpleados.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dgvEmpleados.EnableHeadersVisualStyles = false;
             this.dgvEmpleados.GridColor = System.Drawing.SystemColors.Control;
@@ -275,26 +276,27 @@ namespace Empeño.WindowsForms.Views
             this.dgvEmpleados.Margin = new System.Windows.Forms.Padding(4);
             this.dgvEmpleados.Name = "dgvEmpleados";
             this.dgvEmpleados.RowHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.None;
-            dataGridViewCellStyle27.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle27.BackColor = System.Drawing.Color.White;
-            dataGridViewCellStyle27.Font = new System.Drawing.Font("Century Gothic", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle27.ForeColor = System.Drawing.Color.Black;
-            dataGridViewCellStyle27.SelectionBackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle27.SelectionForeColor = System.Drawing.Color.Black;
-            dataGridViewCellStyle27.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dgvEmpleados.RowHeadersDefaultCellStyle = dataGridViewCellStyle27;
+            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle3.BackColor = System.Drawing.Color.White;
+            dataGridViewCellStyle3.Font = new System.Drawing.Font("Century Gothic", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle3.ForeColor = System.Drawing.Color.Black;
+            dataGridViewCellStyle3.SelectionBackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle3.SelectionForeColor = System.Drawing.Color.Black;
+            dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgvEmpleados.RowHeadersDefaultCellStyle = dataGridViewCellStyle3;
             this.dgvEmpleados.RowHeadersVisible = false;
             this.dgvEmpleados.RowHeadersWidth = 51;
-            dataGridViewCellStyle28.BackColor = System.Drawing.Color.White;
-            dataGridViewCellStyle28.Font = new System.Drawing.Font("Century Gothic", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle28.ForeColor = System.Drawing.Color.Black;
-            this.dgvEmpleados.RowsDefaultCellStyle = dataGridViewCellStyle28;
+            dataGridViewCellStyle4.BackColor = System.Drawing.Color.White;
+            dataGridViewCellStyle4.Font = new System.Drawing.Font("Century Gothic", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle4.ForeColor = System.Drawing.Color.Black;
+            this.dgvEmpleados.RowsDefaultCellStyle = dataGridViewCellStyle4;
             this.dgvEmpleados.RowTemplate.DefaultCellStyle.BackColor = System.Drawing.Color.White;
             this.dgvEmpleados.RowTemplate.DividerHeight = 1;
             this.dgvEmpleados.RowTemplate.Height = 45;
             this.dgvEmpleados.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dgvEmpleados.Size = new System.Drawing.Size(640, 557);
             this.dgvEmpleados.TabIndex = 33;
+            this.dgvEmpleados.DoubleClick += new System.EventHandler(this.dgvEmpleados_DoubleClick);
             // 
             // panel5
             // 
@@ -305,7 +307,7 @@ namespace Empeño.WindowsForms.Views
             this.panel5.Location = new System.Drawing.Point(0, 0);
             this.panel5.Name = "panel5";
             this.panel5.Size = new System.Drawing.Size(640, 50);
-            this.panel5.TabIndex = 2;
+            this.panel5.TabIndex = 5;
             // 
             // btnVer
             // 
@@ -324,7 +326,7 @@ namespace Empeño.WindowsForms.Views
             this.btnVer.Name = "btnVer";
             this.btnVer.Rotation = 0D;
             this.btnVer.Size = new System.Drawing.Size(100, 41);
-            this.btnVer.TabIndex = 7;
+            this.btnVer.TabIndex = 3;
             this.btnVer.Text = "Ver";
             this.btnVer.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
             this.btnVer.UseVisualStyleBackColor = false;
@@ -347,7 +349,7 @@ namespace Empeño.WindowsForms.Views
             this.btnEditar.Name = "btnEditar";
             this.btnEditar.Rotation = 0D;
             this.btnEditar.Size = new System.Drawing.Size(100, 40);
-            this.btnEditar.TabIndex = 6;
+            this.btnEditar.TabIndex = 2;
             this.btnEditar.Text = "Editar";
             this.btnEditar.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
             this.btnEditar.UseVisualStyleBackColor = false;
@@ -370,10 +372,11 @@ namespace Empeño.WindowsForms.Views
             this.btnEliminar.Name = "btnEliminar";
             this.btnEliminar.Rotation = 0D;
             this.btnEliminar.Size = new System.Drawing.Size(100, 40);
-            this.btnEliminar.TabIndex = 5;
+            this.btnEliminar.TabIndex = 4;
             this.btnEliminar.Text = "Eliminar";
             this.btnEliminar.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
             this.btnEliminar.UseVisualStyleBackColor = false;
+            this.btnEliminar.Click += new System.EventHandler(this.btnEliminar_Click);
             // 
             // panel11
             // 
@@ -479,6 +482,83 @@ namespace Empeño.WindowsForms.Views
             this.panelFormulario.Size = new System.Drawing.Size(414, 512);
             this.panelFormulario.TabIndex = 2;
             // 
+            // lblPIN
+            // 
+            this.lblPIN.AutoSize = true;
+            this.lblPIN.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblPIN.Location = new System.Drawing.Point(9, 324);
+            this.lblPIN.Name = "lblPIN";
+            this.lblPIN.Size = new System.Drawing.Size(33, 17);
+            this.lblPIN.TabIndex = 33;
+            this.lblPIN.Text = "PIN";
+            this.lblPIN.Visible = false;
+            // 
+            // lblPassword
+            // 
+            this.lblPassword.AutoSize = true;
+            this.lblPassword.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblPassword.Location = new System.Drawing.Point(9, 269);
+            this.lblPassword.Name = "lblPassword";
+            this.lblPassword.Size = new System.Drawing.Size(91, 17);
+            this.lblPassword.TabIndex = 32;
+            this.lblPassword.Text = "Contraseña";
+            this.lblPassword.Visible = false;
+            // 
+            // lblUsuario
+            // 
+            this.lblUsuario.AutoSize = true;
+            this.lblUsuario.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblUsuario.Location = new System.Drawing.Point(9, 218);
+            this.lblUsuario.Name = "lblUsuario";
+            this.lblUsuario.Size = new System.Drawing.Size(64, 17);
+            this.lblUsuario.TabIndex = 31;
+            this.lblUsuario.Text = "Usuario";
+            this.lblUsuario.Visible = false;
+            // 
+            // lblPerfil
+            // 
+            this.lblPerfil.AutoSize = true;
+            this.lblPerfil.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblPerfil.Location = new System.Drawing.Point(9, 159);
+            this.lblPerfil.Name = "lblPerfil";
+            this.lblPerfil.Size = new System.Drawing.Size(46, 17);
+            this.lblPerfil.TabIndex = 30;
+            this.lblPerfil.Text = "Perfil";
+            this.lblPerfil.Visible = false;
+            // 
+            // lblTelefono
+            // 
+            this.lblTelefono.AutoSize = true;
+            this.lblTelefono.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblTelefono.Location = new System.Drawing.Point(9, 113);
+            this.lblTelefono.Name = "lblTelefono";
+            this.lblTelefono.Size = new System.Drawing.Size(72, 17);
+            this.lblTelefono.TabIndex = 29;
+            this.lblTelefono.Text = "Teléfono";
+            this.lblTelefono.Visible = false;
+            // 
+            // lblCorreo
+            // 
+            this.lblCorreo.AutoSize = true;
+            this.lblCorreo.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblCorreo.Location = new System.Drawing.Point(9, 59);
+            this.lblCorreo.Name = "lblCorreo";
+            this.lblCorreo.Size = new System.Drawing.Size(57, 17);
+            this.lblCorreo.TabIndex = 28;
+            this.lblCorreo.Text = "Correo";
+            this.lblCorreo.Visible = false;
+            // 
+            // lblNombre
+            // 
+            this.lblNombre.AutoSize = true;
+            this.lblNombre.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblNombre.Location = new System.Drawing.Point(9, 0);
+            this.lblNombre.Name = "lblNombre";
+            this.lblNombre.Size = new System.Drawing.Size(64, 17);
+            this.lblNombre.TabIndex = 27;
+            this.lblNombre.Text = "Nombre";
+            this.lblNombre.Visible = false;
+            // 
             // pictureBox6
             // 
             this.pictureBox6.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
@@ -499,7 +579,7 @@ namespace Empeño.WindowsForms.Views
             this.chbActivo.Location = new System.Drawing.Point(12, 398);
             this.chbActivo.Name = "chbActivo";
             this.chbActivo.Size = new System.Drawing.Size(132, 41);
-            this.chbActivo.TabIndex = 25;
+            this.chbActivo.TabIndex = 13;
             this.chbActivo.Text = "Activo";
             this.chbActivo.UseVisualStyleBackColor = true;
             // 
@@ -526,7 +606,7 @@ namespace Empeño.WindowsForms.Views
             this.txtPIN.Location = new System.Drawing.Point(11, 343);
             this.txtPIN.Name = "txtPIN";
             this.txtPIN.Size = new System.Drawing.Size(393, 37);
-            this.txtPIN.TabIndex = 23;
+            this.txtPIN.TabIndex = 12;
             this.txtPIN.Text = "PIN";
             this.txtPIN.TextChanged += new System.EventHandler(this.txtPIN_TextChanged);
             this.txtPIN.Enter += new System.EventHandler(this.txtPIN_Enter);
@@ -555,7 +635,7 @@ namespace Empeño.WindowsForms.Views
             this.txtPassword.Location = new System.Drawing.Point(11, 289);
             this.txtPassword.Name = "txtPassword";
             this.txtPassword.Size = new System.Drawing.Size(393, 37);
-            this.txtPassword.TabIndex = 21;
+            this.txtPassword.TabIndex = 11;
             this.txtPassword.Text = "Contraseña";
             this.txtPassword.TextChanged += new System.EventHandler(this.txtPassword_TextChanged);
             this.txtPassword.Enter += new System.EventHandler(this.txtPassword_Enter);
@@ -584,7 +664,7 @@ namespace Empeño.WindowsForms.Views
             this.txtUsuario.Location = new System.Drawing.Point(11, 235);
             this.txtUsuario.Name = "txtUsuario";
             this.txtUsuario.Size = new System.Drawing.Size(393, 37);
-            this.txtUsuario.TabIndex = 18;
+            this.txtUsuario.TabIndex = 10;
             this.txtUsuario.Text = "Usuario";
             this.txtUsuario.TextChanged += new System.EventHandler(this.txtUsuario_TextChanged);
             this.txtUsuario.Enter += new System.EventHandler(this.txtUsuario_Enter);
@@ -625,7 +705,7 @@ namespace Empeño.WindowsForms.Views
             this.txtTelefono.Location = new System.Drawing.Point(11, 127);
             this.txtTelefono.Name = "txtTelefono";
             this.txtTelefono.Size = new System.Drawing.Size(393, 37);
-            this.txtTelefono.TabIndex = 14;
+            this.txtTelefono.TabIndex = 8;
             this.txtTelefono.Text = "Teléfono";
             this.txtTelefono.TextChanged += new System.EventHandler(this.txtTelefono_TextChanged);
             this.txtTelefono.Enter += new System.EventHandler(this.txtTelefono_Enter);
@@ -642,7 +722,7 @@ namespace Empeño.WindowsForms.Views
             this.txtCorreo.Location = new System.Drawing.Point(11, 73);
             this.txtCorreo.Name = "txtCorreo";
             this.txtCorreo.Size = new System.Drawing.Size(393, 37);
-            this.txtCorreo.TabIndex = 13;
+            this.txtCorreo.TabIndex = 7;
             this.txtCorreo.Text = "Correo";
             this.txtCorreo.TextChanged += new System.EventHandler(this.txtCorreo_TextChanged);
             this.txtCorreo.Enter += new System.EventHandler(this.txtCorreo_Enter);
@@ -671,7 +751,7 @@ namespace Empeño.WindowsForms.Views
             this.txtNombre.Location = new System.Drawing.Point(11, 19);
             this.txtNombre.Name = "txtNombre";
             this.txtNombre.Size = new System.Drawing.Size(393, 37);
-            this.txtNombre.TabIndex = 5;
+            this.txtNombre.TabIndex = 6;
             this.txtNombre.Text = "Nombre";
             this.txtNombre.TextChanged += new System.EventHandler(this.txtNombre_TextChanged);
             this.txtNombre.Enter += new System.EventHandler(this.txtNombre_Enter);
@@ -693,7 +773,7 @@ namespace Empeño.WindowsForms.Views
             this.cbPerfil.Location = new System.Drawing.Point(11, 178);
             this.cbPerfil.Name = "cbPerfil";
             this.cbPerfil.Size = new System.Drawing.Size(393, 45);
-            this.cbPerfil.TabIndex = 26;
+            this.cbPerfil.TabIndex = 9;
             this.cbPerfil.Text = "Perfil";
             this.cbPerfil.SelectedIndexChanged += new System.EventHandler(this.cbPerfil_SelectedIndexChanged);
             this.cbPerfil.Enter += new System.EventHandler(this.cbPerfil_Enter);
@@ -738,6 +818,7 @@ namespace Empeño.WindowsForms.Views
             // 
             // panel9
             // 
+            this.panel9.Controls.Add(this.btnCambiarContraseña);
             this.panel9.Controls.Add(this.btnCancelar);
             this.panel9.Controls.Add(this.btnGuardar);
             this.panel9.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -746,10 +827,33 @@ namespace Empeño.WindowsForms.Views
             this.panel9.Size = new System.Drawing.Size(414, 44);
             this.panel9.TabIndex = 3;
             // 
+            // btnCambiarContraseña
+            // 
+            this.btnCambiarContraseña.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnCambiarContraseña.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(43)))), ((int)(((byte)(187)))), ((int)(((byte)(173)))));
+            this.btnCambiarContraseña.FlatAppearance.BorderSize = 0;
+            this.btnCambiarContraseña.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnCambiarContraseña.Flip = FontAwesome.Sharp.FlipOrientation.Normal;
+            this.btnCambiarContraseña.Font = new System.Drawing.Font("Century Gothic", 7.8F, System.Drawing.FontStyle.Bold);
+            this.btnCambiarContraseña.ForeColor = System.Drawing.Color.White;
+            this.btnCambiarContraseña.IconChar = FontAwesome.Sharp.IconChar.UsersCog;
+            this.btnCambiarContraseña.IconColor = System.Drawing.Color.White;
+            this.btnCambiarContraseña.IconSize = 24;
+            this.btnCambiarContraseña.Location = new System.Drawing.Point(220, 3);
+            this.btnCambiarContraseña.Name = "btnCambiarContraseña";
+            this.btnCambiarContraseña.Rotation = 0D;
+            this.btnCambiarContraseña.Size = new System.Drawing.Size(193, 40);
+            this.btnCambiarContraseña.TabIndex = 16;
+            this.btnCambiarContraseña.Text = "Cambiar Contraseña";
+            this.btnCambiarContraseña.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
+            this.btnCambiarContraseña.UseVisualStyleBackColor = false;
+            this.btnCambiarContraseña.Click += new System.EventHandler(this.btnCambiarContraseña_Click);
+            // 
             // btnCancelar
             // 
             this.btnCancelar.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Right)));
+            | System.Windows.Forms.AnchorStyles.Left)));
             this.btnCancelar.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(187)))), ((int)(((byte)(51)))));
             this.btnCancelar.FlatAppearance.BorderSize = 0;
             this.btnCancelar.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
@@ -763,7 +867,7 @@ namespace Empeño.WindowsForms.Views
             this.btnCancelar.Name = "btnCancelar";
             this.btnCancelar.Rotation = 0D;
             this.btnCancelar.Size = new System.Drawing.Size(110, 40);
-            this.btnCancelar.TabIndex = 29;
+            this.btnCancelar.TabIndex = 15;
             this.btnCancelar.Text = "Cancelar";
             this.btnCancelar.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
             this.btnCancelar.UseVisualStyleBackColor = false;
@@ -772,7 +876,7 @@ namespace Empeño.WindowsForms.Views
             // btnGuardar
             // 
             this.btnGuardar.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Right)));
+            | System.Windows.Forms.AnchorStyles.Left)));
             this.btnGuardar.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(66)))), ((int)(((byte)(133)))), ((int)(((byte)(244)))));
             this.btnGuardar.FlatAppearance.BorderSize = 0;
             this.btnGuardar.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
@@ -786,7 +890,7 @@ namespace Empeño.WindowsForms.Views
             this.btnGuardar.Name = "btnGuardar";
             this.btnGuardar.Rotation = 0D;
             this.btnGuardar.Size = new System.Drawing.Size(100, 40);
-            this.btnGuardar.TabIndex = 28;
+            this.btnGuardar.TabIndex = 14;
             this.btnGuardar.Text = "Guardar";
             this.btnGuardar.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
             this.btnGuardar.UseVisualStyleBackColor = false;
@@ -816,83 +920,6 @@ namespace Empeño.WindowsForms.Views
             this.tableLayoutPanel6.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tableLayoutPanel6.Size = new System.Drawing.Size(440, 89);
             this.tableLayoutPanel6.TabIndex = 0;
-            // 
-            // lblTelefono
-            // 
-            this.lblTelefono.AutoSize = true;
-            this.lblTelefono.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblTelefono.Location = new System.Drawing.Point(9, 113);
-            this.lblTelefono.Name = "lblTelefono";
-            this.lblTelefono.Size = new System.Drawing.Size(72, 17);
-            this.lblTelefono.TabIndex = 29;
-            this.lblTelefono.Text = "Teléfono";
-            this.lblTelefono.Visible = false;
-            // 
-            // lblCorreo
-            // 
-            this.lblCorreo.AutoSize = true;
-            this.lblCorreo.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblCorreo.Location = new System.Drawing.Point(9, 59);
-            this.lblCorreo.Name = "lblCorreo";
-            this.lblCorreo.Size = new System.Drawing.Size(57, 17);
-            this.lblCorreo.TabIndex = 28;
-            this.lblCorreo.Text = "Correo";
-            this.lblCorreo.Visible = false;
-            // 
-            // lblNombre
-            // 
-            this.lblNombre.AutoSize = true;
-            this.lblNombre.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblNombre.Location = new System.Drawing.Point(9, 0);
-            this.lblNombre.Name = "lblNombre";
-            this.lblNombre.Size = new System.Drawing.Size(64, 17);
-            this.lblNombre.TabIndex = 27;
-            this.lblNombre.Text = "Nombre";
-            this.lblNombre.Visible = false;
-            // 
-            // lblPerfil
-            // 
-            this.lblPerfil.AutoSize = true;
-            this.lblPerfil.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblPerfil.Location = new System.Drawing.Point(9, 159);
-            this.lblPerfil.Name = "lblPerfil";
-            this.lblPerfil.Size = new System.Drawing.Size(46, 17);
-            this.lblPerfil.TabIndex = 30;
-            this.lblPerfil.Text = "Perfil";
-            this.lblPerfil.Visible = false;
-            // 
-            // lblUsuario
-            // 
-            this.lblUsuario.AutoSize = true;
-            this.lblUsuario.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblUsuario.Location = new System.Drawing.Point(9, 218);
-            this.lblUsuario.Name = "lblUsuario";
-            this.lblUsuario.Size = new System.Drawing.Size(64, 17);
-            this.lblUsuario.TabIndex = 31;
-            this.lblUsuario.Text = "Usuario";
-            this.lblUsuario.Visible = false;
-            // 
-            // lblPassword
-            // 
-            this.lblPassword.AutoSize = true;
-            this.lblPassword.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblPassword.Location = new System.Drawing.Point(9, 269);
-            this.lblPassword.Name = "lblPassword";
-            this.lblPassword.Size = new System.Drawing.Size(91, 17);
-            this.lblPassword.TabIndex = 32;
-            this.lblPassword.Text = "Contraseña";
-            this.lblPassword.Visible = false;
-            // 
-            // lblPIN
-            // 
-            this.lblPIN.AutoSize = true;
-            this.lblPIN.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblPIN.Location = new System.Drawing.Point(9, 324);
-            this.lblPIN.Name = "lblPIN";
-            this.lblPIN.Size = new System.Drawing.Size(33, 17);
-            this.lblPIN.TabIndex = 33;
-            this.lblPIN.Text = "PIN";
-            this.lblPIN.Visible = false;
             // 
             // frmEmpleados
             // 
@@ -992,5 +1019,6 @@ namespace Empeño.WindowsForms.Views
         private Label lblTelefono;
         private Label lblCorreo;
         private Label lblNombre;
+        private FontAwesome.Sharp.IconButton btnCambiarContraseña;
     }
 }

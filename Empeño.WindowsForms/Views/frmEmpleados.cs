@@ -42,6 +42,8 @@ namespace Empeño.WindowsForms.Views
                 x.Telefono
             }).ToListAsync();
 
+            lblCantidad.Text = dgvEmpleados.Rows.Count.ToString();
+
             DataGridViewColumn column = dgvEmpleados.Columns[0];
             column.Width = 40;
         }
@@ -77,6 +79,11 @@ namespace Empeño.WindowsForms.Views
         {         
             try
             {
+                if (cbPerfil.Text=="Perfil")
+                {
+                    MessageBox.Show("Seleccione el perfil del empleado", "Información", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    return;
+                }
                 if (empleadoId == 0)
                 {
                     var empleado = new Empleado
@@ -105,7 +112,7 @@ namespace Empeño.WindowsForms.Views
                 else
                 {
                     var empleado = _context.Empleados.Find(empleadoId);
-                    var user = _context.User.Single(u => u.Usuario == empleado.Usuario);
+                    var user = await _context.User.SingleOrDefaultAsync(u => u.Usuario == empleado.Usuario);
 
                     empleado.Correo = txtCorreo.Text;
                     empleado.Nombre = txtNombre.Text;
@@ -113,17 +120,35 @@ namespace Empeño.WindowsForms.Views
                     empleado.Activo = chbActivo.Checked;
                     empleado.Usuario = txtUsuario.Text;
 
-                    user.Activo = chbActivo.Checked;
-                    user.Usuario = txtUsuario.Text;
-                    user.Codigo = txtPIN.Text;
-                    user.Password = txtPassword.Text;
+                    if (user!=null)
+                    {
+                        user.Activo = chbActivo.Checked;
+                        user.Usuario = txtUsuario.Text;
+                        user.Codigo = txtPIN.Text;
+                        user.Password = txtPassword.Text;
 
-                    _context.Entry(empleado).State = EntityState.Modified;
-                    _context.Entry(user).State = EntityState.Modified;
+                        _context.Entry(user).State = EntityState.Modified;
+                    }
+                    else
+                    {
+                        user = new User
+                        {
+                            Activo = chbActivo.Checked,
+                            Usuario = txtUsuario.Text,
+                            Codigo = txtPIN.Text,
+                            Password = txtPassword.Text,
+                            PerfilId = GetPerfilId(cbPerfil.Text)
+                        };
+
+                        _context.User.Add(user);
+                    }
+                    
+                    _context.Entry(empleado).State = EntityState.Modified;                    
                 }
-                _context.SaveChanges();
+                await _context.SaveChangesAsync();
                 await LoadData();
-                Clear();
+                funciones.ResetForm(panelFormulario);
+                empleadoId = 0;
                 MessageBox.Show("Datos guardados correctamente", "Información", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
             }
@@ -136,31 +161,40 @@ namespace Empeño.WindowsForms.Views
         private void txtNombre_Leave(object sender, EventArgs e)
         {
             funciones.PlaceHolder(txtNombre, lblNombre, PlaceHolderType.Leave, "Nombre");
+            panelFormulario.BackColor = Color.White;
         }
 
         private void txtNombre_Enter(object sender, EventArgs e)
         {
             funciones.PlaceHolder(txtNombre, lblNombre, PlaceHolderType.Enter, "Nombre");
+
+            panelFormulario.BackColor = Color.White;
         }
 
         private void txtCorreo_Leave(object sender, EventArgs e)
         {
             funciones.PlaceHolder(txtCorreo, lblCorreo, PlaceHolderType.Leave, "Correo");
+            panelFormulario.BackColor = Color.White;
         }
 
         private void txtCorreo_Enter(object sender, EventArgs e)
         {
             funciones.PlaceHolder(txtCorreo, lblCorreo, PlaceHolderType.Enter, "Correo");
+
+            panelFormulario.BackColor = Color.White;
         }
 
         private void txtTelefono_Leave(object sender, EventArgs e)
         {
-            funciones.PlaceHolder(txtTelefono, lblTelefono, PlaceHolderType.Leave, "Telefono");
+            funciones.PlaceHolder(txtTelefono, lblTelefono, PlaceHolderType.Leave, "Teléfono");
+            panelFormulario.BackColor = Color.White;
         }
 
         private void txtTelefono_Enter(object sender, EventArgs e)
         {
-            funciones.PlaceHolder(txtTelefono, lblTelefono, PlaceHolderType.Enter, "Telefono");
+            funciones.PlaceHolder(txtTelefono, lblTelefono, PlaceHolderType.Enter, "Teléfono");
+
+            panelFormulario.BackColor = Color.White;
         }
 
         private void cbPerfil_Leave(object sender, EventArgs e)
@@ -170,6 +204,8 @@ namespace Empeño.WindowsForms.Views
                 cbPerfil.Text = "Perfil";
                 cbPerfil.ForeColor = Color.DimGray;
             }
+
+            panelFormulario.BackColor = Color.White;
         }
 
         private void cbPerfil_Enter(object sender, EventArgs e)
@@ -179,26 +215,38 @@ namespace Empeño.WindowsForms.Views
                 cbPerfil.Text = "";
                 cbPerfil.ForeColor = Color.Black;
             }
+
+            panelFormulario.BackColor = Color.White;
         }
 
         private void txtUsuario_Leave(object sender, EventArgs e)
         {
             funciones.PlaceHolder(txtUsuario, lblUsuario, PlaceHolderType.Leave, "Usuario");
+
+            panelFormulario.BackColor = Color.White;
         }
 
         private void txtUsuario_Enter(object sender, EventArgs e)
         {
             funciones.PlaceHolder(txtUsuario, lblUsuario, PlaceHolderType.Enter, "Usuario");
+
+            panelFormulario.BackColor = Color.White;
         }
 
         private void txtPassword_Leave(object sender, EventArgs e)
         {
-            funciones.PlaceHolder(txtPassword, lblPassword, PlaceHolderType.Leave, "Password");
+            funciones.PlaceHolder(txtPassword, lblPassword, PlaceHolderType.Leave, "Contraseña");
+            
+            if (txtPassword.Text == "Contraseña")
+                txtPassword.UseSystemPasswordChar = false;
         }
 
         private void txtPassword_Enter(object sender, EventArgs e)
-        {
-            funciones.PlaceHolder(txtPassword, lblPassword, PlaceHolderType.Enter, "Password");
+        {            
+            funciones.PlaceHolder(txtPassword, lblPassword, PlaceHolderType.Enter, "Contraseña");
+
+            if (txtPassword.Text == "")
+                txtPassword.UseSystemPasswordChar = true;
         }
 
         private void txtPIN_Leave(object sender, EventArgs e)
@@ -208,14 +256,13 @@ namespace Empeño.WindowsForms.Views
 
         private void txtPIN_Enter(object sender, EventArgs e)
         {
-            funciones.PlaceHolder(txtPIN, lblPassword, PlaceHolderType.Enter, "PIN");
+            funciones.PlaceHolder(txtPIN, lblPIN, PlaceHolderType.Enter, "PIN");
         }
 
-        private async void btnEditar_Click(object sender, EventArgs e)
+        public async Task Editar()
         {
             if (dgvEmpleados.SelectedRows.Count > 0)
-            {
-                empleadoId = int.Parse(dgvEmpleados.SelectedRows[0].Cells[0].Value.ToString());
+            {                
                 var empleado = await _context.Empleados.FindAsync(dgvEmpleados.SelectedRows[0].Cells[0].Value);
                 if (empleado == null)
                 {
@@ -223,7 +270,9 @@ namespace Empeño.WindowsForms.Views
                     empleadoId = 0;
                     return;
                 }
-                Clear();
+                funciones.ResetForm(panelFormulario);
+                empleadoId = 0;
+                empleadoId = int.Parse(dgvEmpleados.SelectedRows[0].Cells[0].Value.ToString());
                 txtNombre.Text = empleado.Nombre;
                 txtTelefono.Text = empleado.Telefono;
                 txtCorreo.Text = empleado.Correo;
@@ -235,14 +284,33 @@ namespace Empeño.WindowsForms.Views
                 {
                     cbPerfil.Text = user.Perfil.Nombre;
                     txtPassword.Text = user.Password;
+                    txtPassword.UseSystemPasswordChar = true;
                     txtPIN.Text = user.Codigo;
                 }
+                
+                funciones.BlockTextBox(panelFormulario, true);
+                funciones.EditTextColor(panelFormulario);
+                funciones.ShowLabels(panelFormulario);
+                funciones.TextBoxColorBlank(panelFormulario);
+
+                txtUsuario.Enabled = false;
+                txtPassword.Enabled = false;
+                txtPassword.UseSystemPasswordChar = true;
             }
+        }
+
+        private async void btnEditar_Click(object sender, EventArgs e)
+        {
+            await Editar();
+
+            txtPassword.UseSystemPasswordChar = true;
         }
 
         private void btnCancelar_Click(object sender, EventArgs e)
         {
             funciones.ResetForm(panelFormulario);
+            empleadoId = 0;
+            cbPerfil.Text = "Perfil";
         }
 
         private async void btnVer_Click(object sender, EventArgs e)
@@ -257,7 +325,8 @@ namespace Empeño.WindowsForms.Views
                     empleadoId = 0;
                     return;
                 }
-                Clear();
+                funciones.ResetForm(panelFormulario);
+                empleadoId = 0;
                 txtNombre.Text = empleado.Nombre;
                 txtTelefono.Text = empleado.Telefono;
                 txtCorreo.Text = empleado.Correo;
@@ -278,37 +347,99 @@ namespace Empeño.WindowsForms.Views
 
         private void txtNombre_TextChanged(object sender, EventArgs e)
         {
-           funciones.ShowLabelName((TextBox)sender, lblNombre);
+           //funciones.ShowLabelName((TextBox)sender, lblNombre);
         }
 
         private void txtCorreo_TextChanged(object sender, EventArgs e)
         {
-            funciones.ShowLabelName((TextBox)sender, lblCorreo);
+            //funciones.ShowLabelName((TextBox)sender, lblCorreo);
         }
 
         private void txtTelefono_TextChanged(object sender, EventArgs e)
         {
-            funciones.ShowLabelName((TextBox)sender, lblTelefono);
+            //funciones.ShowLabelName((TextBox)sender, lblTelefono);
         }
 
         private void cbPerfil_SelectedIndexChanged(object sender, EventArgs e)
         {
-            funciones.ShowLabelName((ComboBox)sender, lblTelefono);
+            if (cbPerfil.Text!="Perfil")
+            {
+                funciones.ShowLabelName((ComboBox)sender, lblPerfil);
+            }
         }
 
         private void txtUsuario_TextChanged(object sender, EventArgs e)
         {
-            funciones.ShowLabelName((TextBox)sender, lblUsuario);
+            //funciones.ShowLabelName((TextBox)sender, lblUsuario);
         }
 
         private void txtPassword_TextChanged(object sender, EventArgs e)
         {
-            funciones.ShowLabelName((TextBox)sender, lblPassword);
+            //funciones.ShowLabelName((TextBox)sender, lblPassword);
         }
 
         private void txtPIN_TextChanged(object sender, EventArgs e)
         {
-            funciones.ShowLabelName((TextBox)sender, lblPIN);
+            //funciones.ShowLabelName((TextBox)sender, lblPIN);
+        }
+
+        private async void dgvEmpleados_DoubleClick(object sender, EventArgs e)
+        {
+            try
+            {
+                await Editar();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message.ToString(), "Error",MessageBoxButtons.OK,MessageBoxIcon.Error); 
+            }
+            
+        }
+
+        private  async void btnCambiarContraseña_Click(object sender, EventArgs e)
+        {
+            if (dgvEmpleados.SelectedRows.Count>0)
+            {
+                var usuario = await _context.User.SingleOrDefaultAsync(u => u.Usuario == txtUsuario.Text);
+                if (usuario!=null)
+                {
+                    Program.ChangeUserPassword = usuario;
+                    var oscuro = new frmOscuro();
+                    var frm = new frmCambioPassword();
+                    oscuro.Show();
+                    frm.ShowDialog();
+                    oscuro.Close();
+                    txtPassword.Text = Program.ChangeUserPassword.Password;
+                }
+            }
+        }
+
+        private async void btnEliminar_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                var result = MessageBox.Show("¿Esta séguro que desea eliminar el registro?", "Pregunta", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+
+                if (result == DialogResult.Yes)
+                {
+                    if (dgvEmpleados.SelectedRows.Count > 0)
+                    {
+                        var dato = await _context.Empleados.FindAsync(dgvEmpleados.SelectedRows[0].Cells[0].Value);
+                        _context.Empleados.Remove(dato);
+                        _context.User.RemoveRange(_context.User.Where(u => u.Usuario == dato.Usuario));
+                        await _context.SaveChangesAsync();
+                        funciones.ResetForm(panelFormulario);
+                        empleadoId = 0;
+                        await LoadData();
+                    }
+                }
+            }
+            catch (Exception)
+            {
+
+                MessageBox.Show("El dato no puede ser eliminado", "Error");
+            }
+           
         }
     }
 }
