@@ -74,6 +74,14 @@
     <Compile Include="Migrations\202007041951414_Update_Database.designer.cs">
       <DependentUpon>202007041951414_Update_Database.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202007081733305_New_Changes.cs" />
+    <Compile Include="Migrations\202007081733305_New_Changes.designer.cs">
+      <DependentUpon>202007081733305_New_Changes.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202007081736067_New_Changes2.cs" />
+    <Compile Include="Migrations\202007081736067_New_Changes2.designer.cs">
+      <DependentUpon>202007081736067_New_Changes2.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="SeedDb\ClienteSeedDb.cs" />
     <Compile Include="SeedDb\PerfilSeedDb.cs" />
@@ -153,6 +161,12 @@
     </Compile>
     <EmbeddedResource Include="Migrations\202007041951414_Update_Database.resx">
       <DependentUpon>202007041951414_Update_Database.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202007081733305_New_Changes.resx">
+      <DependentUpon>202007081733305_New_Changes.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202007081736067_New_Changes2.resx">
+      <DependentUpon>202007081736067_New_Changes2.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Views\frmBienvenida.resx">
       <DependentUpon>frmBienvenida.cs</DependentUpon>

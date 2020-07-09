@@ -36,7 +36,7 @@
         {
             //TODO: Quitar esto es solo para forzar el login
             if (Program.Usuario == null)
-                Program.Usuario = new User { Usuario="djarquin" };
+                Program.Usuario = new User { Usuario= "djarquin012" };
 
             this.Opacity = 0.0;
             hideSubMenu();
@@ -72,6 +72,18 @@
 
         private void mnuConfiguracion_Click(object sender, EventArgs e)
         {
+
+            if (panel1.Width <= 60)
+            {
+                panel1.Width = 312;
+                mnuInicio.Text = "Inicio";
+                mnuConfiguracion.Text = "Configuración";
+                mnuEmpeños.Text = "Empeños";
+                mnuEmpleados.Text = "Empleados";
+                mnuCaja.Text = "Caja";
+                mnuTablero.Text = "Tablero";
+                mnuLogout.Text = "Cerrar";
+            }
             Reset();
             showSubMenu(panelSubMenuConfiguracion);
         }
@@ -259,6 +271,64 @@
         private const int WM_NCHITTEST = 132;
         private const int HTBOTTOMRIGHT = 17;
         private Rectangle sizeGripRectangle;
+
+        private void btnMenu_Click(object sender, EventArgs e)
+        {
+
+            if (panel1.Width >= 312)
+            {
+                hideSubMenu();
+                mnuInicio.Text = string.Empty;
+                mnuConfiguracion.Text = string.Empty;
+                mnuEmpeños.Text = string.Empty;
+                mnuEmpleados.Text = string.Empty;
+                mnuCaja.Text = string.Empty;
+                mnuTablero.Text = string.Empty;
+                panel1.Width = 60;
+              //timerOcultar.Enabled = true;
+              mnuLogout.Text = string.Empty;
+                mnuLogout.ImageAlign= System.Drawing.ContentAlignment.MiddleLeft;
+            }
+            else if (panel1.Width <= 60)
+            {
+                mnuInicio.Text = "Inicio";
+                mnuConfiguracion.Text = "Configuración";
+                mnuEmpeños.Text = "Empeños";
+                mnuEmpleados.Text = "Empleados";
+                mnuCaja.Text = "Caja";
+                mnuTablero.Text = "Tablero";
+                panel1.Width = 312;
+                //timerMostrar.Enabled = true;
+                mnuLogout.Text = "Cerrar";
+                mnuLogout.ImageAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            }                      
+        }
+
+        private void timerOcultar_Tick(object sender, EventArgs e)
+        {
+            if (panel1.Width <= 60)
+            {
+
+                timerOcultar.Enabled = false;
+            }
+            else
+            { 
+                panel1.Width = panel1.Width - 20;
+            }
+        }
+
+        private void timerMostrar_Tick(object sender, EventArgs e)
+        {
+            if (panel1.Width >= 312)
+            {
+
+                timerMostrar.Enabled = false;
+            }
+            else
+            {
+                panel1.Width = panel1.Width + 20;
+            }
+        }
 
         protected override void WndProc(ref Message m)
         {

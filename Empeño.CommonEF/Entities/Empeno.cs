@@ -6,6 +6,7 @@ namespace Empeño.CommonEF.Entities
 {
     using Enum;
     using System;
+    using System.ComponentModel;
     using System.ComponentModel.DataAnnotations;
 
     public class Empeno
@@ -40,6 +41,8 @@ namespace Empeño.CommonEF.Entities
         public virtual Empleado Empleado { get; set; }
 
         public virtual Interes Interes { get; set; }
+
+        public virtual ICollection<Intereses> Intereses { get; set; }
 
         public Empeno()
         {

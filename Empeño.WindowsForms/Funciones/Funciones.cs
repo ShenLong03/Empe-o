@@ -1,6 +1,8 @@
 ﻿using Empeño.CommonEF.Enum;
+using Empeño.WindowsForms.Data;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Drawing;
 using System.Linq;
 using System.Text;
@@ -11,6 +13,8 @@ namespace Empeño.WindowsForms.Funciones
 {
     public class Funciones
     {
+        DataContext _context = new DataContext();
+
         public void PlaceHolder(TextBox textBox, PlaceHolderType type, string placeHolder)
         {
             switch (type)
@@ -113,6 +117,42 @@ namespace Empeño.WindowsForms.Funciones
             {
                 label.Visible = false;
                 comboBox.Text = label.Text;
+            }
+        }
+
+        public async Task<int> GetEmpleadoIdByUser(string user)
+        {
+            try
+            {
+                var empleado = await _context.Empleados.SingleOrDefaultAsync(e => e.Usuario == user);
+                if (empleado != null)
+                {
+                    return empleado.EmpleadoId;
+                }
+                return 0;
+            }
+            catch (Exception ex)
+            {
+
+                return 0;
+            }
+        }
+
+        public async Task<int> GetInteresIdByNombre(string nombre)
+        {
+            try
+            {
+                var interes = await _context.Interes.SingleOrDefaultAsync(e => e.Nombre == nombre);
+                if (interes != null)
+                {
+                    return interes.InteresId;
+                }
+                return 0;
+            }
+            catch (Exception ex)
+            {
+
+                return 0;
             }
         }
 
@@ -243,6 +283,43 @@ namespace Empeño.WindowsForms.Funciones
                             if (nombreLabel==nombreTextBox)
                             {
                                 textBox.Text = label.Text;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+
+        public void IntelligHolders(Panel panel)
+        {
+            foreach (var itemLabel in panel.Controls)
+            {
+                if (itemLabel is Label)
+                {
+                    var label = (Label)itemLabel;
+                    var nombreLabel = label.Name.Replace("lbl", string.Empty);
+
+                    foreach (var itemTextBox in panel.Controls)
+                    {
+                        if (itemTextBox is TextBox)
+                        {
+                            var textBox = (TextBox)itemTextBox;
+                            var nombreTextBox = textBox.Name.Replace("txt", string.Empty);
+                            if (nombreLabel == nombreTextBox)
+                            {
+                                if (textBox.Text==label.Text || string.IsNullOrEmpty(textBox.Text))
+                                {
+                                    label.Visible = false;
+                                    textBox.ForeColor = Color.DimGray;
+
+                                    textBox.Text = label.Text;
+                                }
+                                else
+                                {
+                                    label.Visible = true;
+                                    textBox.ForeColor = Color.Black;
+                                }
                             }
                         }
                     }
