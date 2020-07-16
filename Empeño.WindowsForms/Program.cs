@@ -1,4 +1,5 @@
 ﻿using Empeño.CommonEF.Entities;
+using Empeño.WindowsForms.Reports;
 using Empeño.WindowsForms.SeedDb;
 using Empeño.WindowsForms.Views;
 using System;
@@ -16,6 +17,7 @@ namespace Empeño.WindowsForms
         public static Form Cargando;
         public static User Usuario;
         public static User ChangeUserPassword;
+        public static Cliente Cliente;
         /// <summary>
         /// Punto de entrada principal para la aplicación.
         /// </summary>
@@ -25,7 +27,7 @@ namespace Empeño.WindowsForms
             Application.EnableVisualStyles();
             PerfilSeedDb.CheckPerfiles();
             //TODO:Datos de Prueba            
-            ClienteSeedDb.CheckClientes();
+            //ClienteSeedDb.CheckClientes();
             //END TODO
             Application.SetCompatibleTextRenderingDefault(false);
             //Application.Run(new frmCargando(new Size(800,600), new Point(50,50)));

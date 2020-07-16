@@ -1,5 +1,6 @@
 ﻿namespace Empeño.CommonEF.Entities
 {
+    using System;
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
 
@@ -21,6 +22,8 @@
         public string Direccion { get; set; }
 
         public string Comentario { get; set; }
+
+        public DateTime Fecha { get; set; } = DateTime.Today;
 
         public bool Activo { get; set; } = true;
 

@@ -36,6 +36,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Bunifu_UI_v1.52">
+      <HintPath>C:\Users\donov\Downloads\Bunifu_UI_v1.52.dll</HintPath>
+    </Reference>
     <Reference Include="CircularProgressBar, Version=2.8.0.16, Culture=neutral, PublicKeyToken=310fd07b25df79b3, processorArchitecture=MSIL">
       <HintPath>..\packages\CircularProgressBar.2.8.0.16\lib\net40\CircularProgressBar.dll</HintPath>
     </Reference>
@@ -48,12 +51,32 @@
     <Reference Include="FontAwesome.Sharp, Version=5.13.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\FontAwesome.Sharp.5.13.0\lib\net472\FontAwesome.Sharp.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.ReportViewer.Common, Version=15.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.ReportingServices.ReportViewerControl.Winforms.150.1404.0\lib\net40\Microsoft.ReportViewer.Common.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.ReportViewer.DataVisualization, Version=15.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.ReportingServices.ReportViewerControl.Winforms.150.1404.0\lib\net40\Microsoft.ReportViewer.DataVisualization.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.ReportViewer.Design, Version=15.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.ReportingServices.ReportViewerControl.Winforms.150.1404.0\lib\net40\Microsoft.ReportViewer.Design.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.ReportViewer.ProcessingObjectModel, Version=15.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.ReportingServices.ReportViewerControl.Winforms.150.1404.0\lib\net40\Microsoft.ReportViewer.ProcessingObjectModel.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.ReportViewer.WinForms, Version=15.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.ReportingServices.ReportViewerControl.Winforms.150.1404.0\lib\net40\Microsoft.ReportViewer.WinForms.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.SqlServer.Types, Version=14.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.SqlServer.Types.14.0.1016.290\lib\net40\Microsoft.SqlServer.Types.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.VisualBasic" />
     <Reference Include="Microsoft.VisualBasic.PowerPacks, Version=9.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
     <Reference Include="System.Design" />
+    <Reference Include="System.Management" />
+    <Reference Include="System.Windows.Forms.DataVisualization" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -69,22 +92,30 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Data\DataContext.cs" />
+    <Compile Include="Data\EmpenoMap.cs" />
     <Compile Include="Funciones\Funciones.cs" />
-    <Compile Include="Migrations\202007041951414_Update_Database.cs" />
-    <Compile Include="Migrations\202007041951414_Update_Database.designer.cs">
-      <DependentUpon>202007041951414_Update_Database.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\202007081733305_New_Changes.cs" />
-    <Compile Include="Migrations\202007081733305_New_Changes.designer.cs">
-      <DependentUpon>202007081733305_New_Changes.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\202007081736067_New_Changes2.cs" />
-    <Compile Include="Migrations\202007081736067_New_Changes2.designer.cs">
-      <DependentUpon>202007081736067_New_Changes2.cs</DependentUpon>
+    <Compile Include="Migrations\202007150401233_InitialDb.cs" />
+    <Compile Include="Migrations\202007150401233_InitialDb.designer.cs">
+      <DependentUpon>202007150401233_InitialDb.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
+    <Compile Include="Reports\frmReporteEmpeños.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Reports\frmReporteEmpeños.Designer.cs">
+      <DependentUpon>frmReporteEmpeños.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\frmReporteIngresos.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Reports\frmReporteIngresos.Designer.cs">
+      <DependentUpon>frmReporteIngresos.cs</DependentUpon>
+    </Compile>
     <Compile Include="SeedDb\ClienteSeedDb.cs" />
     <Compile Include="SeedDb\PerfilSeedDb.cs" />
+    <Compile Include="SqlServerTypes\Loader.cs" />
+    <Compile Include="ViewReports\EmpeñoReporte.cs" />
+    <Compile Include="ViewReports\IngresosEgresosReporte.cs" />
     <Compile Include="Views\frmBienvenida.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -96,6 +127,12 @@
     </Compile>
     <Compile Include="Views\frmCambioPassword.Designer.cs">
       <DependentUpon>frmCambioPassword.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Views\frmClientes.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\frmClientes.Designer.cs">
+      <DependentUpon>frmClientes.cs</DependentUpon>
     </Compile>
     <Compile Include="Views\frmConfiguracionGeneral.cs">
       <SubType>Form</SubType>
@@ -145,6 +182,12 @@
     <Compile Include="Views\frmOscuro.Designer.cs">
       <DependentUpon>frmOscuro.cs</DependentUpon>
     </Compile>
+    <Compile Include="Views\frmPagar.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\frmPagar.Designer.cs">
+      <DependentUpon>frmPagar.cs</DependentUpon>
+    </Compile>
     <Compile Include="Views\frmPrincipal.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -159,20 +202,25 @@
     <Compile Include="Views\frmTablero.Designer.cs">
       <DependentUpon>frmTablero.cs</DependentUpon>
     </Compile>
-    <EmbeddedResource Include="Migrations\202007041951414_Update_Database.resx">
-      <DependentUpon>202007041951414_Update_Database.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\202007150401233_InitialDb.resx">
+      <DependentUpon>202007150401233_InitialDb.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202007081733305_New_Changes.resx">
-      <DependentUpon>202007081733305_New_Changes.cs</DependentUpon>
+    <EmbeddedResource Include="Reports\Empeños.rdlc" />
+    <EmbeddedResource Include="Reports\frmReporteEmpeños.resx">
+      <DependentUpon>frmReporteEmpeños.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202007081736067_New_Changes2.resx">
-      <DependentUpon>202007081736067_New_Changes2.cs</DependentUpon>
+    <EmbeddedResource Include="Reports\IngresosEgresos.rdlc" />
+    <EmbeddedResource Include="Reports\frmReporteIngresos.resx">
+      <DependentUpon>frmReporteIngresos.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Views\frmBienvenida.resx">
       <DependentUpon>frmBienvenida.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Views\frmCambioPassword.resx">
       <DependentUpon>frmCambioPassword.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\frmClientes.resx">
+      <DependentUpon>frmClientes.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Views\frmConfiguracionGeneral.resx">
       <DependentUpon>frmConfiguracionGeneral.cs</DependentUpon>
@@ -198,6 +246,9 @@
     <EmbeddedResource Include="Views\frmOscuro.resx">
       <DependentUpon>frmOscuro.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Views\frmPagar.resx">
+      <DependentUpon>frmPagar.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Views\frmPrincipal.resx">
       <DependentUpon>frmPrincipal.cs</DependentUpon>
     </EmbeddedResource>
@@ -215,6 +266,8 @@
       <DependentUpon>frmTablero.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="packages.config" />
+    <None Include="Properties\DataSources\Empeño.WindowsForms.ViewReports.EmpeñoReporte.datasource" />
+    <None Include="Properties\DataSources\Empeño.WindowsForms.ViewReports.IngresosEgresosReporte.datasource" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -1019,6 +1072,27 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\btnYellow.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\CuadroImagen.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Linea.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="SqlServerTypes\readme.htm" />
+    <Content Include="SqlServerTypes\x64\msvcr120.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="SqlServerTypes\x64\SqlServerSpatial140.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="SqlServerTypes\x86\msvcr120.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="SqlServerTypes\x86\SqlServerSpatial140.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

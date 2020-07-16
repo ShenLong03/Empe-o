@@ -12,6 +12,8 @@ namespace Empeño.WindowsForms.Views
 {
     public partial class frmBienvenida : Form
     {
+        Funciones.Funciones funciones = new Funciones.Funciones();
+
         public frmBienvenida()
         {
             InitializeComponent();
@@ -38,14 +40,14 @@ namespace Empeño.WindowsForms.Views
             }
         }
 
-        private void frmBienvenida_Load(object sender, EventArgs e)
+        private async void frmBienvenida_Load(object sender, EventArgs e)
         {
             lblUsuario.Text = Program.Usuario.Usuario;
             this.Opacity = 0.0;
             circularProgressBar1.Value = 0;
             circularProgressBar1.Minimum = 0;
             circularProgressBar1.Maximum = 100;
-
+            funciones.ReviewEmpeños();
             timer1.Start();
         }
     }

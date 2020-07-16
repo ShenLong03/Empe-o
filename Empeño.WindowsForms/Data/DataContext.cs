@@ -20,6 +20,7 @@ namespace Empeño.WindowsForms.Data
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             modelBuilder.Conventions.Remove<OneToManyCascadeDeleteConvention>();
+            modelBuilder.Configurations.Add(new EmpenoMap());
         }
 
         public DbSet<Bitacora> Bitacoras { get; set; }

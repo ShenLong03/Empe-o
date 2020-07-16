@@ -21,6 +21,8 @@
 
         public virtual ICollection<Empeno> Empenos { get; set; }
 
+        public virtual ICollection<Empeno> Ediciones { get; set; }
+
         public Empleado()
         {
             Activo = true;

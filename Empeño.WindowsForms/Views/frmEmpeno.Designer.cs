@@ -55,7 +55,7 @@ namespace Empeño.WindowsForms.Views
             this.dgvClientes = new System.Windows.Forms.DataGridView();
             this.panel17 = new System.Windows.Forms.Panel();
             this.btnEmpeñar = new FontAwesome.Sharp.IconButton();
-            this.iconButton5 = new FontAwesome.Sharp.IconButton();
+            this.btnClienteNuevo = new FontAwesome.Sharp.IconButton();
             this.btnVerEmpleado = new FontAwesome.Sharp.IconButton();
             this.btnEditar = new FontAwesome.Sharp.IconButton();
             this.panel4 = new System.Windows.Forms.Panel();
@@ -88,7 +88,7 @@ namespace Empeño.WindowsForms.Views
             this.label7 = new System.Windows.Forms.Label();
             this.lblVence = new System.Windows.Forms.Label();
             this.iconPictureBox2 = new FontAwesome.Sharp.IconPictureBox();
-            this.label2 = new System.Windows.Forms.Label();
+            this.lblNumeroEmpeño = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.tableLayoutPanel6 = new System.Windows.Forms.TableLayoutPanel();
             this.panel13 = new System.Windows.Forms.Panel();
@@ -98,8 +98,8 @@ namespace Empeño.WindowsForms.Views
             this.panelFormulario = new System.Windows.Forms.Panel();
             this.pictureBox8 = new System.Windows.Forms.PictureBox();
             this.cbInteres = new System.Windows.Forms.ComboBox();
-            this.lblMonto = new System.Windows.Forms.Label();
             this.lblInteres = new System.Windows.Forms.Label();
+            this.lblMonto = new System.Windows.Forms.Label();
             this.lblComentario = new System.Windows.Forms.Label();
             this.lblDescripcion = new System.Windows.Forms.Label();
             this.lblNombre = new System.Windows.Forms.Label();
@@ -329,13 +329,13 @@ namespace Empeño.WindowsForms.Views
             this.dgvClientes.RowTemplate.Height = 45;
             this.dgvClientes.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dgvClientes.Size = new System.Drawing.Size(841, 286);
-            this.dgvClientes.TabIndex = 36;
+            this.dgvClientes.TabIndex = 21;
             this.dgvClientes.DoubleClick += new System.EventHandler(this.dgvClientes_DoubleClick);
             // 
             // panel17
             // 
             this.panel17.Controls.Add(this.btnEmpeñar);
-            this.panel17.Controls.Add(this.iconButton5);
+            this.panel17.Controls.Add(this.btnClienteNuevo);
             this.panel17.Controls.Add(this.btnVerEmpleado);
             this.panel17.Controls.Add(this.btnEditar);
             this.panel17.Dock = System.Windows.Forms.DockStyle.Top;
@@ -362,33 +362,34 @@ namespace Empeño.WindowsForms.Views
             this.btnEmpeñar.Name = "btnEmpeñar";
             this.btnEmpeñar.Rotation = 0D;
             this.btnEmpeñar.Size = new System.Drawing.Size(100, 40);
-            this.btnEmpeñar.TabIndex = 3;
+            this.btnEmpeñar.TabIndex = 17;
             this.btnEmpeñar.Text = "Empeñar";
             this.btnEmpeñar.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
             this.btnEmpeñar.UseVisualStyleBackColor = false;
             this.btnEmpeñar.Click += new System.EventHandler(this.btnEmpeñar_Click_2);
             // 
-            // iconButton5
+            // btnClienteNuevo
             // 
-            this.iconButton5.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            this.btnClienteNuevo.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left)));
-            this.iconButton5.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(16)))), ((int)(((byte)(19)))), ((int)(((byte)(100)))));
-            this.iconButton5.FlatAppearance.BorderSize = 0;
-            this.iconButton5.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.iconButton5.Flip = FontAwesome.Sharp.FlipOrientation.Normal;
-            this.iconButton5.Font = new System.Drawing.Font("Century Gothic", 7.8F, System.Drawing.FontStyle.Bold);
-            this.iconButton5.ForeColor = System.Drawing.Color.White;
-            this.iconButton5.IconChar = FontAwesome.Sharp.IconChar.UserPlus;
-            this.iconButton5.IconColor = System.Drawing.Color.White;
-            this.iconButton5.IconSize = 24;
-            this.iconButton5.Location = new System.Drawing.Point(301, 8);
-            this.iconButton5.Name = "iconButton5";
-            this.iconButton5.Rotation = 0D;
-            this.iconButton5.Size = new System.Drawing.Size(100, 41);
-            this.iconButton5.TabIndex = 2;
-            this.iconButton5.Text = "Nuevo";
-            this.iconButton5.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
-            this.iconButton5.UseVisualStyleBackColor = false;
+            this.btnClienteNuevo.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(16)))), ((int)(((byte)(19)))), ((int)(((byte)(100)))));
+            this.btnClienteNuevo.FlatAppearance.BorderSize = 0;
+            this.btnClienteNuevo.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnClienteNuevo.Flip = FontAwesome.Sharp.FlipOrientation.Normal;
+            this.btnClienteNuevo.Font = new System.Drawing.Font("Century Gothic", 7.8F, System.Drawing.FontStyle.Bold);
+            this.btnClienteNuevo.ForeColor = System.Drawing.Color.White;
+            this.btnClienteNuevo.IconChar = FontAwesome.Sharp.IconChar.UserPlus;
+            this.btnClienteNuevo.IconColor = System.Drawing.Color.White;
+            this.btnClienteNuevo.IconSize = 24;
+            this.btnClienteNuevo.Location = new System.Drawing.Point(301, 8);
+            this.btnClienteNuevo.Name = "btnClienteNuevo";
+            this.btnClienteNuevo.Rotation = 0D;
+            this.btnClienteNuevo.Size = new System.Drawing.Size(100, 41);
+            this.btnClienteNuevo.TabIndex = 20;
+            this.btnClienteNuevo.Text = "Nuevo";
+            this.btnClienteNuevo.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
+            this.btnClienteNuevo.UseVisualStyleBackColor = false;
+            this.btnClienteNuevo.Click += new System.EventHandler(this.btnClienteNuevo_Click);
             // 
             // btnVerEmpleado
             // 
@@ -407,7 +408,7 @@ namespace Empeño.WindowsForms.Views
             this.btnVerEmpleado.Name = "btnVerEmpleado";
             this.btnVerEmpleado.Rotation = 0D;
             this.btnVerEmpleado.Size = new System.Drawing.Size(100, 40);
-            this.btnVerEmpleado.TabIndex = 1;
+            this.btnVerEmpleado.TabIndex = 19;
             this.btnVerEmpleado.Text = "Ver";
             this.btnVerEmpleado.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
             this.btnVerEmpleado.UseVisualStyleBackColor = false;
@@ -430,7 +431,7 @@ namespace Empeño.WindowsForms.Views
             this.btnEditar.Name = "btnEditar";
             this.btnEditar.Rotation = 0D;
             this.btnEditar.Size = new System.Drawing.Size(100, 41);
-            this.btnEditar.TabIndex = 0;
+            this.btnEditar.TabIndex = 18;
             this.btnEditar.Text = "Editar";
             this.btnEditar.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
             this.btnEditar.UseVisualStyleBackColor = false;
@@ -559,7 +560,7 @@ namespace Empeño.WindowsForms.Views
             this.comboBox1.Location = new System.Drawing.Point(0, 0);
             this.comboBox1.Name = "comboBox1";
             this.comboBox1.Size = new System.Drawing.Size(839, 45);
-            this.comboBox1.TabIndex = 1;
+            this.comboBox1.TabIndex = 22;
             this.comboBox1.Text = "Activos";
             // 
             // panel21
@@ -624,7 +625,7 @@ namespace Empeño.WindowsForms.Views
             this.dgvEmpeños.RowTemplate.Height = 45;
             this.dgvEmpeños.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dgvEmpeños.Size = new System.Drawing.Size(839, 216);
-            this.dgvEmpeños.TabIndex = 40;
+            this.dgvEmpeños.TabIndex = 27;
             this.dgvEmpeños.DoubleClick += new System.EventHandler(this.dgvEmpeños_DoubleClick);
             // 
             // panel20
@@ -686,7 +687,7 @@ namespace Empeño.WindowsForms.Views
             this.btnVer.Name = "btnVer";
             this.btnVer.Rotation = 0D;
             this.btnVer.Size = new System.Drawing.Size(100, 41);
-            this.btnVer.TabIndex = 6;
+            this.btnVer.TabIndex = 24;
             this.btnVer.Text = "Ver";
             this.btnVer.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
             this.btnVer.UseVisualStyleBackColor = false;
@@ -708,7 +709,7 @@ namespace Empeño.WindowsForms.Views
             this.btnEditarEmpeño.Name = "btnEditarEmpeño";
             this.btnEditarEmpeño.Rotation = 0D;
             this.btnEditarEmpeño.Size = new System.Drawing.Size(100, 40);
-            this.btnEditarEmpeño.TabIndex = 5;
+            this.btnEditarEmpeño.TabIndex = 23;
             this.btnEditarEmpeño.Text = "Editar";
             this.btnEditarEmpeño.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
             this.btnEditarEmpeño.UseVisualStyleBackColor = false;
@@ -731,7 +732,7 @@ namespace Empeño.WindowsForms.Views
             this.btnEliminar.Name = "btnEliminar";
             this.btnEliminar.Rotation = 0D;
             this.btnEliminar.Size = new System.Drawing.Size(100, 40);
-            this.btnEliminar.TabIndex = 7;
+            this.btnEliminar.TabIndex = 25;
             this.btnEliminar.Text = "Eliminar";
             this.btnEliminar.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
             this.btnEliminar.UseVisualStyleBackColor = false;
@@ -818,7 +819,7 @@ namespace Empeño.WindowsForms.Views
             this.panel11.Controls.Add(this.label7);
             this.panel11.Controls.Add(this.lblVence);
             this.panel11.Controls.Add(this.iconPictureBox2);
-            this.panel11.Controls.Add(this.label2);
+            this.panel11.Controls.Add(this.lblNumeroEmpeño);
             this.panel11.Controls.Add(this.label1);
             this.panel11.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel11.Location = new System.Drawing.Point(8, 8);
@@ -867,18 +868,18 @@ namespace Empeño.WindowsForms.Views
             this.iconPictureBox2.TabIndex = 2;
             this.iconPictureBox2.TabStop = false;
             // 
-            // label2
+            // lblNumeroEmpeño
             // 
-            this.label2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            this.lblNumeroEmpeño.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left)));
-            this.label2.AutoSize = true;
-            this.label2.Font = new System.Drawing.Font("Century Gothic", 10.2F, System.Drawing.FontStyle.Bold);
-            this.label2.ForeColor = System.Drawing.Color.White;
-            this.label2.Location = new System.Drawing.Point(139, 10);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(29, 19);
-            this.label2.TabIndex = 1;
-            this.label2.Text = "00";
+            this.lblNumeroEmpeño.AutoSize = true;
+            this.lblNumeroEmpeño.Font = new System.Drawing.Font("Century Gothic", 10.2F, System.Drawing.FontStyle.Bold);
+            this.lblNumeroEmpeño.ForeColor = System.Drawing.Color.White;
+            this.lblNumeroEmpeño.Location = new System.Drawing.Point(139, 10);
+            this.lblNumeroEmpeño.Name = "lblNumeroEmpeño";
+            this.lblNumeroEmpeño.Size = new System.Drawing.Size(29, 19);
+            this.lblNumeroEmpeño.TabIndex = 1;
+            this.lblNumeroEmpeño.Text = "00";
             // 
             // label1
             // 
@@ -937,7 +938,7 @@ namespace Empeño.WindowsForms.Views
             this.btnCancelar.Name = "btnCancelar";
             this.btnCancelar.Rotation = 0D;
             this.btnCancelar.Size = new System.Drawing.Size(105, 41);
-            this.btnCancelar.TabIndex = 0;
+            this.btnCancelar.TabIndex = 15;
             this.btnCancelar.Text = "Cancelar";
             this.btnCancelar.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
             this.btnCancelar.UseVisualStyleBackColor = false;
@@ -960,10 +961,11 @@ namespace Empeño.WindowsForms.Views
             this.iconButton10.Name = "iconButton10";
             this.iconButton10.Rotation = 0D;
             this.iconButton10.Size = new System.Drawing.Size(105, 40);
-            this.iconButton10.TabIndex = 1;
+            this.iconButton10.TabIndex = 16;
             this.iconButton10.Text = "Pagar";
             this.iconButton10.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
             this.iconButton10.UseVisualStyleBackColor = false;
+            this.iconButton10.Click += new System.EventHandler(this.iconButton10_Click);
             // 
             // btnGuardarEmpeño
             // 
@@ -982,7 +984,7 @@ namespace Empeño.WindowsForms.Views
             this.btnGuardarEmpeño.Name = "btnGuardarEmpeño";
             this.btnGuardarEmpeño.Rotation = 0D;
             this.btnGuardarEmpeño.Size = new System.Drawing.Size(100, 40);
-            this.btnGuardarEmpeño.TabIndex = 2;
+            this.btnGuardarEmpeño.TabIndex = 14;
             this.btnGuardarEmpeño.Text = "Guardar";
             this.btnGuardarEmpeño.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
             this.btnGuardarEmpeño.UseVisualStyleBackColor = false;
@@ -993,8 +995,8 @@ namespace Empeño.WindowsForms.Views
             this.panelFormulario.AutoScroll = true;
             this.panelFormulario.Controls.Add(this.pictureBox8);
             this.panelFormulario.Controls.Add(this.cbInteres);
-            this.panelFormulario.Controls.Add(this.lblMonto);
             this.panelFormulario.Controls.Add(this.lblInteres);
+            this.panelFormulario.Controls.Add(this.lblMonto);
             this.panelFormulario.Controls.Add(this.lblComentario);
             this.panelFormulario.Controls.Add(this.lblDescripcion);
             this.panelFormulario.Controls.Add(this.lblNombre);
@@ -1028,10 +1030,10 @@ namespace Empeño.WindowsForms.Views
             | System.Windows.Forms.AnchorStyles.Right)));
             this.pictureBox8.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("pictureBox8.BackgroundImage")));
             this.pictureBox8.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.pictureBox8.Location = new System.Drawing.Point(8, 422);
+            this.pictureBox8.Location = new System.Drawing.Point(7, 479);
             this.pictureBox8.Name = "pictureBox8";
             this.pictureBox8.Size = new System.Drawing.Size(499, 2);
-            this.pictureBox8.TabIndex = 31;
+            this.pictureBox8.TabIndex = 34;
             this.pictureBox8.TabStop = false;
             // 
             // cbInteres
@@ -1043,32 +1045,33 @@ namespace Empeño.WindowsForms.Views
             this.cbInteres.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F);
             this.cbInteres.ForeColor = System.Drawing.Color.DimGray;
             this.cbInteres.FormattingEnabled = true;
-            this.cbInteres.Location = new System.Drawing.Point(7, 384);
+            this.cbInteres.Location = new System.Drawing.Point(6, 441);
             this.cbInteres.Name = "cbInteres";
             this.cbInteres.Size = new System.Drawing.Size(498, 37);
-            this.cbInteres.TabIndex = 30;
+            this.cbInteres.TabIndex = 12;
             this.cbInteres.Text = "Porcentaje";
-            this.cbInteres.SelectedIndexChanged += new System.EventHandler(this.cbInteres_SelectedIndexChanged);
-            // 
-            // lblMonto
-            // 
-            this.lblMonto.AutoSize = true;
-            this.lblMonto.Font = new System.Drawing.Font("Century Gothic", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblMonto.Location = new System.Drawing.Point(3, 422);
-            this.lblMonto.Name = "lblMonto";
-            this.lblMonto.Size = new System.Drawing.Size(60, 19);
-            this.lblMonto.TabIndex = 29;
-            this.lblMonto.Text = "Monto";
+            this.cbInteres.Enter += new System.EventHandler(this.cbInteres_Enter);
+            this.cbInteres.Leave += new System.EventHandler(this.cbInteres_Leave);
             // 
             // lblInteres
             // 
             this.lblInteres.AutoSize = true;
             this.lblInteres.Font = new System.Drawing.Font("Century Gothic", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblInteres.Location = new System.Drawing.Point(3, 367);
+            this.lblInteres.Location = new System.Drawing.Point(2, 424);
             this.lblInteres.Name = "lblInteres";
             this.lblInteres.Size = new System.Drawing.Size(97, 19);
-            this.lblInteres.TabIndex = 28;
+            this.lblInteres.TabIndex = 11;
             this.lblInteres.Text = "Porcentaje";
+            // 
+            // lblMonto
+            // 
+            this.lblMonto.AutoSize = true;
+            this.lblMonto.Font = new System.Drawing.Font("Century Gothic", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblMonto.Location = new System.Drawing.Point(2, 370);
+            this.lblMonto.Name = "lblMonto";
+            this.lblMonto.Size = new System.Drawing.Size(60, 19);
+            this.lblMonto.TabIndex = 9;
+            this.lblMonto.Text = "Monto";
             // 
             // lblComentario
             // 
@@ -1077,7 +1080,7 @@ namespace Empeño.WindowsForms.Views
             this.lblComentario.Location = new System.Drawing.Point(4, 240);
             this.lblComentario.Name = "lblComentario";
             this.lblComentario.Size = new System.Drawing.Size(113, 19);
-            this.lblComentario.TabIndex = 27;
+            this.lblComentario.TabIndex = 7;
             this.lblComentario.Text = "Comentarios";
             // 
             // lblDescripcion
@@ -1087,7 +1090,7 @@ namespace Empeño.WindowsForms.Views
             this.lblDescripcion.Location = new System.Drawing.Point(4, 111);
             this.lblDescripcion.Name = "lblDescripcion";
             this.lblDescripcion.Size = new System.Drawing.Size(107, 19);
-            this.lblDescripcion.TabIndex = 26;
+            this.lblDescripcion.TabIndex = 5;
             this.lblDescripcion.Text = "Descripción";
             // 
             // lblNombre
@@ -1097,7 +1100,7 @@ namespace Empeño.WindowsForms.Views
             this.lblNombre.Location = new System.Drawing.Point(4, 60);
             this.lblNombre.Name = "lblNombre";
             this.lblNombre.Size = new System.Drawing.Size(76, 19);
-            this.lblNombre.TabIndex = 25;
+            this.lblNombre.TabIndex = 3;
             this.lblNombre.Text = "Nombre";
             // 
             // lblIdentificacion
@@ -1107,7 +1110,7 @@ namespace Empeño.WindowsForms.Views
             this.lblIdentificacion.Location = new System.Drawing.Point(4, 8);
             this.lblIdentificacion.Name = "lblIdentificacion";
             this.lblIdentificacion.Size = new System.Drawing.Size(121, 19);
-            this.lblIdentificacion.TabIndex = 24;
+            this.lblIdentificacion.TabIndex = 1;
             this.lblIdentificacion.Text = "Identificación";
             // 
             // Fecha
@@ -1138,7 +1141,7 @@ namespace Empeño.WindowsForms.Views
             | System.Windows.Forms.AnchorStyles.Right)));
             this.pictureBox7.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("pictureBox7.BackgroundImage")));
             this.pictureBox7.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.pictureBox7.Location = new System.Drawing.Point(8, 471);
+            this.pictureBox7.Location = new System.Drawing.Point(7, 419);
             this.pictureBox7.Name = "pictureBox7";
             this.pictureBox7.Size = new System.Drawing.Size(499, 2);
             this.pictureBox7.TabIndex = 19;
@@ -1152,11 +1155,12 @@ namespace Empeño.WindowsForms.Views
             this.txtMonto.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.txtMonto.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F);
             this.txtMonto.ForeColor = System.Drawing.Color.DimGray;
-            this.txtMonto.Location = new System.Drawing.Point(7, 442);
+            this.txtMonto.Location = new System.Drawing.Point(6, 390);
             this.txtMonto.Name = "txtMonto";
             this.txtMonto.Size = new System.Drawing.Size(498, 27);
-            this.txtMonto.TabIndex = 18;
+            this.txtMonto.TabIndex = 10;
             this.txtMonto.Text = "Monto";
+            this.txtMonto.TextChanged += new System.EventHandler(this.txtMonto_TextChanged);
             this.txtMonto.Enter += new System.EventHandler(this.txtMonto_Enter);
             this.txtMonto.Leave += new System.EventHandler(this.txtMonto_Leave);
             // 
@@ -1267,7 +1271,7 @@ namespace Empeño.WindowsForms.Views
             this.chbEsOro.Location = new System.Drawing.Point(8, 482);
             this.chbEsOro.Name = "chbEsOro";
             this.chbEsOro.Size = new System.Drawing.Size(104, 27);
-            this.chbEsOro.TabIndex = 9;
+            this.chbEsOro.TabIndex = 13;
             this.chbEsOro.Text = "Es Oro?";
             this.chbEsOro.UseVisualStyleBackColor = true;
             // 
@@ -1283,7 +1287,7 @@ namespace Empeño.WindowsForms.Views
             this.txtComentario.Multiline = true;
             this.txtComentario.Name = "txtComentario";
             this.txtComentario.Size = new System.Drawing.Size(499, 106);
-            this.txtComentario.TabIndex = 7;
+            this.txtComentario.TabIndex = 8;
             this.txtComentario.Text = "Comentarios";
             this.txtComentario.Enter += new System.EventHandler(this.txtComentario_Enter);
             this.txtComentario.Leave += new System.EventHandler(this.txtComentario_Leave);
@@ -1300,7 +1304,7 @@ namespace Empeño.WindowsForms.Views
             this.txtDescripcion.Multiline = true;
             this.txtDescripcion.Name = "txtDescripcion";
             this.txtDescripcion.Size = new System.Drawing.Size(499, 106);
-            this.txtDescripcion.TabIndex = 5;
+            this.txtDescripcion.TabIndex = 6;
             this.txtDescripcion.Text = "Descripción";
             this.txtDescripcion.Enter += new System.EventHandler(this.txtDescripcion_Enter);
             this.txtDescripcion.Leave += new System.EventHandler(this.txtDescripcion_Leave);
@@ -1316,7 +1320,7 @@ namespace Empeño.WindowsForms.Views
             this.txtNombre.Location = new System.Drawing.Point(6, 81);
             this.txtNombre.Name = "txtNombre";
             this.txtNombre.Size = new System.Drawing.Size(499, 27);
-            this.txtNombre.TabIndex = 3;
+            this.txtNombre.TabIndex = 4;
             this.txtNombre.Text = "Nombre";
             this.txtNombre.Enter += new System.EventHandler(this.txtNombre_Enter);
             this.txtNombre.Leave += new System.EventHandler(this.txtNombre_Leave);
@@ -1332,7 +1336,7 @@ namespace Empeño.WindowsForms.Views
             this.txtIdentificacion.Location = new System.Drawing.Point(6, 30);
             this.txtIdentificacion.Name = "txtIdentificacion";
             this.txtIdentificacion.Size = new System.Drawing.Size(499, 27);
-            this.txtIdentificacion.TabIndex = 1;
+            this.txtIdentificacion.TabIndex = 2;
             this.txtIdentificacion.Text = "Identificación";
             this.txtIdentificacion.Enter += new System.EventHandler(this.txtIdentificacion_Enter);
             this.txtIdentificacion.KeyUp += new System.Windows.Forms.KeyEventHandler(this.txtIdentificacion_KeyUp);
@@ -1402,7 +1406,7 @@ namespace Empeño.WindowsForms.Views
             this.label4.Location = new System.Drawing.Point(49, 5);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(60, 19);
-            this.label4.TabIndex = 0;
+            this.label4.TabIndex = 28;
             this.label4.Text = "Pagos";
             // 
             // tableLayoutPanel8
@@ -1512,7 +1516,7 @@ namespace Empeño.WindowsForms.Views
             this.iconButton2.Name = "iconButton2";
             this.iconButton2.Rotation = 0D;
             this.iconButton2.Size = new System.Drawing.Size(100, 41);
-            this.iconButton2.TabIndex = 6;
+            this.iconButton2.TabIndex = 30;
             this.iconButton2.Text = "Ver";
             this.iconButton2.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
             this.iconButton2.UseVisualStyleBackColor = false;
@@ -1534,7 +1538,7 @@ namespace Empeño.WindowsForms.Views
             this.iconButton3.Name = "iconButton3";
             this.iconButton3.Rotation = 0D;
             this.iconButton3.Size = new System.Drawing.Size(100, 40);
-            this.iconButton3.TabIndex = 5;
+            this.iconButton3.TabIndex = 29;
             this.iconButton3.Text = "Editar";
             this.iconButton3.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
             this.iconButton3.UseVisualStyleBackColor = false;
@@ -1556,7 +1560,7 @@ namespace Empeño.WindowsForms.Views
             this.iconButton4.Name = "iconButton4";
             this.iconButton4.Rotation = 0D;
             this.iconButton4.Size = new System.Drawing.Size(100, 40);
-            this.iconButton4.TabIndex = 7;
+            this.iconButton4.TabIndex = 31;
             this.iconButton4.Text = "Eliminar";
             this.iconButton4.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
             this.iconButton4.UseVisualStyleBackColor = false;
@@ -1720,7 +1724,7 @@ namespace Empeño.WindowsForms.Views
         private Panel panel5;
         private Panel panel17;
         private FontAwesome.Sharp.IconButton btnEmpeñar;
-        private FontAwesome.Sharp.IconButton iconButton5;
+        private FontAwesome.Sharp.IconButton btnClienteNuevo;
         private FontAwesome.Sharp.IconButton btnVerEmpleado;
         private FontAwesome.Sharp.IconButton btnEditar;
         private Panel panel4;
@@ -1733,7 +1737,7 @@ namespace Empeño.WindowsForms.Views
         private Label label7;
         private Label lblVence;
         private FontAwesome.Sharp.IconPictureBox iconPictureBox2;
-        private Label label2;
+        private Label lblNumeroEmpeño;
         private Label label1;
         private TableLayoutPanel tableLayoutPanel6;
         private Panel panel13;
@@ -1783,12 +1787,12 @@ namespace Empeño.WindowsForms.Views
         private FontAwesome.Sharp.IconButton iconButton3;
         private FontAwesome.Sharp.IconButton iconButton4;
         private Label lblMonto;
-        private Label lblInteres;
         private Label lblComentario;
         private Label lblDescripcion;
         private Label lblNombre;
         private Label lblIdentificacion;
         private PictureBox pictureBox8;
         private ComboBox cbInteres;
+        private Label lblInteres;
     }
 }

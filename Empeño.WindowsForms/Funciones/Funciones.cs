@@ -1,10 +1,12 @@
-﻿using Empeño.CommonEF.Enum;
+﻿using Empeño.CommonEF.Entities;
+using Empeño.CommonEF.Enum;
 using Empeño.WindowsForms.Data;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Drawing;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -39,6 +41,30 @@ namespace Empeño.WindowsForms.Funciones
         }
 
         public void PlaceHolder(TextBox textBox, Label label ,PlaceHolderType type, string placeHolder)
+        {
+            switch (type)
+            {
+                case PlaceHolderType.Leave:
+                    if (textBox.Text == "")
+                    {
+                        textBox.Text = placeHolder;
+                        textBox.ForeColor = Color.DimGray;
+                    }
+                    break;
+                case PlaceHolderType.Enter:
+                    if (textBox.Text == placeHolder)
+                    {
+                        textBox.Text = string.Empty;
+                        textBox.ForeColor = Color.Black;
+                    }
+                    break;
+                default:
+                    break;
+            }
+            ShowLabelName(textBox, label);
+        }
+
+        public void PlaceHolder(ComboBox textBox, Label label, PlaceHolderType type, string placeHolder)
         {
             switch (type)
             {
@@ -290,7 +316,6 @@ namespace Empeño.WindowsForms.Funciones
             }
         }
 
-
         public void IntelligHolders(Panel panel)
         {
             foreach (var itemLabel in panel.Controls)
@@ -355,6 +380,55 @@ namespace Empeño.WindowsForms.Funciones
             }
         }
 
-       
+        public async Task ReviewEmpeños() 
+        {
+            var empeños = _context.Empenos.Where(w => (w.Estado == Estado.Activo
+              || w.Estado == Estado.Pendiente
+              || w.Estado == Estado.Vencido)).ToList();
+
+            if (empeños.Count>0)
+            {
+                foreach (var empeño in empeños)
+                {
+                    int cantidadMeses = ((int)(DateTime.Today - empeño.Fecha).TotalDays / 30);
+                    double sobrante = (DateTime.Today - empeño.Fecha).TotalDays % 30;
+                    cantidadMeses += sobrante > 0 ? 1 : 0;
+                    int cantidadIntereses = empeño.Intereses.Count();
+
+                    if (cantidadMeses > cantidadIntereses)
+                    {
+                        var numeroIntereses = cantidadMeses - cantidadIntereses;
+                        for (int i = 0; i < numeroIntereses; i++)
+                        {
+                            var intereses = new Intereses
+                            {
+                                EmpenoId = empeño.EmpenoId,
+                                FechaCreacion = DateTime.Now,
+                                Monto = (double)empeño.MontoPendiente * ((double)empeño.Interes.Porcentaje / (double)100)
+                            };
+
+                            if (empeño.Intereses.Count() > 0)
+                            {
+                                intereses.FechaVencimiento = empeño.Intereses.LastOrDefault().FechaVencimiento.AddMonths(1);
+                            }
+                            else
+                            {
+                                intereses.FechaVencimiento = empeño.FechaVencimiento.AddMonths(1);
+                            }
+
+                            _context.Intereses.Add(intereses);
+                        }
+                        await _context.SaveChangesAsync();
+                    }
+                    if (_context.Intereses.Where(p=>p.EmpenoId==empeño.EmpenoId)
+                        .LastOrDefault().FechaVencimiento<DateTime.Today)
+                    {
+                        empeño.Estado = Estado.Pendiente;
+                        _context.Entry(empeño).State = EntityState.Modified;
+                        await _context.SaveChangesAsync();
+                    }
+                }
+            }
+        }
     }
 }

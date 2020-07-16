@@ -19,6 +19,8 @@
 
         public int EmpleadoId { get; set; }
 
+        public string Comentario { get; set; }
+
         public virtual Empeno Empeno { get; set; }
 
         public virtual Empleado Empleado { get; set; }

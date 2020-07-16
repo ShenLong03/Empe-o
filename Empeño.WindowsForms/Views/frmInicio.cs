@@ -1,6 +1,7 @@
 ﻿namespace Empeño.WindowsForms.Views
 {
     using Empeño.CommonEF.Entities;
+    using Empeño.WindowsForms.Reports;
     using FontAwesome.Sharp;
     using System;
     using System.Drawing;
@@ -56,6 +57,24 @@
             hideSubMenu();
         }
 
+
+        private void mnuReporte_Click(object sender, EventArgs e)
+        {
+            if (panelSubMenuReportes.Width <= 60)
+            {
+                panelSubMenuReportes.Width = 280;
+                mnuInicio.Text = "Inicio";
+                mnuConfiguracion.Text = "Configuración";
+                mnuEmpeños.Text = "Empeños";
+                mnuEmpleados.Text = "Empleados";
+                mnuReporte.Text = "Caja";
+                mnuTablero.Text = "Tablero";
+                mnuLogout.Text = "Cerrar";
+            }
+            Reset();
+            showSubMenu(panelSubMenuReportes);
+        }
+
         private void mnuEmpeños_Click(object sender, EventArgs e)
         {
             ActivateButton(sender, RGBColors.color1);
@@ -75,12 +94,12 @@
 
             if (panel1.Width <= 60)
             {
-                panel1.Width = 312;
+                panel1.Width = 280;
                 mnuInicio.Text = "Inicio";
                 mnuConfiguracion.Text = "Configuración";
                 mnuEmpeños.Text = "Empeños";
                 mnuEmpleados.Text = "Empleados";
-                mnuCaja.Text = "Caja";
+                mnuReporte.Text = "Caja";
                 mnuTablero.Text = "Tablero";
                 mnuLogout.Text = "Cerrar";
             }
@@ -92,6 +111,19 @@
         {
             ActivateButton(sender, RGBColors.color3);
             OpenChildForm(new frmConfiguracionGeneral());
+        }
+
+
+        private void mnuReporteIngresos_Click(object sender, EventArgs e)
+        {
+            ActivateButton(sender, RGBColors.color3);
+            OpenChildForm(new frmReporteIngresos());
+        }
+
+        private void iconButton1_Click(object sender, EventArgs e)
+        {
+            ActivateButton(sender, RGBColors.color4);
+            OpenChildForm(new frmReporteEmpeños());
         }
 
         private void mnuSubIntereses_Click(object sender, EventArgs e)
@@ -198,7 +230,7 @@
         private void hideSubMenu()
         {
             panelSubMenuConfiguracion.Visible = false;
-
+            panelSubMenuReportes.Visible = false;
         }
 
         private void ActivateButton(object senderBtn, Color color)
@@ -264,30 +296,22 @@
             lblModulo.Text = "Inicio";
         }
 
-
-        #region RenderSizeForm
-        //RESIZE METODO PARA REDIMENCIONAR/CAMBIAR TAMAÑO A FORMULARIO EN TIEMPO DE EJECUCION ----------------------------------------------------------
-        private int tolerance = 12;
-        private const int WM_NCHITTEST = 132;
-        private const int HTBOTTOMRIGHT = 17;
-        private Rectangle sizeGripRectangle;
-
         private void btnMenu_Click(object sender, EventArgs e)
         {
 
-            if (panel1.Width >= 312)
+            if (panel1.Width >= 280)
             {
                 hideSubMenu();
                 mnuInicio.Text = string.Empty;
                 mnuConfiguracion.Text = string.Empty;
                 mnuEmpeños.Text = string.Empty;
                 mnuEmpleados.Text = string.Empty;
-                mnuCaja.Text = string.Empty;
+                mnuReporte.Text = string.Empty;
                 mnuTablero.Text = string.Empty;
                 panel1.Width = 60;
-              //timerOcultar.Enabled = true;
-              mnuLogout.Text = string.Empty;
-                mnuLogout.ImageAlign= System.Drawing.ContentAlignment.MiddleLeft;
+                //timerOcultar.Enabled = true;
+                mnuLogout.Text = string.Empty;
+                mnuLogout.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             }
             else if (panel1.Width <= 60)
             {
@@ -295,13 +319,13 @@
                 mnuConfiguracion.Text = "Configuración";
                 mnuEmpeños.Text = "Empeños";
                 mnuEmpleados.Text = "Empleados";
-                mnuCaja.Text = "Caja";
+                mnuReporte.Text = "Caja";
                 mnuTablero.Text = "Tablero";
-                panel1.Width = 312;
+                panel1.Width = 280;
                 //timerMostrar.Enabled = true;
                 mnuLogout.Text = "Cerrar";
                 mnuLogout.ImageAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            }                      
+            }
         }
 
         private void timerOcultar_Tick(object sender, EventArgs e)
@@ -312,14 +336,14 @@
                 timerOcultar.Enabled = false;
             }
             else
-            { 
+            {
                 panel1.Width = panel1.Width - 20;
             }
         }
 
         private void timerMostrar_Tick(object sender, EventArgs e)
         {
-            if (panel1.Width >= 312)
+            if (panel1.Width >= 280)
             {
 
                 timerMostrar.Enabled = false;
@@ -329,6 +353,16 @@
                 panel1.Width = panel1.Width + 20;
             }
         }
+
+
+        #region RenderSizeForm
+        //RESIZE METODO PARA REDIMENCIONAR/CAMBIAR TAMAÑO A FORMULARIO EN TIEMPO DE EJECUCION ----------------------------------------------------------
+        private int tolerance = 12;
+        private const int WM_NCHITTEST = 132;
+        private const int HTBOTTOMRIGHT = 17;
+        private Rectangle sizeGripRectangle;
+
+
 
         protected override void WndProc(ref Message m)
         {
