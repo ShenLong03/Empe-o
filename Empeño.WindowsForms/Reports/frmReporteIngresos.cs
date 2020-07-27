@@ -27,7 +27,7 @@ namespace Empeño.WindowsForms.Reports
 
         private async void ReporteIngresos_Load(object sender, EventArgs e)
         {
-            DateTime month = DateTime.Today.AddMonths(-4);
+            DateTime month = DateTime.Today.AddMonths(-1);
             var egresos = await _context.Empenos.Where(x => x.Fecha > month).ToListAsync();
             var ingresos = await _context.Pago.Where(x => x.Fecha > month).ToListAsync();
 
@@ -76,6 +76,8 @@ namespace Empeño.WindowsForms.Reports
             chbTodo.Checked = true;
             chbIngresos.Checked = false;
             chbEgresos.Checked = false;
+            dtDesde.Value = month;
+            dtHasta.Value = DateTime.Today;
         }
 
 
@@ -264,6 +266,16 @@ namespace Empeño.WindowsForms.Reports
 
 
             Program.CargandoClose();
+        }
+
+        private void btnCancelar_Click(object sender, EventArgs e)
+        {
+            DateTime month = DateTime.Today.AddMonths(-1);
+            chbTodo.Checked = true;
+            chbIngresos.Checked = false;
+            chbEgresos.Checked = false;
+            dtDesde.Value = month;
+            dtHasta.Value = DateTime.Today;
         }
 
         private void chbIngresos_CheckedChanged(object sender, EventArgs e)

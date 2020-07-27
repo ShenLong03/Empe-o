@@ -10,6 +10,10 @@ namespace Empeño.CommonEF.Entities
         [Key]
         public int ConfiguracionId { get; set; }
 
+
+        [Display(Name = "Compañía")]
+        public string Compañia { get; set; }
+
         [Display(Name = "Identificación")]
         public string Identificacion { get; set; }
 
@@ -21,9 +25,24 @@ namespace Empeño.CommonEF.Entities
 
         public int Meses { get; set; } = 3;
 
+        //---------------------
+
+        public string Email { get; set; }
+
+        public string Password { get; set; }
+
+        public string SMTP { get; set; }
+
+        public int Puerto { get; set; }
+
+        public bool SSL { get; set; }
+
         public Configuracion()
         {
             Meses = 3;
+            SMTP = "smtp.gmail.com";
+            Puerto = 587;
+            SSL = true;
         }
     }
 }

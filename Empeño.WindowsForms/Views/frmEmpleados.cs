@@ -418,6 +418,8 @@ namespace Empeño.WindowsForms.Views
         {
             try
             {
+
+
                 var result = MessageBox.Show("¿Esta séguro que desea eliminar el registro?", "Pregunta", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
 
                 if (result == DialogResult.Yes)

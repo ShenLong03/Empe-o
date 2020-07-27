@@ -46,9 +46,9 @@ namespace Empeño.WindowsForms.Views
             this.Opacity = 0.0;
             circularProgressBar1.Value = 0;
             circularProgressBar1.Minimum = 0;
-            circularProgressBar1.Maximum = 100;
-            funciones.ReviewEmpeños();
+            circularProgressBar1.Maximum = 100;           
             timer1.Start();
+            await funciones.ReviewEmpeños();
         }
     }
 }

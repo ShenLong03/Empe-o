@@ -51,6 +51,10 @@
     <Reference Include="FontAwesome.Sharp, Version=5.13.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\FontAwesome.Sharp.5.13.0\lib\net472\FontAwesome.Sharp.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.Office.Interop.Excel, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Office.Interop.Excel.15.0.4795.1000\lib\net20\Microsoft.Office.Interop.Excel.dll</HintPath>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </Reference>
     <Reference Include="Microsoft.ReportViewer.Common, Version=15.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.ReportingServices.ReportViewerControl.Winforms.150.1404.0\lib\net40\Microsoft.ReportViewer.Common.dll</HintPath>
     </Reference>
@@ -93,12 +97,46 @@
   <ItemGroup>
     <Compile Include="Data\DataContext.cs" />
     <Compile Include="Data\EmpenoMap.cs" />
+    <Compile Include="Funciones\EmailFuncion.cs" />
     <Compile Include="Funciones\Funciones.cs" />
     <Compile Include="Migrations\202007150401233_InitialDb.cs" />
     <Compile Include="Migrations\202007150401233_InitialDb.designer.cs">
       <DependentUpon>202007150401233_InitialDb.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202007180154196_NewChanges_CierreCaja.cs" />
+    <Compile Include="Migrations\202007180154196_NewChanges_CierreCaja.designer.cs">
+      <DependentUpon>202007180154196_NewChanges_CierreCaja.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202007221449053_UpdateNewArqueo.cs" />
+    <Compile Include="Migrations\202007221449053_UpdateNewArqueo.designer.cs">
+      <DependentUpon>202007221449053_UpdateNewArqueo.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202007221516541_UpdateNewArqueo2.cs" />
+    <Compile Include="Migrations\202007221516541_UpdateNewArqueo2.designer.cs">
+      <DependentUpon>202007221516541_UpdateNewArqueo2.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202007222137359_newChangeConfiguration.cs" />
+    <Compile Include="Migrations\202007222137359_newChangeConfiguration.designer.cs">
+      <DependentUpon>202007222137359_newChangeConfiguration.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202007230112242_newChangeProfileUser.cs" />
+    <Compile Include="Migrations\202007230112242_newChangeProfileUser.designer.cs">
+      <DependentUpon>202007230112242_newChangeProfileUser.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202007231722531_newChangesAccess.cs" />
+    <Compile Include="Migrations\202007231722531_newChangesAccess.designer.cs">
+      <DependentUpon>202007231722531_newChangesAccess.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202007242226491_newChangeCierreCaja.cs" />
+    <Compile Include="Migrations\202007242226491_newChangeCierreCaja.designer.cs">
+      <DependentUpon>202007242226491_newChangeCierreCaja.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202007271733520_newChangeEmail.cs" />
+    <Compile Include="Migrations\202007271733520_newChangeEmail.designer.cs">
+      <DependentUpon>202007271733520_newChangeEmail.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
+    <Compile Include="Models\Transaccion.cs" />
     <Compile Include="Reports\frmReporteEmpeños.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -116,6 +154,12 @@
     <Compile Include="SqlServerTypes\Loader.cs" />
     <Compile Include="ViewReports\EmpeñoReporte.cs" />
     <Compile Include="ViewReports\IngresosEgresosReporte.cs" />
+    <Compile Include="Views\frmArqueo.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\frmArqueo.Designer.cs">
+      <DependentUpon>frmArqueo.cs</DependentUpon>
+    </Compile>
     <Compile Include="Views\frmBienvenida.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -127,6 +171,12 @@
     </Compile>
     <Compile Include="Views\frmCambioPassword.Designer.cs">
       <DependentUpon>frmCambioPassword.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Views\frmCierreCaja.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\frmCierreCaja.Designer.cs">
+      <DependentUpon>frmCierreCaja.cs</DependentUpon>
     </Compile>
     <Compile Include="Views\frmClientes.cs">
       <SubType>Form</SubType>
@@ -145,6 +195,12 @@
     </Compile>
     <Compile Include="Views\frmEmpeno.Designer.cs">
       <DependentUpon>frmEmpeno.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Views\frmEmpeñoInteres.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\frmEmpeñoInteres.Designer.cs">
+      <DependentUpon>frmEmpeñoInteres.cs</DependentUpon>
     </Compile>
     <Compile Include="Views\frmEmpleados.cs">
       <SubType>Form</SubType>
@@ -188,6 +244,12 @@
     <Compile Include="Views\frmPagar.Designer.cs">
       <DependentUpon>frmPagar.cs</DependentUpon>
     </Compile>
+    <Compile Include="Views\frmPIN.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\frmPIN.Designer.cs">
+      <DependentUpon>frmPIN.cs</DependentUpon>
+    </Compile>
     <Compile Include="Views\frmPrincipal.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -196,6 +258,12 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Views\frmProroga.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\frmProroga.Designer.cs">
+      <DependentUpon>frmProroga.cs</DependentUpon>
+    </Compile>
     <Compile Include="Views\frmTablero.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -205,6 +273,30 @@
     <EmbeddedResource Include="Migrations\202007150401233_InitialDb.resx">
       <DependentUpon>202007150401233_InitialDb.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202007180154196_NewChanges_CierreCaja.resx">
+      <DependentUpon>202007180154196_NewChanges_CierreCaja.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202007221449053_UpdateNewArqueo.resx">
+      <DependentUpon>202007221449053_UpdateNewArqueo.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202007221516541_UpdateNewArqueo2.resx">
+      <DependentUpon>202007221516541_UpdateNewArqueo2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202007222137359_newChangeConfiguration.resx">
+      <DependentUpon>202007222137359_newChangeConfiguration.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202007230112242_newChangeProfileUser.resx">
+      <DependentUpon>202007230112242_newChangeProfileUser.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202007231722531_newChangesAccess.resx">
+      <DependentUpon>202007231722531_newChangesAccess.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202007242226491_newChangeCierreCaja.resx">
+      <DependentUpon>202007242226491_newChangeCierreCaja.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202007271733520_newChangeEmail.resx">
+      <DependentUpon>202007271733520_newChangeEmail.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Reports\Empeños.rdlc" />
     <EmbeddedResource Include="Reports\frmReporteEmpeños.resx">
       <DependentUpon>frmReporteEmpeños.cs</DependentUpon>
@@ -213,11 +305,17 @@
     <EmbeddedResource Include="Reports\frmReporteIngresos.resx">
       <DependentUpon>frmReporteIngresos.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Views\frmArqueo.resx">
+      <DependentUpon>frmArqueo.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Views\frmBienvenida.resx">
       <DependentUpon>frmBienvenida.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Views\frmCambioPassword.resx">
       <DependentUpon>frmCambioPassword.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\frmCierreCaja.resx">
+      <DependentUpon>frmCierreCaja.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Views\frmClientes.resx">
       <DependentUpon>frmClientes.cs</DependentUpon>
@@ -227,6 +325,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Views\frmEmpeno.resx">
       <DependentUpon>frmEmpeno.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\frmEmpeñoInteres.resx">
+      <DependentUpon>frmEmpeñoInteres.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Views\frmEmpleados.resx">
       <DependentUpon>frmEmpleados.cs</DependentUpon>
@@ -249,6 +350,9 @@
     <EmbeddedResource Include="Views\frmPagar.resx">
       <DependentUpon>frmPagar.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Views\frmPIN.resx">
+      <DependentUpon>frmPIN.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Views\frmPrincipal.resx">
       <DependentUpon>frmPrincipal.cs</DependentUpon>
     </EmbeddedResource>
@@ -262,6 +366,9 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
+    <EmbeddedResource Include="Views\frmProroga.resx">
+      <DependentUpon>frmProroga.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Views\frmTablero.resx">
       <DependentUpon>frmTablero.cs</DependentUpon>
     </EmbeddedResource>

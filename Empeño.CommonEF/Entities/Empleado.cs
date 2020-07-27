@@ -19,9 +19,15 @@
 
         public bool Activo { get; set; } = true;
 
+        public bool IsDelete { get; set; } = false;
+
         public virtual ICollection<Empeno> Empenos { get; set; }
 
         public virtual ICollection<Empeno> Ediciones { get; set; }
+
+        public virtual ICollection<Prorroga> Prorrogas { get; set; }
+
+        public virtual ICollection<CierreCaja> CierreCajas { get; set; }
 
         public Empleado()
         {

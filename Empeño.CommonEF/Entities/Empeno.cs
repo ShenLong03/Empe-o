@@ -1,14 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Empeño.CommonEF.Entities
+﻿namespace Empeño.CommonEF.Entities
 {
     using Enum;
     using System;
-    using System.ComponentModel;
+    using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
-    using System.Globalization;
 
     public class Empeno
     {
@@ -49,6 +44,10 @@ namespace Empeño.CommonEF.Entities
 
         public bool RetiradoAdministrador { get; set; } = false;
 
+        public bool Prorroga { get; set; } = false;
+
+        public bool IsDelete { get; set; } = false;
+
         public virtual Cliente Cliente { get; set; }
 
         public virtual Empleado Empleado { get; set; }
@@ -61,13 +60,17 @@ namespace Empeño.CommonEF.Entities
 
         public virtual ICollection<Intereses> Intereses { get; set; }
 
+        public virtual ICollection<Prorroga> Prorrogas { get; set; }
+
         public Empeno()
         {
             Fecha = DateTime.Now;
             Estado = Estado.Activo;
             FechaVencimiento = DateTime.Now.AddMonths(3).Date;
             Retirado = false;
+            Prorroga = false;
             RetiradoAdministrador = false;
+            IsDelete = false;
         }
     }
 }

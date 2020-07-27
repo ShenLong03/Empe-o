@@ -25,7 +25,7 @@ namespace Empeño.WindowsForms.Funciones
                     if (textBox.Text == "")
                     {
                         textBox.Text = placeHolder;
-                        textBox.ForeColor = Color.DimGray;
+                        textBox.ForeColor = Color.LightGray;
                     }
                     break;
                 case PlaceHolderType.Enter:
@@ -48,7 +48,7 @@ namespace Empeño.WindowsForms.Funciones
                     if (textBox.Text == "")
                     {
                         textBox.Text = placeHolder;
-                        textBox.ForeColor = Color.DimGray;
+                        textBox.ForeColor = Color.LightGray;
                     }
                     break;
                 case PlaceHolderType.Enter:
@@ -72,7 +72,7 @@ namespace Empeño.WindowsForms.Funciones
                     if (textBox.Text == "")
                     {
                         textBox.Text = placeHolder;
-                        textBox.ForeColor = Color.DimGray;
+                        textBox.ForeColor = Color.LightGray;
                     }
                     break;
                 case PlaceHolderType.Enter:
@@ -96,7 +96,7 @@ namespace Empeño.WindowsForms.Funciones
                     if (textBox.Text == "")
                     {
                         textBox.Text = placeHolder;
-                        textBox.ForeColor = Color.DimGray;
+                        textBox.ForeColor = Color.LightGray;
                         if (isPassword)                        
                             textBox.UseSystemPasswordChar = false;
                     }
@@ -155,12 +155,12 @@ namespace Empeño.WindowsForms.Funciones
                 {
                     return empleado.EmpleadoId;
                 }
-                return 0;
+                return 1;
             }
             catch (Exception ex)
             {
 
-                return 0;
+                return 1;
             }
         }
 
@@ -219,13 +219,13 @@ namespace Empeño.WindowsForms.Funciones
                 if (item is TextBox)
                 {
                     var textBox = (TextBox)item;
-                    textBox.ForeColor = Color.DimGray;
+                    textBox.ForeColor = Color.LightGray;
                 }
 
                 if (item is ComboBox)
                 {
                     var comboBox = (ComboBox)item;
-                    comboBox.ForeColor = Color.DimGray;
+                    comboBox.ForeColor = Color.LightGray;
                 }
             }
         }
@@ -274,7 +274,7 @@ namespace Empeño.WindowsForms.Funciones
                             var textBoxText = textBox.Text;
                             if (labelText == textBoxText)
                             {
-                                textBox.ForeColor = Color.DimGray;
+                                textBox.ForeColor = Color.LightGray;
                             }
                         }
                         else if (itemTextBox is ComboBox)
@@ -283,7 +283,7 @@ namespace Empeño.WindowsForms.Funciones
                             var textBoxText = comboBox.Text;
                             if (labelText == textBoxText)
                             {
-                                comboBox.ForeColor = Color.DimGray;
+                                comboBox.ForeColor = Color.LightGray;
                             }
                         }
                     }
@@ -336,7 +336,7 @@ namespace Empeño.WindowsForms.Funciones
                                 if (textBox.Text==label.Text || string.IsNullOrEmpty(textBox.Text))
                                 {
                                     label.Visible = false;
-                                    textBox.ForeColor = Color.DimGray;
+                                    textBox.ForeColor = Color.LightGray;
 
                                     textBox.Text = label.Text;
                                 }
@@ -369,13 +369,13 @@ namespace Empeño.WindowsForms.Funciones
                 {
                     var textBox = (TextBox)item;
                     textBox.Enabled = block;               
-                    textBox.ForeColor = block ? Color.Black : Color.DimGray;
+                    textBox.ForeColor = block ? Color.Black : Color.LightGray;
                 }
                 else if (item is ComboBox)
                 {
                     var comboBox = (ComboBox)item;
                     comboBox.Enabled = block;
-                    comboBox.ForeColor = block ? Color.Black : Color.DimGray;
+                    comboBox.ForeColor = block ? Color.Black : Color.LightGray;
                 }
             }
         }
@@ -409,7 +409,7 @@ namespace Empeño.WindowsForms.Funciones
 
                             if (empeño.Intereses.Count() > 0)
                             {
-                                intereses.FechaVencimiento = empeño.Intereses.LastOrDefault().FechaVencimiento.AddMonths(1);
+                                intereses.FechaVencimiento = empeño.Intereses.OrderByDescending(x=>x.InteresesId).FirstOrDefault().FechaVencimiento.AddMonths(1);
                             }
                             else
                             {
@@ -420,11 +420,37 @@ namespace Empeño.WindowsForms.Funciones
                         }
                         await _context.SaveChangesAsync();
                     }
-                    if (_context.Intereses.Where(p=>p.EmpenoId==empeño.EmpenoId)
-                        .LastOrDefault().FechaVencimiento<DateTime.Today)
+                    if (_context.Intereses.Where(i => i.EmpenoId == empeño.EmpenoId).Count() > 0)
                     {
-                        empeño.Estado = Estado.Pendiente;
-                        _context.Entry(empeño).State = EntityState.Modified;
+                        var ultimoInteres = await _context.Intereses.Where(p => p.EmpenoId == empeño.EmpenoId)
+                                    .OrderByDescending(o => o.InteresesId)
+                                    .FirstOrDefaultAsync();
+                        if (ultimoInteres != null)
+                        {
+                            if (ultimoInteres.FechaVencimiento < DateTime.Today)
+                            {
+                                empeño.Estado = Estado.Pendiente;
+                                _context.Entry(empeño).State = EntityState.Modified;
+                                await _context.SaveChangesAsync();
+                            }
+                        }
+
+                    }
+                    if (empeño.FechaVencimiento < DateTime.Today)
+                    {
+                        if (empeño.Retirado || empeño.FechaRetiro != null)
+                        {
+                            empeño.Estado = Estado.Retirada;
+                        }
+                        else if (empeño.RetiradoAdministrador || empeño.FechaRetiroAdministrador != null)
+                        {
+                            empeño.Estado = Estado.Perdido;
+                        }
+                        else
+                        {
+                            empeño.Estado = Estado.Vencido;
+                        }
+
                         await _context.SaveChangesAsync();
                     }
                 }

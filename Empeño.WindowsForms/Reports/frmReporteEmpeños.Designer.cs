@@ -46,12 +46,14 @@
             this.lblDesde = new System.Windows.Forms.Label();
             this.panel2 = new System.Windows.Forms.Panel();
             this.rvEmpeños = new Microsoft.Reporting.WinForms.ReportViewer();
+            this.ckbBorrados = new System.Windows.Forms.CheckBox();
             this.panel1.SuspendLayout();
             this.panel2.SuspendLayout();
             this.SuspendLayout();
             // 
             // panel1
             // 
+            this.panel1.Controls.Add(this.ckbBorrados);
             this.panel1.Controls.Add(this.panel4);
             this.panel1.Controls.Add(this.label2);
             this.panel1.Controls.Add(this.button2);
@@ -108,6 +110,7 @@
             this.button2.Text = "Cancelar";
             this.button2.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
             this.button2.UseVisualStyleBackColor = false;
+            this.button2.Click += new System.EventHandler(this.button2_Click);
             // 
             // button1
             // 
@@ -264,6 +267,18 @@
             this.rvEmpeños.Size = new System.Drawing.Size(1413, 702);
             this.rvEmpeños.TabIndex = 5;
             // 
+            // ckbBorrados
+            // 
+            this.ckbBorrados.AutoSize = true;
+            this.ckbBorrados.Font = new System.Drawing.Font("Century Gothic", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.ckbBorrados.ForeColor = System.Drawing.Color.Maroon;
+            this.ckbBorrados.Location = new System.Drawing.Point(807, 58);
+            this.ckbBorrados.Name = "ckbBorrados";
+            this.ckbBorrados.Size = new System.Drawing.Size(319, 23);
+            this.ckbBorrados.TabIndex = 31;
+            this.ckbBorrados.Text = "Borrados, Cancelados o Elminados";
+            this.ckbBorrados.UseVisualStyleBackColor = true;
+            // 
             // frmReporteEmpeños
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -303,5 +318,6 @@
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Panel panel4;
+        private System.Windows.Forms.CheckBox ckbBorrados;
     }
 }

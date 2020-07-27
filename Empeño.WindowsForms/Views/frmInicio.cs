@@ -58,6 +58,31 @@
         }
 
 
+        private void mnuArqueo_Click(object sender, EventArgs e)
+        {
+            frmOscuro oscuro = new frmOscuro();
+            oscuro.Show();
+            frmPIN pin = new frmPIN("Empeño");
+            pin.ShowDialog();
+            if (!Program.Acceso)
+            {
+                oscuro.Close();
+                MessageBox.Show("No tiene acceso a este módulo");
+                return;
+            }
+            oscuro.Close();
+
+            ActivateButton(sender, RGBColors.color2);
+            OpenChildForm(new frmArqueo());
+        }
+
+        private void mnuCaja_Click(object sender, EventArgs e)
+        {
+            ActivateButton(sender, RGBColors.color1);
+            OpenChildForm(new frmCierreCaja());
+            hideSubMenu();
+        }
+
         private void mnuReporte_Click(object sender, EventArgs e)
         {
             if (panelSubMenuReportes.Width <= 60)
@@ -66,7 +91,7 @@
                 mnuInicio.Text = "Inicio";
                 mnuConfiguracion.Text = "Configuración";
                 mnuEmpeños.Text = "Empeños";
-                mnuEmpleados.Text = "Empleados";
+                mnuClientes.Text = "Empleados";
                 mnuReporte.Text = "Caja";
                 mnuTablero.Text = "Tablero";
                 mnuLogout.Text = "Cerrar";
@@ -84,9 +109,12 @@
 
         private void mnuEmpleados_Click(object sender, EventArgs e)
         {
-            ActivateButton(sender, RGBColors.color2);
-            OpenChildForm(new frmEmpleados());
-            hideSubMenu();
+
+            var oscuro = new frmOscuro();
+            oscuro.Show();
+            var frm = new frmClientes();
+            frm.ShowDialog();
+            oscuro.Close();
         }        
 
         private void mnuConfiguracion_Click(object sender, EventArgs e)
@@ -98,7 +126,7 @@
                 mnuInicio.Text = "Inicio";
                 mnuConfiguracion.Text = "Configuración";
                 mnuEmpeños.Text = "Empeños";
-                mnuEmpleados.Text = "Empleados";
+                mnuClientes.Text = "Empleados";
                 mnuReporte.Text = "Caja";
                 mnuTablero.Text = "Tablero";
                 mnuLogout.Text = "Cerrar";
@@ -109,6 +137,18 @@
 
         private void mnuSubConfiguracion_Click(object sender, EventArgs e)
         {
+            frmOscuro oscuro = new frmOscuro();
+            oscuro.Show();
+            frmPIN pin = new frmPIN("Configuración");
+            pin.ShowDialog();
+            if (!Program.Acceso)
+            {
+                oscuro.Close();
+                MessageBox.Show("No tiene acceso a este módulo");
+                return;
+            }
+            oscuro.Close();
+
             ActivateButton(sender, RGBColors.color3);
             OpenChildForm(new frmConfiguracionGeneral());
         }
@@ -128,6 +168,18 @@
 
         private void mnuSubIntereses_Click(object sender, EventArgs e)
         {
+            frmOscuro oscuro = new frmOscuro();
+            oscuro.Show();
+            frmPIN pin = new frmPIN("Configuración");
+            pin.ShowDialog();
+            if (!Program.Acceso)
+            {
+                oscuro.Close();
+                MessageBox.Show("No tiene acceso a este módulo");
+                return;
+            }
+            oscuro.Close();
+
             ActivateButton(sender, RGBColors.color4);
             OpenChildForm(new frmIntereses());
         }
@@ -298,16 +350,16 @@
 
         private void btnMenu_Click(object sender, EventArgs e)
         {
-
             if (panel1.Width >= 280)
             {
                 hideSubMenu();
                 mnuInicio.Text = string.Empty;
                 mnuConfiguracion.Text = string.Empty;
                 mnuEmpeños.Text = string.Empty;
-                mnuEmpleados.Text = string.Empty;
+                mnuClientes.Text = string.Empty;
                 mnuReporte.Text = string.Empty;
                 mnuTablero.Text = string.Empty;
+                mnuCaja.Text = string.Empty;
                 panel1.Width = 60;
                 //timerOcultar.Enabled = true;
                 mnuLogout.Text = string.Empty;
@@ -318,9 +370,10 @@
                 mnuInicio.Text = "Inicio";
                 mnuConfiguracion.Text = "Configuración";
                 mnuEmpeños.Text = "Empeños";
-                mnuEmpleados.Text = "Empleados";
-                mnuReporte.Text = "Caja";
+                mnuClientes.Text = "Clientes";
+                mnuReporte.Text = "Reporte";
                 mnuTablero.Text = "Tablero";
+                mnuCaja.Text = "Caja";
                 panel1.Width = 280;
                 //timerMostrar.Enabled = true;
                 mnuLogout.Text = "Cerrar";
@@ -362,7 +415,25 @@
         private const int HTBOTTOMRIGHT = 17;
         private Rectangle sizeGripRectangle;
 
+        private void mnuEmpleados_Click_1(object sender, EventArgs e)
+        {
+            
+            frmOscuro oscuro = new frmOscuro();
+            oscuro.Show();
+            frmPIN pin = new frmPIN("Empleado");
+            pin.ShowDialog();
+            if (!Program.Acceso)
+            {
+                oscuro.Close();
+                MessageBox.Show("No tiene acceso a este módulo");
+                return;
+            }
+            oscuro.Close();
 
+            ActivateButton(sender, RGBColors.color2);
+            OpenChildForm(new frmEmpleados());
+            //hideSubMenu();
+        }
 
         protected override void WndProc(ref Message m)
         {

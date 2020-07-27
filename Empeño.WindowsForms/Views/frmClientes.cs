@@ -7,6 +7,7 @@ using System.ComponentModel;
 using System.Data;
 using System.Data.Entity;
 using System.Drawing;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -64,6 +65,7 @@ namespace Empeño.WindowsForms.Views
             dgvClientes.DataSource = await _context.Clientes.Select(x => new
             {
                 Id = x.ClienteId,
+                x.Identificacion,
                 x.Nombre,
                 x.Correo,
                 x.Telefono
@@ -78,6 +80,24 @@ namespace Empeño.WindowsForms.Views
             txtFecha.Text = DateTime.Today.ToString("dd/MM/yyyy");
             chbActivo.Checked = true;
             txtFecha.Text = DateTime.Today.ToString("dd/MM/yyyy");
+        }
+
+        private async void txtBuscar_TextChanged(object sender, EventArgs e)
+        {
+            dgvClientes.DataSource = await _context.Clientes.Where(c => c.Nombre.Contains(txtBuscar.Text) || c.Identificacion.Contains(txtBuscar.Text))
+                .Select(x => new
+            {
+                Id = x.ClienteId,
+                x.Identificacion,
+                x.Nombre,
+                x.Correo,
+                x.Telefono
+            }).ToListAsync();
+
+            lblCantidad.Text = dgvClientes.Rows.Count.ToString();
+
+            DataGridViewColumn column = dgvClientes.Columns[0];
+            column.Width = 40;            
         }
 
         private void btnClose_Click(object sender, EventArgs e)
@@ -106,7 +126,7 @@ namespace Empeño.WindowsForms.Views
                         Activo = chbActivo.Checked,
                         Direccion = txtDireccion.Text,
                         Comentario = txtComentario.Text,
-                        Fecha = DateTime.Parse(txtFecha.Text),
+                        Fecha = DateTime.ParseExact(txtFecha.Text, "dd/MM/yyyy", CultureInfo.InvariantCulture),
                     };
 
                     _context.Clientes.Add(cliente);
@@ -122,7 +142,7 @@ namespace Empeño.WindowsForms.Views
                     cliente.Activo = chbActivo.Checked;
                     cliente.Direccion = txtDireccion.Text;
                     cliente.Comentario = txtComentario.Text;
-                    cliente.Fecha = DateTime.Parse(txtFecha.Text);
+                    cliente.Fecha = DateTime.ParseExact(txtFecha.Text, "dd/MM/yyyy", CultureInfo.InvariantCulture);
                     _context.Entry(cliente).State = EntityState.Modified;
                 }
                 await _context.SaveChangesAsync();
@@ -164,7 +184,7 @@ namespace Empeño.WindowsForms.Views
                         Activo = chbActivo.Checked,
                         Direccion = txtDireccion.Text,
                         Comentario = txtComentario.Text,
-                        Fecha = DateTime.Parse(txtFecha.Text),
+                        Fecha = DateTime.ParseExact(txtFecha.Text,"dd/MM/yyyy",CultureInfo.InvariantCulture),
                     };
 
                     _context.Clientes.Add(cliente);
@@ -180,7 +200,7 @@ namespace Empeño.WindowsForms.Views
                     cliente.Activo = chbActivo.Checked;
                     cliente.Direccion = txtDireccion.Text;
                     cliente.Comentario = txtComentario.Text;
-                    cliente.Fecha = DateTime.Parse(txtFecha.Text);
+                    cliente.Fecha = DateTime.ParseExact(txtFecha.Text, "dd/MM/yyyy", CultureInfo.InvariantCulture);
                     _context.Entry(cliente).State = EntityState.Modified;
                 }
                 await _context.SaveChangesAsync();
@@ -227,6 +247,12 @@ namespace Empeño.WindowsForms.Views
 
         }
 
+
+        private async void dgvClientes_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
+        {
+            await Editar();
+        }
+
         public async Task Editar()
         {
             if (dgvClientes.SelectedRows.Count > 0)
@@ -249,7 +275,8 @@ namespace Empeño.WindowsForms.Views
                 txtDireccion.Text = cliente.Direccion;
                 txtComentario.Text = cliente.Comentario;
                 txtFecha.Text = cliente.Fecha.ToString("dd/MM/yyyy");
-
+                lblGanancias.Text = cliente.Empenos.Where(m=>m.Pagos.Count()>0).SelectMany(m => m.Pagos).Sum(p => p.Monto).ToString("N2");
+                lblEmpeños.Text = cliente.Empenos.Where(m => !m.IsDelete).Count().ToString();
                 funciones.BlockTextBox(panelFormulario, true);
                 funciones.EditTextColor(panelFormulario);
                 funciones.ShowLabels(panelFormulario);
@@ -346,12 +373,20 @@ namespace Empeño.WindowsForms.Views
 
         }
 
+        private async void btnVer_Click(object sender, EventArgs e)
+        {
+            await Editar();
+            funciones.BlockTextBox(panelFormulario, false);
+        }
+
         #region RenderSizeForm
         //RESIZE METODO PARA REDIMENCIONAR/CAMBIAR TAMAÑO A FORMULARIO EN TIEMPO DE EJECUCION ----------------------------------------------------------
         private int tolerance = 12;
         private const int WM_NCHITTEST = 132;
         private const int HTBOTTOMRIGHT = 17;
-        private Rectangle sizeGripRectangle;  
+        private Rectangle sizeGripRectangle;
+
+
 
         protected override void WndProc(ref Message m)
         {

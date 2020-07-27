@@ -121,7 +121,7 @@ namespace Empeño.WindowsForms.Reports
             DateTime desde = dtDesde.Value;
             DateTime hasta = dtHasta.Value;
 
-            var list = await _context.Empenos.Where(e => e.Fecha >= desde && e.Fecha <= hasta).ToListAsync();
+            var list = await _context.Empenos.Where(e => e.Fecha >= desde && e.Fecha <= hasta && e.IsDelete==ckbBorrados.Checked).ToListAsync();
 
             if (!chbTodo.Checked)
             {
@@ -271,6 +271,18 @@ namespace Empeño.WindowsForms.Reports
         private const int WM_NCHITTEST = 132;
         private const int HTBOTTOMRIGHT = 17;
         private Rectangle sizeGripRectangle;
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            DateTime month = DateTime.Today.AddMonths(-1);
+            chbTodo.Checked = true;
+            chbActivos.Checked = false;
+            chbPendientes.Checked = false;
+            chbPerdidos.Checked = false;
+            chbRetirados.Checked = false;
+            dtDesde.Value = month;
+            dtHasta.Value = DateTime.Today;
+        }
 
         protected override void WndProc(ref Message m)
         {

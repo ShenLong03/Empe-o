@@ -20,7 +20,7 @@ namespace Empeño.CommonEF.Entities
 
         public int PerfilId { get; set; }
 
-        public Perfil Perfil { get; set; }
+        public virtual Perfil Perfil { get; set; }
 
         public User()
         {

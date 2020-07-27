@@ -25,14 +25,20 @@ namespace Empeño.WindowsForms.Views
 
         private void frmConfiguracionGeneral_Load(object sender, EventArgs e)
         {
-            if (_context.Configuraciones.Any())
+            if (_context.Configuraciones.Count()>0)
             {
                 var configuracion = _context.Configuraciones.FirstOrDefault();
                 txtIdentificacion.Text = configuracion.Identificacion;
-                txtCompania.Text = configuracion.Nombre;
+                txtCompania.Text = configuracion.Compañia;
+                txtNombre.Text = configuracion.Nombre;
                 txtMeses.Text = configuracion.Meses.ToString();
                 txtTelefono.Text = configuracion.Telefono;
                 configuracionId = configuracion.ConfiguracionId;
+                txtEmail.Text = configuracion.Email;
+                txtPassword.Text = configuracion.Password;
+                txtSMTP.Text = configuracion.SMTP;
+                txtPuerto.Text = configuracion.Puerto.ToString() ;
+                chkSSL.Checked = configuracion.SSL;
             }
 
             txtCompania.Focus();
@@ -42,6 +48,19 @@ namespace Empeño.WindowsForms.Views
         {
             try
             {
+                frmOscuro oscuro = new frmOscuro();
+                oscuro.Show();
+                frmPIN pin = new frmPIN("Empeño");
+                pin.ShowDialog();
+                if (!Program.Acceso)
+                {
+                    oscuro.Close();
+                    MessageBox.Show("No tiene acceso a este módulo");
+                    return;
+                }
+                oscuro.Close();
+
+
                 if (configuracionId == 0)
                 {
                     var configuracion = new Configuracion
@@ -49,8 +68,14 @@ namespace Empeño.WindowsForms.Views
                         ConfiguracionId = configuracionId,
                         Identificacion = txtIdentificacion.Text,
                         Meses = int.Parse(txtMeses.Text),
-                        Nombre = txtCompania.Text,
+                        Compañia = txtCompania.Text,
+                        Nombre = txtNombre.Text,
                         Telefono = txtTelefono.Text,
+                        Email=txtEmail.Text,
+                        Password=txtPassword.Text,
+                        Puerto=int.Parse(txtPuerto.Text),
+                        SMTP=txtSMTP.Text,
+                        SSL=chkSSL.Checked
                     };
 
                     _context.Configuraciones.Add(configuracion);
@@ -61,8 +86,14 @@ namespace Empeño.WindowsForms.Views
 
                     configuracion.Identificacion = txtIdentificacion.Text;
                     configuracion.Meses = int.Parse(txtMeses.Text);
-                    configuracion.Nombre = txtCompania.Text;
-                    configuracion.Telefono = txtTelefono.Text;
+                    configuracion.Nombre = txtNombre.Text;
+                    configuracion.Compañia = txtCompania.Text;
+                    configuracion.Telefono = txtTelefono.Text;            
+                    configuracion.Email = txtEmail.Text;
+                    configuracion.Password = txtPassword.Text;
+                    configuracion.Puerto = int.Parse(txtPuerto.Text);
+                    configuracion.SMTP = txtSMTP.Text;
+                    configuracion.SSL = chkSSL.Checked;
 
                     _context.Entry(configuracion).State = EntityState.Modified;
                 }

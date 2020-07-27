@@ -38,7 +38,10 @@ namespace Empeño.WindowsForms.Views
             txtPagaInteres.Text = txtInteresAPagar.Text;                        
             txtAdeudaIntereses.Text = (double.Parse(intereses) - double.Parse(txtInteresAPagar.Text)).ToString("N2");
             txtAdeudaMonto.Text = empeño.MontoPendiente.ToString("N2");
-            txtProximaFecha.Text =empeño.Intereses.LastOrDefault().FechaVencimiento.AddMonths(1).ToString("dd/MM/yyyy") ;
+            var ultimoInteres = empeño.Intereses.OrderByDescending(o => o.InteresesId).FirstOrDefault();
+            if (ultimoInteres!=null)
+                txtProximaFecha.Text =ultimoInteres.FechaVencimiento.AddMonths(1).ToString("dd/MM/yyyy");
+
             txtMontoAPagar.Text = empeño.MontoPendiente.ToString("N2");
 
             montoMinimo = empeño.Intereses.Where(i=>i.FechaVencimiento<=DateTime.Today).Sum(i => i.Monto - i.Pagado);            
@@ -120,12 +123,24 @@ namespace Empeño.WindowsForms.Views
 
         private async void btnGuardarEmpeño_Click(object sender, EventArgs e)
         {
-            if (double.Parse(txtPagaInteres.Text)<1)
+            frmOscuro oscuro = new frmOscuro();
+            oscuro.Show();
+            frmPIN pin = new frmPIN("Empeño");
+            pin.ShowDialog();
+            if (!Program.Acceso)
             {
-                MessageBox.Show("Debe cumplir con un pago minimo de 1 cólon", "Información");
+                oscuro.Close();
+                MessageBox.Show("No tiene acceso a este módulo");
                 return;
             }
+            oscuro.Close();
 
+            if (double.Parse(txtPagaInteres.Text)<=montoMinimo && (double.Parse(txtPagaMonto.Text) == double.Parse(txtMontoAPagar.Text)))
+            {
+                MessageBox.Show("Debe cumplir con un pago minimo mayor a " + montoMinimo.ToString("N2") + " cólon", "Información");
+                return;
+            }
+            var empleadoId = await funciones.GetEmpleadoIdByUser(Program.Usuario.Usuario);
             var pagoIntereses = double.Parse(txtPagaInteres.Text);
             var pagoMonto = double.Parse(txtPagaMonto.Text);
             if (pagoIntereses>0)
@@ -190,6 +205,46 @@ namespace Empeño.WindowsForms.Views
           
             MessageBox.Show("Pago recibido");
             this.Close();
+        }
+
+        private void txtPagaInteres_TextChanged_1(object sender, EventArgs e)
+        {
+            var interes = double.Parse(txtInteresAPagar.Text);
+
+            var pagaInteres = double.Parse(txtPagaInteres.Text);
+
+            txtAdeudaIntereses.Text = (interes - pagaInteres).ToString("N2");
+
+            var pagaMonto = double.Parse(txtPagaMonto.Text);
+
+            txtTotalAPagar.Text = (pagaInteres + pagaMonto).ToString("N2");
+
+            txtPagaCon.Text = (pagaInteres + pagaMonto).ToString("N2");
+
+            if (pagaInteres >= montoMinimo)
+            {
+                txtPagaMonto.Enabled = true;
+            }
+            else
+            {
+                txtPagaMonto.Enabled = false;
+                txtPagaMonto.Text = "0.00";
+            }
+        }
+
+        private void txtPagaMonto_TextChanged_1(object sender, EventArgs e)
+        {
+            var monto = double.Parse(txtMontoAPagar.Text);
+
+            var pagaMonto = double.Parse(txtPagaMonto.Text);
+
+            txtAdeudaMonto.Text = (monto - pagaMonto).ToString("N2");
+
+            var pagaInteres = double.Parse(txtPagaInteres.Text);
+
+            txtTotalAPagar.Text = (pagaInteres + pagaMonto).ToString("N2");
+
+            txtPagaCon.Text = (pagaInteres + pagaMonto).ToString("N2");
         }
     }
 }

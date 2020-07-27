@@ -13,17 +13,24 @@ namespace Empeño.WindowsForms
 {
     static class Program
     {
-
         public static Form Cargando;
         public static User Usuario;
         public static User ChangeUserPassword;
         public static Cliente Cliente;
+        public static string PIN;
+        public static bool Acceso;
+        public static string Modulo;
+        public static int EmpleadoId;
+        public static int EmpeñoId;
+        public static bool Proroga;
+
         /// <summary>
         /// Punto de entrada principal para la aplicación.
         /// </summary>
         [STAThread]
         static void Main()
         {
+            Acceso = false;
             Application.EnableVisualStyles();
             PerfilSeedDb.CheckPerfiles();
             //TODO:Datos de Prueba            
@@ -31,7 +38,7 @@ namespace Empeño.WindowsForms
             //END TODO
             Application.SetCompatibleTextRenderingDefault(false);
             //Application.Run(new frmCargando(new Size(800,600), new Point(50,50)));
-            Application.Run(new frmInicio());
+            Application.Run(new frmLogin());
         }
 
         public static void GetCargando(Size size, Point location) 

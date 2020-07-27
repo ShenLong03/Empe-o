@@ -42,5 +42,11 @@ namespace Empeño.WindowsForms.Data
         public DbSet<User> User { get; set; }
 
         public DbSet<Intereses> Intereses { get; set; }
+
+        public DbSet<CierreCaja> CierreCajas { get; set; }
+
+        public DbSet<DetalleCierreCaja> DetalleCierreCajas { get; set; }
+
+        public DbSet<Prorroga> Prorrogas { get; set; }
     }
 }
