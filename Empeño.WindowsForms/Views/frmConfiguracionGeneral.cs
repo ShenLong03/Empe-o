@@ -39,6 +39,8 @@ namespace Empeño.WindowsForms.Views
                 txtSMTP.Text = configuracion.SMTP;
                 txtPuerto.Text = configuracion.Puerto.ToString() ;
                 chkSSL.Checked = configuracion.SSL;
+                txtDirección.Text = configuracion.Direccion;
+                txtEmailAdmin.Text = configuracion.EmailNotification;
             }
 
             txtCompania.Focus();
@@ -71,11 +73,13 @@ namespace Empeño.WindowsForms.Views
                         Compañia = txtCompania.Text,
                         Nombre = txtNombre.Text,
                         Telefono = txtTelefono.Text,
-                        Email=txtEmail.Text,
-                        Password=txtPassword.Text,
-                        Puerto=int.Parse(txtPuerto.Text),
-                        SMTP=txtSMTP.Text,
-                        SSL=chkSSL.Checked
+                        Email = txtEmail.Text,
+                        Password = txtPassword.Text,
+                        Puerto = int.Parse(txtPuerto.Text),
+                        SMTP = txtSMTP.Text,
+                        SSL = chkSSL.Checked,
+                        Direccion = txtDirección.Text,
+                        EmailNotification = txtEmailAdmin.Text
                     };
 
                     _context.Configuraciones.Add(configuracion);
@@ -94,6 +98,8 @@ namespace Empeño.WindowsForms.Views
                     configuracion.Puerto = int.Parse(txtPuerto.Text);
                     configuracion.SMTP = txtSMTP.Text;
                     configuracion.SSL = chkSSL.Checked;
+                    configuracion.Direccion = txtDirección.Text;
+                    configuracion.EmailNotification = txtEmailAdmin.Text;
 
                     _context.Entry(configuracion).State = EntityState.Modified;
                 }

@@ -435,6 +435,14 @@
             //hideSubMenu();
         }
 
+        private void mnuLogout_Click(object sender, EventArgs e)
+        {
+            this.Hide();
+            Program.Usuario = null;
+            frmLogin login = new frmLogin();
+            login.Show();
+        }
+
         protected override void WndProc(ref Message m)
         {
             switch (m.Msg)

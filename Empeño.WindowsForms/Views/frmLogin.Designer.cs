@@ -32,17 +32,16 @@
             this.panel2 = new System.Windows.Forms.Panel();
             this.pictureBox2 = new System.Windows.Forms.PictureBox();
             this.txtUsuario = new System.Windows.Forms.TextBox();
-            this.shapeContainer1 = new Microsoft.VisualBasic.PowerPacks.ShapeContainer();
-            this.lineShape2 = new Microsoft.VisualBasic.PowerPacks.LineShape();
-            this.lineShape1 = new Microsoft.VisualBasic.PowerPacks.LineShape();
             this.txtContrasena = new System.Windows.Forms.TextBox();
             this.btnAcceder = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
             this.linkLabel1 = new System.Windows.Forms.LinkLabel();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
-            this.label2 = new System.Windows.Forms.Label();
+            this.lblError = new System.Windows.Forms.Label();
             this.btnMinimize = new FontAwesome.Sharp.IconPictureBox();
             this.btnClose = new FontAwesome.Sharp.IconPictureBox();
+            this.panel1 = new System.Windows.Forms.Panel();
+            this.panel3 = new System.Windows.Forms.Panel();
             this.panel2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
@@ -84,38 +83,6 @@
             this.txtUsuario.Enter += new System.EventHandler(this.txtUsuario_Enter);
             this.txtUsuario.Leave += new System.EventHandler(this.txtUsuario_Leave);
             // 
-            // shapeContainer1
-            // 
-            this.shapeContainer1.Location = new System.Drawing.Point(0, 0);
-            this.shapeContainer1.Margin = new System.Windows.Forms.Padding(0);
-            this.shapeContainer1.Name = "shapeContainer1";
-            this.shapeContainer1.Shapes.AddRange(new Microsoft.VisualBasic.PowerPacks.Shape[] {
-            this.lineShape2,
-            this.lineShape1});
-            this.shapeContainer1.Size = new System.Drawing.Size(807, 350);
-            this.shapeContainer1.TabIndex = 3;
-            this.shapeContainer1.TabStop = false;
-            // 
-            // lineShape2
-            // 
-            this.lineShape2.BorderColor = System.Drawing.Color.LightGray;
-            this.lineShape2.Enabled = false;
-            this.lineShape2.Name = "lineShape2";
-            this.lineShape2.X1 = 250;
-            this.lineShape2.X2 = 575;
-            this.lineShape2.Y1 = 157;
-            this.lineShape2.Y2 = 157;
-            // 
-            // lineShape1
-            // 
-            this.lineShape1.BorderColor = System.Drawing.Color.LightGray;
-            this.lineShape1.Enabled = false;
-            this.lineShape1.Name = "lineShape1";
-            this.lineShape1.X1 = 250;
-            this.lineShape1.X2 = 575;
-            this.lineShape1.Y1 = 86;
-            this.lineShape1.Y2 = 86;
-            // 
             // txtContrasena
             // 
             this.txtContrasena.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(64)))));
@@ -128,6 +95,7 @@
             this.txtContrasena.TabIndex = 3;
             this.txtContrasena.Text = "CONTRASEÑA";
             this.txtContrasena.Enter += new System.EventHandler(this.txtContrasena_Enter);
+            this.txtContrasena.KeyUp += new System.Windows.Forms.KeyEventHandler(this.txtContrasena_KeyUp);
             this.txtContrasena.Leave += new System.EventHandler(this.txtContrasena_Leave);
             // 
             // btnAcceder
@@ -177,16 +145,16 @@
             this.pictureBox1.TabIndex = 9;
             this.pictureBox1.TabStop = false;
             // 
-            // label2
+            // lblError
             // 
-            this.label2.AutoSize = true;
-            this.label2.BackColor = System.Drawing.Color.Transparent;
-            this.label2.ForeColor = System.Drawing.Color.LightGray;
-            this.label2.Location = new System.Drawing.Point(359, 213);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(97, 17);
-            this.label2.TabIndex = 10;
-            this.label2.Text = "Error mensaje";
+            this.lblError.AutoSize = true;
+            this.lblError.BackColor = System.Drawing.Color.Transparent;
+            this.lblError.ForeColor = System.Drawing.Color.LightGray;
+            this.lblError.Location = new System.Drawing.Point(359, 213);
+            this.lblError.Name = "lblError";
+            this.lblError.Size = new System.Drawing.Size(97, 17);
+            this.lblError.TabIndex = 10;
+            this.lblError.Text = "Error mensaje";
             // 
             // btnMinimize
             // 
@@ -199,6 +167,7 @@
             this.btnMinimize.Size = new System.Drawing.Size(24, 24);
             this.btnMinimize.TabIndex = 12;
             this.btnMinimize.TabStop = false;
+            this.btnMinimize.Click += new System.EventHandler(this.btnMinimize_Click_1);
             // 
             // btnClose
             // 
@@ -211,6 +180,23 @@
             this.btnClose.Size = new System.Drawing.Size(24, 24);
             this.btnClose.TabIndex = 11;
             this.btnClose.TabStop = false;
+            this.btnClose.Click += new System.EventHandler(this.btnClose_Click_1);
+            // 
+            // panel1
+            // 
+            this.panel1.BackColor = System.Drawing.Color.WhiteSmoke;
+            this.panel1.Location = new System.Drawing.Point(352, 112);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(413, 1);
+            this.panel1.TabIndex = 13;
+            // 
+            // panel3
+            // 
+            this.panel3.BackColor = System.Drawing.Color.WhiteSmoke;
+            this.panel3.Location = new System.Drawing.Point(356, 190);
+            this.panel3.Name = "panel3";
+            this.panel3.Size = new System.Drawing.Size(413, 1);
+            this.panel3.TabIndex = 14;
             // 
             // frmLogin
             // 
@@ -218,17 +204,18 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(64)))));
             this.ClientSize = new System.Drawing.Size(807, 350);
+            this.Controls.Add(this.panel3);
+            this.Controls.Add(this.panel1);
             this.Controls.Add(this.btnMinimize);
             this.Controls.Add(this.btnClose);
             this.Controls.Add(this.pictureBox1);
-            this.Controls.Add(this.label2);
+            this.Controls.Add(this.lblError);
             this.Controls.Add(this.linkLabel1);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.btnAcceder);
             this.Controls.Add(this.txtContrasena);
             this.Controls.Add(this.txtUsuario);
             this.Controls.Add(this.panel2);
-            this.Controls.Add(this.shapeContainer1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Name = "frmLogin";
             this.Opacity = 0.9D;
@@ -250,16 +237,15 @@
         private System.Windows.Forms.Panel panel2;
         private System.Windows.Forms.PictureBox pictureBox2;
         private System.Windows.Forms.TextBox txtUsuario;
-        private Microsoft.VisualBasic.PowerPacks.ShapeContainer shapeContainer1;
-        private Microsoft.VisualBasic.PowerPacks.LineShape lineShape2;
-        private Microsoft.VisualBasic.PowerPacks.LineShape lineShape1;
         private System.Windows.Forms.TextBox txtContrasena;
         private System.Windows.Forms.Button btnAcceder;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.LinkLabel linkLabel1;
         private System.Windows.Forms.PictureBox pictureBox1;
-        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Label lblError;
         private FontAwesome.Sharp.IconPictureBox btnMinimize;
         private FontAwesome.Sharp.IconPictureBox btnClose;
+        private System.Windows.Forms.Panel panel1;
+        private System.Windows.Forms.Panel panel3;
     }
 }

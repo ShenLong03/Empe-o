@@ -1,4 +1,5 @@
-﻿using Empeño.WindowsForms.Data;
+﻿using Empeño.CommonEF.Entities;
+using Empeño.WindowsForms.Data;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,6 +13,73 @@ namespace Empeño.WindowsForms.Funciones
     public class EmailFuncion
     {
         DataContext _context = new DataContext();
+
+        public async Task SendMail(string to, string subject, Empeno empeño)
+        {
+            var cliente = _context.Clientes.Find(empeño.ClienteId);
+            var empleado = _context.Empleados.Find(empeño.EmpleadoId);
+            var interes = _context.Interes.Find(empeño.InteresId);
+            var configuracion = _context.Configuraciones.FirstOrDefault();
+
+            var str = "Estimado " + cliente.Nombre + ", <br /><br />"
+                + "Se a creado un Empeño <b>#" + empeño.EmpenoId + "</b> por : <br /><i>" + empeño.Descripcion + "</i>. <br /><br />"
+                + "<b>Fecha</b> : " + empeño.Fecha.ToString("dd/MM/yyyy") + "<br />"
+                + "<b>Realizado por</b>  : " + empleado.Nombre + "<br />"
+                + "<b>Monto del Empeño</b> : " + empeño.Monto.ToString("N2") + "<br />"
+                + "<b>Interes Mensual</b> : " + (empeño.Monto * ((double)interes.Porcentaje / 100)).ToString("N2") + "<br />"
+                + "<b>Estado</b> : " + empeño.Estado.ToString() + "<br />"
+                + "<b>Fecha de Vencimiento</b> : " + empeño.FechaVencimiento.ToString("dd/MM/yyyy")
+                + "<br /><br />Saludos.";
+
+            await SendMail(to,subject, str);
+
+        }
+
+        public async Task SendMail(string to, string subject, string body, Empeno empeño)
+        {
+            var cliente = _context.Clientes.Find(empeño.ClienteId);
+            var empleado = _context.Empleados.Find(empeño.EmpleadoId);
+            var interes = _context.Interes.Find(empeño.InteresId);
+            var configuracion = _context.Configuraciones.FirstOrDefault();
+
+            var str = "Estimado " + cliente.Nombre + ", <br /><br />"
+                + body
+                + "<b>Fecha</b> : " + empeño.Fecha.ToString("dd/MM/yyyy") + "<br />"
+                + "<b>Realizado por</b>  : " + empleado.Nombre + "<br />"
+                + "<b>Monto del Empeño</b> : " + empeño.Monto.ToString("N2") + "<br />"
+                + "<b>Interes Mensual</b> : " + (empeño.Monto * ((double)interes.Porcentaje / 100)).ToString("N2") + "<br />"
+                + "<b>Estado</b> : " + empeño.Estado.ToString() + "<br />"
+                + "<b>Fecha de Vencimiento</b> : " + empeño.FechaVencimiento.ToString("dd/MM/yyyy")
+                + "<br /><br />Saludos.";
+
+            await SendMail(to, subject, str);
+
+        }
+
+        public async Task SendMail(string to, string subject, string body, List<DetalleCierreCaja> detalle)
+        {
+            var cierreCaja = _context.CierreCajas.Find(detalle.FirstOrDefault().CierreCajaId);
+            var empleado = _context.Empleados.Find(cierreCaja.EmpleadoId);
+            var configuracion = _context.Configuraciones.FirstOrDefault();
+
+            var str = "Estimado " + configuracion.Nombre + ", <br /><br />"
+                + body
+                + "<b>Fecha</b> : " + cierreCaja.Fecha.ToString("dd/MM/yyyy") + "<br />"
+                + "<b>Realizado por</b>  : " + empleado.Nombre + "<br />"
+                + "<table><thead><tr><th>Concepto</th><th>Valor</th><th>Cantidad</th><th>SubTotal</th></tr></thead><tbody>";
+                foreach (var item in detalle)
+                {
+                    str += "<tr><td>" + item.Concepto + "</td>" + item.Valor + "</td>" + item.Cantidad + "</td>" + item.SubTotal + "</td>";
+                }
+                str+="</tbody></table>"
+                + "<b>Monto Inicial</b> : " + cierreCaja.SaldoInicial.ToString("N2") + "<br />"
+                + "<b>Ingresos</b> : " + (detalle.Sum(d=>d.SubTotal) - cierreCaja.SaldoInicial).ToString("N2") + "<br />"                
+                + "<br /><br />Saludos.";
+
+            await SendMail(to, subject, str);
+
+        }
+
         public async Task SendMail(string to, string subject, string body)
         {
             try
@@ -41,6 +109,8 @@ namespace Empeño.WindowsForms.Funciones
                             smtp.Host =configuracion.SMTP;
                             smtp.Port = configuracion.Puerto;
                             smtp.EnableSsl = configuracion.SSL;
+                            //smtp.DeliveryMethod = SmtpDeliveryMethod.Network;
+                            //smtp.UseDefaultCredentials = false;
                             await smtp.SendMailAsync(message);
                         }
                     }

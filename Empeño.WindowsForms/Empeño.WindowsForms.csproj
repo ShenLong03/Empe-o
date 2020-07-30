@@ -75,6 +75,9 @@
     </Reference>
     <Reference Include="Microsoft.VisualBasic" />
     <Reference Include="Microsoft.VisualBasic.PowerPacks, Version=9.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
+    <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.12.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
@@ -134,6 +137,14 @@
     <Compile Include="Migrations\202007271733520_newChangeEmail.cs" />
     <Compile Include="Migrations\202007271733520_newChangeEmail.designer.cs">
       <DependentUpon>202007271733520_newChangeEmail.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202007292335396_lastChanges.cs" />
+    <Compile Include="Migrations\202007292335396_lastChanges.designer.cs">
+      <DependentUpon>202007292335396_lastChanges.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202007301620048_addEmailItemConfiguration.cs" />
+    <Compile Include="Migrations\202007301620048_addEmailItemConfiguration.designer.cs">
+      <DependentUpon>202007301620048_addEmailItemConfiguration.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Transaccion.cs" />
@@ -297,6 +308,12 @@
     <EmbeddedResource Include="Migrations\202007271733520_newChangeEmail.resx">
       <DependentUpon>202007271733520_newChangeEmail.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202007292335396_lastChanges.resx">
+      <DependentUpon>202007292335396_lastChanges.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202007301620048_addEmailItemConfiguration.resx">
+      <DependentUpon>202007301620048_addEmailItemConfiguration.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Reports\Empeños.rdlc" />
     <EmbeddedResource Include="Reports\frmReporteEmpeños.resx">
       <DependentUpon>frmReporteEmpeños.cs</DependentUpon>
@@ -372,6 +389,13 @@
     <EmbeddedResource Include="Views\frmTablero.resx">
       <DependentUpon>frmTablero.cs</DependentUpon>
     </EmbeddedResource>
+    <None Include="Empeños\Comprobantes\ComprobanteAbono.xlsx" />
+    <None Include="Empeños\Comprobantes\ComprobanteAnulacion.xlsx" />
+    <None Include="Empeños\Comprobantes\ComprobanteArqueo.xlsx" />
+    <None Include="Empeños\Comprobantes\ComprobanteCancelacion.xlsx" />
+    <None Include="Empeños\Comprobantes\ComprobanteCierreCaja.xlsx" />
+    <None Include="Empeños\Comprobantes\ComprobanteEmpeño.xlsx" />
+    <None Include="Empeños\Comprobantes\ComprobanteInteres.xlsx" />
     <None Include="packages.config" />
     <None Include="Properties\DataSources\Empeño.WindowsForms.ViewReports.EmpeñoReporte.datasource" />
     <None Include="Properties\DataSources\Empeño.WindowsForms.ViewReports.IngresosEgresosReporte.datasource" />

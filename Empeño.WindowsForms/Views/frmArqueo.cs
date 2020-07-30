@@ -3,6 +3,7 @@ using Empeño.CommonEF.Enum;
 using Empeño.WindowsForms.Data;
 using Empeño.WindowsForms.Funciones;
 using Empeño.WindowsForms.Reports;
+using Microsoft.Office.Interop.Excel;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -23,6 +24,7 @@ namespace Empeño.WindowsForms.Views
         Funciones.Funciones funciones = new Funciones.Funciones();
         List<Empeno> empeños = new List<Empeno>();
         int index;
+        Configuracion configuracion = new Configuracion();
 
         public frmArqueo()
         {
@@ -41,7 +43,7 @@ namespace Empeño.WindowsForms.Views
                  && (!x.Retirado || x.FechaRetiro == null)
                  && (!x.RetiradoAdministrador || x.FechaRetiroAdministrador == null))
               .Include(x => x.Intereses).ToListAsync();
-
+                configuracion = _context.Configuraciones.FirstOrDefault();
                 LoadDetalle();
             }
             catch (Exception)
@@ -59,28 +61,58 @@ namespace Empeño.WindowsForms.Views
         #region Funciones
         public async void Print()
         {
+            var configuracion = await _context.Configuraciones.FirstOrDefaultAsync();
             Microsoft.Office.Interop.Excel.Application cexcel = new Microsoft.Office.Interop.Excel.Application();
+            cexcel.Workbooks.Open("C:\\Empeños\\Comprobantes\\ComprobanteArqueo.xlsx", true, true);
+            
+            cexcel.Visible = true;
+            cexcel.Cells[3, 1].value = configuracion.Compañia;
+            cexcel.Cells[4, 1].value = configuracion.Direccion;
+            cexcel.Cells[5, 1].value = "Tel. " + configuracion.Telefono;
+            cexcel.Cells[6, 1].value = configuracion.Nombre;
+            cexcel.Cells[7, 1].value = "Cédula: " + configuracion.Identificacion;
 
-            cexcel.Workbooks.Open("C:\\Empeños\\Arqueo\\Arqueo.xlsx", true, true);
 
-            cexcel.Visible = false;
+            var empleadoId = Program.EmpleadoId;
+            var empleado = _context.Empleados.Find(empleadoId);
+            cexcel.Cells[9, 2].value = empleado.Nombre;
+            cexcel.Cells[10, 2].value = empleado.Usuario;
+            cexcel.Cells[11, 2].value = txtFecha.Text;
 
-            var index =15;
 
+            var index = 0;
             foreach (DataGridViewRow item in dgvDetalles.Rows)
             {
-                cexcel.Cells[index, 1].value = item.Cells[0].Value;
-                cexcel.Cells[index, 2].value = item.Cells[1].Value;
-                cexcel.Cells[index, 3].value = item.Cells[2].Value;
-                cexcel.Cells[index, 4].value = item.Cells[3].Value;
-                cexcel.Cells[index, 5].value = item.Cells[4].Value;
-                cexcel.Cells[index, 6].value = item.Cells[5].Value;
+                cexcel.Cells[14 + index, 1].value = item.Cells[0].Value;
+                cexcel.Cells[14 + index, 2].value = item.Cells[3].Value.ToString();
+                cexcel.Cells[14 + index, 3].value = item.Cells[4].Value.ToString();
+                cexcel.Cells[14 + index, 4].value = item.Cells[11].Value.ToString();
+
+                Range range = (Range)cexcel.Rows[15 + index];
+                Range line = range;
+                line.Insert();
                 ++index;
             }
+            double saldoPrincipal = double.Parse(txtTotalPrincipal.Text);
+            double saldoIntereses = double.Parse(txtTotalIntereses.Text);
+            double saldoGeneral = double.Parse(txtTotalGeneral.Text);
+            double saldoAlDia = double.Parse(txtTotalAlDia.Text);
+            double saldoVencido = double.Parse(txtTotalVencido.Text);
+            double saldoRetirado = double.Parse(txtTotalRetirados.Text);
+            double saldoProroga= double.Parse(txtTotalProrroga.Text);
+
+            cexcel.Cells[17 + index, 3].value = saldoPrincipal.ToString("N2");
+            cexcel.Cells[18 + index, 3].value = saldoIntereses.ToString("N2");
+            cexcel.Cells[19 + index, 3].value = saldoGeneral.ToString("N2");
+            cexcel.Cells[20 + index, 3].value = saldoAlDia.ToString("N2");
+            cexcel.Cells[21 + index, 3].value = saldoVencido.ToString("N2");
+            cexcel.Cells[22 + index, 3].value = saldoRetirado.ToString("N2");
+            cexcel.Cells[23 + index, 3].value = saldoProroga.ToString("N2");
+
             cexcel.ActiveWindow.SelectedSheets.PrintOut();
             System.Threading.Thread.Sleep(300);
             cexcel.ActiveWorkbook.Close(false);
-            cexcel.Quit();    
+            cexcel.Quit();
         }
         #endregion
 
@@ -135,9 +167,13 @@ namespace Empeño.WindowsForms.Views
                     var proroga = _context.Prorrogas.Where(p => p.EmpenoId == empeñoId).FirstOrDefault();
                     temporal.Prorroga = true;
                     empeño.Prorroga = true;
-                    EmailFuncion emailFuncion =new EmailFuncion();
-                    await emailFuncion.SendMail(empeño.Cliente.Correo, "Proróga de Empeño #" + empeñoId, "Estimado " + empeño.Cliente.Nombre + ", '/b"
-                        + "Se le a otorgado una proróga de " + proroga.DiasProrroga + "días, para que pueda retirar su empeño.");
+                    if (!string.IsNullOrEmpty(empeño.Cliente.Correo))
+                    {
+                        EmailFuncion emailFuncion = new EmailFuncion();
+                        var str = "Se le a otorgado una <b>prórroga de " + proroga.DiasProrroga + " días</b>, para que pueda retirar su Empeño #" + empeño.EmpenoId +
+                            " <b>vencido el " + empeño.FechaVencimiento.ToString("dd/MM/yyyy") + "</b> por : <br /><i>" + empeño.Descripcion + "</i><br /><br />";
+                        await emailFuncion.SendMail(empeño.Cliente.Correo, "Proróga de Empeño #" + empeñoId + " en " + configuracion.Compañia, str, empeño);
+                    }                    
                 }               
 
                 _context.Entry(empeño).State = EntityState.Modified;
@@ -231,7 +267,7 @@ namespace Empeño.WindowsForms.Views
             buttonDataGridView = new DataGridViewButtonColumn();
             buttonDataGridView.FlatStyle = FlatStyle.Flat;
             buttonDataGridView.HeaderText = "";
-            buttonDataGridView.Text = "Proróga";
+            buttonDataGridView.Text = "Prórroga";
             buttonDataGridView.UseColumnTextForButtonValue = true;
             dgvDetalles.Columns.AddRange(buttonDataGridView);
             dgvDetalles.Refresh();
@@ -253,11 +289,10 @@ namespace Empeño.WindowsForms.Views
         }
         #endregion
 
-        private void printDocument1_PrintPage(object sender, System.Drawing.Printing.PrintPageEventArgs e)
+
+        private void panelArqueo_Paint(object sender, PaintEventArgs e)
         {
-            Bitmap bm = new Bitmap(this.dgvDetalles.Width, this.dgvDetalles.Height);
-            dgvDetalles.DrawToBitmap(bm, new Rectangle(0, 0, this.dgvDetalles.Width, this.dgvDetalles.Height));
-            e.Graphics.DrawImage(bm, 0, 0);
+
         }
     }
 }

@@ -44,16 +44,21 @@ namespace Empeño.WindowsForms.Views
         private void frmLogin_Load(object sender, EventArgs e)
         {
             btnAcceder.Focus();
-            label2.Visible = false;
+            lblError.Visible = false;
             pictureBox1.Visible = false;
         }
 
         private async void btnAcceder_Click(object sender, EventArgs e)
         {
-            
+
+            Acceder();
+        }
+
+        private async void Acceder() 
+        {
             var usuario = await _context.User.SingleOrDefaultAsync(u => u.Usuario == txtUsuario.Text && u.Password == txtContrasena.Text);
 
-            if (usuario!=null)
+            if (usuario != null)
             {
                 this.Hide();
                 Program.Usuario = usuario;
@@ -65,7 +70,8 @@ namespace Empeño.WindowsForms.Views
             else
             {
                 label1.Visible = true;
-                label2.Text = "Ingreso Incorrecto";
+                lblError.Text = "Ingreso Incorrecto";
+                lblError.ForeColor = Color.White;
                 pictureBox1.Visible = true;
             }
         }
@@ -94,6 +100,24 @@ namespace Empeño.WindowsForms.Views
         }
 
         private void btnMinimize_Click(object sender, EventArgs e)
+        {
+            this.WindowState = FormWindowState.Minimized;
+        }
+
+        private void txtContrasena_KeyUp(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode==Keys.Enter)
+            {
+                Acceder();
+            }
+        }
+
+        private void btnClose_Click_1(object sender, EventArgs e)
+        {
+            Application.Exit();
+        }
+
+        private void btnMinimize_Click_1(object sender, EventArgs e)
         {
             this.WindowState = FormWindowState.Minimized;
         }

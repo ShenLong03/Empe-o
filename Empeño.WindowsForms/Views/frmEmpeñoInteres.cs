@@ -30,6 +30,16 @@ namespace Empeño.WindowsForms.Views
 
         private async void btnImprimir_Click(object sender, EventArgs e)
         {
+            frmOscuro oscuro = new frmOscuro();
+            oscuro.Show();
+            frmPIN pin = new frmPIN("Empeño");
+            pin.ShowDialog();
+            if (!Program.Acceso)
+            {
+                oscuro.Close();
+                MessageBox.Show("No tiene acceso a este módulo");
+                return;
+            }
             intereses.Monto = double.Parse(txtMonto.Text);
             intereses.Pagado = double.Parse(txtPagado.Text);
             intereses.FechaCreacion = dtFecha.Value;

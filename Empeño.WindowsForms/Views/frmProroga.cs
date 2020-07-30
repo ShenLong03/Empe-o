@@ -45,6 +45,11 @@ namespace Empeño.WindowsForms.Views
                 txtTiempo.Text = prorroga.DiasProrroga.ToString();
                 ProrogaId = prorroga.ProrrogaId;
             }
+            else
+            {
+                txtTiempo.Text = "7";
+            }
+
         }
 
         private async void btnGuardar_Click(object sender, EventArgs e)

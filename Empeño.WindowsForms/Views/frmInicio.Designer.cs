@@ -32,13 +32,31 @@ namespace Empeño.WindowsForms.Views
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmInicio));
             this.panel1 = new System.Windows.Forms.Panel();
-            this.mnuCaja = new FontAwesome.Sharp.IconButton();
             this.panelSubMenuReportes = new System.Windows.Forms.Panel();
+            this.panelSubMenuConfiguracion = new System.Windows.Forms.Panel();
+            this.panel2 = new System.Windows.Forms.Panel();
+            this.shapeContainer1 = new Microsoft.VisualBasic.PowerPacks.ShapeContainer();
+            this.lineShape1 = new Microsoft.VisualBasic.PowerPacks.LineShape();
+            this.panel3 = new System.Windows.Forms.Panel();
+            this.lblModulo = new System.Windows.Forms.Label();
+            this.timer1 = new System.Windows.Forms.Timer(this.components);
+            this.timer2 = new System.Windows.Forms.Timer(this.components);
+            this.panelContenedor = new System.Windows.Forms.Panel();
+            this.mnuReporteArqueo = new System.Windows.Forms.Panel();
+            this.timerOcultar = new System.Windows.Forms.Timer(this.components);
+            this.timerMostrar = new System.Windows.Forms.Timer(this.components);
+            this.pictureBox3 = new System.Windows.Forms.PictureBox();
+            this.btnRestore = new FontAwesome.Sharp.IconPictureBox();
+            this.btnMaximize = new FontAwesome.Sharp.IconPictureBox();
+            this.btnMinimize = new FontAwesome.Sharp.IconPictureBox();
+            this.btnClose = new FontAwesome.Sharp.IconPictureBox();
+            this.iconModulo = new FontAwesome.Sharp.IconPictureBox();
+            this.mnuCaja = new FontAwesome.Sharp.IconButton();
             this.mnuArqueo = new FontAwesome.Sharp.IconButton();
             this.mnuReporteEmpeños = new FontAwesome.Sharp.IconButton();
             this.mnuReporteIngresos = new FontAwesome.Sharp.IconButton();
             this.mnuReporte = new FontAwesome.Sharp.IconButton();
-            this.panelSubMenuConfiguracion = new System.Windows.Forms.Panel();
+            this.mnuEmpleados = new FontAwesome.Sharp.IconButton();
             this.mnuSubIntereses = new FontAwesome.Sharp.IconButton();
             this.mnuSubConfiguracion = new FontAwesome.Sharp.IconButton();
             this.mnuConfiguracion = new FontAwesome.Sharp.IconButton();
@@ -47,42 +65,24 @@ namespace Empeño.WindowsForms.Views
             this.mnuEmpeños = new FontAwesome.Sharp.IconButton();
             this.mnuTablero = new FontAwesome.Sharp.IconButton();
             this.mnuInicio = new FontAwesome.Sharp.IconButton();
-            this.panel2 = new System.Windows.Forms.Panel();
             this.btnMenu = new FontAwesome.Sharp.IconPictureBox();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
-            this.shapeContainer1 = new Microsoft.VisualBasic.PowerPacks.ShapeContainer();
-            this.lineShape1 = new Microsoft.VisualBasic.PowerPacks.LineShape();
-            this.panel3 = new System.Windows.Forms.Panel();
-            this.btnRestore = new FontAwesome.Sharp.IconPictureBox();
-            this.btnMaximize = new FontAwesome.Sharp.IconPictureBox();
-            this.btnMinimize = new FontAwesome.Sharp.IconPictureBox();
-            this.btnClose = new FontAwesome.Sharp.IconPictureBox();
-            this.lblModulo = new System.Windows.Forms.Label();
-            this.iconModulo = new FontAwesome.Sharp.IconPictureBox();
-            this.timer1 = new System.Windows.Forms.Timer(this.components);
-            this.timer2 = new System.Windows.Forms.Timer(this.components);
-            this.panelContenedor = new System.Windows.Forms.Panel();
-            this.mnuReporteArqueo = new System.Windows.Forms.Panel();
-            this.pictureBox3 = new System.Windows.Forms.PictureBox();
-            this.timerOcultar = new System.Windows.Forms.Timer(this.components);
-            this.timerMostrar = new System.Windows.Forms.Timer(this.components);
             this.pictureBox2 = new System.Windows.Forms.PictureBox();
-            this.mnuEmpleados = new FontAwesome.Sharp.IconButton();
             this.panel1.SuspendLayout();
             this.panelSubMenuReportes.SuspendLayout();
             this.panelSubMenuConfiguracion.SuspendLayout();
             this.panel2.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.btnMenu)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.panel3.SuspendLayout();
+            this.panelContenedor.SuspendLayout();
+            this.mnuReporteArqueo.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox3)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.btnRestore)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.btnMaximize)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.btnMinimize)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.btnClose)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.iconModulo)).BeginInit();
-            this.panelContenedor.SuspendLayout();
-            this.mnuReporteArqueo.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox3)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.btnMenu)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
             this.SuspendLayout();
             // 
@@ -108,6 +108,201 @@ namespace Empeño.WindowsForms.Views
             this.panel1.Size = new System.Drawing.Size(280, 800);
             this.panel1.TabIndex = 0;
             // 
+            // panelSubMenuReportes
+            // 
+            this.panelSubMenuReportes.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(65)))), ((int)(((byte)(116)))));
+            this.panelSubMenuReportes.Controls.Add(this.mnuArqueo);
+            this.panelSubMenuReportes.Controls.Add(this.mnuReporteEmpeños);
+            this.panelSubMenuReportes.Controls.Add(this.mnuReporteIngresos);
+            this.panelSubMenuReportes.Dock = System.Windows.Forms.DockStyle.Top;
+            this.panelSubMenuReportes.Location = new System.Drawing.Point(0, 904);
+            this.panelSubMenuReportes.Name = "panelSubMenuReportes";
+            this.panelSubMenuReportes.Size = new System.Drawing.Size(259, 243);
+            this.panelSubMenuReportes.TabIndex = 11;
+            // 
+            // panelSubMenuConfiguracion
+            // 
+            this.panelSubMenuConfiguracion.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(65)))), ((int)(((byte)(116)))));
+            this.panelSubMenuConfiguracion.Controls.Add(this.mnuEmpleados);
+            this.panelSubMenuConfiguracion.Controls.Add(this.mnuSubIntereses);
+            this.panelSubMenuConfiguracion.Controls.Add(this.mnuSubConfiguracion);
+            this.panelSubMenuConfiguracion.Dock = System.Windows.Forms.DockStyle.Top;
+            this.panelSubMenuConfiguracion.Location = new System.Drawing.Point(0, 584);
+            this.panelSubMenuConfiguracion.Name = "panelSubMenuConfiguracion";
+            this.panelSubMenuConfiguracion.Size = new System.Drawing.Size(259, 240);
+            this.panelSubMenuConfiguracion.TabIndex = 9;
+            // 
+            // panel2
+            // 
+            this.panel2.Controls.Add(this.btnMenu);
+            this.panel2.Controls.Add(this.pictureBox1);
+            this.panel2.Controls.Add(this.shapeContainer1);
+            this.panel2.Dock = System.Windows.Forms.DockStyle.Top;
+            this.panel2.Location = new System.Drawing.Point(0, 0);
+            this.panel2.Margin = new System.Windows.Forms.Padding(4);
+            this.panel2.Name = "panel2";
+            this.panel2.Size = new System.Drawing.Size(259, 184);
+            this.panel2.TabIndex = 0;
+            // 
+            // shapeContainer1
+            // 
+            this.shapeContainer1.Location = new System.Drawing.Point(0, 0);
+            this.shapeContainer1.Margin = new System.Windows.Forms.Padding(0);
+            this.shapeContainer1.Name = "shapeContainer1";
+            this.shapeContainer1.Shapes.AddRange(new Microsoft.VisualBasic.PowerPacks.Shape[] {
+            this.lineShape1});
+            this.shapeContainer1.Size = new System.Drawing.Size(259, 184);
+            this.shapeContainer1.TabIndex = 1;
+            this.shapeContainer1.TabStop = false;
+            // 
+            // lineShape1
+            // 
+            this.lineShape1.BorderColor = System.Drawing.Color.White;
+            this.lineShape1.Name = "lineShape1";
+            this.lineShape1.X1 = 4;
+            this.lineShape1.X2 = 307;
+            this.lineShape1.Y1 = 163;
+            this.lineShape1.Y2 = 163;
+            // 
+            // panel3
+            // 
+            this.panel3.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(16)))), ((int)(((byte)(19)))), ((int)(((byte)(100)))));
+            this.panel3.Controls.Add(this.btnRestore);
+            this.panel3.Controls.Add(this.btnMaximize);
+            this.panel3.Controls.Add(this.btnMinimize);
+            this.panel3.Controls.Add(this.btnClose);
+            this.panel3.Controls.Add(this.lblModulo);
+            this.panel3.Controls.Add(this.iconModulo);
+            this.panel3.Dock = System.Windows.Forms.DockStyle.Top;
+            this.panel3.Location = new System.Drawing.Point(280, 0);
+            this.panel3.Name = "panel3";
+            this.panel3.Size = new System.Drawing.Size(1346, 60);
+            this.panel3.TabIndex = 1;
+            this.panel3.MouseMove += new System.Windows.Forms.MouseEventHandler(this.panel3_MouseMove);
+            // 
+            // lblModulo
+            // 
+            this.lblModulo.AutoSize = true;
+            this.lblModulo.Font = new System.Drawing.Font("Century Gothic", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblModulo.ForeColor = System.Drawing.Color.Gainsboro;
+            this.lblModulo.Location = new System.Drawing.Point(55, 15);
+            this.lblModulo.Name = "lblModulo";
+            this.lblModulo.Size = new System.Drawing.Size(54, 19);
+            this.lblModulo.TabIndex = 1;
+            this.lblModulo.Text = "Inicio";
+            // 
+            // timer1
+            // 
+            this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
+            // 
+            // panelContenedor
+            // 
+            this.panelContenedor.Controls.Add(this.mnuReporteArqueo);
+            this.panelContenedor.Controls.Add(this.panel3);
+            this.panelContenedor.Controls.Add(this.panel1);
+            this.panelContenedor.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panelContenedor.Location = new System.Drawing.Point(0, 0);
+            this.panelContenedor.Name = "panelContenedor";
+            this.panelContenedor.Size = new System.Drawing.Size(1626, 800);
+            this.panelContenedor.TabIndex = 3;
+            // 
+            // mnuReporteArqueo
+            // 
+            this.mnuReporteArqueo.Controls.Add(this.pictureBox3);
+            this.mnuReporteArqueo.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.mnuReporteArqueo.Location = new System.Drawing.Point(280, 60);
+            this.mnuReporteArqueo.Name = "mnuReporteArqueo";
+            this.mnuReporteArqueo.Size = new System.Drawing.Size(1346, 740);
+            this.mnuReporteArqueo.TabIndex = 2;
+            this.mnuReporteArqueo.MouseMove += new System.Windows.Forms.MouseEventHandler(this.panel_MouseMove);
+            // 
+            // timerOcultar
+            // 
+            this.timerOcultar.Tick += new System.EventHandler(this.timerOcultar_Tick);
+            // 
+            // timerMostrar
+            // 
+            this.timerMostrar.Tick += new System.EventHandler(this.timerMostrar_Tick);
+            // 
+            // pictureBox3
+            // 
+            this.pictureBox3.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.pictureBox3.BackColor = System.Drawing.Color.Transparent;
+            this.pictureBox3.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("pictureBox3.BackgroundImage")));
+            this.pictureBox3.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.pictureBox3.Location = new System.Drawing.Point(408, 224);
+            this.pictureBox3.MaximumSize = new System.Drawing.Size(450, 250);
+            this.pictureBox3.MinimumSize = new System.Drawing.Size(400, 200);
+            this.pictureBox3.Name = "pictureBox3";
+            this.pictureBox3.Size = new System.Drawing.Size(400, 200);
+            this.pictureBox3.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
+            this.pictureBox3.TabIndex = 1;
+            this.pictureBox3.TabStop = false;
+            // 
+            // btnRestore
+            // 
+            this.btnRestore.Anchor = System.Windows.Forms.AnchorStyles.Right;
+            this.btnRestore.BackColor = System.Drawing.Color.Transparent;
+            this.btnRestore.IconChar = FontAwesome.Sharp.IconChar.WindowRestore;
+            this.btnRestore.IconColor = System.Drawing.Color.White;
+            this.btnRestore.Location = new System.Drawing.Point(1264, 2);
+            this.btnRestore.Name = "btnRestore";
+            this.btnRestore.Size = new System.Drawing.Size(32, 32);
+            this.btnRestore.TabIndex = 5;
+            this.btnRestore.TabStop = false;
+            this.btnRestore.Click += new System.EventHandler(this.btnRestore_Click);
+            // 
+            // btnMaximize
+            // 
+            this.btnMaximize.Anchor = System.Windows.Forms.AnchorStyles.Right;
+            this.btnMaximize.BackColor = System.Drawing.Color.Transparent;
+            this.btnMaximize.IconChar = FontAwesome.Sharp.IconChar.WindowMaximize;
+            this.btnMaximize.IconColor = System.Drawing.Color.White;
+            this.btnMaximize.Location = new System.Drawing.Point(1264, 2);
+            this.btnMaximize.Name = "btnMaximize";
+            this.btnMaximize.Size = new System.Drawing.Size(32, 32);
+            this.btnMaximize.TabIndex = 4;
+            this.btnMaximize.TabStop = false;
+            this.btnMaximize.Click += new System.EventHandler(this.btnMaximize_Click);
+            // 
+            // btnMinimize
+            // 
+            this.btnMinimize.Anchor = System.Windows.Forms.AnchorStyles.Right;
+            this.btnMinimize.BackColor = System.Drawing.Color.Transparent;
+            this.btnMinimize.IconChar = FontAwesome.Sharp.IconChar.Minus;
+            this.btnMinimize.IconColor = System.Drawing.Color.White;
+            this.btnMinimize.Location = new System.Drawing.Point(1226, 2);
+            this.btnMinimize.Name = "btnMinimize";
+            this.btnMinimize.Size = new System.Drawing.Size(32, 32);
+            this.btnMinimize.TabIndex = 3;
+            this.btnMinimize.TabStop = false;
+            this.btnMinimize.Click += new System.EventHandler(this.btnMinimize_Click);
+            // 
+            // btnClose
+            // 
+            this.btnClose.Anchor = System.Windows.Forms.AnchorStyles.Right;
+            this.btnClose.BackColor = System.Drawing.Color.Transparent;
+            this.btnClose.IconChar = FontAwesome.Sharp.IconChar.Times;
+            this.btnClose.IconColor = System.Drawing.Color.White;
+            this.btnClose.Location = new System.Drawing.Point(1302, 2);
+            this.btnClose.Name = "btnClose";
+            this.btnClose.Size = new System.Drawing.Size(32, 32);
+            this.btnClose.TabIndex = 2;
+            this.btnClose.TabStop = false;
+            this.btnClose.Click += new System.EventHandler(this.btnClose_Click);
+            // 
+            // iconModulo
+            // 
+            this.iconModulo.BackColor = System.Drawing.Color.Transparent;
+            this.iconModulo.ForeColor = System.Drawing.Color.MediumPurple;
+            this.iconModulo.IconChar = FontAwesome.Sharp.IconChar.Home;
+            this.iconModulo.IconColor = System.Drawing.Color.MediumPurple;
+            this.iconModulo.Location = new System.Drawing.Point(17, 8);
+            this.iconModulo.Name = "iconModulo";
+            this.iconModulo.Size = new System.Drawing.Size(32, 32);
+            this.iconModulo.TabIndex = 0;
+            this.iconModulo.TabStop = false;
+            // 
             // mnuCaja
             // 
             this.mnuCaja.Dock = System.Windows.Forms.DockStyle.Top;
@@ -131,18 +326,6 @@ namespace Empeño.WindowsForms.Views
             this.mnuCaja.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
             this.mnuCaja.UseVisualStyleBackColor = true;
             this.mnuCaja.Click += new System.EventHandler(this.mnuCaja_Click);
-            // 
-            // panelSubMenuReportes
-            // 
-            this.panelSubMenuReportes.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(65)))), ((int)(((byte)(116)))));
-            this.panelSubMenuReportes.Controls.Add(this.mnuArqueo);
-            this.panelSubMenuReportes.Controls.Add(this.mnuReporteEmpeños);
-            this.panelSubMenuReportes.Controls.Add(this.mnuReporteIngresos);
-            this.panelSubMenuReportes.Dock = System.Windows.Forms.DockStyle.Top;
-            this.panelSubMenuReportes.Location = new System.Drawing.Point(0, 904);
-            this.panelSubMenuReportes.Name = "panelSubMenuReportes";
-            this.panelSubMenuReportes.Size = new System.Drawing.Size(259, 243);
-            this.panelSubMenuReportes.TabIndex = 11;
             // 
             // mnuArqueo
             // 
@@ -237,17 +420,28 @@ namespace Empeño.WindowsForms.Views
             this.mnuReporte.UseVisualStyleBackColor = true;
             this.mnuReporte.Click += new System.EventHandler(this.mnuReporte_Click);
             // 
-            // panelSubMenuConfiguracion
+            // mnuEmpleados
             // 
-            this.panelSubMenuConfiguracion.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(65)))), ((int)(((byte)(116)))));
-            this.panelSubMenuConfiguracion.Controls.Add(this.mnuEmpleados);
-            this.panelSubMenuConfiguracion.Controls.Add(this.mnuSubIntereses);
-            this.panelSubMenuConfiguracion.Controls.Add(this.mnuSubConfiguracion);
-            this.panelSubMenuConfiguracion.Dock = System.Windows.Forms.DockStyle.Top;
-            this.panelSubMenuConfiguracion.Location = new System.Drawing.Point(0, 584);
-            this.panelSubMenuConfiguracion.Name = "panelSubMenuConfiguracion";
-            this.panelSubMenuConfiguracion.Size = new System.Drawing.Size(259, 240);
-            this.panelSubMenuConfiguracion.TabIndex = 9;
+            this.mnuEmpleados.Dock = System.Windows.Forms.DockStyle.Top;
+            this.mnuEmpleados.FlatAppearance.BorderSize = 0;
+            this.mnuEmpleados.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.mnuEmpleados.Flip = FontAwesome.Sharp.FlipOrientation.Normal;
+            this.mnuEmpleados.ForeColor = System.Drawing.Color.White;
+            this.mnuEmpleados.IconChar = FontAwesome.Sharp.IconChar.User;
+            this.mnuEmpleados.IconColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(65)))), ((int)(((byte)(116)))));
+            this.mnuEmpleados.IconSize = 1;
+            this.mnuEmpleados.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.mnuEmpleados.Location = new System.Drawing.Point(0, 160);
+            this.mnuEmpleados.Margin = new System.Windows.Forms.Padding(4);
+            this.mnuEmpleados.Name = "mnuEmpleados";
+            this.mnuEmpleados.Padding = new System.Windows.Forms.Padding(75, 0, 0, 0);
+            this.mnuEmpleados.Rotation = 0D;
+            this.mnuEmpleados.Size = new System.Drawing.Size(259, 80);
+            this.mnuEmpleados.TabIndex = 11;
+            this.mnuEmpleados.Text = "Empleados";
+            this.mnuEmpleados.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.mnuEmpleados.UseVisualStyleBackColor = true;
+            this.mnuEmpleados.Click += new System.EventHandler(this.mnuEmpleados_Click_1);
             // 
             // mnuSubIntereses
             // 
@@ -364,6 +558,7 @@ namespace Empeño.WindowsForms.Views
             this.mnuLogout.Text = "Cerrar";
             this.mnuLogout.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
             this.mnuLogout.UseVisualStyleBackColor = false;
+            this.mnuLogout.Click += new System.EventHandler(this.mnuLogout_Click);
             // 
             // mnuEmpeños
             // 
@@ -437,18 +632,6 @@ namespace Empeño.WindowsForms.Views
             this.mnuInicio.UseVisualStyleBackColor = true;
             this.mnuInicio.Click += new System.EventHandler(this.mnuInicio_Click);
             // 
-            // panel2
-            // 
-            this.panel2.Controls.Add(this.btnMenu);
-            this.panel2.Controls.Add(this.pictureBox1);
-            this.panel2.Controls.Add(this.shapeContainer1);
-            this.panel2.Dock = System.Windows.Forms.DockStyle.Top;
-            this.panel2.Location = new System.Drawing.Point(0, 0);
-            this.panel2.Margin = new System.Windows.Forms.Padding(4);
-            this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(259, 184);
-            this.panel2.TabIndex = 0;
-            // 
             // btnMenu
             // 
             this.btnMenu.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
@@ -473,165 +656,6 @@ namespace Empeño.WindowsForms.Views
             this.pictureBox1.TabIndex = 0;
             this.pictureBox1.TabStop = false;
             // 
-            // shapeContainer1
-            // 
-            this.shapeContainer1.Location = new System.Drawing.Point(0, 0);
-            this.shapeContainer1.Margin = new System.Windows.Forms.Padding(0);
-            this.shapeContainer1.Name = "shapeContainer1";
-            this.shapeContainer1.Shapes.AddRange(new Microsoft.VisualBasic.PowerPacks.Shape[] {
-            this.lineShape1});
-            this.shapeContainer1.Size = new System.Drawing.Size(259, 184);
-            this.shapeContainer1.TabIndex = 1;
-            this.shapeContainer1.TabStop = false;
-            // 
-            // lineShape1
-            // 
-            this.lineShape1.BorderColor = System.Drawing.Color.White;
-            this.lineShape1.Name = "lineShape1";
-            this.lineShape1.X1 = 4;
-            this.lineShape1.X2 = 307;
-            this.lineShape1.Y1 = 163;
-            this.lineShape1.Y2 = 163;
-            // 
-            // panel3
-            // 
-            this.panel3.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(16)))), ((int)(((byte)(19)))), ((int)(((byte)(100)))));
-            this.panel3.Controls.Add(this.btnRestore);
-            this.panel3.Controls.Add(this.btnMaximize);
-            this.panel3.Controls.Add(this.btnMinimize);
-            this.panel3.Controls.Add(this.btnClose);
-            this.panel3.Controls.Add(this.lblModulo);
-            this.panel3.Controls.Add(this.iconModulo);
-            this.panel3.Dock = System.Windows.Forms.DockStyle.Top;
-            this.panel3.Location = new System.Drawing.Point(280, 0);
-            this.panel3.Name = "panel3";
-            this.panel3.Size = new System.Drawing.Size(1346, 60);
-            this.panel3.TabIndex = 1;
-            this.panel3.MouseMove += new System.Windows.Forms.MouseEventHandler(this.panel3_MouseMove);
-            // 
-            // btnRestore
-            // 
-            this.btnRestore.Anchor = System.Windows.Forms.AnchorStyles.Right;
-            this.btnRestore.BackColor = System.Drawing.Color.Transparent;
-            this.btnRestore.IconChar = FontAwesome.Sharp.IconChar.WindowRestore;
-            this.btnRestore.IconColor = System.Drawing.Color.White;
-            this.btnRestore.Location = new System.Drawing.Point(1264, 2);
-            this.btnRestore.Name = "btnRestore";
-            this.btnRestore.Size = new System.Drawing.Size(32, 32);
-            this.btnRestore.TabIndex = 5;
-            this.btnRestore.TabStop = false;
-            this.btnRestore.Click += new System.EventHandler(this.btnRestore_Click);
-            // 
-            // btnMaximize
-            // 
-            this.btnMaximize.Anchor = System.Windows.Forms.AnchorStyles.Right;
-            this.btnMaximize.BackColor = System.Drawing.Color.Transparent;
-            this.btnMaximize.IconChar = FontAwesome.Sharp.IconChar.WindowMaximize;
-            this.btnMaximize.IconColor = System.Drawing.Color.White;
-            this.btnMaximize.Location = new System.Drawing.Point(1264, 2);
-            this.btnMaximize.Name = "btnMaximize";
-            this.btnMaximize.Size = new System.Drawing.Size(32, 32);
-            this.btnMaximize.TabIndex = 4;
-            this.btnMaximize.TabStop = false;
-            this.btnMaximize.Click += new System.EventHandler(this.btnMaximize_Click);
-            // 
-            // btnMinimize
-            // 
-            this.btnMinimize.Anchor = System.Windows.Forms.AnchorStyles.Right;
-            this.btnMinimize.BackColor = System.Drawing.Color.Transparent;
-            this.btnMinimize.IconChar = FontAwesome.Sharp.IconChar.Minus;
-            this.btnMinimize.IconColor = System.Drawing.Color.White;
-            this.btnMinimize.Location = new System.Drawing.Point(1226, 2);
-            this.btnMinimize.Name = "btnMinimize";
-            this.btnMinimize.Size = new System.Drawing.Size(32, 32);
-            this.btnMinimize.TabIndex = 3;
-            this.btnMinimize.TabStop = false;
-            this.btnMinimize.Click += new System.EventHandler(this.btnMinimize_Click);
-            // 
-            // btnClose
-            // 
-            this.btnClose.Anchor = System.Windows.Forms.AnchorStyles.Right;
-            this.btnClose.BackColor = System.Drawing.Color.Transparent;
-            this.btnClose.IconChar = FontAwesome.Sharp.IconChar.Times;
-            this.btnClose.IconColor = System.Drawing.Color.White;
-            this.btnClose.Location = new System.Drawing.Point(1302, 2);
-            this.btnClose.Name = "btnClose";
-            this.btnClose.Size = new System.Drawing.Size(32, 32);
-            this.btnClose.TabIndex = 2;
-            this.btnClose.TabStop = false;
-            this.btnClose.Click += new System.EventHandler(this.btnClose_Click);
-            // 
-            // lblModulo
-            // 
-            this.lblModulo.AutoSize = true;
-            this.lblModulo.Font = new System.Drawing.Font("Century Gothic", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblModulo.ForeColor = System.Drawing.Color.Gainsboro;
-            this.lblModulo.Location = new System.Drawing.Point(55, 15);
-            this.lblModulo.Name = "lblModulo";
-            this.lblModulo.Size = new System.Drawing.Size(54, 19);
-            this.lblModulo.TabIndex = 1;
-            this.lblModulo.Text = "Inicio";
-            // 
-            // iconModulo
-            // 
-            this.iconModulo.BackColor = System.Drawing.Color.Transparent;
-            this.iconModulo.ForeColor = System.Drawing.Color.MediumPurple;
-            this.iconModulo.IconChar = FontAwesome.Sharp.IconChar.Home;
-            this.iconModulo.IconColor = System.Drawing.Color.MediumPurple;
-            this.iconModulo.Location = new System.Drawing.Point(17, 8);
-            this.iconModulo.Name = "iconModulo";
-            this.iconModulo.Size = new System.Drawing.Size(32, 32);
-            this.iconModulo.TabIndex = 0;
-            this.iconModulo.TabStop = false;
-            // 
-            // timer1
-            // 
-            this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
-            // 
-            // panelContenedor
-            // 
-            this.panelContenedor.Controls.Add(this.mnuReporteArqueo);
-            this.panelContenedor.Controls.Add(this.panel3);
-            this.panelContenedor.Controls.Add(this.panel1);
-            this.panelContenedor.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panelContenedor.Location = new System.Drawing.Point(0, 0);
-            this.panelContenedor.Name = "panelContenedor";
-            this.panelContenedor.Size = new System.Drawing.Size(1626, 800);
-            this.panelContenedor.TabIndex = 3;
-            // 
-            // mnuReporteArqueo
-            // 
-            this.mnuReporteArqueo.Controls.Add(this.pictureBox3);
-            this.mnuReporteArqueo.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.mnuReporteArqueo.Location = new System.Drawing.Point(280, 60);
-            this.mnuReporteArqueo.Name = "mnuReporteArqueo";
-            this.mnuReporteArqueo.Size = new System.Drawing.Size(1346, 740);
-            this.mnuReporteArqueo.TabIndex = 2;
-            this.mnuReporteArqueo.MouseMove += new System.Windows.Forms.MouseEventHandler(this.panel_MouseMove);
-            // 
-            // pictureBox3
-            // 
-            this.pictureBox3.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.pictureBox3.BackColor = System.Drawing.Color.Transparent;
-            this.pictureBox3.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("pictureBox3.BackgroundImage")));
-            this.pictureBox3.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.pictureBox3.Location = new System.Drawing.Point(408, 224);
-            this.pictureBox3.MaximumSize = new System.Drawing.Size(450, 250);
-            this.pictureBox3.MinimumSize = new System.Drawing.Size(400, 200);
-            this.pictureBox3.Name = "pictureBox3";
-            this.pictureBox3.Size = new System.Drawing.Size(400, 200);
-            this.pictureBox3.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
-            this.pictureBox3.TabIndex = 1;
-            this.pictureBox3.TabStop = false;
-            // 
-            // timerOcultar
-            // 
-            this.timerOcultar.Tick += new System.EventHandler(this.timerOcultar_Tick);
-            // 
-            // timerMostrar
-            // 
-            this.timerMostrar.Tick += new System.EventHandler(this.timerMostrar_Tick);
-            // 
             // pictureBox2
             // 
             this.pictureBox2.BackColor = System.Drawing.Color.Transparent;
@@ -642,29 +666,6 @@ namespace Empeño.WindowsForms.Views
             this.pictureBox2.Size = new System.Drawing.Size(430, 230);
             this.pictureBox2.TabIndex = 2;
             this.pictureBox2.TabStop = false;
-            // 
-            // mnuEmpleados
-            // 
-            this.mnuEmpleados.Dock = System.Windows.Forms.DockStyle.Top;
-            this.mnuEmpleados.FlatAppearance.BorderSize = 0;
-            this.mnuEmpleados.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.mnuEmpleados.Flip = FontAwesome.Sharp.FlipOrientation.Normal;
-            this.mnuEmpleados.ForeColor = System.Drawing.Color.White;
-            this.mnuEmpleados.IconChar = FontAwesome.Sharp.IconChar.User;
-            this.mnuEmpleados.IconColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(65)))), ((int)(((byte)(116)))));
-            this.mnuEmpleados.IconSize = 1;
-            this.mnuEmpleados.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.mnuEmpleados.Location = new System.Drawing.Point(0, 160);
-            this.mnuEmpleados.Margin = new System.Windows.Forms.Padding(4);
-            this.mnuEmpleados.Name = "mnuEmpleados";
-            this.mnuEmpleados.Padding = new System.Windows.Forms.Padding(75, 0, 0, 0);
-            this.mnuEmpleados.Rotation = 0D;
-            this.mnuEmpleados.Size = new System.Drawing.Size(259, 80);
-            this.mnuEmpleados.TabIndex = 11;
-            this.mnuEmpleados.Text = "Empleados";
-            this.mnuEmpleados.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.mnuEmpleados.UseVisualStyleBackColor = true;
-            this.mnuEmpleados.Click += new System.EventHandler(this.mnuEmpleados_Click_1);
             // 
             // frmInicio
             // 
@@ -687,19 +688,19 @@ namespace Empeño.WindowsForms.Views
             this.panelSubMenuReportes.ResumeLayout(false);
             this.panelSubMenuConfiguracion.ResumeLayout(false);
             this.panel2.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.btnMenu)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.panel3.ResumeLayout(false);
             this.panel3.PerformLayout();
+            this.panelContenedor.ResumeLayout(false);
+            this.mnuReporteArqueo.ResumeLayout(false);
+            this.mnuReporteArqueo.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox3)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.btnRestore)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.btnMaximize)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.btnMinimize)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.btnClose)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.iconModulo)).EndInit();
-            this.panelContenedor.ResumeLayout(false);
-            this.mnuReporteArqueo.ResumeLayout(false);
-            this.mnuReporteArqueo.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox3)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.btnMenu)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
             this.ResumeLayout(false);
 

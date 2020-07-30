@@ -1,6 +1,7 @@
 ﻿namespace Empeño.CommonEF.Entities
 {
     using Enum;
+    using Newtonsoft.Json;
     using System;
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
@@ -48,18 +49,19 @@
 
         public bool IsDelete { get; set; } = false;
 
+        [JsonIgnore]
         public virtual Cliente Cliente { get; set; }
-
+        [JsonIgnore]
         public virtual Empleado Empleado { get; set; }
-
+        [JsonIgnore]
         public virtual Empleado Editor { get; set; }
-
+        [JsonIgnore]
         public virtual Interes Interes { get; set; }
-
+        [JsonIgnore]
         public virtual ICollection<Pago> Pagos { get; set; }
-
+        [JsonIgnore]
         public virtual ICollection<Intereses> Intereses { get; set; }
-
+        [JsonIgnore]
         public virtual ICollection<Prorroga> Prorrogas { get; set; }
 
         public Empeno()

@@ -33,6 +33,8 @@
             this.panel1 = new System.Windows.Forms.Panel();
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
             this.panel2 = new System.Windows.Forms.Panel();
+            this.txtDirección = new System.Windows.Forms.TextBox();
+            this.label10 = new System.Windows.Forms.Label();
             this.label8 = new System.Windows.Forms.Label();
             this.chkSSL = new System.Windows.Forms.CheckBox();
             this.txtPuerto = new System.Windows.Forms.TextBox();
@@ -60,6 +62,8 @@
             this.label7 = new System.Windows.Forms.Label();
             this.panel4 = new System.Windows.Forms.Panel();
             this.btnGuardar = new FontAwesome.Sharp.IconButton();
+            this.txtEmailAdmin = new System.Windows.Forms.TextBox();
+            this.label11 = new System.Windows.Forms.Label();
             this.tableLayoutPanel1.SuspendLayout();
             this.panel1.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
@@ -117,6 +121,10 @@
             // panel2
             // 
             this.panel2.AutoScroll = true;
+            this.panel2.Controls.Add(this.txtEmailAdmin);
+            this.panel2.Controls.Add(this.label11);
+            this.panel2.Controls.Add(this.txtDirección);
+            this.panel2.Controls.Add(this.label10);
             this.panel2.Controls.Add(this.label8);
             this.panel2.Controls.Add(this.chkSSL);
             this.panel2.Controls.Add(this.txtPuerto);
@@ -145,11 +153,31 @@
             this.panel2.Size = new System.Drawing.Size(1221, 426);
             this.panel2.TabIndex = 0;
             // 
+            // txtDirección
+            // 
+            this.txtDirección.Font = new System.Drawing.Font("Century Gothic", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtDirección.Location = new System.Drawing.Point(163, 275);
+            this.txtDirección.Margin = new System.Windows.Forms.Padding(4);
+            this.txtDirección.Name = "txtDirección";
+            this.txtDirección.Size = new System.Drawing.Size(416, 41);
+            this.txtDirección.TabIndex = 66;
+            // 
+            // label10
+            // 
+            this.label10.AutoSize = true;
+            this.label10.Font = new System.Drawing.Font("Century Gothic", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label10.Location = new System.Drawing.Point(16, 275);
+            this.label10.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label10.Name = "label10";
+            this.label10.Size = new System.Drawing.Size(104, 23);
+            this.label10.TabIndex = 65;
+            this.label10.Text = "Dirección";
+            // 
             // label8
             // 
             this.label8.AutoSize = true;
             this.label8.Font = new System.Drawing.Font("Century Gothic", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label8.Location = new System.Drawing.Point(642, 273);
+            this.label8.Location = new System.Drawing.Point(638, 340);
             this.label8.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(75, 23);
@@ -159,7 +187,7 @@
             // chkSSL
             // 
             this.chkSSL.AutoSize = true;
-            this.chkSSL.Location = new System.Drawing.Point(789, 279);
+            this.chkSSL.Location = new System.Drawing.Point(785, 346);
             this.chkSSL.Name = "chkSSL";
             this.chkSSL.Size = new System.Drawing.Size(18, 17);
             this.chkSSL.TabIndex = 63;
@@ -168,7 +196,7 @@
             // txtPuerto
             // 
             this.txtPuerto.Font = new System.Drawing.Font("Century Gothic", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtPuerto.Location = new System.Drawing.Point(789, 208);
+            this.txtPuerto.Location = new System.Drawing.Point(785, 275);
             this.txtPuerto.Margin = new System.Windows.Forms.Padding(4);
             this.txtPuerto.Name = "txtPuerto";
             this.txtPuerto.Size = new System.Drawing.Size(63, 41);
@@ -178,7 +206,7 @@
             // 
             this.label9.AutoSize = true;
             this.label9.Font = new System.Drawing.Font("Century Gothic", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label9.Location = new System.Drawing.Point(642, 208);
+            this.label9.Location = new System.Drawing.Point(638, 275);
             this.label9.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label9.Name = "label9";
             this.label9.Size = new System.Drawing.Size(71, 23);
@@ -188,7 +216,7 @@
             // txtSMTP
             // 
             this.txtSMTP.Font = new System.Drawing.Font("Century Gothic", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtSMTP.Location = new System.Drawing.Point(789, 147);
+            this.txtSMTP.Location = new System.Drawing.Point(785, 208);
             this.txtSMTP.Margin = new System.Windows.Forms.Padding(4);
             this.txtSMTP.Name = "txtSMTP";
             this.txtSMTP.Size = new System.Drawing.Size(416, 41);
@@ -198,7 +226,7 @@
             // 
             this.lbllbl.AutoSize = true;
             this.lbllbl.Font = new System.Drawing.Font("Century Gothic", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lbllbl.Location = new System.Drawing.Point(642, 147);
+            this.lbllbl.Location = new System.Drawing.Point(638, 208);
             this.lbllbl.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lbllbl.Name = "lbllbl";
             this.lbllbl.Size = new System.Drawing.Size(57, 23);
@@ -208,7 +236,7 @@
             // txtPassword
             // 
             this.txtPassword.Font = new System.Drawing.Font("Century Gothic", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtPassword.Location = new System.Drawing.Point(789, 86);
+            this.txtPassword.Location = new System.Drawing.Point(785, 147);
             this.txtPassword.Margin = new System.Windows.Forms.Padding(4);
             this.txtPassword.Name = "txtPassword";
             this.txtPassword.PasswordChar = '*';
@@ -219,7 +247,7 @@
             // 
             this.label12.AutoSize = true;
             this.label12.Font = new System.Drawing.Font("Century Gothic", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label12.Location = new System.Drawing.Point(642, 86);
+            this.label12.Location = new System.Drawing.Point(638, 147);
             this.label12.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label12.Name = "label12";
             this.label12.Size = new System.Drawing.Size(100, 23);
@@ -231,7 +259,7 @@
             this.txtEmail.BackColor = System.Drawing.Color.White;
             this.txtEmail.Font = new System.Drawing.Font("Century Gothic", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtEmail.ForeColor = System.Drawing.Color.Black;
-            this.txtEmail.Location = new System.Drawing.Point(789, 25);
+            this.txtEmail.Location = new System.Drawing.Point(785, 86);
             this.txtEmail.Margin = new System.Windows.Forms.Padding(4);
             this.txtEmail.Name = "txtEmail";
             this.txtEmail.Size = new System.Drawing.Size(416, 41);
@@ -241,7 +269,7 @@
             // 
             this.label13.AutoSize = true;
             this.label13.Font = new System.Drawing.Font("Century Gothic", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label13.Location = new System.Drawing.Point(642, 25);
+            this.label13.Location = new System.Drawing.Point(638, 86);
             this.label13.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label13.Name = "label13";
             this.label13.Size = new System.Drawing.Size(62, 23);
@@ -260,7 +288,7 @@
             // 
             this.label6.AutoSize = true;
             this.label6.Font = new System.Drawing.Font("Century Gothic", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label6.Location = new System.Drawing.Point(234, 269);
+            this.label6.Location = new System.Drawing.Point(234, 348);
             this.label6.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(72, 23);
@@ -270,7 +298,7 @@
             // txtMeses
             // 
             this.txtMeses.Font = new System.Drawing.Font("Century Gothic", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtMeses.Location = new System.Drawing.Point(163, 269);
+            this.txtMeses.Location = new System.Drawing.Point(163, 348);
             this.txtMeses.Margin = new System.Windows.Forms.Padding(4);
             this.txtMeses.Name = "txtMeses";
             this.txtMeses.Size = new System.Drawing.Size(63, 41);
@@ -280,7 +308,7 @@
             // 
             this.label5.AutoSize = true;
             this.label5.Font = new System.Drawing.Font("Century Gothic", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label5.Location = new System.Drawing.Point(16, 269);
+            this.label5.Location = new System.Drawing.Point(16, 348);
             this.label5.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(137, 23);
@@ -439,6 +467,28 @@
             this.btnGuardar.UseVisualStyleBackColor = false;
             this.btnGuardar.Click += new System.EventHandler(this.btnGuardar_Click);
             // 
+            // txtEmailAdmin
+            // 
+            this.txtEmailAdmin.BackColor = System.Drawing.Color.White;
+            this.txtEmailAdmin.Font = new System.Drawing.Font("Century Gothic", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtEmailAdmin.ForeColor = System.Drawing.Color.Black;
+            this.txtEmailAdmin.Location = new System.Drawing.Point(785, 25);
+            this.txtEmailAdmin.Margin = new System.Windows.Forms.Padding(4);
+            this.txtEmailAdmin.Name = "txtEmailAdmin";
+            this.txtEmailAdmin.Size = new System.Drawing.Size(416, 41);
+            this.txtEmailAdmin.TabIndex = 68;
+            // 
+            // label11
+            // 
+            this.label11.AutoSize = true;
+            this.label11.Font = new System.Drawing.Font("Century Gothic", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label11.Location = new System.Drawing.Point(638, 25);
+            this.label11.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label11.Name = "label11";
+            this.label11.Size = new System.Drawing.Size(132, 23);
+            this.label11.TabIndex = 67;
+            this.label11.Text = "Email Admin";
+            // 
             // frmConfiguracionGeneral
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(12F, 23F);
@@ -500,5 +550,9 @@
         private System.Windows.Forms.TextBox txtEmail;
         private System.Windows.Forms.Label label13;
         private System.Windows.Forms.Panel panel5;
+        private System.Windows.Forms.TextBox txtDirección;
+        private System.Windows.Forms.Label label10;
+        private System.Windows.Forms.TextBox txtEmailAdmin;
+        private System.Windows.Forms.Label label11;
     }
 }

@@ -54,12 +54,17 @@ namespace Empeño.WindowsForms.Views
         {
             var perfil = await _context.User.Where(u => u.Codigo == txtPIN.Text).FirstOrDefaultAsync();
             if (perfil == null)
+            {
+                MessageBox.Show("No tiene acceso al módulo", "Alerta", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                Program.Modulo = Modulo;
+                Program.Acceso = false;
                 return;
+            }
 
             Program.PIN = txtPIN.Text;
             Program.Modulo = Modulo;
             Program.Acceso = false;
-            Program.EmpleadoId = await funciones.GetEmpleadoIdByUser(Program.Usuario.Usuario);
+            Program.EmpleadoId = await funciones.GetEmpleadoIdByUser(perfil.Usuario);
 
             if (perfil.Perfil.Nombre == "Administrador")
                 Program.Acceso = true;

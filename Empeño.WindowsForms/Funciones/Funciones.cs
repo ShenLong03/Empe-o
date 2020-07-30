@@ -1,6 +1,9 @@
 ﻿using Empeño.CommonEF.Entities;
 using Empeño.CommonEF.Enum;
+using Empeño.CommonEF.Models;
 using Empeño.WindowsForms.Data;
+using Microsoft.VisualBasic.CompilerServices;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
@@ -392,7 +395,7 @@ namespace Empeño.WindowsForms.Funciones
                 {
                     int cantidadMeses = ((int)(DateTime.Today - empeño.Fecha).TotalDays / 30);
                     double sobrante = (DateTime.Today - empeño.Fecha).TotalDays % 30;
-                    cantidadMeses += sobrante > 0 ? 1 : 0;
+                    cantidadMeses += sobrante > 1 ? 1 : 0;
                     int cantidadIntereses = empeño.Intereses.Count();
 
                     if (cantidadMeses > cantidadIntereses)
@@ -415,8 +418,10 @@ namespace Empeño.WindowsForms.Funciones
                             {
                                 intereses.FechaVencimiento = empeño.FechaVencimiento.AddMonths(1);
                             }
-
-                            _context.Intereses.Add(intereses);
+                            if (_context.Intereses.Where(x => x.EmpenoId == empeño.EmpenoId && x.FechaVencimiento == intereses.FechaVencimiento).Count() == 0)
+                            {
+                                _context.Intereses.Add(intereses);
+                            }                           
                         }
                         await _context.SaveChangesAsync();
                     }
@@ -453,8 +458,61 @@ namespace Empeño.WindowsForms.Funciones
 
                         await _context.SaveChangesAsync();
                     }
+
+                    await SaveBitacora(new ValorBitacora
+                    {
+                        Valor = "Revisión Automatica de Empeños",
+                        Modulo = "Revisar Empeños",
+                        Accion = "Automatico"
+                    });
+
                 }
             }
+        }
+
+        private string GetEstadoName(int i)
+        {
+            switch (i)
+            {
+                case 0:
+                    return "Activo";
+                case 1:
+                    return "Pendiente";
+                case 2:
+                    return "Vencido";
+                case 3:
+                    return "Cancelada";
+                case 4:
+                    return "Retirada";
+                default:
+                    return "";
+            }
+        }
+
+        public async Task SaveBitacora(ValorBitacora valorBitacora, int error=0, string message="") 
+        {          
+            var bitacora = new Bitacora
+            {
+                Error = error,
+                Fecha = DateTime.Now,
+                Mensaje = message,
+                Valor = JsonConvert.SerializeObject(valorBitacora)
+            };
+
+            if (Program.EmpleadoId > 0 && Program.Acceso)
+            {
+                bitacora.EmpleadoId = Program.EmpleadoId;
+            }
+            else if(Program.Usuario!=null)
+            {
+                bitacora.Usuario = Program.Usuario.Usuario;
+                var empleadoId = await GetEmpleadoIdByUser(Program.Usuario.Usuario);
+                var empleado = await _context.Empleados.FindAsync(empleadoId);
+                bitacora.EmpleadoId = empleadoId;
+            }
+
+            _context.Bitacoras.Add(bitacora);
+            await _context.SaveChangesAsync();
         }
     }
 }

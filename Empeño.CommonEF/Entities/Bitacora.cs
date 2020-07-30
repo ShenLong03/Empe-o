@@ -16,6 +16,12 @@ namespace Empeño.CommonEF.Entities
 
         public string Mensaje { get; set; }
 
+        public int? EmpleadoId { get; set; }
+
+        public string Usuario { get; set; }
+
+        public virtual Empleado Empleado { get; set; }
+
         public Bitacora()
         {
             Fecha = DateTime.Now;

@@ -1,5 +1,6 @@
 ﻿using Empeño.CommonEF.Entities;
 using Empeño.WindowsForms.Data;
+using Empeño.WindowsForms.Funciones;
 using Microsoft.Office.Interop.Excel;
 using Microsoft.Reporting.WinForms.Internal.Soap.ReportingServices2005.Execution;
 using System;
@@ -8,6 +9,7 @@ using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Globalization;
+using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
@@ -49,19 +51,22 @@ namespace Empeño.WindowsForms.Views
                 detalle.Cantidad = double.Parse(txtCantidad.Text);
                 detalles.Add(detalle);
                 LoadList();
+                txtConcepto.Focus();
             }
         }
 
         public void LoadList()
         {
             dgvDetalles.DataSource = null;
+            textBox1.Text = string.IsNullOrEmpty(textBox1.Text) ? "0.00" : textBox1.Text;
+            
             dgvDetalles.DataSource = detalles.Select(x=>new 
             {
                 Id=x.CierreCajaId,
                 x.Concepto,
-                x.Valor,
+               Valor= x.Valor.ToString("N2"),
                 x.Cantidad,
-                x.SubTotal
+               SubTotal= x.SubTotal.ToString("N2")
             }).ToList();
             dgvDetalles.Refresh();           
             txtTotal.Text = ((double.Parse(textBox1.Text) * -1) + detalles.Sum(d => d.SubTotal)).ToString("N2");
@@ -76,6 +81,7 @@ namespace Empeño.WindowsForms.Views
             var empleado = await _context.Empleados.FindAsync(empleadoId);
             txtEmpleado.Text = empleado.Nombre;
             txtEmpleado.Enabled = false;
+            textBox1.Text = "0.00";
         }
 
         private void txtConcepto_TextChanged(object sender, EventArgs e)
@@ -121,6 +127,14 @@ namespace Empeño.WindowsForms.Views
 
             Print(cierreCaja);
 
+            var configuracion = _context.Configuraciones.FirstOrDefault();
+            if (!string.IsNullOrEmpty(configuracion.EmailNotification))
+            {
+                EmailFuncion emailFuncion = new EmailFuncion();
+                var empleado = await _context.Empleados.FindAsync(Program.EmpleadoId);
+                string str = "Se ha realizado el cierre de caja al ser el <b>" + cierreCaja.Fecha.ToLongDateString() + " " + cierreCaja.Fecha.ToLongTimeString() + "</b> por <b>" + empleado.Nombre + "</b>. <br /><br />";
+                await emailFuncion.SendMail(configuracion.EmailNotification, "Cierre de Caja " + cierreCaja.Fecha, str, detalles);
+            }
             //printDocument1.Print();
            // MessageBox.Show("Imprimiendo...");
         }
@@ -181,31 +195,36 @@ namespace Empeño.WindowsForms.Views
         public async void Print(CierreCaja cierreCaja)
         {
             Microsoft.Office.Interop.Excel.Application cexcel = new Microsoft.Office.Interop.Excel.Application();
+            string pathch = Path.GetDirectoryName(System.Windows.Forms.Application.ExecutablePath);
+            pathch = $"{pathch}\\Empeños\\Comprobantes\\ComprobanteCierreCaja.xlsx";
+            cexcel.Workbooks.Open(pathch, true, true);
 
-            cexcel.Workbooks.Open("C:\\Empeños\\CierreCaja\\CierreCaja.xlsx", true, true);
-            cexcel.Visible = true;
+            cexcel.Visible = false;
 
-            int posicion = 15;
-
-            var empleadoId= await funciones.GetEmpleadoIdByUser(Program.Usuario.Usuario);
+            var empleadoId= Program.EmpleadoId;
             var empleado = _context.Empleados.Find(empleadoId);
             cexcel.Cells[9, 2].value = empleado.Nombre;
             cexcel.Cells[10, 2].value = empleado.Usuario;
+            cexcel.Cells[11, 2].value = txtFecha.Text;
 
+            var index = 0;
             foreach (DataGridViewRow item in dgvDetalles.Rows)
             {
-                cexcel.Cells[16, 1].value = item.Cells[1].Value.ToString();
-                cexcel.Cells[16, 2].value = item.Cells[2].Value.ToString();
-                cexcel.Cells[16, 3].value = item.Cells[3].Value.ToString();
-                cexcel.Cells[16, 4].value = item.Cells[4].Value.ToString();
-                Range line = (Range)cexcel.Rows[16];
+                cexcel.Cells[14 + index, 1].value = item.Cells[1].Value.ToString();
+                cexcel.Cells[14 + index, 2].value = item.Cells[2].Value.ToString();
+                cexcel.Cells[14 + index, 3].value = item.Cells[3].Value.ToString();
+                cexcel.Cells[14 + index, 4].value = item.Cells[4].Value.ToString();     
+
+                Range range = (Range)cexcel.Rows[15 + index];
+                Range line = range;
                 line.Insert();
+                ++index;              
             }
 
-            
-          //cexcel.Cells[24, 3].value = Convert.ToDateTime(FechaVence).Day.ToString() + "/" + Convert.ToDateTime(FechaVence).Month.ToString() + "/" + Convert.ToDateTime(FechaVence).Year.ToString();
-            //cexcel.Cells[26, 3].value = Convert.ToInt32(objinteres.Monto_Interes).ToString();
-            cexcel.Cells[28, 3].value = "Pendiente";
+            double saldoInicial = double.Parse(textBox1.Text);
+            cexcel.Cells[17 + index, 3].value = saldoInicial.ToString("N2");
+            cexcel.Cells[18 + index, 3].value = detalles.Sum(d=>d.SubTotal).ToString("N2");
+            cexcel.Cells[19 + index, 3].value = txtTotal.Text;
             cexcel.ActiveWindow.SelectedSheets.PrintOut();
             System.Threading.Thread.Sleep(300);
             cexcel.ActiveWorkbook.Close(false);
@@ -225,6 +244,26 @@ namespace Empeño.WindowsForms.Views
             {
                 txtTotal.Text = ((double.Parse(textBox1.Text) * -1) + detalles.Sum(d => d.SubTotal)).ToString("N2");
             }
+        }
+
+        private void textBox1_Leave(object sender, EventArgs e)
+        {
+            if (string.IsNullOrEmpty(textBox1.Text))
+            {
+                textBox1.Text = "0.00";
+            }
+            double numero = double.Parse(textBox1.Text);
+            textBox1.Text = numero.ToString("N2");
+        }
+
+        private void txtValor_Leave(object sender, EventArgs e)
+        {
+            if (string.IsNullOrEmpty(txtValor.Text))
+            {
+                txtValor.Text = "0.00";
+            }
+            double numero = double.Parse(txtValor.Text);
+            txtValor.Text = numero.ToString("N2");
         }
     }
 }

@@ -29,6 +29,8 @@
 
         public virtual ICollection<CierreCaja> CierreCajas { get; set; }
 
+        public virtual ICollection<Bitacora> Bitacoras { get; set; }
+
         public Empleado()
         {
             Activo = true;

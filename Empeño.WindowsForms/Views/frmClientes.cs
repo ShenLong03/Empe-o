@@ -62,6 +62,7 @@ namespace Empeño.WindowsForms.Views
 
         private async void frmClientes_Load(object sender, EventArgs e)
         {
+            Program.Cliente = null;
             dgvClientes.DataSource = await _context.Clientes.Select(x => new
             {
                 Id = x.ClienteId,

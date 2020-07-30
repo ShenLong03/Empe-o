@@ -91,6 +91,7 @@
             this.txtPIN.Font = new System.Drawing.Font("Century Gothic", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtPIN.Location = new System.Drawing.Point(32, 103);
             this.txtPIN.Name = "txtPIN";
+            this.txtPIN.PasswordChar = '*';
             this.txtPIN.Size = new System.Drawing.Size(316, 29);
             this.txtPIN.TabIndex = 2;
             this.txtPIN.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;

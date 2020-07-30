@@ -23,9 +23,13 @@ namespace Empeño.CommonEF.Entities
         [Display(Name = "Teléfono")]
         public string Telefono { get; set; }
 
+        public string Direccion { get; set; }
+
         public int Meses { get; set; } = 3;
 
         //---------------------
+
+        public string EmailNotification { get; set; }
 
         public string Email { get; set; }
 

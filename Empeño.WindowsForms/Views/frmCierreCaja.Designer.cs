@@ -29,20 +29,28 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmCierreCaja));
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
             this.elipsePanelCierreInformacion = new Bunifu.Framework.UI.BunifuElipse(this.components);
             this.panelCierreInformacion = new System.Windows.Forms.Panel();
+            this.textBox1 = new System.Windows.Forms.TextBox();
+            this.label4 = new System.Windows.Forms.Label();
             this.txtTotal = new System.Windows.Forms.TextBox();
             this.label3 = new System.Windows.Forms.Label();
+            this.btnDeleteCierreCaja = new System.Windows.Forms.Button();
             this.txtEmpleado = new System.Windows.Forms.TextBox();
             this.lblEmpleado = new System.Windows.Forms.Label();
+            this.btnCancelarCierreCaja = new System.Windows.Forms.Button();
+            this.btnGuardarCierreCaja = new System.Windows.Forms.Button();
             this.txtFecha = new System.Windows.Forms.TextBox();
             this.lblFecha = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.panelDetalleCierre = new System.Windows.Forms.Panel();
             this.txtCantidad = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
+            this.btnDeleteDetalle = new System.Windows.Forms.Button();
+            this.btnCancelar = new System.Windows.Forms.Button();
+            this.btnGuardarDetalle = new System.Windows.Forms.Button();
             this.dgvDetalles = new System.Windows.Forms.DataGridView();
             this.panel2 = new System.Windows.Forms.Panel();
             this.txtValor = new System.Windows.Forms.TextBox();
@@ -53,14 +61,6 @@
             this.elipseDetalleCierre = new Bunifu.Framework.UI.BunifuElipse(this.components);
             this.bunifuElipse1 = new Bunifu.Framework.UI.BunifuElipse(this.components);
             this.printDocument1 = new System.Drawing.Printing.PrintDocument();
-            this.textBox1 = new System.Windows.Forms.TextBox();
-            this.label4 = new System.Windows.Forms.Label();
-            this.btnDeleteDetalle = new System.Windows.Forms.Button();
-            this.btnCancelar = new System.Windows.Forms.Button();
-            this.btnGuardarDetalle = new System.Windows.Forms.Button();
-            this.btnDeleteCierreCaja = new System.Windows.Forms.Button();
-            this.btnCancelarCierreCaja = new System.Windows.Forms.Button();
-            this.btnGuardarCierreCaja = new System.Windows.Forms.Button();
             this.panelCierreInformacion.SuspendLayout();
             this.panelDetalleCierre.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvDetalles)).BeginInit();
@@ -90,9 +90,32 @@
             this.panelCierreInformacion.Controls.Add(this.label1);
             this.panelCierreInformacion.Location = new System.Drawing.Point(25, 26);
             this.panelCierreInformacion.Name = "panelCierreInformacion";
-            this.panelCierreInformacion.Size = new System.Drawing.Size(1205, 203);
+            this.panelCierreInformacion.Size = new System.Drawing.Size(1087, 203);
             this.panelCierreInformacion.TabIndex = 1;
             this.panelCierreInformacion.Paint += new System.Windows.Forms.PaintEventHandler(this.panelCierreInformacion_Paint_1);
+            // 
+            // textBox1
+            // 
+            this.textBox1.BackColor = System.Drawing.Color.WhiteSmoke;
+            this.textBox1.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.textBox1.Font = new System.Drawing.Font("Century Gothic", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.textBox1.Location = new System.Drawing.Point(585, 87);
+            this.textBox1.Name = "textBox1";
+            this.textBox1.Size = new System.Drawing.Size(205, 29);
+            this.textBox1.TabIndex = 11;
+            this.textBox1.TextChanged += new System.EventHandler(this.textBox1_TextChanged);
+            this.textBox1.Leave += new System.EventHandler(this.textBox1_Leave);
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Font = new System.Drawing.Font("Century Gothic", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label4.ForeColor = System.Drawing.Color.DimGray;
+            this.label4.Location = new System.Drawing.Point(581, 61);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(127, 23);
+            this.label4.TabIndex = 10;
+            this.label4.Text = "Saldo Inicial";
             // 
             // txtTotal
             // 
@@ -100,9 +123,9 @@
             this.txtTotal.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.txtTotal.Enabled = false;
             this.txtTotal.Font = new System.Drawing.Font("Century Gothic", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtTotal.Location = new System.Drawing.Point(998, 87);
+            this.txtTotal.Location = new System.Drawing.Point(863, 87);
             this.txtTotal.Name = "txtTotal";
-            this.txtTotal.Size = new System.Drawing.Size(259, 29);
+            this.txtTotal.Size = new System.Drawing.Size(205, 29);
             this.txtTotal.TabIndex = 9;
             // 
             // label3
@@ -110,20 +133,37 @@
             this.label3.AutoSize = true;
             this.label3.Font = new System.Drawing.Font("Century Gothic", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label3.ForeColor = System.Drawing.Color.DimGray;
-            this.label3.Location = new System.Drawing.Point(995, 61);
+            this.label3.Location = new System.Drawing.Point(862, 61);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(57, 23);
             this.label3.TabIndex = 8;
             this.label3.Text = "Total";
+            // 
+            // btnDeleteCierreCaja
+            // 
+            this.btnDeleteCierreCaja.BackColor = System.Drawing.Color.Crimson;
+            this.btnDeleteCierreCaja.FlatAppearance.BorderSize = 0;
+            this.btnDeleteCierreCaja.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnDeleteCierreCaja.Font = new System.Drawing.Font("Century Gothic", 9F, System.Drawing.FontStyle.Bold);
+            this.btnDeleteCierreCaja.ForeColor = System.Drawing.Color.White;
+            this.btnDeleteCierreCaja.Image = ((System.Drawing.Image)(resources.GetObject("btnDeleteCierreCaja.Image")));
+            this.btnDeleteCierreCaja.Location = new System.Drawing.Point(250, 133);
+            this.btnDeleteCierreCaja.Name = "btnDeleteCierreCaja";
+            this.btnDeleteCierreCaja.Size = new System.Drawing.Size(100, 45);
+            this.btnDeleteCierreCaja.TabIndex = 7;
+            this.btnDeleteCierreCaja.Text = " Eliminar";
+            this.btnDeleteCierreCaja.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
+            this.btnDeleteCierreCaja.UseVisualStyleBackColor = false;
+            this.btnDeleteCierreCaja.Click += new System.EventHandler(this.btnDeleteCierreCaja_Click);
             // 
             // txtEmpleado
             // 
             this.txtEmpleado.BackColor = System.Drawing.Color.WhiteSmoke;
             this.txtEmpleado.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.txtEmpleado.Font = new System.Drawing.Font("Century Gothic", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtEmpleado.Location = new System.Drawing.Point(350, 87);
+            this.txtEmpleado.Location = new System.Drawing.Point(300, 87);
             this.txtEmpleado.Name = "txtEmpleado";
-            this.txtEmpleado.Size = new System.Drawing.Size(259, 29);
+            this.txtEmpleado.Size = new System.Drawing.Size(205, 29);
             this.txtEmpleado.TabIndex = 6;
             // 
             // lblEmpleado
@@ -131,11 +171,44 @@
             this.lblEmpleado.AutoSize = true;
             this.lblEmpleado.Font = new System.Drawing.Font("Century Gothic", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblEmpleado.ForeColor = System.Drawing.Color.DimGray;
-            this.lblEmpleado.Location = new System.Drawing.Point(346, 61);
+            this.lblEmpleado.Location = new System.Drawing.Point(296, 61);
             this.lblEmpleado.Name = "lblEmpleado";
             this.lblEmpleado.Size = new System.Drawing.Size(113, 23);
             this.lblEmpleado.TabIndex = 5;
             this.lblEmpleado.Text = "Empleado";
+            // 
+            // btnCancelarCierreCaja
+            // 
+            this.btnCancelarCierreCaja.BackColor = System.Drawing.Color.Gold;
+            this.btnCancelarCierreCaja.FlatAppearance.BorderSize = 0;
+            this.btnCancelarCierreCaja.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnCancelarCierreCaja.Font = new System.Drawing.Font("Century Gothic", 9F, System.Drawing.FontStyle.Bold);
+            this.btnCancelarCierreCaja.Image = ((System.Drawing.Image)(resources.GetObject("btnCancelarCierreCaja.Image")));
+            this.btnCancelarCierreCaja.Location = new System.Drawing.Point(129, 133);
+            this.btnCancelarCierreCaja.Name = "btnCancelarCierreCaja";
+            this.btnCancelarCierreCaja.Size = new System.Drawing.Size(117, 45);
+            this.btnCancelarCierreCaja.TabIndex = 4;
+            this.btnCancelarCierreCaja.Text = " Cancelar";
+            this.btnCancelarCierreCaja.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
+            this.btnCancelarCierreCaja.UseVisualStyleBackColor = false;
+            this.btnCancelarCierreCaja.Click += new System.EventHandler(this.btnCancelarCierreCaja_Click);
+            // 
+            // btnGuardarCierreCaja
+            // 
+            this.btnGuardarCierreCaja.BackColor = System.Drawing.Color.DeepSkyBlue;
+            this.btnGuardarCierreCaja.FlatAppearance.BorderSize = 0;
+            this.btnGuardarCierreCaja.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnGuardarCierreCaja.Font = new System.Drawing.Font("Century Gothic", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnGuardarCierreCaja.ForeColor = System.Drawing.Color.White;
+            this.btnGuardarCierreCaja.Image = ((System.Drawing.Image)(resources.GetObject("btnGuardarCierreCaja.Image")));
+            this.btnGuardarCierreCaja.Location = new System.Drawing.Point(25, 133);
+            this.btnGuardarCierreCaja.Name = "btnGuardarCierreCaja";
+            this.btnGuardarCierreCaja.Size = new System.Drawing.Size(100, 45);
+            this.btnGuardarCierreCaja.TabIndex = 3;
+            this.btnGuardarCierreCaja.Text = " Guardar";
+            this.btnGuardarCierreCaja.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
+            this.btnGuardarCierreCaja.UseVisualStyleBackColor = false;
+            this.btnGuardarCierreCaja.Click += new System.EventHandler(this.btnGuardarCierreCaja_Click);
             // 
             // txtFecha
             // 
@@ -144,7 +217,7 @@
             this.txtFecha.Font = new System.Drawing.Font("Century Gothic", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtFecha.Location = new System.Drawing.Point(24, 87);
             this.txtFecha.Name = "txtFecha";
-            this.txtFecha.Size = new System.Drawing.Size(259, 29);
+            this.txtFecha.Size = new System.Drawing.Size(205, 29);
             this.txtFecha.TabIndex = 2;
             // 
             // lblFecha
@@ -188,7 +261,7 @@
             this.panelDetalleCierre.Controls.Add(this.label6);
             this.panelDetalleCierre.Location = new System.Drawing.Point(25, 256);
             this.panelDetalleCierre.Name = "panelDetalleCierre";
-            this.panelDetalleCierre.Size = new System.Drawing.Size(1205, 428);
+            this.panelDetalleCierre.Size = new System.Drawing.Size(1087, 428);
             this.panelDetalleCierre.TabIndex = 8;
             // 
             // txtCantidad
@@ -196,21 +269,71 @@
             this.txtCantidad.BackColor = System.Drawing.Color.WhiteSmoke;
             this.txtCantidad.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.txtCantidad.Font = new System.Drawing.Font("Century Gothic", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtCantidad.Location = new System.Drawing.Point(678, 86);
+            this.txtCantidad.Location = new System.Drawing.Point(585, 86);
             this.txtCantidad.Name = "txtCantidad";
-            this.txtCantidad.Size = new System.Drawing.Size(259, 29);
-            this.txtCantidad.TabIndex = 14;
+            this.txtCantidad.Size = new System.Drawing.Size(205, 29);
+            this.txtCantidad.TabIndex = 7;
             // 
             // label2
             // 
             this.label2.AutoSize = true;
             this.label2.Font = new System.Drawing.Font("Century Gothic", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label2.ForeColor = System.Drawing.Color.DimGray;
-            this.label2.Location = new System.Drawing.Point(674, 60);
+            this.label2.Location = new System.Drawing.Point(581, 60);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(104, 23);
             this.label2.TabIndex = 13;
             this.label2.Text = "Cantidad";
+            // 
+            // btnDeleteDetalle
+            // 
+            this.btnDeleteDetalle.BackColor = System.Drawing.Color.Crimson;
+            this.btnDeleteDetalle.FlatAppearance.BorderSize = 0;
+            this.btnDeleteDetalle.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnDeleteDetalle.Font = new System.Drawing.Font("Century Gothic", 9F, System.Drawing.FontStyle.Bold);
+            this.btnDeleteDetalle.ForeColor = System.Drawing.Color.White;
+            this.btnDeleteDetalle.Image = ((System.Drawing.Image)(resources.GetObject("btnDeleteDetalle.Image")));
+            this.btnDeleteDetalle.Location = new System.Drawing.Point(250, 130);
+            this.btnDeleteDetalle.Name = "btnDeleteDetalle";
+            this.btnDeleteDetalle.Size = new System.Drawing.Size(100, 45);
+            this.btnDeleteDetalle.TabIndex = 10;
+            this.btnDeleteDetalle.Text = " Eliminar";
+            this.btnDeleteDetalle.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
+            this.btnDeleteDetalle.UseVisualStyleBackColor = false;
+            this.btnDeleteDetalle.Click += new System.EventHandler(this.btnDeleteDetalle_Click);
+            // 
+            // btnCancelar
+            // 
+            this.btnCancelar.BackColor = System.Drawing.Color.Gold;
+            this.btnCancelar.FlatAppearance.BorderSize = 0;
+            this.btnCancelar.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnCancelar.Font = new System.Drawing.Font("Century Gothic", 9F, System.Drawing.FontStyle.Bold);
+            this.btnCancelar.Image = ((System.Drawing.Image)(resources.GetObject("btnCancelar.Image")));
+            this.btnCancelar.Location = new System.Drawing.Point(129, 130);
+            this.btnCancelar.Name = "btnCancelar";
+            this.btnCancelar.Size = new System.Drawing.Size(117, 45);
+            this.btnCancelar.TabIndex = 9;
+            this.btnCancelar.Text = " Cancelar";
+            this.btnCancelar.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
+            this.btnCancelar.UseVisualStyleBackColor = false;
+            this.btnCancelar.Click += new System.EventHandler(this.btnCancelar_Click);
+            // 
+            // btnGuardarDetalle
+            // 
+            this.btnGuardarDetalle.BackColor = System.Drawing.Color.DeepSkyBlue;
+            this.btnGuardarDetalle.FlatAppearance.BorderSize = 0;
+            this.btnGuardarDetalle.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnGuardarDetalle.Font = new System.Drawing.Font("Century Gothic", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnGuardarDetalle.ForeColor = System.Drawing.Color.White;
+            this.btnGuardarDetalle.Image = ((System.Drawing.Image)(resources.GetObject("btnGuardarDetalle.Image")));
+            this.btnGuardarDetalle.Location = new System.Drawing.Point(25, 130);
+            this.btnGuardarDetalle.Name = "btnGuardarDetalle";
+            this.btnGuardarDetalle.Size = new System.Drawing.Size(100, 45);
+            this.btnGuardarDetalle.TabIndex = 8;
+            this.btnGuardarDetalle.Text = " Agregar";
+            this.btnGuardarDetalle.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
+            this.btnGuardarDetalle.UseVisualStyleBackColor = false;
+            this.btnGuardarDetalle.Click += new System.EventHandler(this.btnGuardarDetalle_Click);
             // 
             // dgvDetalles
             // 
@@ -219,19 +342,19 @@
             this.dgvDetalles.BackgroundColor = System.Drawing.Color.WhiteSmoke;
             this.dgvDetalles.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.dgvDetalles.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle1.Font = new System.Drawing.Font("Century Gothic", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(254)));
-            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dgvDetalles.DefaultCellStyle = dataGridViewCellStyle1;
+            dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle4.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle4.Font = new System.Drawing.Font("Century Gothic", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(254)));
+            dataGridViewCellStyle4.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle4.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle4.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle4.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgvDetalles.DefaultCellStyle = dataGridViewCellStyle4;
             this.dgvDetalles.Location = new System.Drawing.Point(25, 214);
             this.dgvDetalles.Name = "dgvDetalles";
             this.dgvDetalles.RowHeadersWidth = 51;
             this.dgvDetalles.RowTemplate.Height = 24;
-            this.dgvDetalles.Size = new System.Drawing.Size(1156, 183);
+            this.dgvDetalles.Size = new System.Drawing.Size(1038, 183);
             this.dgvDetalles.TabIndex = 8;
             // 
             // panel2
@@ -241,7 +364,7 @@
             this.panel2.BackColor = System.Drawing.Color.Silver;
             this.panel2.Location = new System.Drawing.Point(16, 195);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(1180, 1);
+            this.panel2.Size = new System.Drawing.Size(1062, 1);
             this.panel2.TabIndex = 7;
             // 
             // txtValor
@@ -249,17 +372,18 @@
             this.txtValor.BackColor = System.Drawing.Color.WhiteSmoke;
             this.txtValor.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.txtValor.Font = new System.Drawing.Font("Century Gothic", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtValor.Location = new System.Drawing.Point(351, 86);
+            this.txtValor.Location = new System.Drawing.Point(301, 86);
             this.txtValor.Name = "txtValor";
-            this.txtValor.Size = new System.Drawing.Size(259, 29);
+            this.txtValor.Size = new System.Drawing.Size(205, 29);
             this.txtValor.TabIndex = 6;
+            this.txtValor.Leave += new System.EventHandler(this.txtValor_Leave);
             // 
             // lblValor
             // 
             this.lblValor.AutoSize = true;
             this.lblValor.Font = new System.Drawing.Font("Century Gothic", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblValor.ForeColor = System.Drawing.Color.DimGray;
-            this.lblValor.Location = new System.Drawing.Point(346, 60);
+            this.lblValor.Location = new System.Drawing.Point(296, 60);
             this.lblValor.Name = "lblValor";
             this.lblValor.Size = new System.Drawing.Size(63, 23);
             this.lblValor.TabIndex = 5;
@@ -272,8 +396,8 @@
             this.txtConcepto.Font = new System.Drawing.Font("Century Gothic", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtConcepto.Location = new System.Drawing.Point(24, 86);
             this.txtConcepto.Name = "txtConcepto";
-            this.txtConcepto.Size = new System.Drawing.Size(259, 29);
-            this.txtConcepto.TabIndex = 2;
+            this.txtConcepto.Size = new System.Drawing.Size(205, 29);
+            this.txtConcepto.TabIndex = 5;
             this.txtConcepto.TextChanged += new System.EventHandler(this.txtConcepto_TextChanged);
             // 
             // label5
@@ -308,139 +432,13 @@
             this.bunifuElipse1.ElipseRadius = 5;
             this.bunifuElipse1.TargetControl = this.btnGuardarCierreCaja;
             // 
-            // printDocument1
-            // 
-            //this.printDocument1.PrintPage += new System.Drawing.Printing.PrintPageEventHandler(this.printDocument1_PrintPage);
-            // 
-            // textBox1
-            // 
-            this.textBox1.BackColor = System.Drawing.Color.WhiteSmoke;
-            this.textBox1.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.textBox1.Font = new System.Drawing.Font("Century Gothic", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.textBox1.Location = new System.Drawing.Point(678, 87);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(259, 29);
-            this.textBox1.TabIndex = 11;
-            this.textBox1.TextChanged += new System.EventHandler(this.textBox1_TextChanged);
-            // 
-            // label4
-            // 
-            this.label4.AutoSize = true;
-            this.label4.Font = new System.Drawing.Font("Century Gothic", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label4.ForeColor = System.Drawing.Color.DimGray;
-            this.label4.Location = new System.Drawing.Point(680, 61);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(127, 23);
-            this.label4.TabIndex = 10;
-            this.label4.Text = "Saldo Inicial";
-            // 
-            // btnDeleteDetalle
-            // 
-            this.btnDeleteDetalle.BackColor = System.Drawing.Color.Crimson;
-            this.btnDeleteDetalle.FlatAppearance.BorderSize = 0;
-            this.btnDeleteDetalle.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnDeleteDetalle.Font = new System.Drawing.Font("Century Gothic", 9F, System.Drawing.FontStyle.Bold);
-            this.btnDeleteDetalle.ForeColor = System.Drawing.Color.White;
-            this.btnDeleteDetalle.Image = ((System.Drawing.Image)(resources.GetObject("btnDeleteDetalle.Image")));
-            this.btnDeleteDetalle.Location = new System.Drawing.Point(250, 130);
-            this.btnDeleteDetalle.Name = "btnDeleteDetalle";
-            this.btnDeleteDetalle.Size = new System.Drawing.Size(100, 45);
-            this.btnDeleteDetalle.TabIndex = 11;
-            this.btnDeleteDetalle.Text = " Eliminar";
-            this.btnDeleteDetalle.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
-            this.btnDeleteDetalle.UseVisualStyleBackColor = false;
-            this.btnDeleteDetalle.Click += new System.EventHandler(this.btnDeleteDetalle_Click);
-            // 
-            // btnCancelar
-            // 
-            this.btnCancelar.BackColor = System.Drawing.Color.Gold;
-            this.btnCancelar.FlatAppearance.BorderSize = 0;
-            this.btnCancelar.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnCancelar.Font = new System.Drawing.Font("Century Gothic", 9F, System.Drawing.FontStyle.Bold);
-            this.btnCancelar.Image = ((System.Drawing.Image)(resources.GetObject("btnCancelar.Image")));
-            this.btnCancelar.Location = new System.Drawing.Point(129, 130);
-            this.btnCancelar.Name = "btnCancelar";
-            this.btnCancelar.Size = new System.Drawing.Size(117, 45);
-            this.btnCancelar.TabIndex = 10;
-            this.btnCancelar.Text = " Cancelar";
-            this.btnCancelar.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
-            this.btnCancelar.UseVisualStyleBackColor = false;
-            this.btnCancelar.Click += new System.EventHandler(this.btnCancelar_Click);
-            // 
-            // btnGuardarDetalle
-            // 
-            this.btnGuardarDetalle.BackColor = System.Drawing.Color.DeepSkyBlue;
-            this.btnGuardarDetalle.FlatAppearance.BorderSize = 0;
-            this.btnGuardarDetalle.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnGuardarDetalle.Font = new System.Drawing.Font("Century Gothic", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnGuardarDetalle.ForeColor = System.Drawing.Color.White;
-            this.btnGuardarDetalle.Image = ((System.Drawing.Image)(resources.GetObject("btnGuardarDetalle.Image")));
-            this.btnGuardarDetalle.Location = new System.Drawing.Point(25, 130);
-            this.btnGuardarDetalle.Name = "btnGuardarDetalle";
-            this.btnGuardarDetalle.Size = new System.Drawing.Size(100, 45);
-            this.btnGuardarDetalle.TabIndex = 9;
-            this.btnGuardarDetalle.Text = " Agregar";
-            this.btnGuardarDetalle.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
-            this.btnGuardarDetalle.UseVisualStyleBackColor = false;
-            this.btnGuardarDetalle.Click += new System.EventHandler(this.btnGuardarDetalle_Click);
-            // 
-            // btnDeleteCierreCaja
-            // 
-            this.btnDeleteCierreCaja.BackColor = System.Drawing.Color.Crimson;
-            this.btnDeleteCierreCaja.FlatAppearance.BorderSize = 0;
-            this.btnDeleteCierreCaja.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnDeleteCierreCaja.Font = new System.Drawing.Font("Century Gothic", 9F, System.Drawing.FontStyle.Bold);
-            this.btnDeleteCierreCaja.ForeColor = System.Drawing.Color.White;
-            this.btnDeleteCierreCaja.Image = ((System.Drawing.Image)(resources.GetObject("btnDeleteCierreCaja.Image")));
-            this.btnDeleteCierreCaja.Location = new System.Drawing.Point(250, 133);
-            this.btnDeleteCierreCaja.Name = "btnDeleteCierreCaja";
-            this.btnDeleteCierreCaja.Size = new System.Drawing.Size(100, 45);
-            this.btnDeleteCierreCaja.TabIndex = 7;
-            this.btnDeleteCierreCaja.Text = " Eliminar";
-            this.btnDeleteCierreCaja.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
-            this.btnDeleteCierreCaja.UseVisualStyleBackColor = false;
-            this.btnDeleteCierreCaja.Click += new System.EventHandler(this.btnDeleteCierreCaja_Click);
-            // 
-            // btnCancelarCierreCaja
-            // 
-            this.btnCancelarCierreCaja.BackColor = System.Drawing.Color.Gold;
-            this.btnCancelarCierreCaja.FlatAppearance.BorderSize = 0;
-            this.btnCancelarCierreCaja.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnCancelarCierreCaja.Font = new System.Drawing.Font("Century Gothic", 9F, System.Drawing.FontStyle.Bold);
-            this.btnCancelarCierreCaja.Image = ((System.Drawing.Image)(resources.GetObject("btnCancelarCierreCaja.Image")));
-            this.btnCancelarCierreCaja.Location = new System.Drawing.Point(129, 133);
-            this.btnCancelarCierreCaja.Name = "btnCancelarCierreCaja";
-            this.btnCancelarCierreCaja.Size = new System.Drawing.Size(117, 45);
-            this.btnCancelarCierreCaja.TabIndex = 4;
-            this.btnCancelarCierreCaja.Text = " Cancelar";
-            this.btnCancelarCierreCaja.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
-            this.btnCancelarCierreCaja.UseVisualStyleBackColor = false;
-            this.btnCancelarCierreCaja.Click += new System.EventHandler(this.btnCancelarCierreCaja_Click);
-            // 
-            // btnGuardarCierreCaja
-            // 
-            this.btnGuardarCierreCaja.BackColor = System.Drawing.Color.DeepSkyBlue;
-            this.btnGuardarCierreCaja.FlatAppearance.BorderSize = 0;
-            this.btnGuardarCierreCaja.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnGuardarCierreCaja.Font = new System.Drawing.Font("Century Gothic", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnGuardarCierreCaja.ForeColor = System.Drawing.Color.White;
-            this.btnGuardarCierreCaja.Image = ((System.Drawing.Image)(resources.GetObject("btnGuardarCierreCaja.Image")));
-            this.btnGuardarCierreCaja.Location = new System.Drawing.Point(25, 133);
-            this.btnGuardarCierreCaja.Name = "btnGuardarCierreCaja";
-            this.btnGuardarCierreCaja.Size = new System.Drawing.Size(100, 45);
-            this.btnGuardarCierreCaja.TabIndex = 3;
-            this.btnGuardarCierreCaja.Text = " Guardar";
-            this.btnGuardarCierreCaja.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
-            this.btnGuardarCierreCaja.UseVisualStyleBackColor = false;
-            this.btnGuardarCierreCaja.Click += new System.EventHandler(this.btnGuardarCierreCaja_Click);
-            // 
             // frmCierreCaja
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoScroll = true;
             this.BackColor = System.Drawing.Color.White;
-            this.ClientSize = new System.Drawing.Size(1279, 715);
+            this.ClientSize = new System.Drawing.Size(1161, 715);
             this.Controls.Add(this.panelDetalleCierre);
             this.Controls.Add(this.panelCierreInformacion);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
