@@ -115,12 +115,10 @@ namespace Empeño.WindowsForms.Views
             chartVentas.Series[0].Points.DataBindXY(list.OrderBy(i => i.Fecha).Select(i => i.Fecha.Date.ToString("dd/MM")).ToList(), list.Select(i => i.Ingresos).ToList());
             chartVentas.Series[1].Points.DataBindXY(list.OrderBy(i => i.Fecha).Select(i => i.Fecha.Date.ToString("dd/MM")).ToList(), list.Select(i => i.Egresos).ToList());
 
-            var listEmpeños = _context.Empenos.Where(d=>!d.IsDelete).ToList();
-
             for (int i = 0; i < 5; i++)
             {
                 var estado = GetEstado(i);
-                chartEmpeños.Series[0].Points.AddXY(GetEstadoName(i), _context.Empenos.Where(x => x.Estado == estado).Count());
+                chartEmpeños.Series[0].Points.AddXY(GetEstadoName(i), _context.Empenos.Where(x =>!x.IsDelete && x.Estado == estado).Count());
             }
             chartEmpeños.Update();
             chartVentas.Update();

@@ -42,7 +42,7 @@
         {
             //TODO: Quitar esto es solo para forzar el login
             if (Program.Usuario == null)
-                Program.Usuario = new User { Usuario= "djarquin012" };
+                Program.Usuario = new User { Usuario= "Admin" };
 
             this.Opacity = 0.0;
             hideSubMenu();

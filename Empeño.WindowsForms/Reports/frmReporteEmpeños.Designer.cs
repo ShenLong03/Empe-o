@@ -28,12 +28,25 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmReporteEmpeños));
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea1 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend1 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.Series series1 = new System.Windows.Forms.DataVisualization.Charting.Series();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmReporteEmpeños));
             this.panel1 = new System.Windows.Forms.Panel();
+            this.txtArticulos = new System.Windows.Forms.TextBox();
+            this.label4 = new System.Windows.Forms.Label();
+            this.txtOro = new System.Windows.Forms.TextBox();
+            this.label5 = new System.Windows.Forms.Label();
+            this.txtPendiente = new System.Windows.Forms.TextBox();
+            this.label3 = new System.Windows.Forms.Label();
+            this.txtMonto = new System.Windows.Forms.TextBox();
+            this.label1 = new System.Windows.Forms.Label();
+            this.chartEmpeños = new System.Windows.Forms.DataVisualization.Charting.Chart();
+            this.panel3 = new System.Windows.Forms.Panel();
             this.ckbBorrados = new System.Windows.Forms.CheckBox();
             this.panel4 = new System.Windows.Forms.Panel();
             this.label2 = new System.Windows.Forms.Label();
@@ -51,13 +64,26 @@
             this.lblDesde = new System.Windows.Forms.Label();
             this.panel2 = new System.Windows.Forms.Panel();
             this.dgvEmpeños = new System.Windows.Forms.DataGridView();
+            this.button3 = new System.Windows.Forms.Button();
             this.panel1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.chartEmpeños)).BeginInit();
             this.panel2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvEmpeños)).BeginInit();
             this.SuspendLayout();
             // 
             // panel1
             // 
+            this.panel1.Controls.Add(this.button3);
+            this.panel1.Controls.Add(this.txtArticulos);
+            this.panel1.Controls.Add(this.label4);
+            this.panel1.Controls.Add(this.txtOro);
+            this.panel1.Controls.Add(this.label5);
+            this.panel1.Controls.Add(this.txtPendiente);
+            this.panel1.Controls.Add(this.label3);
+            this.panel1.Controls.Add(this.txtMonto);
+            this.panel1.Controls.Add(this.label1);
+            this.panel1.Controls.Add(this.chartEmpeños);
+            this.panel1.Controls.Add(this.panel3);
             this.panel1.Controls.Add(this.ckbBorrados);
             this.panel1.Controls.Add(this.panel4);
             this.panel1.Controls.Add(this.label2);
@@ -76,9 +102,129 @@
             this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
             this.panel1.Location = new System.Drawing.Point(0, 0);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(1413, 202);
+            this.panel1.Size = new System.Drawing.Size(1413, 476);
             this.panel1.TabIndex = 5;
             this.panel1.Paint += new System.Windows.Forms.PaintEventHandler(this.panel1_Paint);
+            // 
+            // txtArticulos
+            // 
+            this.txtArticulos.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.txtArticulos.Enabled = false;
+            this.txtArticulos.Font = new System.Drawing.Font("Century Gothic", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtArticulos.Location = new System.Drawing.Point(900, 302);
+            this.txtArticulos.Name = "txtArticulos";
+            this.txtArticulos.Size = new System.Drawing.Size(250, 36);
+            this.txtArticulos.TabIndex = 41;
+            this.txtArticulos.Text = "0.00";
+            // 
+            // label4
+            // 
+            this.label4.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.label4.AutoSize = true;
+            this.label4.Font = new System.Drawing.Font("Century Gothic", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label4.ForeColor = System.Drawing.Color.DimGray;
+            this.label4.Location = new System.Drawing.Point(896, 280);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(160, 19);
+            this.label4.TabIndex = 40;
+            this.label4.Text = "Empeños Articulos";
+            // 
+            // txtOro
+            // 
+            this.txtOro.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.txtOro.Enabled = false;
+            this.txtOro.Font = new System.Drawing.Font("Century Gothic", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtOro.Location = new System.Drawing.Point(606, 302);
+            this.txtOro.Name = "txtOro";
+            this.txtOro.Size = new System.Drawing.Size(250, 36);
+            this.txtOro.TabIndex = 39;
+            this.txtOro.Text = "0.00";
+            // 
+            // label5
+            // 
+            this.label5.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.label5.AutoSize = true;
+            this.label5.Font = new System.Drawing.Font("Century Gothic", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label5.ForeColor = System.Drawing.Color.DimGray;
+            this.label5.Location = new System.Drawing.Point(602, 280);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(146, 19);
+            this.label5.TabIndex = 38;
+            this.label5.Text = "Empeños en Oro";
+            // 
+            // txtPendiente
+            // 
+            this.txtPendiente.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.txtPendiente.Enabled = false;
+            this.txtPendiente.Font = new System.Drawing.Font("Century Gothic", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtPendiente.Location = new System.Drawing.Point(900, 223);
+            this.txtPendiente.Name = "txtPendiente";
+            this.txtPendiente.Size = new System.Drawing.Size(250, 36);
+            this.txtPendiente.TabIndex = 37;
+            this.txtPendiente.Text = "0.00";
+            // 
+            // label3
+            // 
+            this.label3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.label3.AutoSize = true;
+            this.label3.Font = new System.Drawing.Font("Century Gothic", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label3.ForeColor = System.Drawing.Color.DimGray;
+            this.label3.Location = new System.Drawing.Point(896, 201);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(91, 19);
+            this.label3.TabIndex = 36;
+            this.label3.Text = "Pendiente";
+            // 
+            // txtMonto
+            // 
+            this.txtMonto.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.txtMonto.Enabled = false;
+            this.txtMonto.Font = new System.Drawing.Font("Century Gothic", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtMonto.Location = new System.Drawing.Point(606, 223);
+            this.txtMonto.Name = "txtMonto";
+            this.txtMonto.Size = new System.Drawing.Size(250, 36);
+            this.txtMonto.TabIndex = 35;
+            this.txtMonto.Text = "0.00";
+            // 
+            // label1
+            // 
+            this.label1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.label1.AutoSize = true;
+            this.label1.Font = new System.Drawing.Font("Century Gothic", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label1.ForeColor = System.Drawing.Color.DimGray;
+            this.label1.Location = new System.Drawing.Point(602, 201);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(60, 19);
+            this.label1.TabIndex = 34;
+            this.label1.Text = "Monto";
+            // 
+            // chartEmpeños
+            // 
+            this.chartEmpeños.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            chartArea1.Name = "ChartArea1";
+            this.chartEmpeños.ChartAreas.Add(chartArea1);
+            legend1.Name = "Legend1";
+            this.chartEmpeños.Legends.Add(legend1);
+            this.chartEmpeños.Location = new System.Drawing.Point(19, 191);
+            this.chartEmpeños.Name = "chartEmpeños";
+            series1.ChartArea = "ChartArea1";
+            series1.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Doughnut;
+            series1.Legend = "Legend1";
+            series1.Name = "Series1";
+            this.chartEmpeños.Series.Add(series1);
+            this.chartEmpeños.Size = new System.Drawing.Size(516, 275);
+            this.chartEmpeños.TabIndex = 33;
+            this.chartEmpeños.Text = "chart2";
+            // 
+            // panel3
+            // 
+            this.panel3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
+            this.panel3.BackColor = System.Drawing.Color.DimGray;
+            this.panel3.Location = new System.Drawing.Point(19, 184);
+            this.panel3.Name = "panel3";
+            this.panel3.Size = new System.Drawing.Size(1380, 1);
+            this.panel3.TabIndex = 32;
             // 
             // ckbBorrados
             // 
@@ -96,7 +242,7 @@
             // 
             this.panel4.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(16)))), ((int)(((byte)(19)))), ((int)(((byte)(100)))));
             this.panel4.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.panel4.Location = new System.Drawing.Point(0, 198);
+            this.panel4.Location = new System.Drawing.Point(0, 472);
             this.panel4.Name = "panel4";
             this.panel4.Size = new System.Drawing.Size(1413, 4);
             this.panel4.TabIndex = 30;
@@ -270,9 +416,9 @@
             // 
             this.panel2.Controls.Add(this.dgvEmpeños);
             this.panel2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel2.Location = new System.Drawing.Point(0, 202);
+            this.panel2.Location = new System.Drawing.Point(0, 476);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(1413, 702);
+            this.panel2.Size = new System.Drawing.Size(1413, 428);
             this.panel2.TabIndex = 6;
             // 
             // dgvEmpeños
@@ -325,8 +471,24 @@
             this.dgvEmpeños.RowTemplate.DividerHeight = 1;
             this.dgvEmpeños.RowTemplate.Height = 45;
             this.dgvEmpeños.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgvEmpeños.Size = new System.Drawing.Size(1413, 702);
+            this.dgvEmpeños.Size = new System.Drawing.Size(1413, 428);
             this.dgvEmpeños.TabIndex = 22;
+            // 
+            // button3
+            // 
+            this.button3.BackColor = System.Drawing.Color.DeepSkyBlue;
+            this.button3.FlatAppearance.BorderSize = 0;
+            this.button3.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.button3.Font = new System.Drawing.Font("Century Gothic", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.button3.ForeColor = System.Drawing.Color.White;
+            this.button3.Image = ((System.Drawing.Image)(resources.GetObject("button3.Image")));
+            this.button3.Location = new System.Drawing.Point(997, 391);
+            this.button3.Name = "button3";
+            this.button3.Size = new System.Drawing.Size(153, 47);
+            this.button3.TabIndex = 42;
+            this.button3.Text = "Exportar";
+            this.button3.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
+            this.button3.UseVisualStyleBackColor = false;
             // 
             // frmReporteEmpeños
             // 
@@ -343,6 +505,7 @@
             this.Load += new System.EventHandler(this.frmReporteEmpeños_Load);
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.chartEmpeños)).EndInit();
             this.panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dgvEmpeños)).EndInit();
             this.ResumeLayout(false);
@@ -369,5 +532,16 @@
         private System.Windows.Forms.Panel panel4;
         private System.Windows.Forms.CheckBox ckbBorrados;
         private System.Windows.Forms.DataGridView dgvEmpeños;
+        private System.Windows.Forms.Panel panel3;
+        private System.Windows.Forms.TextBox txtPendiente;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.TextBox txtMonto;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.DataVisualization.Charting.Chart chartEmpeños;
+        private System.Windows.Forms.TextBox txtArticulos;
+        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.TextBox txtOro;
+        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.Button button3;
     }
 }
