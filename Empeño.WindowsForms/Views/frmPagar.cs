@@ -213,7 +213,7 @@ namespace Empeño.WindowsForms.Views
                     Modulo = "Intereses",
                     Accion = "Crear"
                 });
-                PrintInteres(empeño, intereses);
+                await PrintInteres(empeño, intereses);
             }
             if (pagoMonto>0)
             {
@@ -239,12 +239,12 @@ namespace Empeño.WindowsForms.Views
                 if (empeño.MontoPendiente < 1)
                 { 
                     empeño.Estado = Estado.Retirada;
-                    _context.Intereses.RemoveRange(empeño.Intereses.Where(i => i.Pagado == 0));
-                    PrintRetiro(empeño);
+                    _context.Intereses.RemoveRange(_context.Intereses.Where(i =>i.EmpenoId==empleadoId && i.Pagado == 0));
+                    await PrintRetiro(empeño);
                 }
                 else
                 {
-                    PrintAbono(empeño);
+                    await PrintAbono(empeño);
                 }
             }
          
@@ -304,7 +304,7 @@ namespace Empeño.WindowsForms.Views
         }
 
         #region Funciones
-        public async void PrintAbono(Empeno empeno)
+        public async Task PrintAbono(Empeno empeno)
         {
             var configuracion = await _context.Configuraciones.FirstOrDefaultAsync();
             Microsoft.Office.Interop.Excel.Application cexcel = new Microsoft.Office.Interop.Excel.Application();
@@ -348,7 +348,7 @@ namespace Empeño.WindowsForms.Views
             cexcel.Quit();
         }
 
-        public async void PrintRetiro(Empeno empeno)
+        public async Task PrintRetiro(Empeno empeno)
         {
             var configuracion = await _context.Configuraciones.FirstOrDefaultAsync();
             Microsoft.Office.Interop.Excel.Application cexcel = new Microsoft.Office.Interop.Excel.Application();
@@ -391,7 +391,7 @@ namespace Empeño.WindowsForms.Views
             cexcel.Quit();
         }
 
-        public async void PrintInteres(Empeno empeno, List<Intereses> intereses)
+        public async Task PrintInteres(Empeno empeno, List<Intereses> intereses)
         {
             var configuracion = await _context.Configuraciones.FirstOrDefaultAsync();
             Microsoft.Office.Interop.Excel.Application cexcel = new Microsoft.Office.Interop.Excel.Application();

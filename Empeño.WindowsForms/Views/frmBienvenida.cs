@@ -48,7 +48,14 @@ namespace Empeño.WindowsForms.Views
             circularProgressBar1.Minimum = 0;
             circularProgressBar1.Maximum = 100;           
             timer1.Start();
-            await funciones.ReviewEmpeños();
+            try
+            {
+                await funciones.ReviewEmpeños();
+            }
+            catch (Exception ex)
+            {
+
+            }
         }
     }
 }

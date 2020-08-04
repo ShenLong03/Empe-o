@@ -35,6 +35,9 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>LetraDegradadoGold0.ico</ApplicationIcon>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="Bunifu_UI_v1.52">
       <HintPath>C:\Users\donov\Downloads\Bunifu_UI_v1.52.dll</HintPath>
@@ -124,6 +127,7 @@
     <Compile Include="Reports\frmReporteIngresos.Designer.cs">
       <DependentUpon>frmReporteIngresos.cs</DependentUpon>
     </Compile>
+    <Compile Include="SeedDb\SuperUsuarioSeedDb.cs" />
     <Compile Include="SeedDb\ClienteSeedDb.cs" />
     <Compile Include="SeedDb\PerfilSeedDb.cs" />
     <Compile Include="SqlServerTypes\Loader.cs" />
@@ -1148,6 +1152,7 @@
     <None Include="Resources\Linea.png" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="LetraDegradadoGold0.ico" />
     <Content Include="SqlServerTypes\readme.htm" />
     <Content Include="SqlServerTypes\x64\msvcr120.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>

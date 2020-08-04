@@ -34,7 +34,7 @@ namespace Empeño.WindowsForms.Views
         #region Funciones
         public async Task LoadData() 
         {
-            dgvEmpleados.DataSource = await _context.Empleados.Select(x => new
+            dgvEmpleados.DataSource = await _context.Empleados.Where(d=>d.Usuario!="Admin").Select(x => new
             {
                 Id = x.EmpleadoId,
                 x.Nombre,
@@ -86,7 +86,7 @@ namespace Empeño.WindowsForms.Views
                 }
                 if (empleadoId == 0)
                 {
-                    if (_context.User.Where(d=>d.Codigo==txtPIN.Text).Count()>0)
+                    if (_context.User.Where(d=>d.Codigo==txtPIN.Text || d.Usuario==txtUsuario.Text).Count()>0)
                     {
                         MessageBox.Show("Debe seleccionar un PIN diferente", "Alerta", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                         return;

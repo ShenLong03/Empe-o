@@ -1,4 +1,5 @@
-﻿using Empeño.WindowsForms.Data;
+﻿using Empeño.CommonEF.Enum;
+using Empeño.WindowsForms.Data;
 using Empeño.WindowsForms.ViewReports;
 using Microsoft.Reporting.WinForms;
 using System;
@@ -29,12 +30,13 @@ namespace Empeño.WindowsForms.Reports
 
         private void frmReporteEmpeños_Load(object sender, EventArgs e)
         {
-            var listEmpeños = _context.Empenos.Select(x => new EmpeñoReporte
+            var listEmpeños = _context.Empenos.Where(l=>!l.IsDelete).Select(x => new EmpeñoReporte
             {
                 ClienteId=x.ClienteId,
                 Identificacion=x.Cliente.Identificacion,
                 Cliente=x.Cliente.Nombre,
                 Descripcion=x.Descripcion,
+                Es_Oro=x.EsOro,
                 EmpeñoId=x.EmpenoId,
                 Empleado=x.Empleado.Nombre,
                 EmpleadoId=x.EmpleadoId,
@@ -51,22 +53,67 @@ namespace Empeño.WindowsForms.Reports
                 UltimoPago=x.Pagos.Max(p=>p.Fecha),
                 Vencimiento=x.FechaVencimiento,                
             });
-            ReportDataSource rpd = new ReportDataSource("EmpeñoReporte",listEmpeños);
 
-            rvEmpeños.LocalReport.ReportEmbeddedResource = "Empeño.WindowsForms.Reports.Empeños.rdlc";
-            rvEmpeños.LocalReport.DataSources.Clear();
-            rvEmpeños.LocalReport.DataSources.Add(rpd);
-
-            this.rvEmpeños.RefreshReport();
+            dgvEmpeños.DataSource = listEmpeños.ToList();
+            dgvEmpeños.Refresh();
             
             chbTodo.Checked = true;
             chbActivos.Checked = false;
             chbPendientes.Checked = false;
             chbPerdidos.Checked = false;
             chbRetirados.Checked = false;
-            dtDesde.Value = DateTime.Today.AddMonths(-1);
+            dtDesde.Value = listEmpeños.Min(l=>l.Fecha).Value;
             dtHasta.Value = DateTime.Today;
+
+            for (int i = 0; i < 5; i++)
+            {
+                var estado = GetEstadoName(i);
+                chartEmpeños.Series[0].Points.AddXY(GetEstadoName(i), listEmpeños.Where(x => x.Estado == estado).Count());
+            }
+            txtMonto.Text = listEmpeños.Sum(l => l.Monto).ToString("N2");
+            txtPendiente.Text = listEmpeños.Sum(l => l.Pendiente).ToString("N2");
+            txtOro.Text = listEmpeños.Where(l=>l.Es_Oro).Sum(l => l.Monto).ToString("N2");
+            txtArticulos.Text = listEmpeños.Where(l => !l.Es_Oro).Sum(l => l.Monto).ToString("N2");
         }
+
+        private string GetEstadoName(int i)
+        {
+            switch (i)
+            {
+                case 0:
+                    return "Activo";
+                case 1:
+                    return "Pendiente";
+                case 2:
+                    return "Vencido";
+                case 3:
+                    return "Cancelada";
+                case 4:
+                    return "Retirada";
+                default:
+                    return "";
+            }
+        }
+
+        private Estado GetEstado(int i)
+        {
+            switch (i)
+            {
+                case 0:
+                    return Estado.Activo;
+                case 1:
+                    return Estado.Pendiente;
+                case 2:
+                    return Estado.Vencido;
+                case 3:
+                    return Estado.Cancelada;
+                case 4:
+                    return Estado.Retirada;
+                default:
+                    return Estado.Activo;
+            }
+        }
+
 
         private void chbTodo_CheckedChanged(object sender, EventArgs e)
         {
@@ -118,11 +165,15 @@ namespace Empeño.WindowsForms.Reports
 
         public async Task Buscar()
         {
+            chartEmpeños.Update();
             DateTime desde = dtDesde.Value;
             DateTime hasta = dtHasta.Value;
 
             var list = await _context.Empenos.Where(e => e.Fecha >= desde && e.Fecha <= hasta && e.IsDelete==ckbBorrados.Checked).ToListAsync();
 
+            dgvEmpeños.DataSource = null;
+            dgvEmpeños.Rows.Clear();
+            chartEmpeños.Series[0].Points.Clear();
             if (!chbTodo.Checked)
             {
                 if (!chbActivos.Checked)
@@ -144,6 +195,7 @@ namespace Empeño.WindowsForms.Reports
                 Identificacion = x.Cliente.Identificacion,
                 Cliente = x.Cliente.Nombre,
                 Descripcion = x.Descripcion,
+                Es_Oro=x.EsOro,
                 EmpeñoId = x.EmpenoId,
                 Empleado = x.Empleado.Nombre,
                 EmpleadoId = x.EmpleadoId,
@@ -157,16 +209,21 @@ namespace Empeño.WindowsForms.Reports
                 Monto = x.Monto,
                 MontoInteres = x.Monto * ((double)x.Interes.Porcentaje / (double)100),
                 Pendiente = x.MontoPendiente,
-                //UltimoPago = x.Pagos.Max(p => p.Fecha),
                 Vencimiento = x.FechaVencimiento,
             });
-            ReportDataSource rpd = new ReportDataSource("EmpeñoReporte", listEmpeños);
-
-            rvEmpeños.LocalReport.ReportEmbeddedResource = "Empeño.WindowsForms.Reports.Empeños.rdlc";
-            rvEmpeños.LocalReport.DataSources.Clear();
-            rvEmpeños.LocalReport.DataSources.Add(rpd);
-            rvEmpeños.Dock = DockStyle.Fill;
-            this.rvEmpeños.RefreshReport();
+            for (int i = 0; i < 5; i++)
+            {
+                var estado = GetEstado(i);
+                chartEmpeños.Series[0].Points.AddXY(GetEstadoName(i), list.Where(x => x.Estado == estado 
+                && x.Fecha>=desde && x.Fecha <= hasta).Count());
+            }
+            chartEmpeños.Update();
+            dgvEmpeños.DataSource = listEmpeños.ToList();
+            dgvEmpeños.Refresh();
+            txtMonto.Text = listEmpeños.Sum(l => l.Monto).ToString("N2");
+            txtPendiente.Text = listEmpeños.Sum(l => l.Pendiente).ToString("N2");
+            txtOro.Text = listEmpeños.Where(l => l.Es_Oro).Sum(l => l.Monto).ToString("N2");
+            txtArticulos.Text = listEmpeños.Where(l => !l.Es_Oro).Sum(l => l.Monto).ToString("N2");
         }
 
         private void label2_Click(object sender, EventArgs e)

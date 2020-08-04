@@ -1,5 +1,6 @@
 ﻿namespace Empeño.CommonEF.Entities
 {
+    using Newtonsoft.Json;
     using System;
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
@@ -29,6 +30,7 @@
 
         public bool IsDelete { get; set; } = false;
 
+        [JsonIgnore]
         public virtual ICollection<Empeno> Empenos { get; set; }
 
         public Cliente()

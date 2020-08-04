@@ -64,20 +64,27 @@ namespace Empeño.WindowsForms.Reports
                 });
             }
 
-            ReportDataSource rpd = new ReportDataSource("IngresosEgresosReporte", list.OrderBy(f => f.Fecha));
-
-            rvIngresos.LocalReport.ReportEmbeddedResource = "Empeño.WindowsForms.Reports.IngresosEgresos.rdlc";
-            rvIngresos.LocalReport.DataSources.Clear();
-            rvIngresos.LocalReport.DataSources.Add(rpd);
-            //rvIngresosEgresos.Dock = DockStyle.Fill;
-            //rvIngresosEgresos.Width = 800;
-            //rvIngresosEgresos.Height = 600;
-            this.rvIngresos.RefreshReport();
+            dgvIngresos.DataSource = list.ToList();
+            dgvIngresos.Refresh();
             chbTodo.Checked = true;
             chbIngresos.Checked = false;
             chbEgresos.Checked = false;
             dtDesde.Value = month;
             dtHasta.Value = DateTime.Today;
+
+            list = list.OrderBy(l => l.Fecha).ToList();
+            var minDate = list.Min(l => l.Fecha);
+            var maxDate = list.Max(l => l.Fecha);
+
+            while (minDate < maxDate)
+            {
+                chartVentas.Series[0].Points.AddXY(minDate.ToString("dd/MM"), list.Where(l => l.Fecha == minDate).Sum(i => i.Ingresos));
+                chartVentas.Series[1].Points.AddXY(minDate.ToString("dd/MM"), list.Where(l => l.Fecha == minDate).Sum(i => i.Egresos));
+                minDate = minDate.AddDays(1);
+            }
+
+            txtMonto.Text = list.Sum(l => l.Ingresos).Value.ToString("N2");
+            txtPendiente.Text = list.Sum(l => l.Egresos).Value.ToString("N2");
         }
 
 
@@ -192,19 +199,22 @@ namespace Empeño.WindowsForms.Reports
                 }
             }
 
-            ReportDataSource rpd = new ReportDataSource("IngresosEgresosReporte", list.OrderBy(f => f.Fecha));
+            dgvIngresos.DataSource = list.ToList();
+            dgvIngresos.Refresh();
+            list = list.OrderBy(l => l.Fecha).ToList();
+            var minDate = list.Min(l => l.Fecha);
+            var maxDate = list.Max(l => l.Fecha);
 
-            rvIngresos.LocalReport.ReportEmbeddedResource = "Empeño.WindowsForms.Reports.IngresosEgresos.rdlc";
-            rvIngresos.LocalReport.DataSources.Clear();
-            rvIngresos.LocalReport.DataSources.Add(rpd);
-            //rvIngresosEgresos.Dock = DockStyle.Fill;
-            //rvIngresosEgresos.Width = 800;
-            //rvIngresosEgresos.Height = 600;
-            this.rvIngresos.RefreshReport();
-            //chbTodo.Checked = true;
-            //chbIngresos.Checked = false;
-            //chbEgresos.Checked = false;
-            this.rvIngresos.RefreshReport();
+            while (minDate < maxDate)
+            {
+                chartVentas.Series[0].Points.AddXY(minDate.ToString("dd/MM"), list.Where(l => l.Fecha == minDate).Sum(i => i.Ingresos));
+                chartVentas.Series[1].Points.AddXY(minDate.ToString("dd/MM"), list.Where(l => l.Fecha == minDate).Sum(i => i.Egresos));
+                minDate = minDate.AddDays(1);
+            }
+
+            txtMonto.Text = list.Sum(l => l.Ingresos).Value.ToString("N2");
+            txtPendiente.Text = list.Sum(l => l.Egresos).Value.ToString("N2");
+
         } 
 
         private async void btnBuscar_Click(object sender, EventArgs e)

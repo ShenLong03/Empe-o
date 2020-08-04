@@ -26,6 +26,8 @@ namespace Empeño.WindowsForms.ViewReports
 
         public string Descripcion { get; set; }
 
+        public bool Es_Oro { get; set; }
+
         public DateTime? Fecha { get; set; }
 
         public DateTime? Vencimiento { get; set; }

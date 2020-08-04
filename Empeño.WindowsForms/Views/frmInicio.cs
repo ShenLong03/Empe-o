@@ -42,22 +42,13 @@
         {
             //TODO: Quitar esto es solo para forzar el login
             if (Program.Usuario == null)
-                Program.Usuario = new User { Usuario= "djarquin012" };
+                Program.Usuario = new User { Usuario= "Admin" };
 
             this.Opacity = 0.0;
             hideSubMenu();
             btnRestore.Visible = false;
             btnMaximize.Visible = true;
-            timer1.Start();
-            try
-            {
-                //await funciones.ReviewDuplicateEmpeños();
-                //funciones.ReviewEmpeños();
-            }
-            catch (Exception ex)
-            {
-
-            }
+            timer1.Start();            
         }
 
         #region Menu
@@ -99,13 +90,13 @@
 
         private void mnuReporte_Click(object sender, EventArgs e)
         {
-            if (panelSubMenuReportes.Width <= 60)
+            if (panel1.Width <= 60)
             {
-                panelSubMenuReportes.Width = 280;
+                panel1.Width = 280;
                 mnuInicio.Text = "Inicio";
                 mnuConfiguracion.Text = "Configuración";
                 mnuEmpeños.Text = "Empeños";
-                mnuClientes.Text = "Empleados";
+                mnuClientes.Text = "Clientes";
                 mnuReporte.Text = "Caja";
                 mnuTablero.Text = "Tablero";
                 mnuLogout.Text = "Cerrar";
@@ -147,7 +138,7 @@
                 mnuInicio.Text = "Inicio";
                 mnuConfiguracion.Text = "Configuración";
                 mnuEmpeños.Text = "Empeños";
-                mnuClientes.Text = "Empleados";
+                mnuClientes.Text = "Clientes";
                 mnuReporte.Text = "Caja";
                 mnuTablero.Text = "Tablero";
                 mnuLogout.Text = "Cerrar";

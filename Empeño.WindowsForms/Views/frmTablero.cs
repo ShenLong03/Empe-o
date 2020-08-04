@@ -2,6 +2,7 @@
 using Empeño.WindowsForms.Data;
 using Empeño.WindowsForms.Models;
 using Empeño.WindowsForms.ViewReports;
+using Microsoft.Office.Interop.Excel;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -112,15 +113,24 @@ namespace Empeño.WindowsForms.Views
             chartVentas.Series[1].Points.Clear();
             chartEmpeños.Series[0].Points.Clear();
 
-            chartVentas.Series[0].Points.DataBindXY(list.OrderBy(i => i.Fecha).Select(i => i.Fecha.Date.ToString("dd/MM")).ToList(), list.Select(i => i.Ingresos).ToList());
-            chartVentas.Series[1].Points.DataBindXY(list.OrderBy(i => i.Fecha).Select(i => i.Fecha.Date.ToString("dd/MM")).ToList(), list.Select(i => i.Egresos).ToList());
 
-            var listEmpeños = _context.Empenos.Where(d=>!d.IsDelete).ToList();
+            list = list.OrderBy(l => l.Fecha).ToList();
+            var minDate = list.Min(l => l.Fecha);
+            var maxDate = list.Max(l => l.Fecha);
+
+            while (minDate < maxDate)
+            {
+                chartVentas.Series[0].Points.AddXY(minDate.ToString("dd/MM"), list.Where(l=>l.Fecha==minDate).Sum(i => i.Ingresos));
+                chartVentas.Series[1].Points.AddXY(minDate.ToString("dd/MM"), list.Where(l => l.Fecha == minDate).Sum(i => i.Egresos));
+                minDate = minDate.AddDays(1);
+            }
+
+            
 
             for (int i = 0; i < 5; i++)
             {
                 var estado = GetEstado(i);
-                chartEmpeños.Series[0].Points.AddXY(GetEstadoName(i), _context.Empenos.Where(x => x.Estado == estado).Count());
+                chartEmpeños.Series[0].Points.AddXY(GetEstadoName(i), _context.Empenos.Where(x =>!x.IsDelete && x.Estado == estado).Count());
             }
             chartEmpeños.Update();
             chartVentas.Update();
@@ -167,8 +177,17 @@ namespace Empeño.WindowsForms.Views
                 });
             }
 
-            chartVentas.Series[0].Points.DataBindXY(list.OrderBy(i=>i.Fecha).Select(i => i.Fecha.Date.ToString("dd/MM")).ToList(), list.Select(i => i.Ingresos).ToList());
-            chartVentas.Series[1].Points.DataBindXY(list.OrderBy(i => i.Fecha).Select(i => i.Fecha.Date.ToString("dd/MM")).ToList(), list.Select(i => i.Egresos).ToList());
+            list = list.OrderBy(l => l.Fecha).ToList();
+            var minDate = list.Min(l => l.Fecha);
+            var maxDate = list.Max(l => l.Fecha);
+
+            while (minDate < maxDate)
+            {
+                chartVentas.Series[0].Points.AddXY(minDate.ToString("dd/MM"), list.Where(l => l.Fecha == minDate).Sum(i => i.Ingresos));
+                chartVentas.Series[1].Points.AddXY(minDate.ToString("dd/MM"), list.Where(l => l.Fecha == minDate).Sum(i => i.Egresos));
+                minDate = minDate.AddDays(1);
+            }
+            chartVentas.ChartAreas[0].AxisY.LabelStyle.Format = "N2";
 
             var listEmpeños = _context.Empenos.ToList();
 
@@ -218,12 +237,18 @@ namespace Empeño.WindowsForms.Views
 
 
 
-            dgvTransacciones.DataSource = transactionsToday;
+            dgvTransacciones.DataSource = transactionsToday.Select(x=>new 
+            {
+                x.Hora,
+                x.TipoTransaccion,
+                Monto=x.Monto.ToString("N2")
+            }).ToList();
             chartEmpeños.Series[0].IsValueShownAsLabel = true;
             lblIngresos.Text = transactionsToday.Where(t => t.TipoTransaccion == "Ingresos").Sum(t => t.Monto).ToString("N2");
             lblSalidas.Text = transactionsToday.Where(t => t.TipoTransaccion == "Egresos").Sum(t => t.Monto).ToString("N2");
             lblTotal.Text= transactionsToday.Sum(t => t.Monto).ToString("N2");
         }
+
 
         private string GetEstadoName(int i)
         {
@@ -263,9 +288,14 @@ namespace Empeño.WindowsForms.Views
             }
         }
 
-        private async void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
+        private async void comboBox1_SelectedIndexChanged_1(object sender, EventArgs e)
         {
             await LoadCharts();
+        }
+
+        private void panel13_Paint(object sender, PaintEventArgs e)
+        {
+
         }
     }
 }

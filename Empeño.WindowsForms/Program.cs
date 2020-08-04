@@ -33,12 +33,13 @@ namespace Empeño.WindowsForms
             Acceso = false;
             Application.EnableVisualStyles();
             PerfilSeedDb.CheckPerfiles();
+            SuperUsuarioSeedDb.CheckSuperUsuario();
             //TODO:Datos de Prueba            
             //ClienteSeedDb.CheckClientes();
             //END TODO
             Application.SetCompatibleTextRenderingDefault(false);
             //Application.Run(new frmCargando(new Size(800,600), new Point(50,50)));
-            Application.Run(new frmReporteIngresos());
+            Application.Run(new frmLogin());
         }
 
         public static void GetCargando(Size size, Point location) 
