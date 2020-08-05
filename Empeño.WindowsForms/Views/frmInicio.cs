@@ -7,6 +7,7 @@
     using System;
     using System.Data.Entity;
     using System.Drawing;
+    using System.Linq;
     using System.Runtime.InteropServices;
     using System.Windows.Forms;
 
@@ -43,6 +44,13 @@
             //TODO: Quitar esto es solo para forzar el login
             if (Program.Usuario == null)
                 Program.Usuario = new User { Usuario= "Admin" };
+
+            if (!_context.Configuraciones.Any())
+            {                
+                showSubMenu(panelSubMenuConfiguracion);
+                ActivateButton(mnuSubConfiguracion, RGBColors.color3);
+                OpenChildForm(new frmConfiguracionGeneral());
+            }
 
             this.Opacity = 0.0;
             hideSubMenu();
@@ -97,7 +105,8 @@
                 mnuConfiguracion.Text = "Configuración";
                 mnuEmpeños.Text = "Empeños";
                 mnuClientes.Text = "Clientes";
-                mnuReporte.Text = "Caja";
+                mnuReporte.Text = "Reportes";
+                mnuCaja.Text = "Caja";
                 mnuTablero.Text = "Tablero";
                 mnuLogout.Text = "Cerrar";
             }
@@ -139,7 +148,8 @@
                 mnuConfiguracion.Text = "Configuración";
                 mnuEmpeños.Text = "Empeños";
                 mnuClientes.Text = "Clientes";
-                mnuReporte.Text = "Caja";
+                mnuReporte.Text = "Reportes";
+                mnuCaja.Text = "Caja";
                 mnuTablero.Text = "Tablero";
                 mnuLogout.Text = "Cerrar";
             }

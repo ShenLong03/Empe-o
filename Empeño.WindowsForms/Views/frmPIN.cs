@@ -87,6 +87,10 @@ namespace Empeño.WindowsForms.Views
                     if (perfil.Perfil.Nombre == "Empleado" || perfil.Perfil.Nombre == "Administrador" || perfil.Perfil.Nombre == "Supervisor")
                         Program.Acceso = true;
                     break;
+                case "Editar Empeño":
+                    if (perfil.Perfil.Nombre == "Administrador" || perfil.Perfil.Nombre == "Supervisor")
+                        Program.Acceso = true;
+                    break;
                 case "Borrar Empeño":
                     if (perfil.Perfil.Nombre == "Administrador" || perfil.Perfil.Nombre == "Supervisor")
                         Program.Acceso = true;

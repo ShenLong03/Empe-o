@@ -153,7 +153,7 @@ namespace Empeño.WindowsForms.Reports
         public async Task Buscar()
         {
             DateTime desde = dtDesde.Value;
-            DateTime hasta = dtHasta.Value;
+            DateTime hasta = dtHasta.Value.AddHours(23).AddMinutes(59);
 
             var egresos = await _context.Empenos.Where(x => x.Fecha >= desde && x.Fecha <= hasta).ToListAsync();
             var ingresos = await _context.Pago.Where(x => x.Fecha >= desde && x.Fecha <= hasta).ToListAsync();
@@ -161,6 +161,26 @@ namespace Empeño.WindowsForms.Reports
             var list = new List<IngresosEgresosReporte>();
 
             if (chbTodo.Checked || chbIngresos.Checked)
+            {
+                foreach (var item in ingresos)
+                {
+                    list.Add(new IngresosEgresosReporte
+                    {
+                        EmpeñoId = item.EmpenoId,
+                        Cliente = item.Empeno.Cliente.Nombre,
+                        Egresos = null,
+                        Tipo = item.TipoPago == CommonEF.Enum.TipoPago.Interes ? "Interes" :
+                        item.TipoPago == CommonEF.Enum.TipoPago.Principal ? "Principal" : "",                        
+                        Empleado = item.Empleado.Nombre,
+                        Fecha = item.Fecha.Date,
+                        DiaMes=item.Fecha.Date.ToString("dd/MM"),
+                        Identificacion = item.Empeno.Cliente.Identificacion,
+                        Ingresos = item.Monto
+                    });
+                }
+            }
+
+            if (chbTodo.Checked || chbEgresos.Checked)
             {
                 foreach (var item in egresos)
                 {
@@ -172,29 +192,9 @@ namespace Empeño.WindowsForms.Reports
                         Tipo = "Empeño",
                         Empleado = item.Empleado.Nombre,
                         Fecha = item.Fecha.Date,
-                        DiaMes=item.Fecha.Date.ToString("dd/MM"),
+                        DiaMes = item.Fecha.Date.ToString("dd/MM"),
                         Identificacion = item.Cliente.Identificacion,
                         Ingresos = null
-                    });
-                }
-            }
-
-            if (chbTodo.Checked || chbEgresos.Checked)
-            {
-                foreach (var item in ingresos)
-                {
-                    list.Add(new IngresosEgresosReporte
-                    {
-                        EmpeñoId = item.EmpenoId,
-                        Cliente = item.Empeno.Cliente.Nombre,
-                        Egresos = null,
-                        Tipo = item.TipoPago == CommonEF.Enum.TipoPago.Interes ? "Interes" :
-                        item.TipoPago == CommonEF.Enum.TipoPago.Principal ? "Principal" : "",
-                        Empleado = item.Empleado.Nombre,
-                        Fecha = item.Fecha.Date,
-                        DiaMes = item.Fecha.Date.ToString("dd/MM"),
-                        Identificacion = item.Empeno.Cliente.Identificacion,
-                        Ingresos = item.Monto
                     });
                 }
             }

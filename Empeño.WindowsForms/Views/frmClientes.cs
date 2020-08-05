@@ -231,6 +231,7 @@ namespace Empeño.WindowsForms.Views
             dgvClientes.DataSource = await _context.Clientes.Where(c=>!c.IsDelete).Select(x => new
             {
                 Id = x.ClienteId,
+                x.Identificacion,
                 x.Nombre,
                 x.Correo,
                 x.Telefono
@@ -249,40 +250,43 @@ namespace Empeño.WindowsForms.Views
         }
 
 
-        private async void dgvClientes_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
-        {
-            await Editar();
-        }
 
         public async Task Editar()
         {
-            if (dgvClientes.SelectedRows.Count > 0)
+            try
             {
-                var cliente = await _context.Clientes.FindAsync(dgvClientes.SelectedRows[0].Cells[0].Value);
-                if (cliente == null)
+                if (dgvClientes.SelectedRows.Count > 0)
                 {
-                    MessageBox.Show("Error", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    var cliente = await _context.Clientes.FindAsync(dgvClientes.SelectedRows[0].Cells[0].Value);
+                    if (cliente == null)
+                    {
+                        MessageBox.Show("Error", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        clienteId = 0;
+                        return;
+                    }
+                    funciones.ResetForm(panelFormulario);
                     clienteId = 0;
-                    return;
+                    clienteId = int.Parse(dgvClientes.SelectedRows[0].Cells[0].Value.ToString());
+                    txtIdentificacion.Text = cliente.Identificacion;
+                    txtNombre.Text = cliente.Nombre;
+                    txtTelefono.Text = cliente.Telefono;
+                    txtCorreo.Text = cliente.Correo;
+                    chbActivo.Checked = cliente.Activo;
+                    txtDireccion.Text = cliente.Direccion;
+                    txtComentario.Text = cliente.Comentario;
+                    txtFecha.Text = cliente.Fecha.ToString("dd/MM/yyyy");
+                    lblGanancias.Text = cliente.Empenos.Where(m => m.Pagos.Count() > 0).SelectMany(m => m.Pagos).Sum(p => p.Monto).ToString("N2");
+                    lblEmpeños.Text = cliente.Empenos.Where(m => !m.IsDelete).Count().ToString();
+                    funciones.BlockTextBox(panelFormulario, true);
+                    funciones.EditTextColor(panelFormulario);
+                    funciones.ShowLabels(panelFormulario);
+                    funciones.TextBoxColorBlank(panelFormulario);
+                    funciones.IntelligHolders(panelFormulario);
                 }
-                funciones.ResetForm(panelFormulario);
-                clienteId = 0;
-                clienteId = int.Parse(dgvClientes.SelectedRows[0].Cells[0].Value.ToString());
-                txtIdentificacion.Text = cliente.Identificacion;
-                txtNombre.Text = cliente.Nombre;
-                txtTelefono.Text = cliente.Telefono;
-                txtCorreo.Text = cliente.Correo;
-                chbActivo.Checked = cliente.Activo;
-                txtDireccion.Text = cliente.Direccion;
-                txtComentario.Text = cliente.Comentario;
-                txtFecha.Text = cliente.Fecha.ToString("dd/MM/yyyy");
-                lblGanancias.Text = cliente.Empenos.Where(m=>m.Pagos.Count()>0).SelectMany(m => m.Pagos).Sum(p => p.Monto).ToString("N2");
-                lblEmpeños.Text = cliente.Empenos.Where(m => !m.IsDelete).Count().ToString();
-                funciones.BlockTextBox(panelFormulario, true);
-                funciones.EditTextColor(panelFormulario);
-                funciones.ShowLabels(panelFormulario);
-                funciones.TextBoxColorBlank(panelFormulario);
-                funciones.IntelligHolders(panelFormulario);
+            }
+            catch (Exception)
+            {
+
             }
         }
 
@@ -410,6 +414,11 @@ namespace Empeño.WindowsForms.Views
             {
                 MessageBox.Show("Seleccione un cliente", "Información", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
+        }
+
+        private async void dgvClientes_DoubleClick(object sender, EventArgs e)
+        {
+            await Editar();
         }
 
         protected override void WndProc(ref Message m)

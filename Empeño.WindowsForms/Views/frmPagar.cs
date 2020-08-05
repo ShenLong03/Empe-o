@@ -54,7 +54,7 @@ namespace Empeño.WindowsForms.Views
             if (double.Parse(intereses)<1 || montoMinimo<1)
             {
                 txtPagaMonto.Enabled = true;
-                txtPagaMonto.Text = txtMontoAPagar.Text;
+                txtPagaMonto.Text = "0.00";
                 txtTotalAPagar.Text = txtPagaMonto.Text;
                 txtPagaCon.Text = txtPagaMonto.Text;
                 txtAdeudaMonto.Text = (double.Parse(txtMontoAPagar.Text) - double.Parse(txtPagaMonto.Text)).ToString("N2");
@@ -110,6 +110,8 @@ namespace Empeño.WindowsForms.Views
 
         private void txtPagaCon_TextChanged(object sender, EventArgs e)
         {
+            funciones.KeyNumber(sender);
+
             if (string.IsNullOrEmpty(txtPagaCon.Text))
             {
                 txtPagaCon.Text = "0.00";
@@ -256,6 +258,8 @@ namespace Empeño.WindowsForms.Views
 
         private void txtPagaInteres_TextChanged_1(object sender, EventArgs e)
         {
+            funciones.KeyNumber(sender);
+
             if (string.IsNullOrEmpty(txtPagaInteres.Text))
             {
                 txtPagaInteres.Text = "0.00";
@@ -285,6 +289,8 @@ namespace Empeño.WindowsForms.Views
 
         private void txtPagaMonto_TextChanged_1(object sender, EventArgs e)
         {
+            funciones.KeyNumber(sender);
+
             if (string.IsNullOrEmpty(txtPagaMonto.Text))
             {
                 txtPagaMonto.Text = "0.00";
@@ -438,10 +444,11 @@ namespace Empeño.WindowsForms.Views
                 ws.get_Range("C" + (26 + index), "D" + (26 + index)).Merge();
                 
             }
-                        
-            cexcel.Cells[28 + index, 3].value =txtInteresAPagar.Text;
-            cexcel.Cells[30 + index, 3].value = empeno.FechaVencimiento.ToString("dd/MM/yyyy");
-            cexcel.Cells[32 + index, 3].value = empeno.Estado.ToString();
+
+            cexcel.Cells[28 + index, 3].value = empeño.MontoPendiente.ToString("N2");
+            cexcel.Cells[30 + index, 3].value =txtInteresAPagar.Text;
+            cexcel.Cells[32 + index, 3].value = empeno.FechaVencimiento.ToString("dd/MM/yyyy");
+            cexcel.Cells[34 + index, 3].value = empeno.Estado.ToString();
            
             cexcel.ActiveWindow.SelectedSheets.PrintOut();
             System.Threading.Thread.Sleep(300);

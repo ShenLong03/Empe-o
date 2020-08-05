@@ -52,7 +52,7 @@ namespace Empeño.WindowsForms.Reports
                 Pendiente=x.MontoPendiente,
                 UltimoPago=x.Pagos.Max(p=>p.Fecha),
                 Vencimiento=x.FechaVencimiento,                
-            });
+            }).ToList();
 
             dgvEmpeños.DataSource = listEmpeños.ToList();
             dgvEmpeños.Refresh();
@@ -167,7 +167,7 @@ namespace Empeño.WindowsForms.Reports
         {
             chartEmpeños.Update();
             DateTime desde = dtDesde.Value;
-            DateTime hasta = dtHasta.Value;
+            DateTime hasta = dtHasta.Value.AddHours(23).AddMinutes(59);
 
             var list = await _context.Empenos.Where(e => e.Fecha >= desde && e.Fecha <= hasta && e.IsDelete==ckbBorrados.Checked).ToListAsync();
 
@@ -187,6 +187,9 @@ namespace Empeño.WindowsForms.Reports
 
                 if (!chbRetirados.Checked)
                     list = list.Where(l => l.Estado != CommonEF.Enum.Estado.Retirada).ToList();
+
+                if (!chbVencidos.Checked)
+                    list = list.Where(l => l.Estado != CommonEF.Enum.Estado.Vencido).ToList();
             }
 
             var listEmpeños = list.Select(x => new EmpeñoReporte
@@ -285,6 +288,7 @@ namespace Empeño.WindowsForms.Reports
                 chbPendientes.Checked = false;
                 chbPerdidos.Checked = false;
                 chbActivos.Checked = false;
+                chbVencidos.Checked = false;
 
                 chbTodo.Checked = true;
             }
@@ -292,32 +296,32 @@ namespace Empeño.WindowsForms.Reports
 
         private void chbVencidos_CheckedChanged(object sender, EventArgs e)
         {
-            if (chbActivos.Checked || chbPerdidos.Checked || chbPendientes.Checked || chbRetirados.Checked)
+            if (chbActivos.Checked || chbPerdidos.Checked || chbPendientes.Checked || chbRetirados.Checked || chbVencidos.Checked)
                 chbTodo.Checked = false;
         }
 
         private void chbPendientes_CheckedChanged_1(object sender, EventArgs e)
         {
-            if (chbActivos.Checked || chbPerdidos.Checked || chbPendientes.Checked || chbRetirados.Checked)
+            if (chbActivos.Checked || chbPerdidos.Checked || chbPendientes.Checked || chbRetirados.Checked || chbVencidos.Checked)
                 chbTodo.Checked = false;
         }
 
         private void chbActivos_CheckedChanged(object sender, EventArgs e)
         {
-            if (chbActivos.Checked || chbPerdidos.Checked || chbPendientes.Checked || chbRetirados.Checked)
+            if (chbActivos.Checked || chbPerdidos.Checked || chbPendientes.Checked || chbRetirados.Checked || chbVencidos.Checked)
                 chbTodo.Checked = false;
         }
 
         private void chbRetirados_CheckedChanged(object sender, EventArgs e)
         {
-            if (chbActivos.Checked || chbPerdidos.Checked || chbPendientes.Checked || chbRetirados.Checked)
+            if (chbActivos.Checked || chbPerdidos.Checked || chbPendientes.Checked || chbRetirados.Checked || chbVencidos.Checked)
                 chbTodo.Checked = false;
 
         }
 
         private void chbPerdidos_CheckedChanged(object sender, EventArgs e)
         {
-            if (chbActivos.Checked || chbPerdidos.Checked || chbPendientes.Checked || chbRetirados.Checked)
+            if (chbActivos.Checked || chbPerdidos.Checked || chbPendientes.Checked || chbRetirados.Checked || chbVencidos.Checked)
                 chbTodo.Checked = false;
         }
 

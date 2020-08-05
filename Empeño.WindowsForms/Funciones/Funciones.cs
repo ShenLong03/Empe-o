@@ -555,5 +555,92 @@ namespace Empeño.WindowsForms.Funciones
             _context.Bitacoras.Add(bitacora);
             await _context.SaveChangesAsync();
         }
+
+        public bool Validate(TextBox txt, Label lbl)
+        {
+            if (txt.Text == lbl.Text)
+            {
+                MessageBox.Show("El campo " + lbl.Text + " es un campo requerido", "Alerta", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return false;
+            }
+            return true;
+        }
+
+        public bool ValidateNum(TextBox txt, Label lbl, bool requiered=true)
+        {
+            double number;
+
+            if (txt.Text == lbl.Text && requiered)
+            {
+                MessageBox.Show("El campo " + lbl.Text + " es un campo requerido", "Alerta", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return false;
+            }
+            
+            if (!double.TryParse(txt.Text, out number))
+            {
+                MessageBox.Show("El campo " + lbl.Text + " es un campo de Número", "Alerta", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return false;
+            }
+            return true;
+        }
+
+        public void KeyNumber(object sender)
+        {
+            var validate = false;
+            TextBox txt = (TextBox)sender;
+            if (string.IsNullOrEmpty(txt.Text))
+                return;
+
+            var lastKey = txt.Text.Substring(txt.TextLength - 1, 1);
+            switch (lastKey)
+            {
+                case "0":                
+                case "1":
+                case "2":
+                case "3":
+                case "4":
+                case "5":
+                case "6":
+                case "7":
+                case "8":
+                case "9":
+                case ".":
+                case ",":                
+                    validate = true;
+                    break;
+                default:
+                    validate = false;
+                    break;
+            }
+            if (!validate && txt.TextLength>0)
+            {
+                MessageBox.Show("El campo debe ser un Número", "Alerta", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                txt.Text = txt.Text.Substring(0, txt.TextLength - 1);
+                if (txt.Text == string.Empty)
+                    txt.Text = "0.00";
+            }
+        }
+
+        public string GetValue(TextBox txt, Label lbl)
+        {
+            if (txt.Text == lbl.Text)
+            {
+                return string.Empty;
+            }
+            return txt.Text;
+        }
+
+        public void FormatNumber(object sender) 
+        {
+            TextBox txt = (TextBox)sender;
+
+            if (string.IsNullOrEmpty(txt.Text))
+            {
+                txt.Text = "0.00";
+            }
+            double numero=0;
+            double.TryParse(txt.Text, out numero);                    
+            txt.Text = numero.ToString("N2");
+        }
     }
 }

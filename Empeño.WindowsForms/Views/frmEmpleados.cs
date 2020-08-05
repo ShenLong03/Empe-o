@@ -79,6 +79,15 @@ namespace Empeño.WindowsForms.Views
         {         
             try
             {
+                if (!Validate(txtNombre, lblNombre))
+                    return;
+                if (!Validate(txtUsuario, lblUsuario))
+                    return;
+                if (!Validate(txtPassword, lblPassword))
+                    return;
+                if (!Validate(txtPIN, lblPIN))
+                    return;
+
                 if (cbPerfil.Text=="Perfil")
                 {
                     MessageBox.Show("Seleccione el perfil del empleado", "Información", MessageBoxButtons.OK, MessageBoxIcon.Information);
@@ -95,11 +104,11 @@ namespace Empeño.WindowsForms.Views
                     var empleado = new Empleado
                     {
                         EmpleadoId = empleadoId,
-                        Nombre = txtNombre.Text,
-                        Telefono = txtTelefono.Text,
-                        Correo = txtCorreo.Text,
+                        Nombre = GetValue(txtNombre,lblNombre),
+                        Telefono =  GetValue(txtTelefono,lblTelefono),
+                        Correo = GetValue(txtCorreo,lblCorreo),
                         Activo = chbActivo.Checked,
-                        Usuario = txtUsuario.Text
+                        Usuario = GetValue(txtUsuario,lblUsuario)
                     };
 
                     var user = new User
@@ -162,6 +171,25 @@ namespace Empeño.WindowsForms.Views
             {
                 MessageBox.Show(ex.Message.ToString(), "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
+        }
+
+        private bool Validate(TextBox txt, Label lbl)
+        {
+            if (txt.Text==lbl.Text)
+            {
+                MessageBox.Show("El campo " + lbl.Text + " es un campo requerido", "Alerta", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return false;
+            }
+            return true;
+        }
+
+        private string GetValue(TextBox txt, Label lbl)
+        {
+            if (txt.Text == lbl.Text)
+            {                
+                return string.Empty;
+            }
+            return txt.Text;
         }
 
         private void txtNombre_Leave(object sender, EventArgs e)

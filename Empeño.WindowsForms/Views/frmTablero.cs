@@ -178,8 +178,8 @@ namespace Empeño.WindowsForms.Views
             }
 
             list = list.OrderBy(l => l.Fecha).ToList();
-            var minDate = list.Min(l => l.Fecha);
-            var maxDate = list.Max(l => l.Fecha);
+            var minDate = list.Count() > 0 ? list.Min(l => l.Fecha) : DateTime.Today;
+            var maxDate = list.Count() > 0 ? list.Max(l => l.Fecha) : DateTime.Today;
 
             while (minDate < maxDate)
             {

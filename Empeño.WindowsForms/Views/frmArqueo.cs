@@ -10,6 +10,7 @@ using System.ComponentModel;
 using System.Data;
 using System.Data.Entity;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Security.Principal;
 using System.Text;
@@ -37,7 +38,7 @@ namespace Empeño.WindowsForms.Views
             {
                 await funciones.ReviewEmpeños();
 
-                empeños = await _context.Empenos.Where(x => (x.Estado == Estado.Activo
+                empeños = await _context.Empenos.Where(x => !x.IsDelete && (x.Estado == Estado.Activo
                  || x.Estado == Estado.Pendiente
                  || x.Estado == Estado.Vencido)
                  && (!x.Retirado || x.FechaRetiro == null)
@@ -63,7 +64,9 @@ namespace Empeño.WindowsForms.Views
         {
             var configuracion = await _context.Configuraciones.FirstOrDefaultAsync();
             Microsoft.Office.Interop.Excel.Application cexcel = new Microsoft.Office.Interop.Excel.Application();
-            cexcel.Workbooks.Open("C:\\Empeños\\Comprobantes\\ComprobanteArqueo.xlsx", true, true);
+            string pathch = Path.GetDirectoryName(System.Windows.Forms.Application.ExecutablePath);
+            pathch = $"{pathch}\\Empeños\\Comprobantes\\ComprobanteArqueo.xlsx";
+            cexcel.Workbooks.Open(pathch, true, true);          
             
             cexcel.Visible = true;
             cexcel.Cells[3, 1].value = configuracion.Compañia;

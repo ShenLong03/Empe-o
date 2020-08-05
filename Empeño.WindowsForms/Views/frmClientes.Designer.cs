@@ -381,7 +381,7 @@
             this.dgvClientes.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dgvClientes.Size = new System.Drawing.Size(588, 545);
             this.dgvClientes.TabIndex = 18;
-            this.dgvClientes.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvClientes_CellDoubleClick);
+            this.dgvClientes.DoubleClick += new System.EventHandler(this.dgvClientes_DoubleClick);
             // 
             // panel6
             // 
@@ -400,6 +400,8 @@
             // 
             // panel12
             // 
+            this.panel12.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.panel12.BackColor = System.Drawing.Color.DimGray;
             this.panel12.Location = new System.Drawing.Point(9, 63);
             this.panel12.Name = "panel12";
@@ -408,6 +410,8 @@
             // 
             // txtBuscar
             // 
+            this.txtBuscar.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.txtBuscar.BackColor = System.Drawing.Color.WhiteSmoke;
             this.txtBuscar.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.txtBuscar.Font = new System.Drawing.Font("Century Gothic", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -440,10 +444,10 @@
             this.btnEmpeñar.IconChar = FontAwesome.Sharp.IconChar.DiceD20;
             this.btnEmpeñar.IconColor = System.Drawing.Color.White;
             this.btnEmpeñar.IconSize = 24;
-            this.btnEmpeñar.Location = new System.Drawing.Point(303, 83);
+            this.btnEmpeñar.Location = new System.Drawing.Point(343, 83);
             this.btnEmpeñar.Name = "btnEmpeñar";
             this.btnEmpeñar.Rotation = 0D;
-            this.btnEmpeñar.Size = new System.Drawing.Size(100, 41);
+            this.btnEmpeñar.Size = new System.Drawing.Size(138, 41);
             this.btnEmpeñar.TabIndex = 18;
             this.btnEmpeñar.Text = "Empeñar";
             this.btnEmpeñar.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
@@ -462,10 +466,10 @@
             this.btnVer.IconChar = FontAwesome.Sharp.IconChar.Binoculars;
             this.btnVer.IconColor = System.Drawing.Color.White;
             this.btnVer.IconSize = 24;
-            this.btnVer.Location = new System.Drawing.Point(103, 83);
+            this.btnVer.Location = new System.Drawing.Point(105, 83);
             this.btnVer.Name = "btnVer";
             this.btnVer.Rotation = 0D;
-            this.btnVer.Size = new System.Drawing.Size(100, 41);
+            this.btnVer.Size = new System.Drawing.Size(108, 41);
             this.btnVer.TabIndex = 16;
             this.btnVer.Text = "Ver";
             this.btnVer.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
@@ -487,7 +491,7 @@
             this.btnEditar.Location = new System.Drawing.Point(3, 84);
             this.btnEditar.Name = "btnEditar";
             this.btnEditar.Rotation = 0D;
-            this.btnEditar.Size = new System.Drawing.Size(100, 40);
+            this.btnEditar.Size = new System.Drawing.Size(103, 40);
             this.btnEditar.TabIndex = 15;
             this.btnEditar.Text = "Editar";
             this.btnEditar.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
@@ -506,10 +510,10 @@
             this.btnEliminar.IconChar = FontAwesome.Sharp.IconChar.Recycle;
             this.btnEliminar.IconColor = System.Drawing.Color.White;
             this.btnEliminar.IconSize = 24;
-            this.btnEliminar.Location = new System.Drawing.Point(203, 84);
+            this.btnEliminar.Location = new System.Drawing.Point(212, 84);
             this.btnEliminar.Name = "btnEliminar";
             this.btnEliminar.Rotation = 0D;
-            this.btnEliminar.Size = new System.Drawing.Size(100, 40);
+            this.btnEliminar.Size = new System.Drawing.Size(134, 40);
             this.btnEliminar.TabIndex = 17;
             this.btnEliminar.Text = "Eliminar";
             this.btnEliminar.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
@@ -924,10 +928,10 @@
             this.btnGuardarEmpeñar.IconChar = FontAwesome.Sharp.IconChar.UsersCog;
             this.btnGuardarEmpeñar.IconColor = System.Drawing.Color.White;
             this.btnGuardarEmpeñar.IconSize = 24;
-            this.btnGuardarEmpeñar.Location = new System.Drawing.Point(392, 3);
+            this.btnGuardarEmpeñar.Location = new System.Drawing.Point(345, 3);
             this.btnGuardarEmpeñar.Name = "btnGuardarEmpeñar";
             this.btnGuardarEmpeñar.Rotation = 0D;
-            this.btnGuardarEmpeñar.Size = new System.Drawing.Size(193, 50);
+            this.btnGuardarEmpeñar.Size = new System.Drawing.Size(240, 50);
             this.btnGuardarEmpeñar.TabIndex = 14;
             this.btnGuardarEmpeñar.Text = "Guardar y Empeñar";
             this.btnGuardarEmpeñar.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
@@ -947,10 +951,10 @@
             this.btnCancelar.IconChar = FontAwesome.Sharp.IconChar.Eraser;
             this.btnCancelar.IconColor = System.Drawing.Color.White;
             this.btnCancelar.IconSize = 24;
-            this.btnCancelar.Location = new System.Drawing.Point(125, 3);
+            this.btnCancelar.Location = new System.Drawing.Point(152, 3);
             this.btnCancelar.Name = "btnCancelar";
             this.btnCancelar.Rotation = 0D;
-            this.btnCancelar.Size = new System.Drawing.Size(136, 50);
+            this.btnCancelar.Size = new System.Drawing.Size(157, 50);
             this.btnCancelar.TabIndex = 13;
             this.btnCancelar.Text = "Cancelar";
             this.btnCancelar.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
@@ -973,7 +977,7 @@
             this.btnGuardar.Location = new System.Drawing.Point(4, 3);
             this.btnGuardar.Name = "btnGuardar";
             this.btnGuardar.Rotation = 0D;
-            this.btnGuardar.Size = new System.Drawing.Size(125, 50);
+            this.btnGuardar.Size = new System.Drawing.Size(148, 50);
             this.btnGuardar.TabIndex = 12;
             this.btnGuardar.Text = "Guardar";
             this.btnGuardar.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
@@ -1021,8 +1025,9 @@
             // 
             // panel15
             // 
+            this.panel15.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.panel15.BackColor = System.Drawing.Color.DimGray;
-            this.panel15.Location = new System.Drawing.Point(220, 1);
+            this.panel15.Location = new System.Drawing.Point(289, 4);
             this.panel15.Name = "panel15";
             this.panel15.Size = new System.Drawing.Size(1, 69);
             this.panel15.TabIndex = 5;

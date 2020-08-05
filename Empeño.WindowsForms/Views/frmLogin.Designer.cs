@@ -89,7 +89,7 @@
             this.txtContrasena.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.txtContrasena.Font = new System.Drawing.Font("Century Gothic", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtContrasena.ForeColor = System.Drawing.Color.LightGray;
-            this.txtContrasena.Location = new System.Drawing.Point(352, 159);
+            this.txtContrasena.Location = new System.Drawing.Point(356, 159);
             this.txtContrasena.Name = "txtContrasena";
             this.txtContrasena.Size = new System.Drawing.Size(365, 25);
             this.txtContrasena.TabIndex = 3;
@@ -193,7 +193,7 @@
             // panel3
             // 
             this.panel3.BackColor = System.Drawing.Color.WhiteSmoke;
-            this.panel3.Location = new System.Drawing.Point(356, 190);
+            this.panel3.Location = new System.Drawing.Point(352, 190);
             this.panel3.Name = "panel3";
             this.panel3.Size = new System.Drawing.Size(413, 1);
             this.panel3.TabIndex = 14;

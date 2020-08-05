@@ -33,6 +33,8 @@
             this.panel1 = new System.Windows.Forms.Panel();
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
             this.panel2 = new System.Windows.Forms.Panel();
+            this.txtEmailAdmin = new System.Windows.Forms.TextBox();
+            this.label11 = new System.Windows.Forms.Label();
             this.txtDirección = new System.Windows.Forms.TextBox();
             this.label10 = new System.Windows.Forms.Label();
             this.label8 = new System.Windows.Forms.Label();
@@ -62,8 +64,6 @@
             this.label7 = new System.Windows.Forms.Label();
             this.panel4 = new System.Windows.Forms.Panel();
             this.btnGuardar = new FontAwesome.Sharp.IconButton();
-            this.txtEmailAdmin = new System.Windows.Forms.TextBox();
-            this.label11 = new System.Windows.Forms.Label();
             this.tableLayoutPanel1.SuspendLayout();
             this.panel1.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
@@ -77,14 +77,13 @@
             // 
             this.tableLayoutPanel1.ColumnCount = 1;
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20F));
             this.tableLayoutPanel1.Controls.Add(this.panel1, 0, 0);
             this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 0);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
             this.tableLayoutPanel1.RowCount = 2;
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 60F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 40F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 70F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 30F));
             this.tableLayoutPanel1.Size = new System.Drawing.Size(1248, 906);
             this.tableLayoutPanel1.TabIndex = 0;
             // 
@@ -97,7 +96,7 @@
             this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel1.Location = new System.Drawing.Point(3, 3);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(1242, 537);
+            this.panel1.Size = new System.Drawing.Size(1242, 628);
             this.panel1.TabIndex = 0;
             // 
             // tableLayoutPanel2
@@ -115,7 +114,7 @@
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 40F));
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 50F));
-            this.tableLayoutPanel2.Size = new System.Drawing.Size(1242, 537);
+            this.tableLayoutPanel2.Size = new System.Drawing.Size(1242, 628);
             this.tableLayoutPanel2.TabIndex = 0;
             // 
             // panel2
@@ -150,8 +149,30 @@
             this.panel2.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel2.Location = new System.Drawing.Point(8, 48);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(1221, 426);
+            this.panel2.Size = new System.Drawing.Size(1221, 517);
             this.panel2.TabIndex = 0;
+            // 
+            // txtEmailAdmin
+            // 
+            this.txtEmailAdmin.BackColor = System.Drawing.Color.White;
+            this.txtEmailAdmin.Font = new System.Drawing.Font("Century Gothic", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtEmailAdmin.ForeColor = System.Drawing.Color.Black;
+            this.txtEmailAdmin.Location = new System.Drawing.Point(785, 25);
+            this.txtEmailAdmin.Margin = new System.Windows.Forms.Padding(4);
+            this.txtEmailAdmin.Name = "txtEmailAdmin";
+            this.txtEmailAdmin.Size = new System.Drawing.Size(416, 41);
+            this.txtEmailAdmin.TabIndex = 68;
+            // 
+            // label11
+            // 
+            this.label11.AutoSize = true;
+            this.label11.Font = new System.Drawing.Font("Century Gothic", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label11.Location = new System.Drawing.Point(638, 25);
+            this.label11.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label11.Name = "label11";
+            this.label11.Size = new System.Drawing.Size(132, 23);
+            this.label11.TabIndex = 67;
+            this.label11.Text = "Email Admin";
             // 
             // txtDirección
             // 
@@ -439,7 +460,7 @@
             // 
             this.panel4.Controls.Add(this.btnGuardar);
             this.panel4.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel4.Location = new System.Drawing.Point(8, 480);
+            this.panel4.Location = new System.Drawing.Point(8, 571);
             this.panel4.Name = "panel4";
             this.panel4.Size = new System.Drawing.Size(1221, 44);
             this.panel4.TabIndex = 2;
@@ -466,28 +487,6 @@
             this.btnGuardar.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
             this.btnGuardar.UseVisualStyleBackColor = false;
             this.btnGuardar.Click += new System.EventHandler(this.btnGuardar_Click);
-            // 
-            // txtEmailAdmin
-            // 
-            this.txtEmailAdmin.BackColor = System.Drawing.Color.White;
-            this.txtEmailAdmin.Font = new System.Drawing.Font("Century Gothic", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtEmailAdmin.ForeColor = System.Drawing.Color.Black;
-            this.txtEmailAdmin.Location = new System.Drawing.Point(785, 25);
-            this.txtEmailAdmin.Margin = new System.Windows.Forms.Padding(4);
-            this.txtEmailAdmin.Name = "txtEmailAdmin";
-            this.txtEmailAdmin.Size = new System.Drawing.Size(416, 41);
-            this.txtEmailAdmin.TabIndex = 68;
-            // 
-            // label11
-            // 
-            this.label11.AutoSize = true;
-            this.label11.Font = new System.Drawing.Font("Century Gothic", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label11.Location = new System.Drawing.Point(638, 25);
-            this.label11.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.label11.Name = "label11";
-            this.label11.Size = new System.Drawing.Size(132, 23);
-            this.label11.TabIndex = 67;
-            this.label11.Text = "Email Admin";
             // 
             // frmConfiguracionGeneral
             // 

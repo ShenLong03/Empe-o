@@ -36,19 +36,25 @@ namespace Empeño.WindowsForms.Views
                 interes.Mayor = txtMayor.Text == "Mayor que" ? 0 : int.Parse(txtMayor.Text);
                 interes.Menor = txtMenor.Text == "Menor que" ? 0 : int.Parse(txtMenor.Text);
                 interes.Nombre = txtNombre.Text;
-                interes.Porcentaje = int.Parse(txtValor.Text);
+                interes.Porcentaje = txtValor.Text == "Porcentaje" ? 0 : double.Parse(txtValor.Text);
 
                 _context.Entry(interes).State=EntityState.Modified;
             }
             else
             {
+                if (!funciones.Validate(txtNombre, lblNombre))
+                    return;
+                if (!funciones.ValidateNum(txtValor, lblValor))                
+                    return;
+                
+                
                 var interes = new Interes
                 {
                     Igual = txtIgual.Text == "Igual que" ? 0 : int.Parse(txtIgual.Text),
                     Mayor = txtMayor.Text == "Mayor que" ? 0 : int.Parse(txtMayor.Text),
                     Menor = txtMenor.Text == "Menor que" ? 0 : int.Parse(txtMenor.Text),
                     Nombre = txtNombre.Text,
-                    Porcentaje = int.Parse(txtValor.Text),
+                    Porcentaje = txtValor.Text == "Porcentaje" ? 0 : double.Parse(txtValor.Text),
                 };
 
                 _context.Interes.Add(interes);
