@@ -73,17 +73,8 @@
 
         private void mnuArqueo_Click(object sender, EventArgs e)
         {
-            frmOscuro oscuro = new frmOscuro();
-            oscuro.Show();
-            frmPIN pin = new frmPIN("Empeño");
-            pin.ShowDialog();
-            if (!Program.Acceso)
-            {
-                oscuro.Close();
-                MessageBox.Show("No tiene acceso a este módulo");
+            if (!funciones.ValidatePIN("Empeño"))
                 return;
-            }
-            oscuro.Close();
 
             ActivateButton(sender, RGBColors.color2);
             OpenChildForm(new frmArqueo());
@@ -159,17 +150,8 @@
 
         private void mnuSubConfiguracion_Click(object sender, EventArgs e)
         {
-            frmOscuro oscuro = new frmOscuro();
-            oscuro.Show();
-            frmPIN pin = new frmPIN("Configuración");
-            pin.ShowDialog();
-            if (!Program.Acceso)
-            {
-                oscuro.Close();
-                MessageBox.Show("No tiene acceso a este módulo");
-                return;
-            }
-            oscuro.Close();
+            if (!funciones.ValidatePIN("Configuración"))
+                return;           
 
             ActivateButton(sender, RGBColors.color3);
             OpenChildForm(new frmConfiguracionGeneral());
@@ -190,17 +172,8 @@
 
         private void mnuSubIntereses_Click(object sender, EventArgs e)
         {
-            frmOscuro oscuro = new frmOscuro();
-            oscuro.Show();
-            frmPIN pin = new frmPIN("Configuración");
-            pin.ShowDialog();
-            if (!Program.Acceso)
-            {
-                oscuro.Close();
-                MessageBox.Show("No tiene acceso a este módulo");
+            if (!funciones.ValidatePIN("Configuración"))
                 return;
-            }
-            oscuro.Close();
 
             ActivateButton(sender, RGBColors.color4);
             OpenChildForm(new frmIntereses());
@@ -439,18 +412,9 @@
 
         private void mnuEmpleados_Click_1(object sender, EventArgs e)
         {
-            
-            frmOscuro oscuro = new frmOscuro();
-            oscuro.Show();
-            frmPIN pin = new frmPIN("Empleado");
-            pin.ShowDialog();
-            if (!Program.Acceso)
-            {
-                oscuro.Close();
-                MessageBox.Show("No tiene acceso a este módulo");
+
+            if (!funciones.ValidatePIN("Empleado"))
                 return;
-            }
-            oscuro.Close();
 
             ActivateButton(sender, RGBColors.color2);
             OpenChildForm(new frmEmpleados());

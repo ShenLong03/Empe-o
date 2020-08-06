@@ -34,19 +34,19 @@ namespace Empeño.WindowsForms.Views
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle17 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle18 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle19 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle20 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle21 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle22 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle23 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle24 = new System.Windows.Forms.DataGridViewCellStyle();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmEmpeno));
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle13 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle14 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle15 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle16 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle7 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle8 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle9 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle10 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle11 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle12 = new System.Windows.Forms.DataGridViewCellStyle();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutPrincipal = new System.Windows.Forms.TableLayoutPanel();
             this.panel1 = new System.Windows.Forms.Panel();
@@ -90,9 +90,9 @@ namespace Empeño.WindowsForms.Views
             this.panel10 = new System.Windows.Forms.Panel();
             this.tableLayoutPanel5 = new System.Windows.Forms.TableLayoutPanel();
             this.panel11 = new System.Windows.Forms.Panel();
+            this.lblVence = new System.Windows.Forms.TextBox();
             this.lblEstado = new System.Windows.Forms.Label();
             this.label7 = new System.Windows.Forms.Label();
-            this.lblVence = new System.Windows.Forms.Label();
             this.iconPictureBox2 = new FontAwesome.Sharp.IconPictureBox();
             this.lblNumeroEmpeño = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
@@ -102,9 +102,13 @@ namespace Empeño.WindowsForms.Views
             this.iconButton10 = new FontAwesome.Sharp.IconButton();
             this.btnGuardarEmpeño = new FontAwesome.Sharp.IconButton();
             this.panelFormulario = new System.Windows.Forms.Panel();
-            this.iconButton2 = new FontAwesome.Sharp.IconButton();
-            this.iconButton3 = new FontAwesome.Sharp.IconButton();
-            this.iconButton4 = new FontAwesome.Sharp.IconButton();
+            this.Fecha = new System.Windows.Forms.TextBox();
+            this.btnIntereses = new FontAwesome.Sharp.IconButton();
+            this.btnPagos = new FontAwesome.Sharp.IconButton();
+            this.panel9 = new System.Windows.Forms.Panel();
+            this.btnVerPago = new FontAwesome.Sharp.IconButton();
+            this.btnEditarPago = new FontAwesome.Sharp.IconButton();
+            this.btnEliminarPago = new FontAwesome.Sharp.IconButton();
             this.dgvPagos = new System.Windows.Forms.DataGridView();
             this.pictureBox8 = new System.Windows.Forms.PictureBox();
             this.cbInteres = new System.Windows.Forms.ComboBox();
@@ -114,7 +118,6 @@ namespace Empeño.WindowsForms.Views
             this.lblDescripcion = new System.Windows.Forms.Label();
             this.lblNombre = new System.Windows.Forms.Label();
             this.lblIdentificacion = new System.Windows.Forms.Label();
-            this.Fecha = new System.Windows.Forms.Label();
             this.label9 = new System.Windows.Forms.Label();
             this.pictureBox7 = new System.Windows.Forms.PictureBox();
             this.txtMonto = new System.Windows.Forms.TextBox();
@@ -136,9 +139,7 @@ namespace Empeño.WindowsForms.Views
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.txtBuscar = new System.Windows.Forms.TextBox();
             this.elipseEstado = new Bunifu.Framework.UI.BunifuElipse(this.components);
-            this.panel9 = new System.Windows.Forms.Panel();
-            this.iconButton1 = new FontAwesome.Sharp.IconButton();
-            this.iconButton5 = new FontAwesome.Sharp.IconButton();
+            this.btnReimprimirPago = new FontAwesome.Sharp.IconButton();
             this.tableLayoutPanel1.SuspendLayout();
             this.tableLayoutPrincipal.SuspendLayout();
             this.panel1.SuspendLayout();
@@ -280,24 +281,24 @@ namespace Empeño.WindowsForms.Views
             this.dgvClientes.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.dgvClientes.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.RaisedHorizontal;
             this.dgvClientes.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.None;
-            dataGridViewCellStyle17.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle17.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(17)))), ((int)(((byte)(2)))), ((int)(((byte)(115)))));
-            dataGridViewCellStyle17.Font = new System.Drawing.Font("Century Gothic", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle17.ForeColor = System.Drawing.Color.White;
-            dataGridViewCellStyle17.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(17)))), ((int)(((byte)(2)))), ((int)(((byte)(115)))));
-            dataGridViewCellStyle17.SelectionForeColor = System.Drawing.Color.White;
-            dataGridViewCellStyle17.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dgvClientes.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle17;
+            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(17)))), ((int)(((byte)(2)))), ((int)(((byte)(115)))));
+            dataGridViewCellStyle1.Font = new System.Drawing.Font("Century Gothic", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle1.ForeColor = System.Drawing.Color.White;
+            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(17)))), ((int)(((byte)(2)))), ((int)(((byte)(115)))));
+            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.Color.White;
+            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgvClientes.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
             this.dgvClientes.ColumnHeadersHeight = 60;
             this.dgvClientes.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
-            dataGridViewCellStyle18.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle18.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle18.Font = new System.Drawing.Font("Century Gothic", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle18.ForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle18.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(196)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
-            dataGridViewCellStyle18.SelectionForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle18.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dgvClientes.DefaultCellStyle = dataGridViewCellStyle18;
+            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle2.Font = new System.Drawing.Font("Century Gothic", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(196)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
+            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgvClientes.DefaultCellStyle = dataGridViewCellStyle2;
             this.dgvClientes.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dgvClientes.EnableHeadersVisualStyles = false;
             this.dgvClientes.GridColor = System.Drawing.SystemColors.Control;
@@ -305,20 +306,20 @@ namespace Empeño.WindowsForms.Views
             this.dgvClientes.Margin = new System.Windows.Forms.Padding(4);
             this.dgvClientes.Name = "dgvClientes";
             this.dgvClientes.RowHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.None;
-            dataGridViewCellStyle19.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle19.BackColor = System.Drawing.Color.White;
-            dataGridViewCellStyle19.Font = new System.Drawing.Font("Century Gothic", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle19.ForeColor = System.Drawing.Color.Black;
-            dataGridViewCellStyle19.SelectionBackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle19.SelectionForeColor = System.Drawing.Color.Black;
-            dataGridViewCellStyle19.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dgvClientes.RowHeadersDefaultCellStyle = dataGridViewCellStyle19;
+            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle3.BackColor = System.Drawing.Color.White;
+            dataGridViewCellStyle3.Font = new System.Drawing.Font("Century Gothic", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle3.ForeColor = System.Drawing.Color.Black;
+            dataGridViewCellStyle3.SelectionBackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle3.SelectionForeColor = System.Drawing.Color.Black;
+            dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgvClientes.RowHeadersDefaultCellStyle = dataGridViewCellStyle3;
             this.dgvClientes.RowHeadersVisible = false;
             this.dgvClientes.RowHeadersWidth = 51;
-            dataGridViewCellStyle20.BackColor = System.Drawing.Color.White;
-            dataGridViewCellStyle20.Font = new System.Drawing.Font("Century Gothic", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle20.ForeColor = System.Drawing.Color.Black;
-            this.dgvClientes.RowsDefaultCellStyle = dataGridViewCellStyle20;
+            dataGridViewCellStyle4.BackColor = System.Drawing.Color.White;
+            dataGridViewCellStyle4.Font = new System.Drawing.Font("Century Gothic", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle4.ForeColor = System.Drawing.Color.Black;
+            this.dgvClientes.RowsDefaultCellStyle = dataGridViewCellStyle4;
             this.dgvClientes.RowTemplate.DefaultCellStyle.BackColor = System.Drawing.Color.White;
             this.dgvClientes.RowTemplate.DividerHeight = 1;
             this.dgvClientes.RowTemplate.Height = 45;
@@ -584,24 +585,24 @@ namespace Empeño.WindowsForms.Views
             this.dgvEmpeños.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.dgvEmpeños.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.RaisedHorizontal;
             this.dgvEmpeños.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.None;
-            dataGridViewCellStyle21.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle21.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(17)))), ((int)(((byte)(2)))), ((int)(((byte)(115)))));
-            dataGridViewCellStyle21.Font = new System.Drawing.Font("Century Gothic", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle21.ForeColor = System.Drawing.Color.White;
-            dataGridViewCellStyle21.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(17)))), ((int)(((byte)(2)))), ((int)(((byte)(115)))));
-            dataGridViewCellStyle21.SelectionForeColor = System.Drawing.Color.White;
-            dataGridViewCellStyle21.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dgvEmpeños.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle21;
+            dataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle5.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(17)))), ((int)(((byte)(2)))), ((int)(((byte)(115)))));
+            dataGridViewCellStyle5.Font = new System.Drawing.Font("Century Gothic", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle5.ForeColor = System.Drawing.Color.White;
+            dataGridViewCellStyle5.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(17)))), ((int)(((byte)(2)))), ((int)(((byte)(115)))));
+            dataGridViewCellStyle5.SelectionForeColor = System.Drawing.Color.White;
+            dataGridViewCellStyle5.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgvEmpeños.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle5;
             this.dgvEmpeños.ColumnHeadersHeight = 60;
             this.dgvEmpeños.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
-            dataGridViewCellStyle22.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle22.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle22.Font = new System.Drawing.Font("Century Gothic", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle22.ForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle22.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(196)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
-            dataGridViewCellStyle22.SelectionForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle22.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dgvEmpeños.DefaultCellStyle = dataGridViewCellStyle22;
+            dataGridViewCellStyle6.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle6.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle6.Font = new System.Drawing.Font("Century Gothic", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle6.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle6.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(196)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
+            dataGridViewCellStyle6.SelectionForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle6.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgvEmpeños.DefaultCellStyle = dataGridViewCellStyle6;
             this.dgvEmpeños.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dgvEmpeños.EnableHeadersVisualStyles = false;
             this.dgvEmpeños.GridColor = System.Drawing.SystemColors.Control;
@@ -609,20 +610,20 @@ namespace Empeño.WindowsForms.Views
             this.dgvEmpeños.Margin = new System.Windows.Forms.Padding(4);
             this.dgvEmpeños.Name = "dgvEmpeños";
             this.dgvEmpeños.RowHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.None;
-            dataGridViewCellStyle23.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle23.BackColor = System.Drawing.Color.White;
-            dataGridViewCellStyle23.Font = new System.Drawing.Font("Century Gothic", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle23.ForeColor = System.Drawing.Color.Black;
-            dataGridViewCellStyle23.SelectionBackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle23.SelectionForeColor = System.Drawing.Color.Black;
-            dataGridViewCellStyle23.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dgvEmpeños.RowHeadersDefaultCellStyle = dataGridViewCellStyle23;
+            dataGridViewCellStyle7.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle7.BackColor = System.Drawing.Color.White;
+            dataGridViewCellStyle7.Font = new System.Drawing.Font("Century Gothic", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle7.ForeColor = System.Drawing.Color.Black;
+            dataGridViewCellStyle7.SelectionBackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle7.SelectionForeColor = System.Drawing.Color.Black;
+            dataGridViewCellStyle7.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgvEmpeños.RowHeadersDefaultCellStyle = dataGridViewCellStyle7;
             this.dgvEmpeños.RowHeadersVisible = false;
             this.dgvEmpeños.RowHeadersWidth = 51;
-            dataGridViewCellStyle24.BackColor = System.Drawing.Color.White;
-            dataGridViewCellStyle24.Font = new System.Drawing.Font("Century Gothic", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle24.ForeColor = System.Drawing.Color.Black;
-            this.dgvEmpeños.RowsDefaultCellStyle = dataGridViewCellStyle24;
+            dataGridViewCellStyle8.BackColor = System.Drawing.Color.White;
+            dataGridViewCellStyle8.Font = new System.Drawing.Font("Century Gothic", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle8.ForeColor = System.Drawing.Color.Black;
+            this.dgvEmpeños.RowsDefaultCellStyle = dataGridViewCellStyle8;
             this.dgvEmpeños.RowTemplate.DefaultCellStyle.BackColor = System.Drawing.Color.White;
             this.dgvEmpeños.RowTemplate.DividerHeight = 1;
             this.dgvEmpeños.RowTemplate.Height = 45;
@@ -892,9 +893,9 @@ namespace Empeño.WindowsForms.Views
             // panel11
             // 
             this.panel11.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(17)))), ((int)(((byte)(2)))), ((int)(((byte)(115)))));
+            this.panel11.Controls.Add(this.lblVence);
             this.panel11.Controls.Add(this.lblEstado);
             this.panel11.Controls.Add(this.label7);
-            this.panel11.Controls.Add(this.lblVence);
             this.panel11.Controls.Add(this.iconPictureBox2);
             this.panel11.Controls.Add(this.lblNumeroEmpeño);
             this.panel11.Controls.Add(this.label1);
@@ -904,6 +905,20 @@ namespace Empeño.WindowsForms.Views
             this.panel11.Padding = new System.Windows.Forms.Padding(5, 5, 45, 5);
             this.panel11.Size = new System.Drawing.Size(547, 34);
             this.panel11.TabIndex = 0;
+            // 
+            // lblVence
+            // 
+            this.lblVence.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.lblVence.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(17)))), ((int)(((byte)(2)))), ((int)(((byte)(115)))));
+            this.lblVence.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.lblVence.Enabled = false;
+            this.lblVence.Font = new System.Drawing.Font("Century Gothic", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblVence.ForeColor = System.Drawing.Color.White;
+            this.lblVence.Location = new System.Drawing.Point(441, 11);
+            this.lblVence.Name = "lblVence";
+            this.lblVence.Size = new System.Drawing.Size(100, 21);
+            this.lblVence.TabIndex = 18;
+            this.lblVence.Text = "03/07/2020";
             // 
             // lblEstado
             // 
@@ -932,19 +947,6 @@ namespace Empeño.WindowsForms.Views
             this.label7.Size = new System.Drawing.Size(64, 19);
             this.label7.TabIndex = 4;
             this.label7.Text = "Vence";
-            // 
-            // lblVence
-            // 
-            this.lblVence.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.lblVence.AutoSize = true;
-            this.lblVence.Font = new System.Drawing.Font("Century Gothic", 10.2F, System.Drawing.FontStyle.Bold);
-            this.lblVence.ForeColor = System.Drawing.Color.White;
-            this.lblVence.Location = new System.Drawing.Point(438, 12);
-            this.lblVence.Name = "lblVence";
-            this.lblVence.Size = new System.Drawing.Size(105, 19);
-            this.lblVence.TabIndex = 3;
-            this.lblVence.Text = "03/07/2020";
             // 
             // iconPictureBox2
             // 
@@ -1085,12 +1087,14 @@ namespace Empeño.WindowsForms.Views
             // panelFormulario
             // 
             this.panelFormulario.AutoScroll = true;
-            this.panelFormulario.Controls.Add(this.iconButton1);
-            this.panelFormulario.Controls.Add(this.iconButton5);
+            this.panelFormulario.Controls.Add(this.btnReimprimirPago);
+            this.panelFormulario.Controls.Add(this.Fecha);
+            this.panelFormulario.Controls.Add(this.btnIntereses);
+            this.panelFormulario.Controls.Add(this.btnPagos);
             this.panelFormulario.Controls.Add(this.panel9);
-            this.panelFormulario.Controls.Add(this.iconButton2);
-            this.panelFormulario.Controls.Add(this.iconButton3);
-            this.panelFormulario.Controls.Add(this.iconButton4);
+            this.panelFormulario.Controls.Add(this.btnVerPago);
+            this.panelFormulario.Controls.Add(this.btnEditarPago);
+            this.panelFormulario.Controls.Add(this.btnEliminarPago);
             this.panelFormulario.Controls.Add(this.dgvPagos);
             this.panelFormulario.Controls.Add(this.pictureBox8);
             this.panelFormulario.Controls.Add(this.cbInteres);
@@ -1100,7 +1104,6 @@ namespace Empeño.WindowsForms.Views
             this.panelFormulario.Controls.Add(this.lblDescripcion);
             this.panelFormulario.Controls.Add(this.lblNombre);
             this.panelFormulario.Controls.Add(this.lblIdentificacion);
-            this.panelFormulario.Controls.Add(this.Fecha);
             this.panelFormulario.Controls.Add(this.label9);
             this.panelFormulario.Controls.Add(this.pictureBox7);
             this.panelFormulario.Controls.Add(this.txtMonto);
@@ -1124,67 +1127,133 @@ namespace Empeño.WindowsForms.Views
             this.panelFormulario.TabIndex = 2;
             this.panelFormulario.Paint += new System.Windows.Forms.PaintEventHandler(this.panelFormulario_Paint);
             // 
-            // iconButton2
+            // Fecha
             // 
-            this.iconButton2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(16)))), ((int)(((byte)(19)))), ((int)(((byte)(100)))));
-            this.iconButton2.FlatAppearance.BorderSize = 0;
-            this.iconButton2.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.iconButton2.Flip = FontAwesome.Sharp.FlipOrientation.Normal;
-            this.iconButton2.Font = new System.Drawing.Font("Century Gothic", 7.8F, System.Drawing.FontStyle.Bold);
-            this.iconButton2.ForeColor = System.Drawing.Color.White;
-            this.iconButton2.IconChar = FontAwesome.Sharp.IconChar.Binoculars;
-            this.iconButton2.IconColor = System.Drawing.Color.White;
-            this.iconButton2.IconSize = 24;
-            this.iconButton2.Location = new System.Drawing.Point(104, 522);
-            this.iconButton2.Name = "iconButton2";
-            this.iconButton2.Rotation = 0D;
-            this.iconButton2.Size = new System.Drawing.Size(100, 41);
-            this.iconButton2.TabIndex = 46;
-            this.iconButton2.Text = "Ver";
-            this.iconButton2.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
-            this.iconButton2.UseVisualStyleBackColor = false;
+            this.Fecha.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.Fecha.BackColor = System.Drawing.Color.White;
+            this.Fecha.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.Fecha.Enabled = false;
+            this.Fecha.Font = new System.Drawing.Font("Century Gothic", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.Fecha.ForeColor = System.Drawing.Color.Black;
+            this.Fecha.Location = new System.Drawing.Point(378, 469);
+            this.Fecha.Name = "Fecha";
+            this.Fecha.Size = new System.Drawing.Size(129, 25);
+            this.Fecha.TabIndex = 17;
+            this.Fecha.Text = "03/07/2020";
             // 
-            // iconButton3
+            // btnIntereses
             // 
-            this.iconButton3.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(17)))), ((int)(((byte)(2)))), ((int)(((byte)(115)))));
-            this.iconButton3.FlatAppearance.BorderSize = 0;
-            this.iconButton3.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.iconButton3.Flip = FontAwesome.Sharp.FlipOrientation.Normal;
-            this.iconButton3.Font = new System.Drawing.Font("Century Gothic", 7.8F, System.Drawing.FontStyle.Bold);
-            this.iconButton3.ForeColor = System.Drawing.Color.White;
-            this.iconButton3.IconChar = FontAwesome.Sharp.IconChar.Edit;
-            this.iconButton3.IconColor = System.Drawing.Color.White;
-            this.iconButton3.IconSize = 24;
-            this.iconButton3.Location = new System.Drawing.Point(4, 523);
-            this.iconButton3.Name = "iconButton3";
-            this.iconButton3.Rotation = 0D;
-            this.iconButton3.Size = new System.Drawing.Size(100, 40);
-            this.iconButton3.TabIndex = 45;
-            this.iconButton3.Text = "Editar";
-            this.iconButton3.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
-            this.iconButton3.UseVisualStyleBackColor = false;
-            this.iconButton3.Click += new System.EventHandler(this.iconButton3_Click);
+            this.btnIntereses.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnIntereses.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(66)))), ((int)(((byte)(133)))), ((int)(((byte)(244)))));
+            this.btnIntereses.FlatAppearance.BorderSize = 0;
+            this.btnIntereses.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnIntereses.Flip = FontAwesome.Sharp.FlipOrientation.Normal;
+            this.btnIntereses.Font = new System.Drawing.Font("Century Gothic", 7.8F, System.Drawing.FontStyle.Bold);
+            this.btnIntereses.ForeColor = System.Drawing.Color.White;
+            this.btnIntereses.IconChar = FontAwesome.Sharp.IconChar.Percentage;
+            this.btnIntereses.IconColor = System.Drawing.Color.White;
+            this.btnIntereses.IconSize = 24;
+            this.btnIntereses.Location = new System.Drawing.Point(506, 533);
+            this.btnIntereses.Name = "btnIntereses";
+            this.btnIntereses.Rotation = 0D;
+            this.btnIntereses.Size = new System.Drawing.Size(31, 30);
+            this.btnIntereses.TabIndex = 50;
+            this.btnIntereses.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
+            this.btnIntereses.UseVisualStyleBackColor = false;
+            this.btnIntereses.Click += new System.EventHandler(this.btnIntereses_Click);
             // 
-            // iconButton4
+            // btnPagos
             // 
-            this.iconButton4.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(17)))), ((int)(((byte)(2)))), ((int)(((byte)(115)))));
-            this.iconButton4.FlatAppearance.BorderSize = 0;
-            this.iconButton4.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.iconButton4.Flip = FontAwesome.Sharp.FlipOrientation.Normal;
-            this.iconButton4.Font = new System.Drawing.Font("Century Gothic", 7.8F, System.Drawing.FontStyle.Bold);
-            this.iconButton4.ForeColor = System.Drawing.Color.White;
-            this.iconButton4.IconChar = FontAwesome.Sharp.IconChar.Recycle;
-            this.iconButton4.IconColor = System.Drawing.Color.White;
-            this.iconButton4.IconSize = 24;
-            this.iconButton4.Location = new System.Drawing.Point(204, 523);
-            this.iconButton4.Name = "iconButton4";
-            this.iconButton4.Rotation = 0D;
-            this.iconButton4.Size = new System.Drawing.Size(100, 40);
-            this.iconButton4.TabIndex = 47;
-            this.iconButton4.Text = "Eliminar";
-            this.iconButton4.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
-            this.iconButton4.UseVisualStyleBackColor = false;
-            this.iconButton4.Click += new System.EventHandler(this.iconButton4_Click);
+            this.btnPagos.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnPagos.BackColor = System.Drawing.Color.DimGray;
+            this.btnPagos.FlatAppearance.BorderSize = 0;
+            this.btnPagos.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnPagos.Flip = FontAwesome.Sharp.FlipOrientation.Normal;
+            this.btnPagos.Font = new System.Drawing.Font("Century Gothic", 7.8F, System.Drawing.FontStyle.Bold);
+            this.btnPagos.ForeColor = System.Drawing.Color.White;
+            this.btnPagos.IconChar = FontAwesome.Sharp.IconChar.Coins;
+            this.btnPagos.IconColor = System.Drawing.Color.White;
+            this.btnPagos.IconSize = 24;
+            this.btnPagos.Location = new System.Drawing.Point(475, 533);
+            this.btnPagos.Name = "btnPagos";
+            this.btnPagos.Rotation = 0D;
+            this.btnPagos.Size = new System.Drawing.Size(31, 30);
+            this.btnPagos.TabIndex = 49;
+            this.btnPagos.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
+            this.btnPagos.UseVisualStyleBackColor = false;
+            this.btnPagos.Click += new System.EventHandler(this.btnPagos_Click);
+            // 
+            // panel9
+            // 
+            this.panel9.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.panel9.BackColor = System.Drawing.Color.DimGray;
+            this.panel9.Location = new System.Drawing.Point(7, 512);
+            this.panel9.Name = "panel9";
+            this.panel9.Size = new System.Drawing.Size(524, 1);
+            this.panel9.TabIndex = 48;
+            // 
+            // btnVerPago
+            // 
+            this.btnVerPago.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(16)))), ((int)(((byte)(19)))), ((int)(((byte)(100)))));
+            this.btnVerPago.FlatAppearance.BorderSize = 0;
+            this.btnVerPago.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnVerPago.Flip = FontAwesome.Sharp.FlipOrientation.Normal;
+            this.btnVerPago.Font = new System.Drawing.Font("Century Gothic", 7.8F, System.Drawing.FontStyle.Bold);
+            this.btnVerPago.ForeColor = System.Drawing.Color.White;
+            this.btnVerPago.IconChar = FontAwesome.Sharp.IconChar.Binoculars;
+            this.btnVerPago.IconColor = System.Drawing.Color.White;
+            this.btnVerPago.IconSize = 24;
+            this.btnVerPago.Location = new System.Drawing.Point(104, 522);
+            this.btnVerPago.Name = "btnVerPago";
+            this.btnVerPago.Rotation = 0D;
+            this.btnVerPago.Size = new System.Drawing.Size(100, 41);
+            this.btnVerPago.TabIndex = 46;
+            this.btnVerPago.Text = "Ver";
+            this.btnVerPago.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
+            this.btnVerPago.UseVisualStyleBackColor = false;
+            // 
+            // btnEditarPago
+            // 
+            this.btnEditarPago.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(17)))), ((int)(((byte)(2)))), ((int)(((byte)(115)))));
+            this.btnEditarPago.FlatAppearance.BorderSize = 0;
+            this.btnEditarPago.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnEditarPago.Flip = FontAwesome.Sharp.FlipOrientation.Normal;
+            this.btnEditarPago.Font = new System.Drawing.Font("Century Gothic", 7.8F, System.Drawing.FontStyle.Bold);
+            this.btnEditarPago.ForeColor = System.Drawing.Color.White;
+            this.btnEditarPago.IconChar = FontAwesome.Sharp.IconChar.Edit;
+            this.btnEditarPago.IconColor = System.Drawing.Color.White;
+            this.btnEditarPago.IconSize = 24;
+            this.btnEditarPago.Location = new System.Drawing.Point(4, 523);
+            this.btnEditarPago.Name = "btnEditarPago";
+            this.btnEditarPago.Rotation = 0D;
+            this.btnEditarPago.Size = new System.Drawing.Size(100, 40);
+            this.btnEditarPago.TabIndex = 45;
+            this.btnEditarPago.Text = "Editar";
+            this.btnEditarPago.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
+            this.btnEditarPago.UseVisualStyleBackColor = false;
+            this.btnEditarPago.Click += new System.EventHandler(this.iconButton3_Click);
+            // 
+            // btnEliminarPago
+            // 
+            this.btnEliminarPago.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(17)))), ((int)(((byte)(2)))), ((int)(((byte)(115)))));
+            this.btnEliminarPago.FlatAppearance.BorderSize = 0;
+            this.btnEliminarPago.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnEliminarPago.Flip = FontAwesome.Sharp.FlipOrientation.Normal;
+            this.btnEliminarPago.Font = new System.Drawing.Font("Century Gothic", 7.8F, System.Drawing.FontStyle.Bold);
+            this.btnEliminarPago.ForeColor = System.Drawing.Color.White;
+            this.btnEliminarPago.IconChar = FontAwesome.Sharp.IconChar.Recycle;
+            this.btnEliminarPago.IconColor = System.Drawing.Color.White;
+            this.btnEliminarPago.IconSize = 24;
+            this.btnEliminarPago.Location = new System.Drawing.Point(204, 523);
+            this.btnEliminarPago.Name = "btnEliminarPago";
+            this.btnEliminarPago.Rotation = 0D;
+            this.btnEliminarPago.Size = new System.Drawing.Size(100, 40);
+            this.btnEliminarPago.TabIndex = 47;
+            this.btnEliminarPago.Text = "Eliminar";
+            this.btnEliminarPago.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
+            this.btnEliminarPago.UseVisualStyleBackColor = false;
+            this.btnEliminarPago.Click += new System.EventHandler(this.iconButton4_Click);
             // 
             // dgvPagos
             // 
@@ -1195,44 +1264,44 @@ namespace Empeño.WindowsForms.Views
             this.dgvPagos.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.dgvPagos.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.RaisedHorizontal;
             this.dgvPagos.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.None;
-            dataGridViewCellStyle13.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle13.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(17)))), ((int)(((byte)(2)))), ((int)(((byte)(115)))));
-            dataGridViewCellStyle13.Font = new System.Drawing.Font("Century Gothic", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle13.ForeColor = System.Drawing.Color.White;
-            dataGridViewCellStyle13.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(17)))), ((int)(((byte)(2)))), ((int)(((byte)(115)))));
-            dataGridViewCellStyle13.SelectionForeColor = System.Drawing.Color.White;
-            dataGridViewCellStyle13.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dgvPagos.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle13;
+            dataGridViewCellStyle9.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle9.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(17)))), ((int)(((byte)(2)))), ((int)(((byte)(115)))));
+            dataGridViewCellStyle9.Font = new System.Drawing.Font("Century Gothic", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle9.ForeColor = System.Drawing.Color.White;
+            dataGridViewCellStyle9.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(17)))), ((int)(((byte)(2)))), ((int)(((byte)(115)))));
+            dataGridViewCellStyle9.SelectionForeColor = System.Drawing.Color.White;
+            dataGridViewCellStyle9.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgvPagos.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle9;
             this.dgvPagos.ColumnHeadersHeight = 60;
             this.dgvPagos.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
-            dataGridViewCellStyle14.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle14.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle14.Font = new System.Drawing.Font("Century Gothic", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle14.ForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle14.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(196)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
-            dataGridViewCellStyle14.SelectionForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle14.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dgvPagos.DefaultCellStyle = dataGridViewCellStyle14;
+            dataGridViewCellStyle10.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle10.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle10.Font = new System.Drawing.Font("Century Gothic", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle10.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle10.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(196)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
+            dataGridViewCellStyle10.SelectionForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle10.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgvPagos.DefaultCellStyle = dataGridViewCellStyle10;
             this.dgvPagos.EnableHeadersVisualStyles = false;
             this.dgvPagos.GridColor = System.Drawing.SystemColors.Control;
             this.dgvPagos.Location = new System.Drawing.Point(3, 567);
             this.dgvPagos.Margin = new System.Windows.Forms.Padding(4);
             this.dgvPagos.Name = "dgvPagos";
             this.dgvPagos.RowHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.None;
-            dataGridViewCellStyle15.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle15.BackColor = System.Drawing.Color.White;
-            dataGridViewCellStyle15.Font = new System.Drawing.Font("Century Gothic", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle15.ForeColor = System.Drawing.Color.Black;
-            dataGridViewCellStyle15.SelectionBackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle15.SelectionForeColor = System.Drawing.Color.Black;
-            dataGridViewCellStyle15.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dgvPagos.RowHeadersDefaultCellStyle = dataGridViewCellStyle15;
+            dataGridViewCellStyle11.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle11.BackColor = System.Drawing.Color.White;
+            dataGridViewCellStyle11.Font = new System.Drawing.Font("Century Gothic", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle11.ForeColor = System.Drawing.Color.Black;
+            dataGridViewCellStyle11.SelectionBackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle11.SelectionForeColor = System.Drawing.Color.Black;
+            dataGridViewCellStyle11.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgvPagos.RowHeadersDefaultCellStyle = dataGridViewCellStyle11;
             this.dgvPagos.RowHeadersVisible = false;
             this.dgvPagos.RowHeadersWidth = 51;
-            dataGridViewCellStyle16.BackColor = System.Drawing.Color.White;
-            dataGridViewCellStyle16.Font = new System.Drawing.Font("Century Gothic", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle16.ForeColor = System.Drawing.Color.Black;
-            this.dgvPagos.RowsDefaultCellStyle = dataGridViewCellStyle16;
+            dataGridViewCellStyle12.BackColor = System.Drawing.Color.White;
+            dataGridViewCellStyle12.Font = new System.Drawing.Font("Century Gothic", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle12.ForeColor = System.Drawing.Color.Black;
+            this.dgvPagos.RowsDefaultCellStyle = dataGridViewCellStyle12;
             this.dgvPagos.RowTemplate.DefaultCellStyle.BackColor = System.Drawing.Color.White;
             this.dgvPagos.RowTemplate.DividerHeight = 1;
             this.dgvPagos.RowTemplate.Height = 45;
@@ -1246,7 +1315,7 @@ namespace Empeño.WindowsForms.Views
             | System.Windows.Forms.AnchorStyles.Right)));
             this.pictureBox8.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("pictureBox8.BackgroundImage")));
             this.pictureBox8.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.pictureBox8.Location = new System.Drawing.Point(8, 423);
+            this.pictureBox8.Location = new System.Drawing.Point(8, 422);
             this.pictureBox8.Name = "pictureBox8";
             this.pictureBox8.Size = new System.Drawing.Size(520, 1);
             this.pictureBox8.TabIndex = 34;
@@ -1276,7 +1345,7 @@ namespace Empeño.WindowsForms.Views
             this.lblInteres.AutoSize = true;
             this.lblInteres.Font = new System.Drawing.Font("Century Gothic", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblInteres.ForeColor = System.Drawing.Color.DimGray;
-            this.lblInteres.Location = new System.Drawing.Point(3, 368);
+            this.lblInteres.Location = new System.Drawing.Point(3, 366);
             this.lblInteres.Name = "lblInteres";
             this.lblInteres.Size = new System.Drawing.Size(97, 19);
             this.lblInteres.TabIndex = 11;
@@ -1337,17 +1406,6 @@ namespace Empeño.WindowsForms.Views
             this.lblIdentificacion.TabIndex = 1;
             this.lblIdentificacion.Text = "Identificación";
             // 
-            // Fecha
-            // 
-            this.Fecha.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.Fecha.AutoSize = true;
-            this.Fecha.Font = new System.Drawing.Font("Century Gothic", 12F);
-            this.Fecha.Location = new System.Drawing.Point(399, 471);
-            this.Fecha.Name = "Fecha";
-            this.Fecha.Size = new System.Drawing.Size(116, 23);
-            this.Fecha.TabIndex = 23;
-            this.Fecha.Text = "03/07/2020";
-            // 
             // label9
             // 
             this.label9.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
@@ -1366,7 +1424,7 @@ namespace Empeño.WindowsForms.Views
             | System.Windows.Forms.AnchorStyles.Right)));
             this.pictureBox7.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("pictureBox7.BackgroundImage")));
             this.pictureBox7.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.pictureBox7.Location = new System.Drawing.Point(8, 363);
+            this.pictureBox7.Location = new System.Drawing.Point(8, 362);
             this.pictureBox7.Name = "pictureBox7";
             this.pictureBox7.Size = new System.Drawing.Size(520, 1);
             this.pictureBox7.TabIndex = 19;
@@ -1635,57 +1693,27 @@ namespace Empeño.WindowsForms.Views
             this.elipseEstado.ElipseRadius = 20;
             this.elipseEstado.TargetControl = this.lblEstado;
             // 
-            // panel9
+            // btnReimprimirPago
             // 
-            this.panel9.BackColor = System.Drawing.Color.DimGray;
-            this.panel9.Location = new System.Drawing.Point(7, 512);
-            this.panel9.Name = "panel9";
-            this.panel9.Size = new System.Drawing.Size(524, 1);
-            this.panel9.TabIndex = 48;
-            // 
-            // iconButton1
-            // 
-            this.iconButton1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.iconButton1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(66)))), ((int)(((byte)(133)))), ((int)(((byte)(244)))));
-            this.iconButton1.FlatAppearance.BorderSize = 0;
-            this.iconButton1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.iconButton1.Flip = FontAwesome.Sharp.FlipOrientation.Normal;
-            this.iconButton1.Font = new System.Drawing.Font("Century Gothic", 7.8F, System.Drawing.FontStyle.Bold);
-            this.iconButton1.ForeColor = System.Drawing.Color.White;
-            this.iconButton1.IconChar = FontAwesome.Sharp.IconChar.Eraser;
-            this.iconButton1.IconColor = System.Drawing.Color.White;
-            this.iconButton1.IconSize = 24;
-            this.iconButton1.Location = new System.Drawing.Point(433, 523);
-            this.iconButton1.Name = "iconButton1";
-            this.iconButton1.Rotation = 0D;
-            this.iconButton1.Size = new System.Drawing.Size(105, 41);
-            this.iconButton1.TabIndex = 50;
-            this.iconButton1.Text = "Intereses";
-            this.iconButton1.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
-            this.iconButton1.UseVisualStyleBackColor = false;
-            // 
-            // iconButton5
-            // 
-            this.iconButton5.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.iconButton5.BackColor = System.Drawing.Color.DeepSkyBlue;
-            this.iconButton5.FlatAppearance.BorderSize = 0;
-            this.iconButton5.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.iconButton5.Flip = FontAwesome.Sharp.FlipOrientation.Normal;
-            this.iconButton5.Font = new System.Drawing.Font("Century Gothic", 7.8F, System.Drawing.FontStyle.Bold);
-            this.iconButton5.ForeColor = System.Drawing.Color.White;
-            this.iconButton5.IconChar = FontAwesome.Sharp.IconChar.Save;
-            this.iconButton5.IconColor = System.Drawing.Color.White;
-            this.iconButton5.IconSize = 24;
-            this.iconButton5.Location = new System.Drawing.Point(333, 524);
-            this.iconButton5.Name = "iconButton5";
-            this.iconButton5.Rotation = 0D;
-            this.iconButton5.Size = new System.Drawing.Size(100, 40);
-            this.iconButton5.TabIndex = 49;
-            this.iconButton5.Text = "Pagos";
-            this.iconButton5.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
-            this.iconButton5.UseVisualStyleBackColor = false;
+            this.btnReimprimirPago.BackColor = System.Drawing.Color.DimGray;
+            this.btnReimprimirPago.Enabled = false;
+            this.btnReimprimirPago.FlatAppearance.BorderSize = 0;
+            this.btnReimprimirPago.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnReimprimirPago.Flip = FontAwesome.Sharp.FlipOrientation.Normal;
+            this.btnReimprimirPago.Font = new System.Drawing.Font("Century Gothic", 7.8F, System.Drawing.FontStyle.Bold);
+            this.btnReimprimirPago.ForeColor = System.Drawing.Color.White;
+            this.btnReimprimirPago.IconChar = FontAwesome.Sharp.IconChar.Print;
+            this.btnReimprimirPago.IconColor = System.Drawing.Color.White;
+            this.btnReimprimirPago.IconSize = 24;
+            this.btnReimprimirPago.Location = new System.Drawing.Point(303, 522);
+            this.btnReimprimirPago.Name = "btnReimprimirPago";
+            this.btnReimprimirPago.Rotation = 0D;
+            this.btnReimprimirPago.Size = new System.Drawing.Size(121, 41);
+            this.btnReimprimirPago.TabIndex = 29;
+            this.btnReimprimirPago.Text = "Reimprimir";
+            this.btnReimprimirPago.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
+            this.btnReimprimirPago.UseVisualStyleBackColor = false;
+            this.btnReimprimirPago.Click += new System.EventHandler(this.btnReimprimirPago_Click);
             // 
             // frmEmpeno
             // 
@@ -1783,7 +1811,6 @@ namespace Empeño.WindowsForms.Views
         private TableLayoutPanel tableLayoutPanel5;
         private Panel panel11;
         private Label label7;
-        private Label lblVence;
         private FontAwesome.Sharp.IconPictureBox iconPictureBox2;
         private Label lblNumeroEmpeño;
         private Label label1;
@@ -1793,7 +1820,6 @@ namespace Empeño.WindowsForms.Views
         private FontAwesome.Sharp.IconButton iconButton10;
         private FontAwesome.Sharp.IconButton btnCancelar;
         private Panel panelFormulario;
-        private Label Fecha;
         private Label label9;
         private PictureBox pictureBox7;
         private TextBox txtMonto;
@@ -1837,17 +1863,20 @@ namespace Empeño.WindowsForms.Views
         private PictureBox pictureBox8;
         private ComboBox cbInteres;
         private Label lblInteres;
-        private FontAwesome.Sharp.IconButton iconButton2;
-        private FontAwesome.Sharp.IconButton iconButton3;
-        private FontAwesome.Sharp.IconButton iconButton4;
+        private FontAwesome.Sharp.IconButton btnVerPago;
+        private FontAwesome.Sharp.IconButton btnEditarPago;
+        private FontAwesome.Sharp.IconButton btnEliminarPago;
         private DataGridView dgvPagos;
         private Label lblEstado;
         private Bunifu.Framework.UI.BunifuElipse elipseEstado;
         private FontAwesome.Sharp.IconButton btnHoy;
         private FontAwesome.Sharp.IconButton btnPendientes;
         private FontAwesome.Sharp.IconButton btnReimprimir;
-        private FontAwesome.Sharp.IconButton iconButton1;
-        private FontAwesome.Sharp.IconButton iconButton5;
+        private FontAwesome.Sharp.IconButton btnIntereses;
+        private FontAwesome.Sharp.IconButton btnPagos;
         private Panel panel9;
+        private TextBox lblVence;
+        private TextBox Fecha;
+        private FontAwesome.Sharp.IconButton btnReimprimirPago;
     }
 }

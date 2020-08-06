@@ -38,7 +38,8 @@ namespace Empeño.WindowsForms.Views
 
         private void panel1_Paint(object sender, PaintEventArgs e)
         {
-            var intereses= empeño.Intereses.Sum(i => i.Monto - i.Pagado).ToString("N2");
+            var interes = empeño.Intereses.Sum(i => i.Monto - i.Pagado);
+            var intereses= interes.ToString("N2");
             txtInteresAPagar.Text = intereses;
             txtPagaInteres.Text = txtInteresAPagar.Text;                        
             txtAdeudaIntereses.Text = (double.Parse(intereses) - double.Parse(txtInteresAPagar.Text)).ToString("N2");
@@ -51,21 +52,31 @@ namespace Empeño.WindowsForms.Views
 
             montoMinimo = empeño.Intereses.Where(i=>i.FechaVencimiento<=DateTime.Today).Sum(i => i.Monto - i.Pagado);            
 
-            if (double.Parse(intereses)<1 || montoMinimo<1)
+            if (interes<1 || montoMinimo<1)
             {
                 txtPagaMonto.Enabled = true;
                 txtPagaMonto.Text = "0.00";
-                txtTotalAPagar.Text = txtPagaMonto.Text;
-                txtPagaCon.Text = txtPagaMonto.Text;
+                txtTotalAPagar.Text = intereses;
+                txtPagaCon.Text = txtTotalAPagar.Text;
                 txtAdeudaMonto.Text = (double.Parse(txtMontoAPagar.Text) - double.Parse(txtPagaMonto.Text)).ToString("N2");
             }
             else
             {
+                txtPagaMonto.Text = "0.00";
                 txtTotalAPagar.Text = txtPagaInteres.Text;
                 txtPagaCon.Text = txtPagaInteres.Text;
             }
             
             txtFechaVencimiento.Text = empeño.FechaVencimiento.AddMonths(1).ToString("dd/MM/yyyy");
+            if (txtInteresAPagar.Text=="0.00")
+            {
+                txtPagaMonto.Focus();
+                txtPagaMonto.Text = empeño.MontoPendiente.ToString("N2");
+            }
+            else
+            {
+                txtPagaInteres.Focus();
+            }
         }
 
         private void txtPagaInteres_TextChanged(object sender, EventArgs e)
@@ -130,17 +141,8 @@ namespace Empeño.WindowsForms.Views
 
         private async void btnGuardarEmpeño_Click(object sender, EventArgs e)
         {
-            frmOscuro oscuro = new frmOscuro();
-            oscuro.Show();
-            frmPIN pin = new frmPIN("Empeño");
-            pin.ShowDialog();
-            if (!Program.Acceso)
-            {
-                oscuro.Close();
-                MessageBox.Show("No tiene acceso a este módulo");
+            if (!funciones.ValidatePIN("Empeño"))
                 return;
-            }
-            oscuro.Close();
 
             if (montoMinimo!=0)
             {
@@ -175,6 +177,7 @@ namespace Empeño.WindowsForms.Views
                 };
 
                 _context.Pago.Add(pago);
+                await _context.SaveChangesAsync();
                 await funciones.SaveBitacora(new ValorBitacora
                 {
                     Valor = JsonConvert.SerializeObject(pago),
@@ -193,18 +196,21 @@ namespace Empeño.WindowsForms.Views
                         {
                             empeño.FechaVencimiento = empeño.FechaVencimiento.AddMonths(1);
                         }
+                        item.PagoId = pago.PagoId;
                         intereses.Add(item);
                         _context.Entry(item).State = EntityState.Modified;
                         break;
                     }
                     else
                     {
-                        item.Pagado += (item.Monto - item.Pagado);
+                        double paga= (item.Monto - item.Pagado);
+                        item.Pagado += paga;
                         if (item.Pagado == item.Monto)
                         {
                             empeño.FechaVencimiento = empeño.FechaVencimiento.AddMonths(1);
                         }
-                        sobrante -= (item.Monto - item.Pagado);
+                        item.PagoId = pago.PagoId;
+                        sobrante -= paga;
                         intereses.Add(item);
                         _context.Entry(item).State = EntityState.Modified;
                     }
@@ -215,7 +221,7 @@ namespace Empeño.WindowsForms.Views
                     Modulo = "Intereses",
                     Accion = "Crear"
                 });
-                await PrintInteres(empeño, intereses);
+                await PrintInteres(empeño, intereses, pago);
             }
             if (pagoMonto>0)
             {
@@ -242,11 +248,11 @@ namespace Empeño.WindowsForms.Views
                 { 
                     empeño.Estado = Estado.Retirada;
                     _context.Intereses.RemoveRange(_context.Intereses.Where(i =>i.EmpenoId==empleadoId && i.Pagado == 0));
-                    await PrintRetiro(empeño);
+                    await PrintRetiro(empeño, pago);
                 }
                 else
                 {
-                    await PrintAbono(empeño);
+                    await PrintAbono(empeño, pago);
                 }
             }
          
@@ -310,7 +316,7 @@ namespace Empeño.WindowsForms.Views
         }
 
         #region Funciones
-        public async Task PrintAbono(Empeno empeno)
+        public async Task PrintAbono(Empeno empeno, Pago pago)
         {
             var configuracion = await _context.Configuraciones.FirstOrDefaultAsync();
             Microsoft.Office.Interop.Excel.Application cexcel = new Microsoft.Office.Interop.Excel.Application();
@@ -327,6 +333,8 @@ namespace Empeño.WindowsForms.Views
             cexcel.Cells[5, 1].value = "Tel. " + configuracion.Telefono;
             cexcel.Cells[6, 1].value = configuracion.Nombre;
             cexcel.Cells[7, 1].value = "Cédula: " + configuracion.Identificacion;
+
+            cexcel.Cells[8, 2].value = pago.PagoId;
             cexcel.Cells[9, 2].value = usuario.Nombre;
             cexcel.Cells[10, 2].value = usuario.Usuario;
             cexcel.Cells[14, 2].value = empeno.Cliente.Identificacion;
@@ -354,7 +362,7 @@ namespace Empeño.WindowsForms.Views
             cexcel.Quit();
         }
 
-        public async Task PrintRetiro(Empeno empeno)
+        public async Task PrintRetiro(Empeno empeno, Pago pago)
         {
             var configuracion = await _context.Configuraciones.FirstOrDefaultAsync();
             Microsoft.Office.Interop.Excel.Application cexcel = new Microsoft.Office.Interop.Excel.Application();
@@ -371,6 +379,7 @@ namespace Empeño.WindowsForms.Views
             cexcel.Cells[5, 1].value = "Tel. " + configuracion.Telefono;
             cexcel.Cells[6, 1].value = configuracion.Nombre;
             cexcel.Cells[7, 1].value = "Cédula: " + configuracion.Identificacion;
+            cexcel.Cells[7, 2].value = pago.PagoId;
             cexcel.Cells[9, 2].value = usuario.Nombre;
             cexcel.Cells[10, 2].value = Program.Usuario.Usuario;
             cexcel.Cells[14, 2].value = empeno.Cliente.Identificacion;
@@ -397,7 +406,7 @@ namespace Empeño.WindowsForms.Views
             cexcel.Quit();
         }
 
-        public async Task PrintInteres(Empeno empeno, List<Intereses> intereses)
+        public async Task PrintInteres(Empeno empeno, List<Intereses> intereses, Pago pago)
         {
             var configuracion = await _context.Configuraciones.FirstOrDefaultAsync();
             Microsoft.Office.Interop.Excel.Application cexcel = new Microsoft.Office.Interop.Excel.Application();
@@ -413,6 +422,7 @@ namespace Empeño.WindowsForms.Views
             cexcel.Cells[7, 1].value = "Cédula: " + configuracion.Identificacion;
 
             var empleado = _context.Empleados.Find(Program.EmpleadoId);
+            cexcel.Cells[8, 2].value = pago.PagoId;
             cexcel.Cells[9, 2].value = empleado.Nombre;
             cexcel.Cells[10, 2].value = empleado.Usuario;
             cexcel.Cells[14, 2].value = empeno.Cliente.Identificacion;
@@ -428,7 +438,7 @@ namespace Empeño.WindowsForms.Views
             {
                 cexcel.Cells[19, 1].value = empeno.Descripcion;
             }
-
+            cexcel.Cells[22, 4].value = empeno.MontoPendiente;
             var index = 0;
             foreach (var item in intereses)
             {
@@ -445,10 +455,9 @@ namespace Empeño.WindowsForms.Views
                 
             }
 
-            cexcel.Cells[28 + index, 3].value = empeño.MontoPendiente.ToString("N2");
-            cexcel.Cells[30 + index, 3].value =txtInteresAPagar.Text;
-            cexcel.Cells[32 + index, 3].value = empeno.FechaVencimiento.ToString("dd/MM/yyyy");
-            cexcel.Cells[34 + index, 3].value = empeno.Estado.ToString();
+            cexcel.Cells[28 + index, 3].value =txtInteresAPagar.Text;
+            cexcel.Cells[30 + index, 3].value = empeno.FechaVencimiento.ToString("dd/MM/yyyy");
+            cexcel.Cells[32 + index, 3].value = empeno.Estado.ToString();
            
             cexcel.ActiveWindow.SelectedSheets.PrintOut();
             System.Threading.Thread.Sleep(300);
@@ -462,6 +471,7 @@ namespace Empeño.WindowsForms.Views
         {
             double number = double.Parse(txtPagaMonto.Text);
             txtPagaMonto.Text = (number).ToString("N2");
+            txtPagaCon.Focus();
         }
 
         private void txtPagaInteres_Leave(object sender, EventArgs e)
@@ -469,6 +479,30 @@ namespace Empeño.WindowsForms.Views
 
             double number = double.Parse(txtPagaInteres.Text);
             txtPagaInteres.Text = (number).ToString("N2");
+        }
+
+        private void txtPagaInteres_KeyUp(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode==Keys.Tab)
+            {
+                txtPagaMonto.Focus();
+            }
+        }
+
+        private void txtPagaMonto_KeyUp(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Tab)
+            {
+                txtPagaCon.Focus();
+            }
+        }
+
+        private void txtPagaCon_KeyUp(object sender, KeyEventArgs e)
+        {
+            //if (e.KeyCode == Keys.Tab)
+            //{
+            //    btnGuardarEmpeño.Focus();
+            //}
         }
     }
 }

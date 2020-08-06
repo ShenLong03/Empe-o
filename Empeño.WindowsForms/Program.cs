@@ -21,6 +21,7 @@ namespace Empeño.WindowsForms
         public static bool Acceso;
         public static string Modulo;
         public static int EmpleadoId;
+        public static int PerfilId;
         public static int EmpeñoId;
         public static bool Proroga;
 

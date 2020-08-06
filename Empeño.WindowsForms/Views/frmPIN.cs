@@ -47,6 +47,7 @@ namespace Empeño.WindowsForms.Views
             if (e.KeyCode == Keys.Enter)
             {
                 await Aceptar();
+                this.Close();
             }
         }
 
@@ -55,7 +56,7 @@ namespace Empeño.WindowsForms.Views
             var perfil = await _context.User.Where(u => u.Codigo == txtPIN.Text).FirstOrDefaultAsync();
             if (perfil == null)
             {
-                MessageBox.Show("No tiene acceso al módulo", "Alerta", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show("No tiene acceso al módulo " + Modulo, "Alerta", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 Program.Modulo = Modulo;
                 Program.Acceso = false;
                 return;
@@ -65,6 +66,7 @@ namespace Empeño.WindowsForms.Views
             Program.Modulo = Modulo;
             Program.Acceso = false;
             Program.EmpleadoId = await funciones.GetEmpleadoIdByUser(perfil.Usuario);
+            Program.PerfilId = perfil.PerfilId;
 
             if (perfil.Perfil.Nombre == "Administrador" || perfil.Perfil.Nombre == "SuperUsuario")
                 Program.Acceso = true;
@@ -114,6 +116,12 @@ namespace Empeño.WindowsForms.Views
                 default:
                     Program.Acceso = false;
                     break;
+            }
+            if (!Program.Acceso)
+            {                
+                MessageBox.Show("No tiene acceso al módulo " + Modulo, "Alerta", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                Program.Modulo = Modulo;
+                Program.Acceso = false;            
             }
             this.Close();
         }

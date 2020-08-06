@@ -94,17 +94,8 @@ namespace Empeño.WindowsForms.Views
 
         private async void btnGuardarCierreCaja_Click(object sender, EventArgs e)
         {
-            frmOscuro oscuro = new frmOscuro();
-            oscuro.Show();
-            frmPIN pin = new frmPIN("Empeño");
-            pin.ShowDialog();
-            if (!Program.Acceso)
-            {
-                oscuro.Close();
-                MessageBox.Show("No tiene acceso a este módulo");
+            if (!funciones.ValidatePIN("Empeño"))
                 return;
-            }
-            oscuro.Close();
 
             var fecha = DateTime.ParseExact(txtFecha.Text, "dd/MM/yyyy HH:mm", CultureInfo.InvariantCulture);
 

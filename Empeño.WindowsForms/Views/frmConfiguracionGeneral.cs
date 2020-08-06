@@ -17,6 +17,7 @@ namespace Empeño.WindowsForms.Views
     {
         private DataContext _context = new DataContext();
         int configuracionId = 0;
+        Funciones.Funciones funciones = new Funciones.Funciones();
 
         public frmConfiguracionGeneral()
         {
@@ -50,17 +51,8 @@ namespace Empeño.WindowsForms.Views
         {
             try
             {
-                frmOscuro oscuro = new frmOscuro();
-                oscuro.Show();
-                frmPIN pin = new frmPIN("Empeño");
-                pin.ShowDialog();
-                if (!Program.Acceso)
-                {
-                    oscuro.Close();
-                    MessageBox.Show("No tiene acceso a este módulo");
+                if (!funciones.ValidatePIN("Editar Empeño"))
                     return;
-                }
-                oscuro.Close();
 
 
                 if (configuracionId == 0)

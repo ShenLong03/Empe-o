@@ -21,6 +21,8 @@ namespace Empeño.CommonEF.Entities
 
         public double Pagado { get; set; }
 
+        public int? PagoId { get; set; }
+
         [JsonIgnore]
         public virtual Empeno Empeno { get; set; }
     }

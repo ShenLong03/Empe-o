@@ -73,8 +73,8 @@ namespace Empeño.WindowsForms.Reports
             dtHasta.Value = DateTime.Today;
 
             list = list.OrderBy(l => l.Fecha).ToList();
-            var minDate = list.Min(l => l.Fecha);
-            var maxDate = list.Max(l => l.Fecha);
+            var minDate = list.Any() ? list.Min(l => l.Fecha) : DateTime.Today;
+            var maxDate = list.Any() ? list.Max(l => l.Fecha) : DateTime.Today;
 
             while (minDate < maxDate)
             {
@@ -202,8 +202,8 @@ namespace Empeño.WindowsForms.Reports
             dgvIngresos.DataSource = list.ToList();
             dgvIngresos.Refresh();
             list = list.OrderBy(l => l.Fecha).ToList();
-            var minDate = list.Min(l => l.Fecha);
-            var maxDate = list.Max(l => l.Fecha);
+            var minDate = list.Any()? list.Min(l => l.Fecha):DateTime.Today;
+            var maxDate = list.Any()?list.Max(l => l.Fecha):DateTime.Today;
 
             while (minDate < maxDate)
             {

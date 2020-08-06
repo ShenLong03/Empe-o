@@ -165,7 +165,7 @@
             this.label10.Location = new System.Drawing.Point(9, 6);
             this.label10.Name = "label10";
             this.label10.Size = new System.Drawing.Size(135, 19);
-            this.label10.TabIndex = 82;
+            this.label10.TabIndex = 0;
             this.label10.Text = "Pagar Intereses";
             // 
             // label7
@@ -176,7 +176,7 @@
             this.label7.Location = new System.Drawing.Point(6, 217);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(132, 19);
-            this.label7.TabIndex = 79;
+            this.label7.TabIndex = 8;
             this.label7.Text = "Proxima Fecha";
             // 
             // pictureBox9
@@ -203,7 +203,7 @@
             this.txtProximaFecha.Location = new System.Drawing.Point(8, 238);
             this.txtProximaFecha.Name = "txtProximaFecha";
             this.txtProximaFecha.Size = new System.Drawing.Size(407, 27);
-            this.txtProximaFecha.TabIndex = 77;
+            this.txtProximaFecha.TabIndex = 9;
             this.txtProximaFecha.Text = "01/01/2020";
             // 
             // label1
@@ -214,7 +214,7 @@
             this.label1.Location = new System.Drawing.Point(6, 158);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(76, 19);
-            this.label1.TabIndex = 76;
+            this.label1.TabIndex = 6;
             this.label1.Text = "Adeuda";
             // 
             // pictureBox1
@@ -241,7 +241,7 @@
             this.txtAdeudaIntereses.Location = new System.Drawing.Point(8, 179);
             this.txtAdeudaIntereses.Name = "txtAdeudaIntereses";
             this.txtAdeudaIntereses.Size = new System.Drawing.Size(407, 27);
-            this.txtAdeudaIntereses.TabIndex = 74;
+            this.txtAdeudaIntereses.TabIndex = 7;
             this.txtAdeudaIntereses.Text = "0.00";
             // 
             // lblNombre
@@ -252,7 +252,7 @@
             this.lblNombre.Location = new System.Drawing.Point(7, 100);
             this.lblNombre.Name = "lblNombre";
             this.lblNombre.Size = new System.Drawing.Size(60, 23);
-            this.lblNombre.TabIndex = 73;
+            this.lblNombre.TabIndex = 4;
             this.lblNombre.Text = "Paga";
             // 
             // lblIdentificacion
@@ -263,7 +263,7 @@
             this.lblIdentificacion.Location = new System.Drawing.Point(7, 49);
             this.lblIdentificacion.Name = "lblIdentificacion";
             this.lblIdentificacion.Size = new System.Drawing.Size(133, 19);
-            this.lblIdentificacion.TabIndex = 72;
+            this.lblIdentificacion.TabIndex = 2;
             this.lblIdentificacion.Text = "Interes a pagar";
             // 
             // pictureBox4
@@ -301,9 +301,10 @@
             this.txtPagaInteres.Location = new System.Drawing.Point(9, 124);
             this.txtPagaInteres.Name = "txtPagaInteres";
             this.txtPagaInteres.Size = new System.Drawing.Size(407, 27);
-            this.txtPagaInteres.TabIndex = 69;
+            this.txtPagaInteres.TabIndex = 5;
             this.txtPagaInteres.Text = "0.00";
             this.txtPagaInteres.TextChanged += new System.EventHandler(this.txtPagaInteres_TextChanged_1);
+            this.txtPagaInteres.KeyUp += new System.Windows.Forms.KeyEventHandler(this.txtPagaInteres_KeyUp);
             this.txtPagaInteres.Leave += new System.EventHandler(this.txtPagaInteres_Leave);
             // 
             // txtInteresAPagar
@@ -318,7 +319,7 @@
             this.txtInteresAPagar.Location = new System.Drawing.Point(9, 71);
             this.txtInteresAPagar.Name = "txtInteresAPagar";
             this.txtInteresAPagar.Size = new System.Drawing.Size(407, 27);
-            this.txtInteresAPagar.TabIndex = 68;
+            this.txtInteresAPagar.TabIndex = 3;
             this.txtInteresAPagar.Text = "0.00";
             // 
             // lblComentario
@@ -329,7 +330,7 @@
             this.lblComentario.Location = new System.Drawing.Point(2, 304);
             this.lblComentario.Name = "lblComentario";
             this.lblComentario.Size = new System.Drawing.Size(113, 19);
-            this.lblComentario.TabIndex = 51;
+            this.lblComentario.TabIndex = 17;
             this.lblComentario.Text = "Comentarios";
             // 
             // pictureBox13
@@ -356,7 +357,7 @@
             this.txtComentario.Multiline = true;
             this.txtComentario.Name = "txtComentario";
             this.txtComentario.Size = new System.Drawing.Size(407, 147);
-            this.txtComentario.TabIndex = 49;
+            this.txtComentario.TabIndex = 18;
             this.txtComentario.Text = "Comentarios";
             // 
             // panel2
@@ -419,8 +420,8 @@
             this.label11.Location = new System.Drawing.Point(9, 6);
             this.label11.Name = "label11";
             this.label11.Size = new System.Drawing.Size(188, 19);
-            this.label11.TabIndex = 82;
-            this.label11.Text = "Pagar Monto Princiapl";
+            this.label11.TabIndex = 1;
+            this.label11.Text = "Pagar Monto Principal";
             // 
             // label8
             // 
@@ -430,7 +431,7 @@
             this.label8.Location = new System.Drawing.Point(10, 217);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(229, 19);
-            this.label8.TabIndex = 72;
+            this.label8.TabIndex = 8;
             this.label8.Text = "Nueva Fecha Vencimiento";
             // 
             // pictureBox10
@@ -457,7 +458,7 @@
             this.txtFechaVencimiento.Location = new System.Drawing.Point(12, 238);
             this.txtFechaVencimiento.Name = "txtFechaVencimiento";
             this.txtFechaVencimiento.Size = new System.Drawing.Size(413, 27);
-            this.txtFechaVencimiento.TabIndex = 70;
+            this.txtFechaVencimiento.TabIndex = 9;
             this.txtFechaVencimiento.Text = "01/01/2020";
             // 
             // label3
@@ -468,7 +469,7 @@
             this.label3.Location = new System.Drawing.Point(12, 158);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(76, 19);
-            this.label3.TabIndex = 69;
+            this.label3.TabIndex = 6;
             this.label3.Text = "Adeuda";
             // 
             // pictureBox5
@@ -495,7 +496,7 @@
             this.txtAdeudaMonto.Location = new System.Drawing.Point(14, 179);
             this.txtAdeudaMonto.Name = "txtAdeudaMonto";
             this.txtAdeudaMonto.Size = new System.Drawing.Size(413, 27);
-            this.txtAdeudaMonto.TabIndex = 67;
+            this.txtAdeudaMonto.TabIndex = 7;
             this.txtAdeudaMonto.Text = "0.00";
             // 
             // label5
@@ -506,7 +507,7 @@
             this.label5.Location = new System.Drawing.Point(14, 102);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(60, 23);
-            this.label5.TabIndex = 66;
+            this.label5.TabIndex = 4;
             this.label5.Text = "Paga";
             // 
             // label6
@@ -517,7 +518,7 @@
             this.label6.Location = new System.Drawing.Point(14, 49);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(130, 19);
-            this.label6.TabIndex = 65;
+            this.label6.TabIndex = 2;
             this.label6.Text = "Monto a pagar";
             // 
             // pictureBox7
@@ -556,9 +557,10 @@
             this.txtPagaMonto.Location = new System.Drawing.Point(16, 124);
             this.txtPagaMonto.Name = "txtPagaMonto";
             this.txtPagaMonto.Size = new System.Drawing.Size(413, 27);
-            this.txtPagaMonto.TabIndex = 62;
+            this.txtPagaMonto.TabIndex = 5;
             this.txtPagaMonto.Text = "0.00";
             this.txtPagaMonto.TextChanged += new System.EventHandler(this.txtPagaMonto_TextChanged_1);
+            this.txtPagaMonto.KeyUp += new System.Windows.Forms.KeyEventHandler(this.txtPagaMonto_KeyUp);
             this.txtPagaMonto.Leave += new System.EventHandler(this.txtPagaMonto_Leave);
             // 
             // txtMontoAPagar
@@ -573,7 +575,7 @@
             this.txtMontoAPagar.Location = new System.Drawing.Point(16, 71);
             this.txtMontoAPagar.Name = "txtMontoAPagar";
             this.txtMontoAPagar.Size = new System.Drawing.Size(413, 27);
-            this.txtMontoAPagar.TabIndex = 61;
+            this.txtMontoAPagar.TabIndex = 3;
             this.txtMontoAPagar.Text = "0.00";
             // 
             // pictureBox11
@@ -596,7 +598,7 @@
             this.label9.Location = new System.Drawing.Point(12, 303);
             this.label9.Name = "label9";
             this.label9.Size = new System.Drawing.Size(133, 23);
-            this.label9.TabIndex = 64;
+            this.label9.TabIndex = 10;
             this.label9.Text = "Total a Pagar";
             // 
             // txtTotalAPagar
@@ -611,7 +613,7 @@
             this.txtTotalAPagar.Location = new System.Drawing.Point(14, 325);
             this.txtTotalAPagar.Name = "txtTotalAPagar";
             this.txtTotalAPagar.Size = new System.Drawing.Size(404, 27);
-            this.txtTotalAPagar.TabIndex = 63;
+            this.txtTotalAPagar.TabIndex = 11;
             this.txtTotalAPagar.Text = "0.00";
             // 
             // btnCancelar
@@ -630,7 +632,7 @@
             this.btnCancelar.Name = "btnCancelar";
             this.btnCancelar.Rotation = 0D;
             this.btnCancelar.Size = new System.Drawing.Size(138, 50);
-            this.btnCancelar.TabIndex = 61;
+            this.btnCancelar.TabIndex = 19;
             this.btnCancelar.Text = "Cancelar";
             this.btnCancelar.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
             this.btnCancelar.UseVisualStyleBackColor = false;
@@ -652,7 +654,7 @@
             this.btnGuardarEmpeño.Name = "btnGuardarEmpeño";
             this.btnGuardarEmpeño.Rotation = 0D;
             this.btnGuardarEmpeño.Size = new System.Drawing.Size(127, 50);
-            this.btnGuardarEmpeño.TabIndex = 62;
+            this.btnGuardarEmpeño.TabIndex = 16;
             this.btnGuardarEmpeño.Text = "Pagar";
             this.btnGuardarEmpeño.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
             this.btnGuardarEmpeño.UseVisualStyleBackColor = false;
@@ -666,7 +668,7 @@
             this.label2.Location = new System.Drawing.Point(12, 423);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(69, 23);
-            this.label2.TabIndex = 44;
+            this.label2.TabIndex = 14;
             this.label2.Text = "Vuelto";
             // 
             // pictureBox2
@@ -689,7 +691,7 @@
             this.label4.Location = new System.Drawing.Point(12, 360);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(100, 23);
-            this.label4.TabIndex = 56;
+            this.label4.TabIndex = 12;
             this.label4.Text = "Paga con";
             // 
             // txtVuelto
@@ -703,7 +705,7 @@
             this.txtVuelto.Location = new System.Drawing.Point(14, 445);
             this.txtVuelto.Name = "txtVuelto";
             this.txtVuelto.Size = new System.Drawing.Size(403, 27);
-            this.txtVuelto.TabIndex = 40;
+            this.txtVuelto.TabIndex = 15;
             this.txtVuelto.Text = "0.00";
             // 
             // pictureBox6
@@ -729,9 +731,10 @@
             this.txtPagaCon.Location = new System.Drawing.Point(14, 382);
             this.txtPagaCon.Name = "txtPagaCon";
             this.txtPagaCon.Size = new System.Drawing.Size(404, 27);
-            this.txtPagaCon.TabIndex = 52;
+            this.txtPagaCon.TabIndex = 13;
             this.txtPagaCon.Text = "0.00";
             this.txtPagaCon.TextChanged += new System.EventHandler(this.txtPagaCon_TextChanged);
+            this.txtPagaCon.KeyUp += new System.Windows.Forms.KeyEventHandler(this.txtPagaCon_KeyUp);
             // 
             // frmPagar
             // 

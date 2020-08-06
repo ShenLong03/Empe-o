@@ -2,6 +2,7 @@
 using Empeño.CommonEF.Enum;
 using Empeño.CommonEF.Models;
 using Empeño.WindowsForms.Data;
+using Empeño.WindowsForms.Views;
 using Microsoft.VisualBasic.CompilerServices;
 using Newtonsoft.Json;
 using System;
@@ -164,6 +165,24 @@ namespace Empeño.WindowsForms.Funciones
             {
 
                 return 1;
+            }
+        }
+
+        public async Task<Empleado> GetEmpleadoByUser(string user)
+        {
+            try
+            {
+                var empleado = await _context.Empleados.SingleOrDefaultAsync(e => e.Usuario == user);
+                if (empleado != null)
+                {
+                    return empleado;
+                }
+                return null;
+            }
+            catch (Exception ex)
+            {
+
+                return null;
             }
         }
 
@@ -641,6 +660,20 @@ namespace Empeño.WindowsForms.Funciones
             double numero=0;
             double.TryParse(txt.Text, out numero);                    
             txt.Text = numero.ToString("N2");
+        }
+
+        public bool ValidatePIN(string modulo)
+        {
+            frmOscuro oscuro = new frmOscuro();
+            oscuro.Show();
+            frmPIN pin = new frmPIN(modulo);
+            pin.ShowDialog();
+            oscuro.Close();
+
+            if (!Program.Acceso)            
+                return false;
+                        
+            return true;
         }
     }
 }
