@@ -50,10 +50,10 @@ namespace Empeño.WindowsForms.Views
 
         private async void btnAcceder_Click(object sender, EventArgs e)
         {
-            Acceder();
+            await Acceder();
         }
 
-        private async void Acceder() 
+        private async Task Acceder() 
         {
             var usuario = await _context.User.SingleOrDefaultAsync(u => u.Usuario == txtUsuario.Text && u.Password == txtContrasena.Text);
 
@@ -61,6 +61,7 @@ namespace Empeño.WindowsForms.Views
             {
                 this.Hide();
                 Program.Usuario = usuario;
+                Program.PerfilId = usuario.PerfilId;
                 frmBienvenida bienvenida = new frmBienvenida();
                 bienvenida.ShowDialog();
                 frmInicio inicio = new frmInicio();

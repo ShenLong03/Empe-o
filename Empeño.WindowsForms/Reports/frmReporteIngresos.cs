@@ -73,13 +73,14 @@ namespace Empeño.WindowsForms.Reports
             dtHasta.Value = DateTime.Today;
 
             list = list.OrderBy(l => l.Fecha).ToList();
-            var minDate = list.Any() ? list.Min(l => l.Fecha) : DateTime.Today;
-            var maxDate = list.Any() ? list.Max(l => l.Fecha) : DateTime.Today;
+            var minDate = list.Count() > 0 ? list.Min(l => l.Fecha) : DateTime.Today;
+            var maxDate = list.Count() > 0 ? list.Max(l => l.Fecha).AddHours(23).AddMinutes(59) : DateTime.Today.AddHours(23).AddMinutes(59);
 
             while (minDate < maxDate)
             {
-                chartVentas.Series[0].Points.AddXY(minDate.ToString("dd/MM"), list.Where(l => l.Fecha == minDate).Sum(i => i.Ingresos));
-                chartVentas.Series[1].Points.AddXY(minDate.ToString("dd/MM"), list.Where(l => l.Fecha == minDate).Sum(i => i.Egresos));
+                var endDate = minDate.AddHours(23).AddMinutes(59);
+                chartVentas.Series[0].Points.AddXY(minDate.ToString("dd/MM"), list.Where(l => l.Fecha >= minDate && l.Fecha <= endDate).Sum(i => i.Ingresos));
+                chartVentas.Series[1].Points.AddXY(minDate.ToString("dd/MM"), list.Where(l => l.Fecha >= minDate && l.Fecha <= endDate).Sum(i => i.Egresos));
                 minDate = minDate.AddDays(1);
             }
 
@@ -202,13 +203,14 @@ namespace Empeño.WindowsForms.Reports
             dgvIngresos.DataSource = list.ToList();
             dgvIngresos.Refresh();
             list = list.OrderBy(l => l.Fecha).ToList();
-            var minDate = list.Any()? list.Min(l => l.Fecha):DateTime.Today;
-            var maxDate = list.Any()?list.Max(l => l.Fecha):DateTime.Today;
+            var minDate = list.Count() > 0 ? list.Min(l => l.Fecha) : DateTime.Today;
+            var maxDate = list.Count() > 0 ? list.Max(l => l.Fecha).AddHours(23).AddMinutes(59) : DateTime.Today.AddHours(23).AddMinutes(59);
 
             while (minDate < maxDate)
             {
-                chartVentas.Series[0].Points.AddXY(minDate.ToString("dd/MM"), list.Where(l => l.Fecha == minDate).Sum(i => i.Ingresos));
-                chartVentas.Series[1].Points.AddXY(minDate.ToString("dd/MM"), list.Where(l => l.Fecha == minDate).Sum(i => i.Egresos));
+                var endDate = minDate.AddHours(23).AddMinutes(59);
+                chartVentas.Series[0].Points.AddXY(minDate.ToString("dd/MM"), list.Where(l => l.Fecha >= minDate && l.Fecha <= endDate).Sum(i => i.Ingresos));
+                chartVentas.Series[1].Points.AddXY(minDate.ToString("dd/MM"), list.Where(l => l.Fecha >= minDate && l.Fecha <= endDate).Sum(i => i.Egresos));
                 minDate = minDate.AddDays(1);
             }
 

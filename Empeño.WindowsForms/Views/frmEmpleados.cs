@@ -141,6 +141,7 @@ namespace Empeño.WindowsForms.Views
                         user.Usuario = txtUsuario.Text;
                         user.Codigo = txtPIN.Text;
                         user.Password = txtPassword.Text;
+                        user.PerfilId = GetPerfilId(cbPerfil.Text);
 
                         _context.Entry(user).State = EntityState.Modified;
                     }
@@ -366,7 +367,6 @@ namespace Empeño.WindowsForms.Views
                 txtCorreo.Text = empleado.Correo;
                 chbActivo.Checked = empleado.Activo;
                 txtUsuario.Text = empleado.Usuario;
-
                 var user = await _context.User.Include(u => u.Perfil).SingleOrDefaultAsync(u => u.Usuario == empleado.Usuario);
                 if (user != null)
                 {
@@ -476,6 +476,6 @@ namespace Empeño.WindowsForms.Views
                 MessageBox.Show("El dato no puede ser eliminado", "Error");
             }
            
-        }
+        }  
     }
 }

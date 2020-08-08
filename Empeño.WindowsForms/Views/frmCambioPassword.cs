@@ -50,13 +50,20 @@ namespace Empeño.WindowsForms.Views
                 var usuario = await _context.User.SingleOrDefaultAsync(u => u.Usuario == Program.ChangeUserPassword.Usuario);
                 if (usuario!=null)
                 {
-                    usuario.Password = txtNuevo.Text;
-                    Program.ChangeUserPassword.Password = usuario.Password;
-                    _context.Entry(usuario).State = EntityState.Modified;
-                    await _context.SaveChangesAsync();
+                    if (usuario.Password==txtViejo.Text)
+                    {
+                        usuario.Password = txtNuevo.Text;
+                        Program.ChangeUserPassword.Password = usuario.Password;
+                        _context.Entry(usuario).State = EntityState.Modified;
+                        await _context.SaveChangesAsync();
 
-                    MessageBox.Show("Dato guardado correctamente", "Información", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                    this.Close();
+                        MessageBox.Show("Dato guardado correctamente", "Información", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        this.Close();
+                    }
+                    else
+                    {
+                        MessageBox.Show("La contraseña anterior no es correcta.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
                 }
             }
         }

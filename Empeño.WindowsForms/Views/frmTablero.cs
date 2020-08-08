@@ -139,7 +139,7 @@ namespace Empeño.WindowsForms.Views
         private async void frmTablero_Load(object sender, EventArgs e)
         {
             DateTime desde = DateTime.Today.AddDays(-8);
-            DateTime hasta = DateTime.Today;
+            DateTime hasta = DateTime.Today.AddHours(23).AddMinutes(59);
 
             var egresos = await _context.Empenos.Where(x => x.Fecha >= desde && x.Fecha <= hasta).ToListAsync();
             var ingresos = await _context.Pago.Where(x => x.Fecha >= desde && x.Fecha <= hasta).ToListAsync();
@@ -179,12 +179,13 @@ namespace Empeño.WindowsForms.Views
 
             list = list.OrderBy(l => l.Fecha).ToList();
             var minDate = list.Count() > 0 ? list.Min(l => l.Fecha) : DateTime.Today;
-            var maxDate = list.Count() > 0 ? list.Max(l => l.Fecha) : DateTime.Today;
+            var maxDate = list.Count() > 0 ? list.Max(l => l.Fecha).AddHours(23).AddMinutes(59) : DateTime.Today.AddHours(23).AddMinutes(59);
 
             while (minDate < maxDate)
             {
-                chartVentas.Series[0].Points.AddXY(minDate.ToString("dd/MM"), list.Where(l => l.Fecha == minDate).Sum(i => i.Ingresos));
-                chartVentas.Series[1].Points.AddXY(minDate.ToString("dd/MM"), list.Where(l => l.Fecha == minDate).Sum(i => i.Egresos));
+                var endDate = minDate.AddHours(23).AddMinutes(59);
+                chartVentas.Series[0].Points.AddXY(minDate.ToString("dd/MM"), list.Where(l => l.Fecha >= minDate && l.Fecha<=endDate).Sum(i => i.Ingresos));
+                chartVentas.Series[1].Points.AddXY(minDate.ToString("dd/MM"), list.Where(l => l.Fecha >= minDate && l.Fecha <= endDate).Sum(i => i.Egresos));
                 minDate = minDate.AddDays(1);
             }
             chartVentas.ChartAreas[0].AxisY.LabelStyle.Format = "N2";

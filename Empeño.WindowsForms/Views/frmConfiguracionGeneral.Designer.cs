@@ -161,7 +161,7 @@
             this.txtEmailAdmin.Margin = new System.Windows.Forms.Padding(4);
             this.txtEmailAdmin.Name = "txtEmailAdmin";
             this.txtEmailAdmin.Size = new System.Drawing.Size(416, 41);
-            this.txtEmailAdmin.TabIndex = 68;
+            this.txtEmailAdmin.TabIndex = 55;
             // 
             // label11
             // 
@@ -171,7 +171,7 @@
             this.label11.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label11.Name = "label11";
             this.label11.Size = new System.Drawing.Size(132, 23);
-            this.label11.TabIndex = 67;
+            this.label11.TabIndex = 54;
             this.label11.Text = "Email Admin";
             // 
             // txtDirección
@@ -181,7 +181,7 @@
             this.txtDirección.Margin = new System.Windows.Forms.Padding(4);
             this.txtDirección.Name = "txtDirección";
             this.txtDirección.Size = new System.Drawing.Size(416, 41);
-            this.txtDirección.TabIndex = 66;
+            this.txtDirección.TabIndex = 50;
             // 
             // label10
             // 
@@ -191,7 +191,7 @@
             this.label10.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label10.Name = "label10";
             this.label10.Size = new System.Drawing.Size(104, 23);
-            this.label10.TabIndex = 65;
+            this.label10.TabIndex = 49;
             this.label10.Text = "Dirección";
             // 
             // label8
@@ -211,7 +211,7 @@
             this.chkSSL.Location = new System.Drawing.Point(785, 346);
             this.chkSSL.Name = "chkSSL";
             this.chkSSL.Size = new System.Drawing.Size(18, 17);
-            this.chkSSL.TabIndex = 63;
+            this.chkSSL.TabIndex = 65;
             this.chkSSL.UseVisualStyleBackColor = true;
             // 
             // txtPuerto
@@ -221,7 +221,7 @@
             this.txtPuerto.Margin = new System.Windows.Forms.Padding(4);
             this.txtPuerto.Name = "txtPuerto";
             this.txtPuerto.Size = new System.Drawing.Size(63, 41);
-            this.txtPuerto.TabIndex = 62;
+            this.txtPuerto.TabIndex = 63;
             // 
             // label9
             // 
@@ -231,7 +231,7 @@
             this.label9.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label9.Name = "label9";
             this.label9.Size = new System.Drawing.Size(71, 23);
-            this.label9.TabIndex = 61;
+            this.label9.TabIndex = 62;
             this.label9.Text = "Puerto";
             // 
             // txtSMTP
@@ -241,7 +241,7 @@
             this.txtSMTP.Margin = new System.Windows.Forms.Padding(4);
             this.txtSMTP.Name = "txtSMTP";
             this.txtSMTP.Size = new System.Drawing.Size(416, 41);
-            this.txtSMTP.TabIndex = 58;
+            this.txtSMTP.TabIndex = 61;
             // 
             // lbllbl
             // 
@@ -251,7 +251,7 @@
             this.lbllbl.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lbllbl.Name = "lbllbl";
             this.lbllbl.Size = new System.Drawing.Size(57, 23);
-            this.lbllbl.TabIndex = 57;
+            this.lbllbl.TabIndex = 60;
             this.lbllbl.Text = "SMTP";
             // 
             // txtPassword
@@ -262,7 +262,7 @@
             this.txtPassword.Name = "txtPassword";
             this.txtPassword.PasswordChar = '*';
             this.txtPassword.Size = new System.Drawing.Size(416, 41);
-            this.txtPassword.TabIndex = 56;
+            this.txtPassword.TabIndex = 59;
             // 
             // label12
             // 
@@ -272,7 +272,7 @@
             this.label12.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label12.Name = "label12";
             this.label12.Size = new System.Drawing.Size(100, 23);
-            this.label12.TabIndex = 55;
+            this.label12.TabIndex = 58;
             this.label12.Text = "Password";
             // 
             // txtEmail
@@ -284,7 +284,7 @@
             this.txtEmail.Margin = new System.Windows.Forms.Padding(4);
             this.txtEmail.Name = "txtEmail";
             this.txtEmail.Size = new System.Drawing.Size(416, 41);
-            this.txtEmail.TabIndex = 54;
+            this.txtEmail.TabIndex = 57;
             // 
             // label13
             // 
@@ -294,7 +294,7 @@
             this.label13.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label13.Name = "label13";
             this.label13.Size = new System.Drawing.Size(62, 23);
-            this.label13.TabIndex = 53;
+            this.label13.TabIndex = 56;
             this.label13.Text = "Email";
             // 
             // panel5
@@ -313,7 +313,7 @@
             this.label6.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(72, 23);
-            this.label6.TabIndex = 51;
+            this.label6.TabIndex = 53;
             this.label6.Text = "Meses";
             // 
             // txtMeses
@@ -323,7 +323,7 @@
             this.txtMeses.Margin = new System.Windows.Forms.Padding(4);
             this.txtMeses.Name = "txtMeses";
             this.txtMeses.Size = new System.Drawing.Size(63, 41);
-            this.txtMeses.TabIndex = 50;
+            this.txtMeses.TabIndex = 52;
             // 
             // label5
             // 
@@ -333,7 +333,7 @@
             this.label5.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(137, 23);
-            this.label5.TabIndex = 49;
+            this.label5.TabIndex = 51;
             this.label5.Text = "Período MAX";
             // 
             // txtTelefono
@@ -482,7 +482,7 @@
             this.btnGuardar.Name = "btnGuardar";
             this.btnGuardar.Rotation = 0D;
             this.btnGuardar.Size = new System.Drawing.Size(100, 40);
-            this.btnGuardar.TabIndex = 54;
+            this.btnGuardar.TabIndex = 66;
             this.btnGuardar.Text = "Guardar";
             this.btnGuardar.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
             this.btnGuardar.UseVisualStyleBackColor = false;

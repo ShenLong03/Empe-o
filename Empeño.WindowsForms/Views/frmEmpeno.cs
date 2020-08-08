@@ -357,7 +357,7 @@ namespace Empeño.WindowsForms.Views
                
                 if (empeñoId > 0)
                 {
-                    if (!funciones.ValidatePIN("Empeño"))
+                    if (!funciones.ValidatePIN("Editar Empeño"))
                         return;
 
                     var empeño = await _context.Empenos.FindAsync(empeñoId);
@@ -461,16 +461,17 @@ namespace Empeño.WindowsForms.Views
                 }
                 else
                 {
-                    if (!funciones.ValidatePIN("Editar Empeño"))
+                    if (!funciones.ValidatePIN("Empeño"))
                         return;
 
                     var empleadoId = Program.EmpleadoId;
                     var empleado = await _context.Empleados.FindAsync(empleadoId);
-                    var fecha = DateTime.ParseExact(Fecha.Text, "dd/MM/yyyy", CultureInfo.InvariantCulture);
+                    var strFecha = Fecha.Text + " " + DateTime.Now.ToString("HH:mm");
+                    var fecha = DateTime.ParseExact(strFecha, "dd/MM/yyyy HH:mm", CultureInfo.InvariantCulture);
                     var fechaVencimiento = DateTime.ParseExact(lblVence.Text, "dd/MM/yyyy", CultureInfo.InvariantCulture);
-                    var vence = fecha.AddMonths(mesesVencimiento);
+                    var vence = fecha.Date.AddMonths(mesesVencimiento);
 
-                    if (fecha!=DateTime.Today)
+                    if (fecha.Date!=DateTime.Today)
                     {
                         if (Program.PerfilId==4)
                         {
@@ -747,7 +748,6 @@ namespace Empeño.WindowsForms.Views
                     column.Width = 40;
                     lblCatidadEmpeños.Text = dgvEmpeños.Rows.Count.ToString(); 
                 }
-                funciones.BlockTextBox(panelFormulario, false);
             }
             catch (Exception)
             {
@@ -1053,7 +1053,7 @@ namespace Empeño.WindowsForms.Views
                         Fecha.Text = empeño.Fecha.ToString("dd/MM/yyyy");
 
                         funciones.ShowLabels(panelFormulario);
-                        if (empeño.FechaRetiro != null || empeño.Retirado || empeño.FechaRetiroAdministrador != null || empeño.RetiradoAdministrador || empeño.Estado == Estado.Retirada)
+                        if (Program.PerfilId==4 || empeño.FechaRetiro != null || empeño.Retirado || empeño.FechaRetiroAdministrador != null || empeño.RetiradoAdministrador || empeño.Estado == Estado.Retirada)
                         {
                             funciones.BlockTextBox(panelFormulario, false);
                         }
@@ -1293,7 +1293,7 @@ namespace Empeño.WindowsForms.Views
                     {
                         funciones.BlockTextBox(panelFormulario, true);
                     }
-                    if (empeño.FechaRetiro != null || empeño.Retirado || empeño.FechaRetiroAdministrador != null || empeño.RetiradoAdministrador || empeño.Estado == Estado.Retirada)
+                    if (Program.PerfilId==4 || empeño.FechaRetiro != null || empeño.Retirado || empeño.FechaRetiroAdministrador != null || empeño.RetiradoAdministrador || empeño.Estado == Estado.Retirada)
                     {
                         funciones.BlockTextBox(panelFormulario, false);
                     }
@@ -1401,7 +1401,9 @@ namespace Empeño.WindowsForms.Views
                 var cliente = await _context.Clientes.SingleOrDefaultAsync(c => !c.IsDelete && c.Identificacion == txtIdentificacion.Text);
                 if (cliente != null)
                 {
-                    funciones.ResetForm(panelFormulario);
+                    //AQUI
+                    CleanForm();
+                    lblEstado.Visible = false;
                     Fecha.Text = DateTime.Today.ToString("dd/MM/yyyy");
                     clienteId = cliente.ClienteId;
                     lblIdentificacion.Visible = true;
@@ -1423,7 +1425,7 @@ namespace Empeño.WindowsForms.Views
                     var resp = MessageBox.Show("El cliente no existe, desea crearlo como uno nuevo?", "Pregunta", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
                     if (resp == DialogResult.Yes)
                     {
-                        funciones.ResetForm(panelFormulario);
+                        CleanForm();
                         Fecha.Text = DateTime.Today.ToString("dd/MM/yyyy");
                         frmOscuro oscuro = new frmOscuro();
                         oscuro.Show();
@@ -1527,7 +1529,8 @@ namespace Empeño.WindowsForms.Views
             lblCantidad.Text = dgvClientes.Rows.Count.ToString();
             lblCatidadEmpeños.Text = dgvEmpeños.Rows.Count.ToString();
             chbEsOro.Checked = true;
-
+            lblEstado.Visible = false;
+            lblVence.Text = DateTime.Today.AddMonths(configuracion.Meses).ToString("dd/MM/yyyy");
             if (Program.Usuario.PerfilId == 4)
             {
                 cbInteres.Enabled = false;
@@ -1878,6 +1881,8 @@ namespace Empeño.WindowsForms.Views
                     empeño.IsDelete = true;
                     _context.Entry(empeño).State = EntityState.Modified;
                     await _context.SaveChangesAsync();
+                    MessageBox.Show("Elemento eliminado correctamente", "Información", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    await LoadEmpeños(empeño.EmpenoId);
                     await PrintAnulacion(empeño);
                 }
             }
@@ -2285,6 +2290,6 @@ namespace Empeño.WindowsForms.Views
                     }
                 }
             }
-        }
+        }               
     }
 }
