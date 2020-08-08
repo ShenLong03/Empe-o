@@ -28,8 +28,8 @@ namespace Empeño.WindowsForms.Reports
         private async void ReporteIngresos_Load(object sender, EventArgs e)
         {
             DateTime month = DateTime.Today.AddMonths(-1);
-            var egresos = await _context.Empenos.Where(x => x.Fecha > month).ToListAsync();
-            var ingresos = await _context.Pago.Where(x => x.Fecha > month).ToListAsync();
+            var egresos = await _context.Empenos.Where(x =>!x.IsDelete && x.Fecha > month).ToListAsync();
+            var ingresos = await _context.Pago.Where(x => x.Fecha > month && !x.Empeno.IsDelete).ToListAsync();
 
             var list = new List<IngresosEgresosReporte>();
 
@@ -153,11 +153,12 @@ namespace Empeño.WindowsForms.Reports
 
         public async Task Buscar()
         {
+            chartVentas.Update();
             DateTime desde = dtDesde.Value;
             DateTime hasta = dtHasta.Value.AddHours(23).AddMinutes(59);
 
-            var egresos = await _context.Empenos.Where(x => x.Fecha >= desde && x.Fecha <= hasta).ToListAsync();
-            var ingresos = await _context.Pago.Where(x => x.Fecha >= desde && x.Fecha <= hasta).ToListAsync();
+            var egresos = await _context.Empenos.Where(x => !x.IsDelete && x.Fecha >= desde && x.Fecha <= hasta).ToListAsync();
+            var ingresos = await _context.Pago.Where(x => x.Fecha >= desde && x.Fecha <= hasta && !x.Empeno.IsDelete).ToListAsync();         
 
             var list = new List<IngresosEgresosReporte>();
 
@@ -200,6 +201,8 @@ namespace Empeño.WindowsForms.Reports
                 }
             }
 
+            chartVentas.Series[0].Points.Clear();
+            chartVentas.Series[1].Points.Clear();
             dgvIngresos.DataSource = list.ToList();
             dgvIngresos.Refresh();
             list = list.OrderBy(l => l.Fecha).ToList();

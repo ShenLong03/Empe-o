@@ -702,9 +702,8 @@ namespace Empeño.WindowsForms.Views
 
 
                 int number;                
-                if (int.TryParse(txtBuscar.Text, out number))
+                if (int.TryParse(txtBuscar.Text, out number) || dgvClientes.SelectedRows.Count>0)
                 {
-
                     if (dgvClientes.SelectedRows.Count > 0)
                     {
                         var cliente = await _context.Clientes.FindAsync(dgvClientes.SelectedRows[0].Cells[0].Value);
@@ -1967,8 +1966,10 @@ namespace Empeño.WindowsForms.Views
                 {
                     var pago = await _context.Pago.FindAsync(interesId);
                     var monto = pago.Monto;
+                    var empeño = await _context.Empenos.FindAsync(pago.EmpenoId);
+
                     if (pago.TipoPago==TipoPago.Interes)
-                    {
+                    {                        
                         var list = await _context.Intereses.Where(i => i.PagoId == pago.PagoId).OrderByDescending(i => i.InteresesId).ToListAsync();
                         foreach (var item in list)
                         {
@@ -1978,23 +1979,32 @@ namespace Empeño.WindowsForms.Views
                                 item.Pagado = 0;
                                 item.PagoId = null;
                                 _context.Entry(item).State = EntityState.Modified;
+                                empeño.FechaVencimiento = empeño.FechaVencimiento.AddMonths(-1);
                             }
                             else
                             {
-                                monto = 0;
+                                bool pagado = false;
+                                monto = 0;                                
+
+                                if (item.Monto == item.Pagado)
+                                    pagado = true;
+
                                 item.Pagado -= monto;
                                 item.PagoId = null;
                                 _context.Entry(item).State = EntityState.Modified;
+
+                                if (item.Monto>item.Pagado && pagado)
+                                {
+                                    empeño.FechaVencimiento = empeño.FechaVencimiento.AddMonths(-1);
+                                }
                             }
                             if (monto == 0)
                                 break;
-
                         }
                      
                     }
                     else
                     {
-                        var empeño = await _context.Empenos.FindAsync(pago.EmpenoId);
                         empeño.MontoPendiente += monto;
                         _context.Entry(empeño).State = EntityState.Modified;
                     }
@@ -2153,7 +2163,7 @@ namespace Empeño.WindowsForms.Views
             }
             cexcel.Cells[23, 3].value = (empeno.MontoPendiente + pago.Monto).ToString("N");
             cexcel.Cells[24, 3].value = pago.Monto.ToString("N2");
-            cexcel.Cells[25, 3].value = empeno.MontoPendiente;
+            cexcel.Cells[25, 3].value = empeno.MontoPendiente.ToString("N2");
             cexcel.Cells[27, 3].value = pago.Monto.ToString("N2");
             cexcel.Cells[29, 3].value = empeno.FechaVencimiento.ToString("dd/MM/yyyy");
             cexcel.Cells[31, 3].value = empeno.Estado.ToString();
@@ -2198,8 +2208,8 @@ namespace Empeño.WindowsForms.Views
             }
 
             cexcel.Cells[24, 3].value = _context.Intereses.Where(i => i.EmpenoId == empeno.EmpenoId).Sum(i => i.Monto).ToString("N2");
-            cexcel.Cells[25, 3].value = empeno.MontoPendiente;
-            cexcel.Cells[26, 3].value = pago.Monto;
+            cexcel.Cells[25, 3].value = empeno.MontoPendiente.ToString("N2");
+            cexcel.Cells[26, 3].value = pago.Monto.ToString("N2");
             cexcel.Cells[28, 3].value = "Retirado";
             cexcel.ActiveWindow.SelectedSheets.PrintOut();
             System.Threading.Thread.Sleep(300);
@@ -2239,7 +2249,7 @@ namespace Empeño.WindowsForms.Views
             {
                 cexcel.Cells[19, 1].value = empeno.Descripcion;
             }
-            cexcel.Cells[22, 4].value = empeno.MontoPendiente;
+            cexcel.Cells[22, 4].value = empeno.MontoPendiente.ToString("N2");
             var index = 0;
             foreach (var item in intereses)
             {
@@ -2256,7 +2266,7 @@ namespace Empeño.WindowsForms.Views
                 
             }
 
-            cexcel.Cells[28 + index, 3].value = intereses.Sum(i => i.Pagado);
+            cexcel.Cells[28 + index, 3].value = intereses.Sum(i => i.Pagado).ToString("N2");
             cexcel.Cells[30 + index, 3].value = empeno.FechaVencimiento.ToString("dd/MM/yyyy");
             cexcel.Cells[32 + index, 3].value = empeno.Estado.ToString();
            

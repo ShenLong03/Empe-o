@@ -115,17 +115,17 @@ namespace Empeño.WindowsForms.Views
 
 
             list = list.OrderBy(l => l.Fecha).ToList();
-            var minDate = list.Min(l => l.Fecha);
-            var maxDate = list.Max(l => l.Fecha);
+            var minDate = list.Count() > 0 ? list.Min(l => l.Fecha) : DateTime.Today;
+            var maxDate = list.Count() > 0 ? list.Max(l => l.Fecha).AddHours(23).AddMinutes(59) : DateTime.Today.AddHours(23).AddMinutes(59);
 
             while (minDate < maxDate)
             {
-                chartVentas.Series[0].Points.AddXY(minDate.ToString("dd/MM"), list.Where(l=>l.Fecha==minDate).Sum(i => i.Ingresos));
-                chartVentas.Series[1].Points.AddXY(minDate.ToString("dd/MM"), list.Where(l => l.Fecha == minDate).Sum(i => i.Egresos));
+                var endDate = minDate.AddHours(23).AddMinutes(59);
+                chartVentas.Series[0].Points.AddXY(minDate.ToString("dd/MM"), list.Where(l => l.Fecha >= minDate && l.Fecha <= endDate).Sum(i => i.Ingresos));
+                chartVentas.Series[1].Points.AddXY(minDate.ToString("dd/MM"), list.Where(l => l.Fecha >= minDate && l.Fecha <= endDate).Sum(i => i.Egresos));
                 minDate = minDate.AddDays(1);
             }
 
-            
 
             for (int i = 0; i < 5; i++)
             {

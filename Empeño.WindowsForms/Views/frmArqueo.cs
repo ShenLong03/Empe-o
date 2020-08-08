@@ -148,7 +148,7 @@ namespace Empeño.WindowsForms.Views
                 empeño.FechaRetiroAdministrador = DateTime.Now;
                 temporal.RetiradoAdministrador = true;
                 empeño.RetiradoAdministrador = true;
-
+                empeño.Estado = Estado.Perdido;
                 _context.Entry(empeño).State = EntityState.Modified;
                 await _context.SaveChangesAsync();
             }

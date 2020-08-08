@@ -174,13 +174,19 @@ namespace Empeño.WindowsForms.Reports
             dgvEmpeños.DataSource = null;
             dgvEmpeños.Rows.Clear();
             chartEmpeños.Series[0].Points.Clear();
+
+            if (!ckbBorrados.Checked)
+            {
+                list = list.Where(l => !l.IsDelete).ToList();
+            }
+
             if (!chbTodo.Checked)
             {
                 if (!chbActivos.Checked)
                     list = list.Where(l => l.Estado != CommonEF.Enum.Estado.Activo).ToList();
 
                 if (!chbPerdidos.Checked)
-                    list = list.Where(l => l.Estado != CommonEF.Enum.Estado.Cancelada).ToList();
+                    list = list.Where(l => l.Estado != CommonEF.Enum.Estado.Perdido).ToList();
 
                 if (!chbPendientes.Checked)
                     list = list.Where(l => l.Estado != CommonEF.Enum.Estado.Pendiente).ToList();
@@ -192,6 +198,7 @@ namespace Empeño.WindowsForms.Reports
                     list = list.Where(l => l.Estado != CommonEF.Enum.Estado.Vencido).ToList();
             }
 
+            
             var listEmpeños = list.Select(x => new EmpeñoReporte
             {
                 ClienteId = x.ClienteId,
@@ -223,6 +230,17 @@ namespace Empeño.WindowsForms.Reports
             chartEmpeños.Update();
             dgvEmpeños.DataSource = listEmpeños.ToList();
             dgvEmpeños.Refresh();
+            if (ckbBorrados.Checked)
+            {
+                var borrados = list.Where(l => l.IsDelete).ToList();
+                foreach (var item in dgvEmpeños.Rows)
+                {
+                    if (borrados.Where(b=>b.EmpenoId==))
+                    {
+
+                    }
+                }
+            }
             txtMonto.Text = listEmpeños.Sum(l => l.Monto).ToString("N2");
             txtPendiente.Text = listEmpeños.Sum(l => l.Pendiente).ToString("N2");
             txtOro.Text = listEmpeños.Where(l => l.Es_Oro).Sum(l => l.Monto).ToString("N2");

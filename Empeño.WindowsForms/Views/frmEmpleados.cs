@@ -139,6 +139,15 @@ namespace Empeño.WindowsForms.Views
                     {
                         user.Activo = chbActivo.Checked;
                         user.Usuario = txtUsuario.Text;
+                        if (user.Codigo!=txtPIN.Text)
+                        {
+                            if (_context.User.Where(d => d.Codigo == txtPIN.Text || d.Usuario == txtUsuario.Text).Count() > 0)
+                            {
+                                MessageBox.Show("Debe seleccionar un PIN diferente", "Alerta", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                                txtPIN.Text = user.Codigo;
+                                return;
+                            }
+                        }
                         user.Codigo = txtPIN.Text;
                         user.Password = txtPassword.Text;
                         user.PerfilId = GetPerfilId(cbPerfil.Text);

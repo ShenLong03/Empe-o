@@ -339,7 +339,7 @@ namespace Empeño.WindowsForms.Views
             cexcel.Cells[10, 2].value = usuario.Usuario;
             cexcel.Cells[14, 2].value = empeno.Cliente.Identificacion;
             cexcel.Cells[15, 1].value = empeno.Cliente.Nombre;
-            cexcel.Cells[16, 2].value = empeno.Cliente.Fecha;
+            cexcel.Cells[16, 2].value = empeno.Cliente.Fecha.ToString("dd/MM/yyyy");
             cexcel.Cells[17, 2].value = empeno.EmpenoId.ToString();
 
             if (empeno.EsOro)
@@ -384,7 +384,7 @@ namespace Empeño.WindowsForms.Views
             cexcel.Cells[10, 2].value = Program.Usuario.Usuario;
             cexcel.Cells[14, 2].value = empeno.Cliente.Identificacion;
             cexcel.Cells[15, 1].value = empeno.Cliente.Nombre;
-            cexcel.Cells[16, 2].value = empeno.Cliente.Fecha;
+            cexcel.Cells[16, 2].value = empeno.Cliente.Fecha.ToString("dd/MM/yyyy");
             cexcel.Cells[17, 2].value = empeno.EmpenoId.ToString();
 
             if (empeno.EsOro)
@@ -427,7 +427,7 @@ namespace Empeño.WindowsForms.Views
             cexcel.Cells[10, 2].value = empleado.Usuario;
             cexcel.Cells[14, 2].value = empeno.Cliente.Identificacion;
             cexcel.Cells[15, 1].value = empeno.Cliente.Nombre;
-            cexcel.Cells[16, 2].value = empeno.Cliente.Fecha;
+            cexcel.Cells[16, 2].value = empeno.Cliente.Fecha.ToString("dd/MM/yyyy");
             cexcel.Cells[17, 2].value = empeno.EmpenoId.ToString();
 
             if (empeno.EsOro)
@@ -455,7 +455,7 @@ namespace Empeño.WindowsForms.Views
                 
             }
 
-            cexcel.Cells[28 + index, 3].value =txtInteresAPagar.Text;
+            cexcel.Cells[28 + index, 3].value =txtPagaInteres.Text;
             cexcel.Cells[30 + index, 3].value = empeno.FechaVencimiento.ToString("dd/MM/yyyy");
             cexcel.Cells[32 + index, 3].value = empeno.Estado.ToString();
            
