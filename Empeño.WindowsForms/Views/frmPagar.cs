@@ -141,10 +141,15 @@ namespace Empeño.WindowsForms.Views
 
         private async void btnGuardarEmpeño_Click(object sender, EventArgs e)
         {
+            await Guardar();
+        }
+
+        public async Task Guardar()
+        {
             if (!funciones.ValidatePIN("Empeño"))
                 return;
 
-            if (montoMinimo!=0)
+            if (montoMinimo != 0)
             {
                 if (double.Parse(txtPagaInteres.Text) != double.Parse(txtInteresAPagar.Text) && double.Parse(txtPagaInteres.Text) <= montoMinimo && (double.Parse(txtPagaMonto.Text) == double.Parse(txtMontoAPagar.Text)))
                 {
@@ -152,19 +157,19 @@ namespace Empeño.WindowsForms.Views
                     return;
                 }
             }
-          
+
             var empleadoId = await funciones.GetEmpleadoIdByUser(Program.Usuario.Usuario);
             double montoIntereses = double.Parse(txtInteresAPagar.Text);
             double pagoIntereses = double.Parse(txtPagaInteres.Text);
             double pagoMonto = double.Parse(txtPagaMonto.Text);
             double montoPendiente = double.Parse(txtMontoAPagar.Text);
-            if ((pagoMonto>=montoPendiente) && (pagoIntereses<montoMinimo))
+            if ((pagoMonto >= montoPendiente) && (pagoIntereses < montoMinimo))
             {
-                MessageBox.Show("Para retirar la prenda debe pagar un minimo de intereses de " + montoMinimo.ToString("N2"),"Alerta",MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show("Para retirar la prenda debe pagar un minimo de intereses de " + montoMinimo.ToString("N2"), "Alerta", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
 
-            if (pagoIntereses>0)
+            if (pagoIntereses > 0)
             {
                 var pago = new Pago
                 {
@@ -172,8 +177,8 @@ namespace Empeño.WindowsForms.Views
                     Comentario = txtComentario.Text,
                     EmpleadoId = Program.EmpleadoId,
                     Fecha = DateTime.Now,
-                    Monto =pagoIntereses,
-                    TipoPago=TipoPago.Interes,
+                    Monto = pagoIntereses,
+                    TipoPago = TipoPago.Interes,
                 };
 
                 _context.Pago.Add(pago);
@@ -189,21 +194,21 @@ namespace Empeño.WindowsForms.Views
                 var listInteres = await _context.Intereses.Where(i => i.EmpenoId == pago.EmpenoId && i.Pagado < i.Monto).ToListAsync();
                 foreach (var item in listInteres)
                 {
-                    if ((item.Monto-item.Pagado)>sobrante)
+                    if ((item.Monto - item.Pagado) > sobrante && sobrante > 0)
                     {
                         item.Pagado += sobrante;
-                        if (item.Pagado==item.Monto)
+                        if (item.Pagado == item.Monto)
                         {
                             empeño.FechaVencimiento = empeño.FechaVencimiento.AddMonths(1);
                         }
-                        item.PagoId = pago.PagoId;
+
                         intereses.Add(item);
                         _context.Entry(item).State = EntityState.Modified;
                         break;
                     }
-                    else
+                    else if (sobrante > 0)
                     {
-                        double paga= (item.Monto - item.Pagado);
+                        double paga = (item.Monto - item.Pagado);
                         item.Pagado += paga;
                         if (item.Pagado == item.Monto)
                         {
@@ -223,12 +228,12 @@ namespace Empeño.WindowsForms.Views
                 });
                 await PrintInteres(empeño, intereses, pago);
             }
-            if (pagoMonto>0)
+            if (pagoMonto > 0)
             {
                 var pago = new Pago
                 {
                     EmpenoId = empeño.EmpenoId,
-                    Comentario = txtComentario.Text=="Comentario"?string.Empty: txtComentario.Text,
+                    Comentario = txtComentario.Text == "Comentario" ? string.Empty : txtComentario.Text,
                     EmpleadoId = Program.EmpleadoId,
                     Fecha = DateTime.Now,
                     Monto = pagoMonto,
@@ -245,9 +250,9 @@ namespace Empeño.WindowsForms.Views
                 empeño.MontoPendiente -= pago.Monto;
 
                 if (empeño.MontoPendiente < 1)
-                { 
+                {
                     empeño.Estado = Estado.Retirada;
-                    _context.Intereses.RemoveRange(_context.Intereses.Where(i =>i.EmpenoId==empleadoId && i.Pagado == 0));
+                    _context.Intereses.RemoveRange(_context.Intereses.Where(i => i.EmpenoId == empleadoId && i.Pagado == 0));
                     await PrintRetiro(empeño, pago);
                 }
                 else
@@ -255,9 +260,9 @@ namespace Empeño.WindowsForms.Views
                     await PrintAbono(empeño, pago);
                 }
             }
-         
+
             await _context.SaveChangesAsync();
-          
+
             MessageBox.Show("Pago recibido");
             this.Close();
         }
@@ -481,28 +486,40 @@ namespace Empeño.WindowsForms.Views
             txtPagaInteres.Text = (number).ToString("N2");
         }
 
-        private void txtPagaInteres_KeyUp(object sender, KeyEventArgs e)
+        private async void txtPagaInteres_KeyUp(object sender, KeyEventArgs e)
         {
-            if (e.KeyCode==Keys.Tab)
+            if (e.KeyCode == Keys.Down)
             {
                 txtPagaMonto.Focus();
             }
-        }
-
-        private void txtPagaMonto_KeyUp(object sender, KeyEventArgs e)
-        {
-            if (e.KeyCode == Keys.Tab)
+            else if (e.KeyCode == Keys.Enter)
             {
-                txtPagaCon.Focus();
+                await Guardar();
             }
         }
 
-        private void txtPagaCon_KeyUp(object sender, KeyEventArgs e)
+        private async void txtPagaMonto_KeyUp(object sender, KeyEventArgs e)
         {
-            //if (e.KeyCode == Keys.Tab)
-            //{
-            //    btnGuardarEmpeño.Focus();
-            //}
+            if (e.KeyCode == Keys.Down)
+            {
+                txtPagaCon.Focus();
+            }
+            else if (e.KeyCode == Keys.Enter)
+            {
+                await Guardar();
+            }
+        }
+
+        private async void txtPagaCon_KeyUp(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Down)
+            {
+                btnGuardarEmpeño.Focus();
+            }
+            else if(e.KeyCode == Keys.Enter)
+            {
+                await Guardar();
+            }
         }
     }
 }

@@ -169,7 +169,7 @@ namespace Empeño.WindowsForms.Reports
             DateTime desde = dtDesde.Value;
             DateTime hasta = dtHasta.Value.AddHours(23).AddMinutes(59);
 
-            var list = await _context.Empenos.Where(e => e.Fecha >= desde && e.Fecha <= hasta && e.IsDelete==ckbBorrados.Checked).ToListAsync();
+            var list = await _context.Empenos.Where(e => e.Fecha >= desde && e.Fecha <= hasta).ToListAsync();
 
             dgvEmpeños.DataSource = null;
             dgvEmpeños.Rows.Clear();
@@ -233,11 +233,12 @@ namespace Empeño.WindowsForms.Reports
             if (ckbBorrados.Checked)
             {
                 var borrados = list.Where(l => l.IsDelete).ToList();
-                foreach (var item in dgvEmpeños.Rows)
+                foreach (DataGridViewRow item in dgvEmpeños.Rows)
                 {
-                    if (borrados.Where(b=>b.EmpenoId==))
+                    int empeñoId = int.Parse(item.Cells[0].Value.ToString());
+                    if (borrados.Where(b=>b.EmpenoId==empeñoId).Any())
                     {
-
+                        item.DefaultCellStyle.BackColor = Color.Red;
                     }
                 }
             }

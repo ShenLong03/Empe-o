@@ -49,6 +49,8 @@ namespace Empeño.WindowsForms.Views
         private async void frmEmpeno_Load(object sender, EventArgs e)
         {            
             Realizado.Text = Program.Usuario.Usuario;
+            Program.PerfilId = Program.Usuario.PerfilId;
+
             cbInteres.DataSource = await _context.Interes.ToListAsync();
             cbInteres.DisplayMember = "Nombre";
             cbInteres.ValueMember = "InteresId";
@@ -763,6 +765,7 @@ namespace Empeño.WindowsForms.Views
         {
             try
             {
+                int number;
                 if (e.KeyCode == Keys.Enter)
                 {
                     await Buscar();
@@ -813,6 +816,7 @@ namespace Empeño.WindowsForms.Views
                         CargarPagos();
                     }
                 }
+
                 if (empeñoId>0)
                 {
                     var empeño = await _context.Empenos.FindAsync(empeñoId);
@@ -820,6 +824,11 @@ namespace Empeño.WindowsForms.Views
                     {
                         funciones.BlockTextBox(panelFormulario, false);
                     }
+                }
+
+                if (e.KeyCode.Equals(Keys.Down) && int.TryParse(txtBuscar.Text, out number))
+                {
+                    btnPagar.Focus();
                 }
             }
             catch (Exception ex)
@@ -1955,70 +1964,74 @@ namespace Empeño.WindowsForms.Views
 
         private async void iconButton4_Click(object sender, EventArgs e)
         {
-            if (!funciones.ValidatePIN("Borrar Pago"))
-                return;
-          
-            var resp=MessageBox.Show("Esta seguro que desea elminar los datos", "Confirmar", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
-            if (resp==DialogResult.Yes)
+            using (DataContext _contextTemp=new DataContext())
             {
-                int interesId = int.Parse(dgvPagos.SelectedRows[0].Cells[0].Value.ToString());
-                if (switchPago)
+                if (!funciones.ValidatePIN("Borrar Pago"))
+                    return;
+
+                var resp = MessageBox.Show("Esta seguro que desea elminar los datos", "Confirmar", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                if (resp == DialogResult.Yes)
                 {
-                    var pago = await _context.Pago.FindAsync(interesId);
-                    var monto = pago.Monto;
-                    var empeño = await _context.Empenos.FindAsync(pago.EmpenoId);
+                    int interesId = int.Parse(dgvPagos.SelectedRows[0].Cells[0].Value.ToString());
+                    if (switchPago)
+                    {
+                        var pago = await _context.Pago.FindAsync(interesId);
+                        var monto = pago.Monto;
+                        var empeño = await _contextTemp.Empenos.FindAsync(pago.EmpenoId);
 
-                    if (pago.TipoPago==TipoPago.Interes)
-                    {                        
-                        var list = await _context.Intereses.Where(i => i.PagoId == pago.PagoId).OrderByDescending(i => i.InteresesId).ToListAsync();
-                        foreach (var item in list)
+                        if (pago.TipoPago == TipoPago.Interes)
                         {
-                            if (monto > item.Pagado)
+                            var list =  _contextTemp.Intereses.Where(i => i.PagoId == pago.PagoId).OrderByDescending(i => i.InteresesId).ToList();
+
+                            foreach (var item in list)
                             {
-                                monto -= item.Pagado;
-                                item.Pagado = 0;
-                                item.PagoId = null;
-                                _context.Entry(item).State = EntityState.Modified;
-                                empeño.FechaVencimiento = empeño.FechaVencimiento.AddMonths(-1);
-                            }
-                            else
-                            {
-                                bool pagado = false;
-                                monto = 0;                                
-
-                                if (item.Monto == item.Pagado)
-                                    pagado = true;
-
-                                item.Pagado -= monto;
-                                item.PagoId = null;
-                                _context.Entry(item).State = EntityState.Modified;
-
-                                if (item.Monto>item.Pagado && pagado)
+                                if (monto > item.Pagado)
                                 {
+                                    monto -= item.Pagado;
+                                    item.Pagado = 0;
+                                    item.PagoId = null;
+                                    _contextTemp.Entry(item).State = EntityState.Modified;
                                     empeño.FechaVencimiento = empeño.FechaVencimiento.AddMonths(-1);
                                 }
+                                else
+                                {
+                                    bool pagado = false;
+                                   
+                                    if (item.Monto == item.Pagado)
+                                        pagado = true;
+
+                                    item.Pagado -= monto;
+                                    item.PagoId = null;
+                                    monto = 0;
+                                    _contextTemp.Entry(item).State = EntityState.Modified;
+
+                                    if (item.Monto > item.Pagado && pagado)
+                                    {
+                                        empeño.FechaVencimiento = empeño.FechaVencimiento.AddMonths(-1);
+                                    }
+                                }
+                                if (monto == 0)
+                                    break;
                             }
-                            if (monto == 0)
-                                break;
+
                         }
-                     
+                        else
+                        {
+                            empeño.MontoPendiente += monto;
+                        }
+                        _context.Pago.Remove(pago);
+                        _contextTemp.Entry(empeño).State = EntityState.Modified;
                     }
                     else
                     {
-                        empeño.MontoPendiente += monto;
-                        _context.Entry(empeño).State = EntityState.Modified;
+                        var intereses = await _context.Intereses.FindAsync(interesId);
+                        _context.Intereses.Remove(intereses);
                     }
-                    _context.Pago.Remove(pago);
-
+                    
+                    await _context.SaveChangesAsync();
+                    await _contextTemp.SaveChangesAsync();
+                    MessageBox.Show("Elemento eliminado correctamente", "Información", MessageBoxButtons.OK, MessageBoxIcon.Information); 
                 }
-                else
-                {
-                    var intereses = await _context.Intereses.FindAsync(interesId);
-                    _context.Intereses.Remove(intereses);
-                }
-
-                await _context.SaveChangesAsync();
-                MessageBox.Show("Elemento eliminado correctamente", "Información", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
 
             if (switchPago)
@@ -2087,7 +2100,8 @@ namespace Empeño.WindowsForms.Views
             btnVerPago.BackColor = Color.DimGray;
             btnReimprimirPago.Enabled = true;
             btnReimprimirPago.BackColor = Color.FromArgb(17, 2, 115);
-
+            btnEliminarPago.Enabled = true;
+            btnEliminarPago.BackColor = Color.FromArgb(17, 2, 115);
             await LoadPays();
         }
 
@@ -2121,6 +2135,8 @@ namespace Empeño.WindowsForms.Views
             btnVerPago.BackColor = Color.FromArgb(17, 2, 115);
             btnReimprimirPago.Enabled = false;
             btnReimprimirPago.BackColor = Color.DimGray;
+            btnEliminarPago.Enabled = false;
+            btnEliminarPago.BackColor = Color.DimGray;
             CargarPagos();
         }
 
@@ -2300,6 +2316,11 @@ namespace Empeño.WindowsForms.Views
                     }
                 }
             }
-        }               
+        }
+
+        private void txtBuscar_KeyDown(object sender, KeyEventArgs e)
+        {
+           
+        }
     }
 }

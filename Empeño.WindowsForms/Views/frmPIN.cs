@@ -44,10 +44,13 @@ namespace Empeño.WindowsForms.Views
 
         private async void txtPIN_KeyUp(object sender, KeyEventArgs e)
         {
-            if (e.KeyCode == Keys.Enter)
+            if (!string.IsNullOrEmpty(txtPIN.Text))
             {
-                await Aceptar();
-                this.Close();
+                if (e.KeyCode == Keys.Enter)
+                {
+                    await Aceptar();
+                    this.Close();
+                } 
             }
         }
 
