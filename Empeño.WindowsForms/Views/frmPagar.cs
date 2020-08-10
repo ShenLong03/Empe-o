@@ -481,7 +481,6 @@ namespace Empeño.WindowsForms.Views
 
         private void txtPagaInteres_Leave(object sender, EventArgs e)
         {
-
             double number = double.Parse(txtPagaInteres.Text);
             txtPagaInteres.Text = (number).ToString("N2");
         }
