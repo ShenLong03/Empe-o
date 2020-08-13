@@ -169,7 +169,40 @@ namespace Empeño.WindowsForms.Views
                 return;
             }
 
-            if (pagoIntereses > 0)
+            if (pagoMonto > 0)
+            {
+                var pago = new Pago
+                {
+                    EmpenoId = empeño.EmpenoId,
+                    Comentario = txtComentario.Text == "Comentario" ? string.Empty : txtComentario.Text,
+                    EmpleadoId = Program.EmpleadoId,
+                    Fecha = DateTime.Now,
+                    Monto = pagoMonto,
+                    TipoPago = TipoPago.Principal,
+                };
+
+                _context.Pago.Add(pago);
+                await funciones.SaveBitacora(new ValorBitacora
+                {
+                    Valor = JsonConvert.SerializeObject(pago),
+                    Modulo = "Pagos",
+                    Accion = "Crear"
+                });
+                empeño.MontoPendiente -= pago.Monto;
+
+                if (empeño.MontoPendiente < 1)
+                {
+                    empeño.Estado = Estado.Anulado;
+                    _context.Intereses.RemoveRange(_context.Intereses.Where(i => i.EmpenoId == empleadoId && i.Pagado == 0));
+                    await PrintRetiro(empeño, pago);
+                }
+                else
+                {
+                    await PrintAbono(empeño, pago);
+                }
+            }
+
+            if (pagoIntereses > 0 && !empeño.Retirado)
             {
                 var pago = new Pago
                 {
@@ -228,38 +261,7 @@ namespace Empeño.WindowsForms.Views
                 });
                 await PrintInteres(empeño, intereses, pago);
             }
-            if (pagoMonto > 0)
-            {
-                var pago = new Pago
-                {
-                    EmpenoId = empeño.EmpenoId,
-                    Comentario = txtComentario.Text == "Comentario" ? string.Empty : txtComentario.Text,
-                    EmpleadoId = Program.EmpleadoId,
-                    Fecha = DateTime.Now,
-                    Monto = pagoMonto,
-                    TipoPago = TipoPago.Principal,
-                };
-
-                _context.Pago.Add(pago);
-                await funciones.SaveBitacora(new ValorBitacora
-                {
-                    Valor = JsonConvert.SerializeObject(pago),
-                    Modulo = "Pagos",
-                    Accion = "Crear"
-                });
-                empeño.MontoPendiente -= pago.Monto;
-
-                if (empeño.MontoPendiente < 1)
-                {
-                    empeño.Estado = Estado.Retirada;
-                    _context.Intereses.RemoveRange(_context.Intereses.Where(i => i.EmpenoId == empleadoId && i.Pagado == 0));
-                    await PrintRetiro(empeño, pago);
-                }
-                else
-                {
-                    await PrintAbono(empeño, pago);
-                }
-            }
+          
 
             await _context.SaveChangesAsync();
 

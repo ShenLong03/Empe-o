@@ -2,6 +2,6 @@
 {
     public enum Estado
     {
-        Activo, Pendiente, Vencido, Cancelada, Retirada, Perdido
+        Vigente, Pendiente, Vencido, Anulado, Cancelado, Retirado
     }
 }

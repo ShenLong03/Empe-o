@@ -275,17 +275,17 @@ namespace Empeño.WindowsForms.Views
             switch (i)
             {
                 case 0:
-                    return Estado.Activo;
+                    return Estado.Vigente;
                 case 1:
                     return Estado.Pendiente;
                 case 2:
                     return Estado.Vencido;
                 case 3:
-                    return Estado.Cancelada;
+                    return Estado.Anulado;
                 case 4:
-                    return Estado.Retirada;
+                    return Estado.Anulado;
                 default:
-                    return Estado.Activo;
+                    return Estado.Vigente;
             }
         }
 

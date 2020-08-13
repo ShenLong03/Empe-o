@@ -33,7 +33,7 @@
 
         public string Comentario { get; set; }
 
-        public Estado Estado { get; set; } = Estado.Activo;
+        public Estado Estado { get; set; } = Estado.Vigente;
 
         public DateTime FechaVencimiento { get; set; } = DateTime.Now.AddMonths(3).Date;
 
@@ -67,7 +67,7 @@
         public Empeno()
         {
             Fecha = DateTime.Now;
-            Estado = Estado.Activo;
+            Estado = Estado.Vigente;
             FechaVencimiento = DateTime.Now.AddMonths(3).Date;
             Retirado = false;
             Prorroga = false;

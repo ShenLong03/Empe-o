@@ -51,7 +51,7 @@ namespace Empeño.WindowsForms.Views
             Realizado.Text = Program.Usuario.Usuario;
             Program.PerfilId = Program.Usuario.PerfilId;
 
-            cbInteres.DataSource = await _context.Interes.ToListAsync();
+            cbInteres.DataSource = await _context.Interes.Where(i=>i.Activo).ToListAsync();
             cbInteres.DisplayMember = "Nombre";
             cbInteres.ValueMember = "InteresId";
             cbInteres.Text = "Porcentaje";            
@@ -113,7 +113,7 @@ namespace Empeño.WindowsForms.Views
                 int.TryParse(txtBuscar.Text, out number);
                 if (number != 0)
                 {
-                    await funciones.ReviewDuplicateEmpeños(number);
+                    //await funciones.ReviewDuplicateEmpeños(number);
                     var listEmpeños = await _context.Empenos.Where(w => w.EmpenoId == number && !w.IsDelete && !w.RetiradoAdministrador).Select(x => new
                     {
                         Id = x.EmpenoId,
@@ -154,41 +154,41 @@ namespace Empeño.WindowsForms.Views
                             x.Telefono,
                         }).ToListAsync();
 
+                        //AQUI
+                        var fechaCalculo = empeño.Fecha;
+                        if (empeño.Intereses.Any())
+                            fechaCalculo = empeño.Intereses.OrderByDescending(i => i.FechaVencimiento).FirstOrDefault().FechaVencimiento;
 
-                        int cantidadMeses = ((int)(DateTime.Today - empeño.Fecha).TotalDays / 30);
-                        double sobrante = (DateTime.Today - empeño.Fecha).TotalDays % 30;
+                        int cantidadMeses = ((int)(DateTime.Today - fechaCalculo).TotalDays / 30);
+                        double sobrante = (DateTime.Today - fechaCalculo).TotalDays % 30;
                         cantidadMeses += sobrante > 1 ? 1 : 0;
-                        int cantidadIntereses = empeño.Intereses.Count();
 
-                        if (cantidadMeses > cantidadIntereses)
+                        var numeroIntereses = cantidadMeses;
+                        for (int i = 0; i < numeroIntereses; i++)
                         {
-                            var numeroIntereses = cantidadMeses - cantidadIntereses;
-                            for (int i = 0; i < numeroIntereses; i++)
+                            var intereses = new Intereses
                             {
-                                var intereses = new Intereses
-                                {
-                                    EmpenoId = empeño.EmpenoId,
-                                    FechaCreacion = DateTime.Now,
-                                    Monto = (double)empeño.MontoPendiente * ((double)empeño.Interes.Porcentaje / (double)100)
-                                };
+                                EmpenoId = empeño.EmpenoId,
+                                FechaCreacion = DateTime.Now,
+                                Monto = (double)empeño.MontoPendiente * ((double)empeño.Interes.Porcentaje / (double)100)
+                            };
 
-                                if (empeño.Intereses.Count() > 0)
-                                {
-                                    intereses.FechaVencimiento = empeño.Intereses.LastOrDefault().FechaVencimiento.AddMonths(1);
-                                }
-                                else
-                                {
-                                    intereses.FechaVencimiento = empeño.FechaVencimiento.AddMonths(1);
-                                }
-                                if (_context.Intereses.Where(x=>x.EmpenoId==empeño.EmpenoId && x.FechaVencimiento==intereses.FechaVencimiento).Count()==0)
-                                {
-                                    _context.Intereses.Add(intereses);
-                                }                                
+                            if (empeño.Intereses.Count() > 0)
+                            {
+                                intereses.FechaVencimiento = empeño.Intereses.LastOrDefault().FechaVencimiento.AddMonths(1);
                             }
-                            await _context.SaveChangesAsync();
+                            else
+                            {
+                                intereses.FechaVencimiento = empeño.FechaVencimiento.AddMonths(1);
+                            }
+                            if (_context.Intereses.Where(x => x.EmpenoId == empeño.EmpenoId && x.FechaVencimiento == intereses.FechaVencimiento).Count() == 0)
+                            {
+                                _context.Intereses.Add(intereses);
+                            }
                         }
+                        await _context.SaveChangesAsync();
 
-                        var ultimoInteres = await _context.Intereses.Where(p => p.EmpenoId == empeño.EmpenoId).OrderByDescending(o => o.InteresesId)
+                        var ultimoInteres = await _context.Intereses.Where(p =>p.EmpenoId == empeño.EmpenoId).OrderByDescending(o => o.InteresesId)
                   .FirstOrDefaultAsync();
 
                         if (ultimoInteres!=null)
@@ -204,11 +204,11 @@ namespace Empeño.WindowsForms.Views
                         {
                             if (empeño.Retirado || empeño.FechaRetiro != null)
                             {
-                                empeño.Estado = Estado.Retirada;
+                                empeño.Estado = Estado.Anulado;
                             }
                             else if (empeño.RetiradoAdministrador || empeño.FechaRetiroAdministrador != null)
                             {
-                                empeño.Estado = Estado.Perdido;
+                                empeño.Estado = Estado.Retirado;
                             }
                             else
                             {
@@ -328,13 +328,13 @@ namespace Empeño.WindowsForms.Views
             if (empeno.FechaVencimiento < DateTime.Today && (empeno.FechaRetiroAdministrador != null || empeno.RetiradoAdministrador)
                 && (empeno.FechaRetiro == null || !empeno.Retirado))
             {
-                empeno.Estado = Estado.Perdido;
+                empeno.Estado = Estado.Retirado;
                 return empeno;
             }
             if (empeno.FechaVencimiento < DateTime.Today && (empeno.FechaRetiroAdministrador == null || !empeno.RetiradoAdministrador)
                 && (empeno.FechaRetiro != null || empeno.Retirado))
             {
-                empeno.Estado = Estado.Retirada;
+                empeno.Estado = Estado.Anulado;
                 return empeno;
             }
             if (empeno.FechaVencimiento < DateTime.Today && empeno.FechaRetiroAdministrador == null && !empeno.RetiradoAdministrador
@@ -348,22 +348,21 @@ namespace Empeño.WindowsForms.Views
                 empeno.Estado = Estado.Pendiente;
                 return empeno;
             }
-            empeno.Estado = Estado.Activo;
+            empeno.Estado = Estado.Vigente;
             return empeno;
         }
 
         private async void btnGuardarEmpeño_Click_1(object sender, EventArgs e)
         {
             try
-            {
-               
+            {               
                 if (empeñoId > 0)
                 {
                     if (!funciones.ValidatePIN("Editar Empeño"))
                         return;
 
                     var empeño = await _context.Empenos.FindAsync(empeñoId);
-                    if (empeño.FechaRetiro != null || empeño.Retirado || empeño.FechaRetiroAdministrador != null || empeño.RetiradoAdministrador || empeño.Estado == Estado.Retirada)
+                    if (empeño.FechaRetiro != null || empeño.Retirado || empeño.FechaRetiroAdministrador != null || empeño.RetiradoAdministrador || empeño.Estado == Estado.Anulado)
                     {
                         MessageBox.Show("El registro no puede ser modificado", "Alerta", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                         return;
@@ -439,7 +438,7 @@ namespace Empeño.WindowsForms.Views
                     });
 
                     lblNumeroEmpeño.Text = empeño.EmpenoId.ToString();
-                    ChangeState(lblEstado, Estado.Activo, empeño);
+                    ChangeState(lblEstado, Estado.Vigente, empeño);
 
                     dgvPagos.DataSource = _context.Intereses.Where(i => i.EmpenoId == empeño.EmpenoId).Select(x => new
                     {
@@ -513,7 +512,7 @@ namespace Empeño.WindowsForms.Views
                         EmpleadoId = empleadoId == 0 ? 1 : empleadoId,
                         EditorId = empleadoId == 0 ? 1 : empleadoId,
                         EsOro = chbEsOro.Checked,
-                        Estado = Estado.Activo,
+                        Estado = Estado.Vigente,
                         Fecha = fecha,
                         FechaVencimiento = fechaVencimiento,
                         InteresId = await funciones.GetInteresIdByNombre(cbInteres.Text),
@@ -534,7 +533,7 @@ namespace Empeño.WindowsForms.Views
                     var interes = await _context.Interes.FindAsync(empeño.InteresId);
                     
                     lblNumeroEmpeño.Text = empeño.EmpenoId.ToString();
-                    ChangeState(lblEstado, Estado.Activo, empeño);
+                    ChangeState(lblEstado, Estado.Vigente, empeño);
                     empeñoId = empeño.EmpenoId;
                     var intereses = new Intereses
                     {
@@ -606,7 +605,7 @@ namespace Empeño.WindowsForms.Views
                     txtNombre.Text = empeño.Cliente.Nombre;
                     txtDescripcion.Text = empeño.Descripcion;
                     txtComentario.Text = empeño.Comentario;
-                    cbInteres.DataSource = await _context.Interes.ToListAsync();
+                    cbInteres.DataSource = await _context.Interes.Where(i => i.Activo || i.InteresId == empeño.InteresId).ToListAsync();
                     cbInteres.Text = empeño.Interes.Nombre;
                     txtMonto.Text = empeño.Monto.ToString("N2");
                     Realizado.Text = empeño.Empleado.Usuario;
@@ -649,7 +648,7 @@ namespace Empeño.WindowsForms.Views
                     txtNombre.Text = empeño.Cliente.Nombre;
                     txtDescripcion.Text = empeño.Descripcion;
                     txtComentario.Text = empeño.Comentario;
-                    cbInteres.DataSource = await _context.Interes.ToListAsync();
+                    cbInteres.DataSource = await _context.Interes.Where(i => i.Activo || i.InteresId == empeño.InteresId).ToListAsync();
                     cbInteres.Text = empeño.Interes.Nombre;
                     txtMonto.Text = empeño.Monto.ToString("N2");
                     Realizado.Text = empleado.Usuario;
@@ -662,7 +661,7 @@ namespace Empeño.WindowsForms.Views
                     {
                         CargarPagos();
                     }
-                    if (empeño.Estado == Estado.Retirada)
+                    if (empeño.Estado == Estado.Anulado)
                     {
                         funciones.BlockTextBox(panelFormulario, false);
                     }
@@ -687,13 +686,13 @@ namespace Empeño.WindowsForms.Views
                 switch (index)
                 {
                     case 0:
-                        empeños = empeños.Where(w => !w.IsDelete && !w.RetiradoAdministrador && (w.Estado == Estado.Activo || w.Estado == Estado.Pendiente || w.Estado == Estado.Vencido));
+                        empeños = empeños.Where(w => !w.IsDelete && !w.RetiradoAdministrador && (w.Estado == Estado.Vigente || w.Estado == Estado.Pendiente || w.Estado == Estado.Vencido));
                         break;
                     case 1:
                         empeños = empeños.Where(w => w.IsDelete && !w.RetiradoAdministrador);
                         break;
                     case 2:
-                        empeños = empeños.Where(w => !w.IsDelete && !w.RetiradoAdministrador && (w.Estado == Estado.Retirada || w.Retirado || w.FechaRetiro != null));
+                        empeños = empeños.Where(w => !w.IsDelete && !w.RetiradoAdministrador && (w.Estado == Estado.Anulado || w.Retirado || w.FechaRetiro != null));
                         break;
                     case 3:
                         empeños = empeños.Where(w => !w.IsDelete && !w.RetiradoAdministrador && (w.RetiradoAdministrador || w.FechaRetiroAdministrador != null));
@@ -820,7 +819,7 @@ namespace Empeño.WindowsForms.Views
                 if (empeñoId>0)
                 {
                     var empeño = await _context.Empenos.FindAsync(empeñoId);
-                    if (empeño.Estado==Estado.Retirada)
+                    if (empeño.Estado==Estado.Anulado)
                     {
                         funciones.BlockTextBox(panelFormulario, false);
                     }
@@ -941,52 +940,53 @@ namespace Empeño.WindowsForms.Views
                     await funciones.ReviewDuplicateEmpeños(empeño.EmpenoId);
                     if (empeño != null)
                     {
-                        int cantidadMeses = ((int)(DateTime.Today - empeño.Fecha).TotalDays / 30);
-                        double sobrante = (DateTime.Today - empeño.Fecha).TotalDays % 30;
+                        var fechaCalculo = empeño.Fecha;
+                        if (empeño.Intereses.Any())
+                            fechaCalculo = empeño.Intereses.OrderByDescending(i => i.FechaVencimiento).FirstOrDefault().FechaVencimiento;
+
+                        int cantidadMeses = ((int)(DateTime.Today - fechaCalculo).TotalDays / 30);
+                        double sobrante = (DateTime.Today - fechaCalculo).TotalDays % 30;
                         cantidadMeses += sobrante > 1 ? 1 : 0;
-                        int cantidadIntereses = empeño.Intereses.Count();
-
-                        if (cantidadMeses > cantidadIntereses)
+                        var numeroIntereses = cantidadMeses;
+                        for (int i = 0; i < numeroIntereses; i++)
                         {
-                            var numeroIntereses = cantidadMeses - cantidadIntereses;
-                            for (int i = 0; i < numeroIntereses; i++)
+                            var intereses = new Intereses
                             {
-                                var intereses = new Intereses
-                                {
-                                    EmpenoId = empeñoId,
-                                    FechaCreacion = DateTime.Now,
-                                    Monto = (double)empeño.MontoPendiente * ((double)empeño.Interes.Porcentaje / (double)100)
-                                };
+                                EmpenoId = empeñoId,
+                                FechaCreacion = DateTime.Now,
+                                Monto = (double)empeño.MontoPendiente * ((double)empeño.Interes.Porcentaje / (double)100)
+                            };
 
-                                if (_context.Intereses.Where(x => x.EmpenoId == empeñoId).Count() > 0)
+                            if (_context.Intereses.Where(x => x.EmpenoId == empeñoId).Count() > 0)
+                            {
+                                intereses.FechaVencimiento = _context.Intereses
+                                    .Where(x => x.EmpenoId == empeñoId)
+                                    .OrderByDescending(x => x.InteresesId)
+                                    .FirstOrDefault()
+                                    .FechaVencimiento.AddMonths(1);
+                            }
+                            else
+                            {
+                                intereses.FechaVencimiento = empeño.FechaVencimiento.AddMonths(1);
+                            }
+                            using (DataContext temp = new DataContext())
+                            {
+                                var interesesFind = await temp.Intereses.Where(x => x.EmpenoId == empeño.EmpenoId && x.FechaVencimiento == intereses.FechaVencimiento).ToListAsync();
+                                if (interesesFind.Count() == 0)
                                 {
-                                    intereses.FechaVencimiento = _context.Intereses
-                                        .Where(x => x.EmpenoId == empeñoId)
-                                        .OrderByDescending(x => x.InteresesId)
-                                        .FirstOrDefault()
-                                        .FechaVencimiento.AddMonths(1);
-                                }
-                                else
-                                {
-                                    intereses.FechaVencimiento = empeño.FechaVencimiento.AddMonths(1);
-                                }
-                                using (DataContext temp = new DataContext())
-                                {
-                                    var interesesFind = await temp.Intereses.Where(x => x.EmpenoId == empeño.EmpenoId && x.FechaVencimiento == intereses.FechaVencimiento).ToListAsync();
-                                    if (interesesFind.Count() == 0)
-                                    {
-                                        _context.Intereses.Add(intereses);
-                                        await _context.SaveChangesAsync();
-                                    }
+                                    _context.Intereses.Add(intereses);
+                                    await _context.SaveChangesAsync();
                                 }
                             }
-                            await funciones.SaveBitacora(new ValorBitacora
-                            {
-                                Valor = JsonConvert.SerializeObject(_context.Intereses.Where(x => x.EmpenoId == empeño.EmpenoId).ToList()),
-                                Modulo = "Intereses",
-                                Accion = "Crear"
-                            });
                         }
+                        await funciones.SaveBitacora(new ValorBitacora
+                        {
+                            Valor = JsonConvert.SerializeObject(_context.Intereses.Where(x => x.EmpenoId == empeño.EmpenoId).ToList()),
+                            Modulo = "Intereses",
+                            Accion = "Crear"
+                        });
+
+                  
                         if (_context.Intereses.Where(i => i.EmpenoId == empeño.EmpenoId).Count() > 0)
                         {
                             var ultimoInteres = await _context.Intereses.Where(p => p.EmpenoId == empeño.EmpenoId)
@@ -1025,11 +1025,11 @@ namespace Empeño.WindowsForms.Views
                         {
                             if (empeño.Retirado || empeño.FechaRetiro != null)
                             {
-                                empeño.Estado = Estado.Retirada;
+                                empeño.Estado = Estado.Anulado;
                             }
                             else if (empeño.RetiradoAdministrador || empeño.FechaRetiroAdministrador != null)
                             {
-                                empeño.Estado = Estado.Perdido;
+                                empeño.Estado = Estado.Retirado;
                             }
                             else
                             {
@@ -1050,7 +1050,7 @@ namespace Empeño.WindowsForms.Views
                         txtNombre.Text = empeño.Cliente.Nombre;
                         txtDescripcion.Text = empeño.Descripcion;
                         txtComentario.Text = empeño.Comentario;
-                        cbInteres.DataSource = await _context.Interes.ToListAsync();
+                        cbInteres.DataSource = await _context.Interes.Where(i => i.Activo || i.InteresId == empeño.InteresId).ToListAsync();
                         cbInteres.Text = empeño.Interes.Nombre;
                         txtMonto.Text = empeño.Monto.ToString("N2");
                         Realizado.Text = empeño.Empleado.Usuario;
@@ -1061,7 +1061,7 @@ namespace Empeño.WindowsForms.Views
                         Fecha.Text = empeño.Fecha.ToString("dd/MM/yyyy");
 
                         funciones.ShowLabels(panelFormulario);
-                        if (Program.PerfilId==4 || empeño.FechaRetiro != null || empeño.Retirado || empeño.FechaRetiroAdministrador != null || empeño.RetiradoAdministrador || empeño.Estado == Estado.Retirada)
+                        if (Program.PerfilId==4 || empeño.FechaRetiro != null || empeño.Retirado || empeño.FechaRetiroAdministrador != null || empeño.RetiradoAdministrador || empeño.Estado == Estado.Anulado)
                         {
                             funciones.BlockTextBox(panelFormulario, false);
                         }
@@ -1084,7 +1084,7 @@ namespace Empeño.WindowsForms.Views
             label.Visible = false;
             switch (estado)
             {
-                case Estado.Activo:
+                case Estado.Vigente:
                     label.Text = "Activo";
                     label.BackColor = Color.Blue;
                     label.ForeColor = Color.White;
@@ -1099,15 +1099,20 @@ namespace Empeño.WindowsForms.Views
                     label.BackColor = Color.Red;
                     label.ForeColor = Color.White;
                     break;
-                case Estado.Cancelada:
+                case Estado.Anulado:
                     label.Text = "Pendiente";
                     label.BackColor = Color.Yellow;
                     label.ForeColor = Color.Black;
                     break;
-                case Estado.Retirada:
-                    label.Text = "Retirada";
+                case Estado.Cancelado:
+                    label.Text = "Cancelado";
                     label.BackColor = Color.ForestGreen;
                     label.ForeColor = Color.White;
+                    break;
+                case Estado.Retirado:
+                    label.Text = "Retirado";
+                    label.BackColor = Color.Yellow;
+                    label.ForeColor = Color.Black;
                     break;
                 default:
                     label.Text = "Activo";
@@ -1139,7 +1144,7 @@ namespace Empeño.WindowsForms.Views
             }
             switch (estado)
             {
-                case Estado.Activo:
+                case Estado.Vigente:
                     label.Text = "Activo";
                     label.BackColor = Color.Blue;
                     label.ForeColor = Color.White;
@@ -1154,15 +1159,20 @@ namespace Empeño.WindowsForms.Views
                     label.BackColor = Color.Red;
                     label.ForeColor = Color.White;
                     break;
-                case Estado.Cancelada:
+                case Estado.Anulado:
                     label.Text = "Pendiente";
                     label.BackColor = Color.Yellow;
                     label.ForeColor = Color.Black;
                     break;
-                case Estado.Retirada:
-                    label.Text = "Retirada";
+                case Estado.Cancelado:
+                    label.Text = "Cancelado";
                     label.BackColor = Color.ForestGreen;
                     label.ForeColor = Color.White;
+                    break;
+                case Estado.Retirado:
+                    label.Text = "Retirado";
+                    label.BackColor = Color.Yellow;
+                    label.ForeColor = Color.Black;
                     break;
                 default:
                     label.Text = "Activo";
@@ -1173,51 +1183,52 @@ namespace Empeño.WindowsForms.Views
             label.Visible = true;
         }
 
-        public async Task BuscarEmpeño(int id)
+        public async Task BuscarEmpeño(int id)        
         {
             var _context = new DataContext();
             if (id > 0)
             {
                 var empeño = await _context.Empenos.FindAsync(id);
-                await funciones.ReviewDuplicateEmpeños(id);
-                int cantidadMeses = ((int)(DateTime.Today - empeño.Fecha).TotalDays / 30);
-                double sobrante = (DateTime.Today - empeño.Fecha).TotalDays % 30;
+                //await funciones.ReviewDuplicateEmpeños(id);
+                var fechaCalculo = empeño.Fecha;
+                if (empeño.Intereses.Any())
+                    fechaCalculo = empeño.Intereses.OrderByDescending(i => i.FechaVencimiento).FirstOrDefault().FechaVencimiento;
+
+                int cantidadMeses = ((int)(DateTime.Today - fechaCalculo).TotalDays / 30);
+                double sobrante = (DateTime.Today - fechaCalculo).TotalDays % 30;
                 cantidadMeses += sobrante > 1 ? 1 : 0;
-                int cantidadIntereses = empeño.Intereses.Count();
-
-                if (cantidadMeses > cantidadIntereses)
+                
+                var numeroIntereses = cantidadMeses;
+                for (int i = 0; i < numeroIntereses; i++)
                 {
-                    var numeroIntereses = cantidadMeses - cantidadIntereses;
-                    for (int i = 0; i < numeroIntereses; i++)
+                    var intereses = new Intereses
                     {
-                        var intereses = new Intereses
-                        {
-                            EmpenoId = empeño.EmpenoId,
-                            FechaCreacion = DateTime.Now,
-                            Monto = (double)empeño.MontoPendiente * ((double)empeño.Interes.Porcentaje / (double)100)
-                        };
+                        EmpenoId = empeño.EmpenoId,
+                        FechaCreacion = DateTime.Now,
+                        Monto = (double)empeño.MontoPendiente * ((double)empeño.Interes.Porcentaje / (double)100)
+                    };
 
-                        if (empeño.Intereses.Count() > 0)
-                        {
-                            intereses.FechaVencimiento = empeño.Intereses.OrderByDescending(x => x.InteresesId).FirstOrDefault().FechaVencimiento.AddMonths(1);
-                        }
-                        else
-                        {
-                            intereses.FechaVencimiento = empeño.FechaVencimiento.AddMonths(1);
-                        }
-                        if (_context.Intereses.Where(x => x.EmpenoId == empeño.EmpenoId && x.FechaVencimiento == intereses.FechaVencimiento).Count() == 0)
-                        {
-                            _context.Intereses.Add(intereses);
-                        }
-                    }
-                    await _context.SaveChangesAsync();
-                    await funciones.SaveBitacora(new ValorBitacora
+                    if (empeño.Intereses.Count() > 0)
                     {
-                        Valor = JsonConvert.SerializeObject(empeño),
-                        Modulo = "Empeños",
-                        Accion = "Editar"
-                    });
+                        intereses.FechaVencimiento = empeño.Intereses.OrderByDescending(x => x.InteresesId).FirstOrDefault().FechaVencimiento.AddMonths(1);
+                    }
+                    else
+                    {
+                        intereses.FechaVencimiento = empeño.FechaVencimiento.AddMonths(1);
+                    }
+                    if (_context.Intereses.Where(x => x.EmpenoId == empeño.EmpenoId && x.FechaVencimiento == intereses.FechaVencimiento).Count() == 0)
+                    {
+                        _context.Intereses.Add(intereses);
+                    }
                 }
+                await _context.SaveChangesAsync();
+                await funciones.SaveBitacora(new ValorBitacora
+                {
+                    Valor = JsonConvert.SerializeObject(empeño),
+                    Modulo = "Empeños",
+                    Accion = "Editar"
+                });
+          
 
 
                 var ultimoInteres = await _context.Intereses.Where(p => p.EmpenoId == empeño.EmpenoId).OrderByDescending(o => o.InteresesId)
@@ -1253,11 +1264,11 @@ namespace Empeño.WindowsForms.Views
                 {
                     if (empeño.Retirado || empeño.FechaRetiro != null)
                     {
-                        empeño.Estado = Estado.Retirada;
+                        empeño.Estado = Estado.Anulado;
                     }
                     else if (empeño.RetiradoAdministrador || empeño.FechaRetiroAdministrador != null)
                     {
-                        empeño.Estado = Estado.Perdido;
+                        empeño.Estado = Estado.Retirado;
                     }
                     else
                     {
@@ -1282,7 +1293,7 @@ namespace Empeño.WindowsForms.Views
                     txtNombre.Text = empeño.Cliente.Nombre;
                     txtDescripcion.Text = empeño.Descripcion;
                     txtComentario.Text = empeño.Comentario;
-                    cbInteres.DataSource = await _context.Interes.ToListAsync();
+                    cbInteres.DataSource = await _context.Interes.Where(i=>i.Activo || i.InteresId==empeño.InteresId).ToListAsync();
                     cbInteres.Text = empeño.Interes.Nombre;
                     txtMonto.Text = empeño.Monto.ToString("N2");
                     Realizado.Text = empleado.Usuario;
@@ -1301,7 +1312,7 @@ namespace Empeño.WindowsForms.Views
                     {
                         funciones.BlockTextBox(panelFormulario, true);
                     }
-                    if (Program.PerfilId==4 || empeño.FechaRetiro != null || empeño.Retirado || empeño.FechaRetiroAdministrador != null || empeño.RetiradoAdministrador || empeño.Estado == Estado.Retirada)
+                    if (Program.PerfilId==4 || empeño.FechaRetiro != null || empeño.Retirado || empeño.FechaRetiroAdministrador != null || empeño.RetiradoAdministrador || empeño.Estado == Estado.Anulado)
                     {
                         funciones.BlockTextBox(panelFormulario, false);
                     }
@@ -1409,7 +1420,6 @@ namespace Empeño.WindowsForms.Views
                 var cliente = await _context.Clientes.SingleOrDefaultAsync(c => !c.IsDelete && c.Identificacion == txtIdentificacion.Text);
                 if (cliente != null)
                 {
-                    //AQUI
                     CleanForm();
                     lblEstado.Visible = false;
                     Fecha.Text = DateTime.Today.ToString("dd/MM/yyyy");
@@ -1561,7 +1571,7 @@ namespace Empeño.WindowsForms.Views
                 var empeño = await _context.Empenos.FindAsync(empeñoId);
                 if (empeño!=null)
                 {
-                    if (empeño.FechaRetiro != null || empeño.Retirado || empeño.FechaRetiroAdministrador != null || empeño.RetiradoAdministrador || empeño.Estado == Estado.Retirada)
+                    if (empeño.FechaRetiro != null || empeño.Retirado || empeño.FechaRetiroAdministrador != null || empeño.RetiradoAdministrador || empeño.Estado == Estado.Anulado)
                     {
                         MessageBox.Show("El registro no puede ser modificado", "Alerta", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                         return;
@@ -1584,7 +1594,7 @@ namespace Empeño.WindowsForms.Views
                 {
                     double monto;
                     double.TryParse(txtMonto.Text, out monto);
-                    var intereses = await _context.Interes.OrderBy(i => i.Mayor).ToListAsync();
+                    var intereses = await _context.Interes.Where(i=>i.Activo).OrderBy(i => i.Mayor).ToListAsync();
                     var interes = new Interes();
                     foreach (var item in intereses)
                     {
@@ -1749,17 +1759,17 @@ namespace Empeño.WindowsForms.Views
                         row.Cells[4].Style.ForeColor = Color.White;
                         row.Cells[4].Style.Font = new System.Drawing.Font("Century Gothic", 7.8F, System.Drawing.FontStyle.Bold);
                         break;
-                    case "Activo":
+                    case "Vigente":
                         row.Cells[4].Style.BackColor = Color.Blue;
                         row.Cells[4].Style.ForeColor = Color.White;
                         row.Cells[4].Style.Font = new System.Drawing.Font("Century Gothic", 7.8F, System.Drawing.FontStyle.Bold);
                         break;
-                    case "Cancelada":
+                    case "Anulada":
                         row.Cells[4].Style.BackColor = Color.Yellow;
                         row.Cells[4].Style.ForeColor = Color.Black;
                         row.Cells[4].Style.Font = new System.Drawing.Font("Century Gothic", 7.8F, System.Drawing.FontStyle.Bold);
                         break;
-                    case "Retirada":
+                    case "Cancelada":
                         row.Cells[4].Style.BackColor = Color.ForestGreen;
                         row.Cells[4].Style.ForeColor = Color.White;
                         row.Cells[4].Style.Font = new System.Drawing.Font("Century Gothic", 7.8F, System.Drawing.FontStyle.Bold);
@@ -1954,7 +1964,10 @@ namespace Empeño.WindowsForms.Views
 
         private void cbInteres_SelectedIndexChanged_1(object sender, EventArgs e)
         {
-            lblInteres.Visible = true;
+            if (cbInteres.Text != "Porcentaje")
+            {
+                funciones.ShowLabelName((ComboBox)sender, lblInteres);
+            }
         }       
 
         private void txtComentario_TextChanged(object sender, EventArgs e)
@@ -2066,7 +2079,7 @@ namespace Empeño.WindowsForms.Views
                     txtNombre.Text = empeño.Cliente.Nombre;
                     txtDescripcion.Text = empeño.Descripcion;
                     txtComentario.Text = empeño.Comentario;
-                    cbInteres.DataSource = await _context.Interes.ToListAsync();
+                    cbInteres.DataSource = await _context.Interes.Where(i => i.Activo || i.InteresId == empeño.InteresId).ToListAsync();
                     cbInteres.Text = empeño.Interes.Nombre;
                     txtMonto.Text = empeño.Monto.ToString("N2");
                     Realizado.Text = empleado.Usuario;
@@ -2306,7 +2319,7 @@ namespace Empeño.WindowsForms.Views
                     {
                         await PrintInteres(empeño, intereses, pago);
                     }
-                    if (empeño.Estado==Estado.Retirada)
+                    if (empeño.Estado==Estado.Anulado)
                     {
                         await PrintRetiro(empeño, pago);
                     }
@@ -2321,6 +2334,13 @@ namespace Empeño.WindowsForms.Views
         private void txtBuscar_KeyDown(object sender, KeyEventArgs e)
         {
            
+        }
+
+        private void Fecha_Leave(object sender, EventArgs e)
+        {
+            var fecha = DateTime.ParseExact(Fecha.Text, "dd/MM/yyyy", CultureInfo.InvariantCulture);
+            var vence = fecha.Date.AddMonths(mesesVencimiento);
+            lblVence.Text = vence.ToString("dd/MM/yyyy");
         }
     }
 }

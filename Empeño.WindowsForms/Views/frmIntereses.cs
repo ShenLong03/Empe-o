@@ -37,7 +37,7 @@ namespace Empeño.WindowsForms.Views
                 interes.Menor = txtMenor.Text == "Menor que" ? 0 : int.Parse(txtMenor.Text);
                 interes.Nombre = txtNombre.Text;
                 interes.Porcentaje = txtValor.Text == "Porcentaje" ? 0 : double.Parse(txtValor.Text);
-
+                interes.Activo = chbActivo.Checked;
                 _context.Entry(interes).State=EntityState.Modified;
             }
             else
@@ -54,6 +54,7 @@ namespace Empeño.WindowsForms.Views
                     Mayor = txtMayor.Text == "Mayor que" ? 0 : int.Parse(txtMayor.Text),
                     Menor = txtMenor.Text == "Menor que" ? 0 : int.Parse(txtMenor.Text),
                     Nombre = txtNombre.Text,
+                    Activo = chbActivo.Checked,
                     Porcentaje = txtValor.Text == "Porcentaje" ? 0 : double.Parse(txtValor.Text),
                 };
 
@@ -83,7 +84,8 @@ namespace Empeño.WindowsForms.Views
                 Porcentaje=x.Porcentaje + "%",
                 Mayor_que="> " + x.Mayor,
                 Menor_que =x.Menor + " >",
-                Igual_que="= " + x.Igual
+                Igual_que="= " + x.Igual,
+                x.Activo
             }).ToListAsync();
             lblCantidad.Text = dgvLista.Rows.Count.ToString();
 
@@ -176,7 +178,7 @@ namespace Empeño.WindowsForms.Views
                     txtMayor.Text = interes.Mayor.ToString();
                     txtMenor.Text = interes.Menor.ToString();
                     txtIgual.Text = interes.Igual.ToString();
-
+                    chbActivo.Checked = interes.Activo;
                     funciones.ShowLabels(panelFormulario);
                     funciones.BlockTextBox(panelFormulario, true);
                     funciones.EditTextColor(panelFormulario);

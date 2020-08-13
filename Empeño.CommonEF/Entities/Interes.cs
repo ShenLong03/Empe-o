@@ -18,6 +18,8 @@
 
         public int Igual { get; set; }
 
+        public bool Activo { get; set; } = true;
+
         public Interes()
         {
             Porcentaje = 1;

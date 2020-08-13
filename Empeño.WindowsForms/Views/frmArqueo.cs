@@ -38,7 +38,7 @@ namespace Empeño.WindowsForms.Views
             {
                 await funciones.ReviewEmpeños();
 
-                empeños = await _context.Empenos.Where(x => !x.IsDelete && (x.Estado == Estado.Activo
+                empeños = await _context.Empenos.Where(x => !x.IsDelete && (x.Estado == Estado.Vigente
                  || x.Estado == Estado.Pendiente
                  || x.Estado == Estado.Vencido)
                  && (!x.Retirado || x.FechaRetiro == null)
@@ -148,7 +148,7 @@ namespace Empeño.WindowsForms.Views
                 empeño.FechaRetiroAdministrador = DateTime.Now;
                 temporal.RetiradoAdministrador = true;
                 empeño.RetiradoAdministrador = true;
-                empeño.Estado = Estado.Perdido;
+                empeño.Estado = Estado.Retirado;
                 _context.Entry(empeño).State = EntityState.Modified;
                 await _context.SaveChangesAsync();
             }
@@ -204,8 +204,8 @@ namespace Empeño.WindowsForms.Views
           
             var totalProrroga = empeños.Where(m => m.Prorrogas.Count() > 0).Sum(m => m.Monto + m.Intereses.Sum(i => i.Monto));
             lblTotalProrroga.Text = empeños.Where(m => m.Prorrogas.Count() > 0).Count().ToString();
-            var totalActivos = empeños.Where(m => m.Estado == Estado.Activo || m.Estado == Estado.Pendiente).Sum(m => m.Monto + m.Intereses.Sum(i=>i.Monto));
-            lblTotalAlDia.Text = empeños.Where(m => m.Estado == Estado.Activo || m.Estado == Estado.Pendiente).Count().ToString();
+            var totalActivos = empeños.Where(m => m.Estado == Estado.Vigente || m.Estado == Estado.Pendiente).Sum(m => m.Monto + m.Intereses.Sum(i=>i.Monto));
+            lblTotalAlDia.Text = empeños.Where(m => m.Estado == Estado.Vigente || m.Estado == Estado.Pendiente).Count().ToString();
 
             var list = empeños.Select(x => new
             {
