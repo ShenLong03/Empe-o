@@ -40,10 +40,10 @@ namespace Empeño.WindowsForms.Reports
                 EmpeñoId=x.EmpenoId,
                 Empleado=x.Empleado.Nombre,
                 EmpleadoId=x.EmpleadoId,
-                Estado=x.Estado==CommonEF.Enum.Estado.Activo?"Activo":
-                x.Estado==CommonEF.Enum.Estado.Cancelada?"Cancelada":
+                Estado=x.Estado==CommonEF.Enum.Estado.Vigente?"Activo":
+                x.Estado==CommonEF.Enum.Estado.Anulado?"Cancelada":
                 x.Estado==CommonEF.Enum.Estado.Pendiente?"Pendiente":
-                x.Estado==CommonEF.Enum.Estado.Retirada?"Retirada":
+                x.Estado==CommonEF.Enum.Estado.Anulado?"Retirada":
                 x.Estado==CommonEF.Enum.Estado.Vencido?"Vencido":"",
                 Fecha=x.Fecha,
                 Interes=x.Interes.Porcentaje,
@@ -100,17 +100,17 @@ namespace Empeño.WindowsForms.Reports
             switch (i)
             {
                 case 0:
-                    return Estado.Activo;
+                    return Estado.Vigente;
                 case 1:
                     return Estado.Pendiente;
                 case 2:
                     return Estado.Vencido;
                 case 3:
-                    return Estado.Cancelada;
+                    return Estado.Anulado;
                 case 4:
-                    return Estado.Retirada;
+                    return Estado.Anulado;
                 default:
-                    return Estado.Activo;
+                    return Estado.Vigente;
             }
         }
 
@@ -183,16 +183,16 @@ namespace Empeño.WindowsForms.Reports
             if (!chbTodo.Checked)
             {
                 if (!chbActivos.Checked)
-                    list = list.Where(l => l.Estado != CommonEF.Enum.Estado.Activo).ToList();
+                    list = list.Where(l => l.Estado != CommonEF.Enum.Estado.Vigente).ToList();
 
                 if (!chbPerdidos.Checked)
-                    list = list.Where(l => l.Estado != CommonEF.Enum.Estado.Perdido).ToList();
+                    list = list.Where(l => l.Estado != CommonEF.Enum.Estado.Retirado).ToList();
 
                 if (!chbPendientes.Checked)
                     list = list.Where(l => l.Estado != CommonEF.Enum.Estado.Pendiente).ToList();
 
                 if (!chbRetirados.Checked)
-                    list = list.Where(l => l.Estado != CommonEF.Enum.Estado.Retirada).ToList();
+                    list = list.Where(l => l.Estado != CommonEF.Enum.Estado.Anulado).ToList();
 
                 if (!chbVencidos.Checked)
                     list = list.Where(l => l.Estado != CommonEF.Enum.Estado.Vencido).ToList();
@@ -209,10 +209,10 @@ namespace Empeño.WindowsForms.Reports
                 EmpeñoId = x.EmpenoId,
                 Empleado = x.Empleado.Nombre,
                 EmpleadoId = x.EmpleadoId,
-                Estado = x.Estado == CommonEF.Enum.Estado.Activo ? "Activo" :
-               x.Estado == CommonEF.Enum.Estado.Cancelada ? "Cancelada" :
+                Estado = x.Estado == CommonEF.Enum.Estado.Vigente ? "Activo" :
+               x.Estado == CommonEF.Enum.Estado.Anulado ? "Cancelada" :
                x.Estado == CommonEF.Enum.Estado.Pendiente ? "Pendiente" :
-               x.Estado == CommonEF.Enum.Estado.Retirada ? "Retirada" :
+               x.Estado == CommonEF.Enum.Estado.Anulado ? "Retirada" :
                x.Estado == CommonEF.Enum.Estado.Vencido ? "Vencido" : "",
                 Fecha = x.Fecha,
                 Interes = x.Interes.Porcentaje,

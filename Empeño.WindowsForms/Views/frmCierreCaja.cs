@@ -1,4 +1,5 @@
 ﻿using Empeño.CommonEF.Entities;
+using Empeño.CommonEF.Enum;
 using Empeño.WindowsForms.Data;
 using Empeño.WindowsForms.Funciones;
 using Microsoft.Office.Interop.Excel;
@@ -82,6 +83,35 @@ namespace Empeño.WindowsForms.Views
             txtEmpleado.Text = empleado.Nombre;
             txtEmpleado.Enabled = false;
             textBox1.Text = "0.00";
+
+
+            detalles.Add(new DetalleCierreCaja
+            {
+                Concepto = "Total Acumunlado",
+                Cantidad = 1,
+                Valor = _context.Empenos.Where(x =>!x.IsDelete && (x.Estado == Estado.Vigente
+                  || x.Estado == Estado.Pendiente || x.Estado == Estado.Vencido)
+                  && x.Fecha < DateTime.Now).Sum(x => x.Monto),                
+            });
+            var tomorrow = DateTime.Today.AddDays(1);
+            double? montoEmpeñoDia = _context.Empenos.Where(x => !x.IsDelete && x.Fecha >= DateTime.Today && x.Fecha <= tomorrow).ToList().Sum(x => x.Monto);
+            detalles.Add(
+            new DetalleCierreCaja
+            {
+                Concepto = "Total Monto Empeño Dia",
+                Cantidad = 1,
+                Valor =montoEmpeñoDia!=null? montoEmpeñoDia.Value:0
+            });
+            double? montoInteresDia = _context.Empenos.Where(x => !x.IsDelete)
+                  .SelectMany(x => x.Pagos).Where(x => x.TipoPago == TipoPago.Interes && x.Fecha >= DateTime.Today && x.Fecha <= tomorrow).ToList().Sum(x => x.Monto);
+            detalles.Add(
+             new DetalleCierreCaja
+             {
+                 Concepto = "Total Monto Interes Dia",
+                 Cantidad = 1,
+                 Valor = montoInteresDia!=null?montoInteresDia.Value:0
+             });
+            LoadList();
         }
 
         private void txtConcepto_TextChanged(object sender, EventArgs e)

@@ -74,6 +74,7 @@
             this.panel9 = new System.Windows.Forms.Panel();
             this.btnCancelar = new FontAwesome.Sharp.IconButton();
             this.btnGuardar = new FontAwesome.Sharp.IconButton();
+            this.chbActivo = new System.Windows.Forms.CheckBox();
             this.tableLayoutPanel1.SuspendLayout();
             this.panel1.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
@@ -430,6 +431,7 @@
             // panelFormulario
             // 
             this.panelFormulario.AutoScroll = true;
+            this.panelFormulario.Controls.Add(this.chbActivo);
             this.panelFormulario.Controls.Add(this.lblIgual);
             this.panelFormulario.Controls.Add(this.lblMenor);
             this.panelFormulario.Controls.Add(this.lblMayor);
@@ -730,6 +732,18 @@
             this.btnGuardar.UseVisualStyleBackColor = false;
             this.btnGuardar.Click += new System.EventHandler(this.btnGuardar_Click);
             // 
+            // chbActivo
+            // 
+            this.chbActivo.AutoSize = true;
+            this.chbActivo.Font = new System.Drawing.Font("Century Gothic", 18F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.chbActivo.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.chbActivo.Location = new System.Drawing.Point(10, 291);
+            this.chbActivo.Name = "chbActivo";
+            this.chbActivo.Size = new System.Drawing.Size(132, 41);
+            this.chbActivo.TabIndex = 28;
+            this.chbActivo.Text = "Activo";
+            this.chbActivo.UseVisualStyleBackColor = true;
+            // 
             // frmIntereses
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -815,5 +829,6 @@
         private System.Windows.Forms.Label lblMayor;
         private System.Windows.Forms.Label lblValor;
         private System.Windows.Forms.Label lblNombre;
+        private System.Windows.Forms.CheckBox chbActivo;
     }
 }
