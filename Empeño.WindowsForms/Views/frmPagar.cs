@@ -149,20 +149,22 @@ namespace Empeño.WindowsForms.Views
             if (!funciones.ValidatePIN("Empeño"))
                 return;
 
-            if (montoMinimo != 0)
-            {
-                if (double.Parse(txtPagaInteres.Text) != double.Parse(txtInteresAPagar.Text) && double.Parse(txtPagaInteres.Text) <= montoMinimo && (double.Parse(txtPagaMonto.Text) == double.Parse(txtMontoAPagar.Text)))
-                {
-                    MessageBox.Show("Debe cumplir con un pago minimo mayor a " + montoMinimo.ToString("N2") + " cólon", "Información");
-                    return;
-                }
-            }
 
             var empleadoId = await funciones.GetEmpleadoIdByUser(Program.Usuario.Usuario);
             double montoIntereses = double.Parse(txtInteresAPagar.Text);
             double pagoIntereses = double.Parse(txtPagaInteres.Text);
             double pagoMonto = double.Parse(txtPagaMonto.Text);
             double montoPendiente = double.Parse(txtMontoAPagar.Text);
+
+            if (montoMinimo != 0)
+            {
+                if ((pagoIntereses != montoIntereses && pagoIntereses <= montoMinimo) && (pagoMonto == montoPendiente))
+                {
+                    MessageBox.Show("Debe cumplir con un pago minimo mayor a " + montoMinimo.ToString("N2") + " cólon", "Información");
+                    return;
+                }
+            }
+
             if ((pagoMonto >= montoPendiente) && (pagoIntereses < montoMinimo))
             {
                 MessageBox.Show("Para retirar la prenda debe pagar un minimo de intereses de " + montoMinimo.ToString("N2"), "Alerta", MessageBoxButtons.OK, MessageBoxIcon.Warning);
@@ -192,7 +194,8 @@ namespace Empeño.WindowsForms.Views
 
                 if (empeño.MontoPendiente < 1)
                 {
-                    empeño.Estado = Estado.Anulado;
+                    empeño.Estado = Estado.Cancelado;
+                    empeño.Retirado = true;
                     _context.Intereses.RemoveRange(_context.Intereses.Where(i => i.EmpenoId == empleadoId && i.Pagado == 0));
                     await PrintRetiro(empeño, pago);
                 }
@@ -403,10 +406,10 @@ namespace Empeño.WindowsForms.Views
                 cexcel.Cells[19, 1].value = empeno.Descripcion;
             }
 
-            cexcel.Cells[24, 3].value = _context.Intereses.Where(i => i.EmpenoId == empeno.EmpenoId).Sum(i => i.Monto).ToString("N2");
-            cexcel.Cells[25, 3].value = txtAdeudaMonto.Text;
+            cexcel.Cells[24, 3].value = txtPagaInteres.Text;
+            cexcel.Cells[25, 3].value = txtPagaMonto.Text;
             cexcel.Cells[26, 3].value = txtTotalAPagar.Text;
-            cexcel.Cells[28, 3].value = "Retirado";
+            cexcel.Cells[28, 3].value = "Cancelado";
             cexcel.ActiveWindow.SelectedSheets.PrintOut();
             System.Threading.Thread.Sleep(300);
             cexcel.ActiveWorkbook.Close(false);
