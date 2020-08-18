@@ -75,6 +75,12 @@
         }
         "Entry"
         {
+        "MsmKey" = "8:_4255828EFCAF49DE9A2AA35BFB68E457"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
         "MsmKey" = "8:_49941AC46F9BCABF915C65401C2F9AE7"
         "OwnerKey" = "8:_2610C7B935BC40CA8BC350C99A187AC9"
         "MsmSig" = "8:_UNDEFINED"
@@ -207,6 +213,12 @@
         }
         "Entry"
         {
+        "MsmKey" = "8:_8195636827BA46CA948B7FA1F0997A12"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
         "MsmKey" = "8:_82C70F928A53F0CDD09431BD4F8E50BE"
         "OwnerKey" = "8:_2610C7B935BC40CA8BC350C99A187AC9"
         "MsmSig" = "8:_UNDEFINED"
@@ -315,12 +327,6 @@
         }
         "Entry"
         {
-        "MsmKey" = "8:_BC3F3B5116374ADD8C100ED281DD3E1B"
-        "OwnerKey" = "8:_UNDEFINED"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
         "MsmKey" = "8:_C481408C0FAADE686DDAC12D28EF87D1"
         "OwnerKey" = "8:_9F218022CDFFB17B300EC3DF9DCECFC0"
         "MsmSig" = "8:_UNDEFINED"
@@ -401,6 +407,12 @@
         {
         "MsmKey" = "8:_EDF478CEC3E13DA8A55AD66F1CE88A1F"
         "OwnerKey" = "8:_2610C7B935BC40CA8BC350C99A187AC9"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_F12F4B84F6D14CDF9D97D53308FDAF5A"
+        "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -871,6 +883,26 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_4255828EFCAF49DE9A2AA35BFB68E457"
+            {
+            "SourcePath" = "8:..\\Empeño.WindowsForms\\Empeños\\Comprobantes\\ComprobanteVencidos.xlsx"
+            "TargetName" = "8:ComprobanteVencidos.xlsx"
+            "Tag" = "8:"
+            "Folder" = "8:_B091F437752548AD9DBF76A36784B9B4"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
             "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_49941AC46F9BCABF915C65401C2F9AE7"
             {
             "AssemblyRegister" = "3:1"
@@ -1199,6 +1231,26 @@
             "Register" = "3:1"
             "Exclude" = "11:FALSE"
             "IsDependency" = "11:TRUE"
+            "IsolateTo" = "8:"
+            }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_8195636827BA46CA948B7FA1F0997A12"
+            {
+            "SourcePath" = "8:..\\Empeño.WindowsForms\\Empeños\\Comprobantes\\ComprobanteAbono.xlsx"
+            "TargetName" = "8:ComprobanteAbono.xlsx"
+            "Tag" = "8:"
+            "Folder" = "8:_B091F437752548AD9DBF76A36784B9B4"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
             "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_82C70F928A53F0CDD09431BD4F8E50BE"
@@ -1531,26 +1583,6 @@
             "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_BC3F3B5116374ADD8C100ED281DD3E1B"
-            {
-            "SourcePath" = "8:..\\Empeño.WindowsForms\\Empeños\\Comprobantes\\ComprobanteAbono.xlsx"
-            "TargetName" = "8:ComprobanteAbono.xlsx"
-            "Tag" = "8:"
-            "Folder" = "8:_C0F6A4A377B74FAFBFD3F2C0126A5CE9"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
-            "IsolateTo" = "8:"
-            }
             "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_C481408C0FAADE686DDAC12D28EF87D1"
             {
             "AssemblyRegister" = "3:1"
@@ -1757,6 +1789,26 @@
             "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_F12F4B84F6D14CDF9D97D53308FDAF5A"
+            {
+            "SourcePath" = "8:..\\Empeño.WindowsForms\\Empeños\\Comprobantes\\ComprobanteVencimiento.xlsx"
+            "TargetName" = "8:ComprobanteVencimiento.xlsx"
+            "Tag" = "8:"
+            "Folder" = "8:_B091F437752548AD9DBF76A36784B9B4"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
         }
         "FileType"
         {
@@ -1846,15 +1898,15 @@
         {
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:Empeño"
-        "ProductCode" = "8:{4F1F7B6B-B4FE-4E8F-A96E-2F7574D0B953}"
-        "PackageCode" = "8:{ED614E3C-41B3-4DCE-BA6D-0B7FF594B64B}"
+        "ProductCode" = "8:{4DBD2D87-B1C9-4AD3-ACBF-7AC7102706E1}"
+        "PackageCode" = "8:{3351ADB4-73B5-4799-BCDA-B39DA148C059}"
         "UpgradeCode" = "8:{DCBBE32D-7BAD-440D-AB80-55BA2ED0D35D}"
         "AspNetVersion" = "8:4.0.30319.0"
         "RestartWWWService" = "11:FALSE"
         "RemovePreviousVersions" = "11:FALSE"
         "DetectNewerInstalledVersion" = "11:TRUE"
         "InstallAllUsers" = "11:FALSE"
-        "ProductVersion" = "8:1.1.2"
+        "ProductVersion" = "8:1.2"
         "Manufacturer" = "8:Amaru Systems"
         "ARPHELPTELEPHONE" = "8:"
         "ARPHELPLINK" = "8:http://amarusystems.com/"
