@@ -1350,7 +1350,7 @@ namespace Empeño.WindowsForms.Views
                         {
                             Id = x.InteresesId,
                             Interes = x.Empeno.Interes.Porcentaje + "%",
-                            Vence = SqlFunctions.DateName("day", x.FechaVencimiento) + "/" + SqlFunctions.DateName("month", x.FechaVencimiento) + "/" + SqlFunctions.DateName("year", x.FechaVencimiento),
+                            Vence = x.FechaVencimiento,
                             x.Monto,
                             x.Pagado,
                             Vencimiento = x.Monto == x.Pagado ? 0 : DbFunctions.DiffDays(DateTime.Today, x.FechaVencimiento),
@@ -1360,7 +1360,7 @@ namespace Empeño.WindowsForms.Views
                         {
                             x.Id,
                             x.Interes,
-                            x.Vence,
+                            Vence= Program.Meses(x.Vence.Month),
                             Monto = x.Monto.ToString("N2"),
                             Pagado = x.Pagado.ToString("N2"),
                             Faltan = x.Vencimiento
@@ -1392,7 +1392,7 @@ namespace Empeño.WindowsForms.Views
                     CargarPagos();
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
 
             }

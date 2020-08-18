@@ -452,7 +452,7 @@ namespace Empeño.WindowsForms.Views
             var index = 0;
             foreach (var item in intereses)
             {
-                cexcel.Cells[26+index, 1].value = item.FechaVencimiento.ToString("dd/MM/yyyy");
+                cexcel.Cells[26+index, 1].value = Program.Meses(item.FechaVencimiento.Month);
                 cexcel.Cells[26+index, 3].value = item.Pagado.ToString("N2");
 
                 Microsoft.Office.Interop.Excel.Worksheet ws = cexcel.ActiveSheet as Microsoft.Office.Interop.Excel.Worksheet;

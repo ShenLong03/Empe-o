@@ -45,6 +45,7 @@
             if (Program.Usuario == null)
                 Program.Usuario = new User { Usuario= "Admin" };
 
+            lblSesionUsuario.Text = Program.Usuario.Usuario;
             if (!_context.Configuraciones.Any())
             {                
                 showSubMenu(panelSubMenuConfiguracion);

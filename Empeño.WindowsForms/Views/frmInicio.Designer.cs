@@ -34,6 +34,7 @@ namespace Empeño.WindowsForms.Views
             this.panel1 = new System.Windows.Forms.Panel();
             this.mnuCaja = new FontAwesome.Sharp.IconButton();
             this.panelSubMenuReportes = new System.Windows.Forms.Panel();
+            this.mnuReporteVencidos = new FontAwesome.Sharp.IconButton();
             this.mnuArqueo = new FontAwesome.Sharp.IconButton();
             this.mnuReporteEmpeños = new FontAwesome.Sharp.IconButton();
             this.mnuReporteIngresos = new FontAwesome.Sharp.IconButton();
@@ -68,7 +69,8 @@ namespace Empeño.WindowsForms.Views
             this.timerOcultar = new System.Windows.Forms.Timer(this.components);
             this.timerMostrar = new System.Windows.Forms.Timer(this.components);
             this.pictureBox2 = new System.Windows.Forms.PictureBox();
-            this.mnuReporteVencidos = new FontAwesome.Sharp.IconButton();
+            this.label1 = new System.Windows.Forms.Label();
+            this.lblSesionUsuario = new System.Windows.Forms.Label();
             this.panel1.SuspendLayout();
             this.panelSubMenuReportes.SuspendLayout();
             this.panelSubMenuConfiguracion.SuspendLayout();
@@ -145,6 +147,29 @@ namespace Empeño.WindowsForms.Views
             this.panelSubMenuReportes.Name = "panelSubMenuReportes";
             this.panelSubMenuReportes.Size = new System.Drawing.Size(259, 326);
             this.panelSubMenuReportes.TabIndex = 11;
+            // 
+            // mnuReporteVencidos
+            // 
+            this.mnuReporteVencidos.Dock = System.Windows.Forms.DockStyle.Top;
+            this.mnuReporteVencidos.FlatAppearance.BorderSize = 0;
+            this.mnuReporteVencidos.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.mnuReporteVencidos.Flip = FontAwesome.Sharp.FlipOrientation.Normal;
+            this.mnuReporteVencidos.ForeColor = System.Drawing.Color.White;
+            this.mnuReporteVencidos.IconChar = FontAwesome.Sharp.IconChar.ChartPie;
+            this.mnuReporteVencidos.IconColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(65)))), ((int)(((byte)(116)))));
+            this.mnuReporteVencidos.IconSize = 1;
+            this.mnuReporteVencidos.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.mnuReporteVencidos.Location = new System.Drawing.Point(0, 240);
+            this.mnuReporteVencidos.Margin = new System.Windows.Forms.Padding(4);
+            this.mnuReporteVencidos.Name = "mnuReporteVencidos";
+            this.mnuReporteVencidos.Padding = new System.Windows.Forms.Padding(75, 0, 0, 0);
+            this.mnuReporteVencidos.Rotation = 0D;
+            this.mnuReporteVencidos.Size = new System.Drawing.Size(259, 80);
+            this.mnuReporteVencidos.TabIndex = 12;
+            this.mnuReporteVencidos.Text = "Reporte Vencidos";
+            this.mnuReporteVencidos.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.mnuReporteVencidos.UseVisualStyleBackColor = true;
+            this.mnuReporteVencidos.Click += new System.EventHandler(this.mnuReporteVencidos_Click);
             // 
             // mnuArqueo
             // 
@@ -522,6 +547,8 @@ namespace Empeño.WindowsForms.Views
             // panel3
             // 
             this.panel3.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(16)))), ((int)(((byte)(19)))), ((int)(((byte)(100)))));
+            this.panel3.Controls.Add(this.lblSesionUsuario);
+            this.panel3.Controls.Add(this.label1);
             this.panel3.Controls.Add(this.btnRestore);
             this.panel3.Controls.Add(this.btnMaximize);
             this.panel3.Controls.Add(this.btnMinimize);
@@ -670,28 +697,29 @@ namespace Empeño.WindowsForms.Views
             this.pictureBox2.TabIndex = 2;
             this.pictureBox2.TabStop = false;
             // 
-            // mnuReporteVencidos
+            // label1
             // 
-            this.mnuReporteVencidos.Dock = System.Windows.Forms.DockStyle.Top;
-            this.mnuReporteVencidos.FlatAppearance.BorderSize = 0;
-            this.mnuReporteVencidos.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.mnuReporteVencidos.Flip = FontAwesome.Sharp.FlipOrientation.Normal;
-            this.mnuReporteVencidos.ForeColor = System.Drawing.Color.White;
-            this.mnuReporteVencidos.IconChar = FontAwesome.Sharp.IconChar.ChartPie;
-            this.mnuReporteVencidos.IconColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(65)))), ((int)(((byte)(116)))));
-            this.mnuReporteVencidos.IconSize = 1;
-            this.mnuReporteVencidos.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.mnuReporteVencidos.Location = new System.Drawing.Point(0, 240);
-            this.mnuReporteVencidos.Margin = new System.Windows.Forms.Padding(4);
-            this.mnuReporteVencidos.Name = "mnuReporteVencidos";
-            this.mnuReporteVencidos.Padding = new System.Windows.Forms.Padding(75, 0, 0, 0);
-            this.mnuReporteVencidos.Rotation = 0D;
-            this.mnuReporteVencidos.Size = new System.Drawing.Size(259, 80);
-            this.mnuReporteVencidos.TabIndex = 12;
-            this.mnuReporteVencidos.Text = "Reporte Vencidos";
-            this.mnuReporteVencidos.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.mnuReporteVencidos.UseVisualStyleBackColor = true;
-            this.mnuReporteVencidos.Click += new System.EventHandler(this.mnuReporteVencidos_Click);
+            this.label1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.label1.AutoSize = true;
+            this.label1.Font = new System.Drawing.Font("Century Gothic", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label1.ForeColor = System.Drawing.Color.White;
+            this.label1.Location = new System.Drawing.Point(999, 38);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(101, 19);
+            this.label1.TabIndex = 6;
+            this.label1.Text = "Bienvenido";
+            // 
+            // lblSesionUsuario
+            // 
+            this.lblSesionUsuario.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.lblSesionUsuario.AutoSize = true;
+            this.lblSesionUsuario.Font = new System.Drawing.Font("Century Gothic", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblSesionUsuario.ForeColor = System.Drawing.Color.White;
+            this.lblSesionUsuario.Location = new System.Drawing.Point(1117, 38);
+            this.lblSesionUsuario.Name = "lblSesionUsuario";
+            this.lblSesionUsuario.Size = new System.Drawing.Size(68, 19);
+            this.lblSesionUsuario.TabIndex = 7;
+            this.lblSesionUsuario.Text = "Usuario";
             // 
             // frmInicio
             // 
@@ -772,5 +800,7 @@ namespace Empeño.WindowsForms.Views
         private FontAwesome.Sharp.IconButton mnuArqueo;
         private FontAwesome.Sharp.IconButton mnuEmpleados;
         private FontAwesome.Sharp.IconButton mnuReporteVencidos;
+        private Label lblSesionUsuario;
+        private Label label1;
     }
 }
