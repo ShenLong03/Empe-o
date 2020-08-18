@@ -434,6 +434,15 @@
 
         }
 
+        private void mnuReporteVencidos_Click(object sender, EventArgs e)
+        {
+            if (!funciones.ValidatePIN("Empeño"))
+                return;
+
+            ActivateButton(sender, RGBColors.color3);
+            OpenChildForm(new frmVencidos());
+        }
+
         protected override void WndProc(ref Message m)
         {
             switch (m.Msg)

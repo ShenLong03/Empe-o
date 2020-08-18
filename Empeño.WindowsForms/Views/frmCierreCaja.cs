@@ -83,15 +83,15 @@ namespace Empeño.WindowsForms.Views
             txtEmpleado.Text = empleado.Nombre;
             txtEmpleado.Enabled = false;
             textBox1.Text = "0.00";
-
+            double acumuladoInicial = _context.Empenos.Where(x => !x.IsDelete && (x.Estado == Estado.Vigente
+                    || x.Estado == Estado.Pendiente || x.Estado == Estado.Vencido)
+                    && x.Fecha < DateTime.Today).Sum(x => x.Monto);
 
             detalles.Add(new DetalleCierreCaja
             {
                 Concepto = "Total Acumunlado",
                 Cantidad = 1,
-                Valor = _context.Empenos.Where(x =>!x.IsDelete && (x.Estado == Estado.Vigente
-                  || x.Estado == Estado.Pendiente || x.Estado == Estado.Vencido)
-                  && x.Fecha < DateTime.Now).Sum(x => x.Monto),                
+                Valor = acumuladoInicial,                
             });
             var tomorrow = DateTime.Today.AddDays(1);
             double? montoEmpeñoDia = _context.Empenos.Where(x => !x.IsDelete && x.Fecha >= DateTime.Today && x.Fecha <= tomorrow).ToList().Sum(x => x.Monto);
@@ -111,6 +111,38 @@ namespace Empeño.WindowsForms.Views
                  Cantidad = 1,
                  Valor = montoInteresDia!=null?montoInteresDia.Value:0
              });
+            double? abonoDia = _context.Empenos.Where(x => !x.IsDelete)
+                .SelectMany(x => x.Pagos).Where(x => x.TipoPago == TipoPago.Principal && x.Fecha >= DateTime.Today && x.Fecha <= tomorrow).ToList().Sum(x => x.Monto);
+            detalles.Add(
+             new DetalleCierreCaja
+             {
+                 Concepto = "Total Monto Abonos Dia",
+                 Cantidad = 1,
+                 Valor = abonoDia != null ? abonoDia.Value : 0
+             });
+            double? vencidos = _context.Empenos.Where(x => !x.IsDelete && x.FechaRetiroAdministrador >= DateTime.Today && x.FechaRetiroAdministrador <= tomorrow).ToList().Sum(x => x.Monto);
+            detalles.Add(
+            new DetalleCierreCaja
+            {
+                Concepto = "Total Vencidos",
+                Cantidad = 1,
+                Valor = vencidos != null ? vencidos.Value : 0
+            });
+            double? cancelados = _context.Empenos.Where(x => !x.IsDelete && x.FechaRetiro >= DateTime.Today && x.FechaRetiro <= tomorrow).ToList().Sum(x => x.Monto);
+            detalles.Add(
+            new DetalleCierreCaja
+            {
+                Concepto = "Total Cancelados",
+                Cantidad = 1,
+                Valor = cancelados != null ? cancelados.Value : 0
+            });
+            detalles.Add(
+            new DetalleCierreCaja
+            {
+                Concepto = "Acumulado Final",
+                Cantidad = 1,
+                Valor = (acumuladoInicial+montoEmpeñoDia - (abonoDia+vencidos+cancelados)).Value
+            });
             LoadList();
         }
 
