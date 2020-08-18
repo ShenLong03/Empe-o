@@ -55,6 +55,8 @@ namespace Empeño.WindowsForms.Views
             this.shapeContainer1 = new Microsoft.VisualBasic.PowerPacks.ShapeContainer();
             this.lineShape1 = new Microsoft.VisualBasic.PowerPacks.LineShape();
             this.panel3 = new System.Windows.Forms.Panel();
+            this.lblSesionUsuario = new System.Windows.Forms.Label();
+            this.label1 = new System.Windows.Forms.Label();
             this.btnRestore = new FontAwesome.Sharp.IconPictureBox();
             this.btnMaximize = new FontAwesome.Sharp.IconPictureBox();
             this.btnMinimize = new FontAwesome.Sharp.IconPictureBox();
@@ -69,8 +71,6 @@ namespace Empeño.WindowsForms.Views
             this.timerOcultar = new System.Windows.Forms.Timer(this.components);
             this.timerMostrar = new System.Windows.Forms.Timer(this.components);
             this.pictureBox2 = new System.Windows.Forms.PictureBox();
-            this.label1 = new System.Windows.Forms.Label();
-            this.lblSesionUsuario = new System.Windows.Forms.Label();
             this.panel1.SuspendLayout();
             this.panelSubMenuReportes.SuspendLayout();
             this.panelSubMenuConfiguracion.SuspendLayout();
@@ -562,6 +562,30 @@ namespace Empeño.WindowsForms.Views
             this.panel3.TabIndex = 1;
             this.panel3.MouseMove += new System.Windows.Forms.MouseEventHandler(this.panel3_MouseMove);
             // 
+            // lblSesionUsuario
+            // 
+            this.lblSesionUsuario.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.lblSesionUsuario.AutoSize = true;
+            this.lblSesionUsuario.Font = new System.Drawing.Font("Century Gothic", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblSesionUsuario.ForeColor = System.Drawing.Color.White;
+            this.lblSesionUsuario.Location = new System.Drawing.Point(1117, 38);
+            this.lblSesionUsuario.Name = "lblSesionUsuario";
+            this.lblSesionUsuario.Size = new System.Drawing.Size(68, 19);
+            this.lblSesionUsuario.TabIndex = 7;
+            this.lblSesionUsuario.Text = "Usuario";
+            // 
+            // label1
+            // 
+            this.label1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.label1.AutoSize = true;
+            this.label1.Font = new System.Drawing.Font("Century Gothic", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label1.ForeColor = System.Drawing.Color.White;
+            this.label1.Location = new System.Drawing.Point(999, 38);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(101, 19);
+            this.label1.TabIndex = 6;
+            this.label1.Text = "Bienvenido";
+            // 
             // btnRestore
             // 
             this.btnRestore.Anchor = System.Windows.Forms.AnchorStyles.Right;
@@ -697,30 +721,6 @@ namespace Empeño.WindowsForms.Views
             this.pictureBox2.TabIndex = 2;
             this.pictureBox2.TabStop = false;
             // 
-            // label1
-            // 
-            this.label1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.label1.AutoSize = true;
-            this.label1.Font = new System.Drawing.Font("Century Gothic", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.ForeColor = System.Drawing.Color.White;
-            this.label1.Location = new System.Drawing.Point(999, 38);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(101, 19);
-            this.label1.TabIndex = 6;
-            this.label1.Text = "Bienvenido";
-            // 
-            // lblSesionUsuario
-            // 
-            this.lblSesionUsuario.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.lblSesionUsuario.AutoSize = true;
-            this.lblSesionUsuario.Font = new System.Drawing.Font("Century Gothic", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblSesionUsuario.ForeColor = System.Drawing.Color.White;
-            this.lblSesionUsuario.Location = new System.Drawing.Point(1117, 38);
-            this.lblSesionUsuario.Name = "lblSesionUsuario";
-            this.lblSesionUsuario.Size = new System.Drawing.Size(68, 19);
-            this.lblSesionUsuario.TabIndex = 7;
-            this.lblSesionUsuario.Text = "Usuario";
-            // 
             // frmInicio
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(10F, 21F);
@@ -731,6 +731,7 @@ namespace Empeño.WindowsForms.Views
             this.Controls.Add(this.pictureBox2);
             this.Font = new System.Drawing.Font("Century Gothic", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Margin = new System.Windows.Forms.Padding(4);
             this.MinimumSize = new System.Drawing.Size(700, 600);
             this.Name = "frmInicio";
