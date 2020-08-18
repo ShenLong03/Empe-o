@@ -2354,5 +2354,10 @@ namespace Empeño.WindowsForms.Views
             var vence = fecha.Date.AddMonths(mesesVencimiento);
             lblVence.Text = vence.ToString("dd/MM/yyyy");
         }
+
+        private void panel17_Paint(object sender, PaintEventArgs e)
+        {
+
+        }
     }
 }

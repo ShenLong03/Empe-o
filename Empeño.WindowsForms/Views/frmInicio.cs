@@ -345,7 +345,7 @@
 
         private void btnMenu_Click(object sender, EventArgs e)
         {
-            if (panel1.Width >= 280)
+            if (panel1.Width >= 220)
             {
                 hideSubMenu();
                 mnuInicio.Text = string.Empty;
@@ -355,12 +355,12 @@
                 mnuReporte.Text = string.Empty;
                 mnuTablero.Text = string.Empty;
                 mnuCaja.Text = string.Empty;
-                panel1.Width = 60;
+                panel1.Width = 50;
                 //timerOcultar.Enabled = true;
                 mnuLogout.Text = string.Empty;
                 mnuLogout.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             }
-            else if (panel1.Width <= 60)
+            else if (panel1.Width <= 50)
             {
                 mnuInicio.Text = "Inicio";
                 mnuConfiguracion.Text = "Configuración";
@@ -369,7 +369,7 @@
                 mnuReporte.Text = "Reporte";
                 mnuTablero.Text = "Tablero";
                 mnuCaja.Text = "Caja";
-                panel1.Width = 280;
+                panel1.Width = 228;
                 //timerMostrar.Enabled = true;
                 mnuLogout.Text = "Cerrar";
                 mnuLogout.ImageAlign = System.Drawing.ContentAlignment.MiddleCenter;

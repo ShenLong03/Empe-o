@@ -29,13 +29,13 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea1 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend1 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.Series series1 = new System.Windows.Forms.DataVisualization.Charting.Series();
             System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea2 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
             System.Windows.Forms.DataVisualization.Charting.Legend legend2 = new System.Windows.Forms.DataVisualization.Charting.Legend();
             System.Windows.Forms.DataVisualization.Charting.Series series2 = new System.Windows.Forms.DataVisualization.Charting.Series();
             System.Windows.Forms.DataVisualization.Charting.Series series3 = new System.Windows.Forms.DataVisualization.Charting.Series();
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea1 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Legend legend1 = new System.Windows.Forms.DataVisualization.Charting.Legend();
-            System.Windows.Forms.DataVisualization.Charting.Series series1 = new System.Windows.Forms.DataVisualization.Charting.Series();
             this.bunifuElipse1 = new Bunifu.Framework.UI.BunifuElipse(this.components);
             this.panel3 = new System.Windows.Forms.Panel();
             this.lblEmpeñosNuevos = new System.Windows.Forms.Label();
@@ -61,9 +61,22 @@
             this.label14 = new System.Windows.Forms.Label();
             this.pbPendientes = new FontAwesome.Sharp.IconPictureBox();
             this.bunifuElipse5 = new Bunifu.Framework.UI.BunifuElipse(this.components);
+            this.panel10 = new System.Windows.Forms.Panel();
+            this.dgvTransacciones = new System.Windows.Forms.DataGridView();
+            this.panel12 = new System.Windows.Forms.Panel();
+            this.label7 = new System.Windows.Forms.Label();
+            this.panel11 = new System.Windows.Forms.Panel();
+            this.lblTotal = new System.Windows.Forms.Label();
+            this.lblTotal2 = new System.Windows.Forms.Label();
+            this.lblSalidas = new System.Windows.Forms.Label();
+            this.label6 = new System.Windows.Forms.Label();
+            this.lblIngresos = new System.Windows.Forms.Label();
+            this.label4 = new System.Windows.Forms.Label();
             this.panel1 = new System.Windows.Forms.Panel();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.bunifuElipse6 = new Bunifu.Framework.UI.BunifuElipse(this.components);
+            this.chartEmpeños = new System.Windows.Forms.DataVisualization.Charting.Chart();
+            this.ingresosEgresosReporteBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.bunifuElipse7 = new Bunifu.Framework.UI.BunifuElipse(this.components);
             this.panel5 = new System.Windows.Forms.Panel();
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
@@ -76,20 +89,7 @@
             this.label1 = new System.Windows.Forms.Label();
             this.comboBox1 = new System.Windows.Forms.ComboBox();
             this.panel13 = new System.Windows.Forms.Panel();
-            this.chartEmpeños = new System.Windows.Forms.DataVisualization.Charting.Chart();
-            this.panel11 = new System.Windows.Forms.Panel();
-            this.label4 = new System.Windows.Forms.Label();
-            this.lblIngresos = new System.Windows.Forms.Label();
-            this.label6 = new System.Windows.Forms.Label();
-            this.lblSalidas = new System.Windows.Forms.Label();
-            this.lblTotal2 = new System.Windows.Forms.Label();
-            this.lblTotal = new System.Windows.Forms.Label();
-            this.panel12 = new System.Windows.Forms.Panel();
-            this.label7 = new System.Windows.Forms.Label();
-            this.dgvTransacciones = new System.Windows.Forms.DataGridView();
-            this.panel10 = new System.Windows.Forms.Panel();
             this.label5 = new System.Windows.Forms.Label();
-            this.ingresosEgresosReporteBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.panel3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pbEmpeños)).BeginInit();
             this.panel2.SuspendLayout();
@@ -98,8 +98,14 @@
             ((System.ComponentModel.ISupportInitialize)(this.pbVencidos)).BeginInit();
             this.panel4.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pbPendientes)).BeginInit();
+            this.panel10.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvTransacciones)).BeginInit();
+            this.panel12.SuspendLayout();
+            this.panel11.SuspendLayout();
             this.panel1.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.chartEmpeños)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.ingresosEgresosReporteBindingSource)).BeginInit();
             this.panel5.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
             this.panel7.SuspendLayout();
@@ -108,12 +114,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.chartVentas)).BeginInit();
             this.panel9.SuspendLayout();
             this.panel13.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.chartEmpeños)).BeginInit();
-            this.panel11.SuspendLayout();
-            this.panel12.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dgvTransacciones)).BeginInit();
-            this.panel10.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.ingresosEgresosReporteBindingSource)).BeginInit();
             this.SuspendLayout();
             // 
             // bunifuElipse1
@@ -383,6 +383,143 @@
             this.bunifuElipse5.ElipseRadius = 20;
             this.bunifuElipse5.TargetControl = this.panel10;
             // 
+            // panel10
+            // 
+            this.panel10.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.panel10.BackColor = System.Drawing.Color.LightGray;
+            this.panel10.Controls.Add(this.dgvTransacciones);
+            this.panel10.Controls.Add(this.panel12);
+            this.panel10.Controls.Add(this.panel11);
+            this.panel10.Location = new System.Drawing.Point(11, 313);
+            this.panel10.Name = "panel10";
+            this.panel10.Size = new System.Drawing.Size(526, 366);
+            this.panel10.TabIndex = 8;
+            // 
+            // dgvTransacciones
+            // 
+            this.dgvTransacciones.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+            this.dgvTransacciones.BackgroundColor = System.Drawing.Color.WhiteSmoke;
+            this.dgvTransacciones.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.dgvTransacciones.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgvTransacciones.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.dgvTransacciones.Location = new System.Drawing.Point(0, 36);
+            this.dgvTransacciones.Name = "dgvTransacciones";
+            this.dgvTransacciones.RowHeadersWidth = 51;
+            this.dgvTransacciones.RowTemplate.Height = 24;
+            this.dgvTransacciones.Size = new System.Drawing.Size(526, 252);
+            this.dgvTransacciones.TabIndex = 3;
+            // 
+            // panel12
+            // 
+            this.panel12.BackColor = System.Drawing.Color.Gainsboro;
+            this.panel12.Controls.Add(this.label7);
+            this.panel12.Dock = System.Windows.Forms.DockStyle.Top;
+            this.panel12.Location = new System.Drawing.Point(0, 0);
+            this.panel12.Name = "panel12";
+            this.panel12.Size = new System.Drawing.Size(526, 36);
+            this.panel12.TabIndex = 2;
+            // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.BackColor = System.Drawing.Color.Gainsboro;
+            this.label7.Font = new System.Drawing.Font("Century Gothic", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label7.ForeColor = System.Drawing.Color.DimGray;
+            this.label7.Location = new System.Drawing.Point(16, 8);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(208, 23);
+            this.label7.TabIndex = 10;
+            this.label7.Text = "Movimientos del día";
+            // 
+            // panel11
+            // 
+            this.panel11.BackColor = System.Drawing.Color.Gainsboro;
+            this.panel11.Controls.Add(this.lblTotal);
+            this.panel11.Controls.Add(this.lblTotal2);
+            this.panel11.Controls.Add(this.lblSalidas);
+            this.panel11.Controls.Add(this.label6);
+            this.panel11.Controls.Add(this.lblIngresos);
+            this.panel11.Controls.Add(this.label4);
+            this.panel11.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.panel11.Location = new System.Drawing.Point(0, 288);
+            this.panel11.Name = "panel11";
+            this.panel11.Size = new System.Drawing.Size(526, 78);
+            this.panel11.TabIndex = 0;
+            // 
+            // lblTotal
+            // 
+            this.lblTotal.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.lblTotal.AutoSize = true;
+            this.lblTotal.Font = new System.Drawing.Font("Century Gothic", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblTotal.ForeColor = System.Drawing.Color.RoyalBlue;
+            this.lblTotal.Location = new System.Drawing.Point(395, 17);
+            this.lblTotal.Name = "lblTotal";
+            this.lblTotal.Size = new System.Drawing.Size(21, 23);
+            this.lblTotal.TabIndex = 5;
+            this.lblTotal.Text = "0";
+            // 
+            // lblTotal2
+            // 
+            this.lblTotal2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.lblTotal2.AutoSize = true;
+            this.lblTotal2.Font = new System.Drawing.Font("Century Gothic", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblTotal2.ForeColor = System.Drawing.Color.RoyalBlue;
+            this.lblTotal2.Location = new System.Drawing.Point(395, 40);
+            this.lblTotal2.Name = "lblTotal2";
+            this.lblTotal2.Size = new System.Drawing.Size(46, 19);
+            this.lblTotal2.TabIndex = 4;
+            this.lblTotal2.Text = "Total";
+            // 
+            // lblSalidas
+            // 
+            this.lblSalidas.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.lblSalidas.AutoSize = true;
+            this.lblSalidas.Font = new System.Drawing.Font("Century Gothic", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblSalidas.ForeColor = System.Drawing.Color.Red;
+            this.lblSalidas.Location = new System.Drawing.Point(237, 17);
+            this.lblSalidas.Name = "lblSalidas";
+            this.lblSalidas.Size = new System.Drawing.Size(21, 23);
+            this.lblSalidas.TabIndex = 3;
+            this.lblSalidas.Text = "0";
+            // 
+            // label6
+            // 
+            this.label6.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.label6.AutoSize = true;
+            this.label6.Font = new System.Drawing.Font("Century Gothic", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label6.ForeColor = System.Drawing.Color.Red;
+            this.label6.Location = new System.Drawing.Point(237, 40);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(67, 19);
+            this.label6.TabIndex = 2;
+            this.label6.Text = "Salidas";
+            // 
+            // lblIngresos
+            // 
+            this.lblIngresos.AutoSize = true;
+            this.lblIngresos.Font = new System.Drawing.Font("Century Gothic", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblIngresos.ForeColor = System.Drawing.Color.ForestGreen;
+            this.lblIngresos.Location = new System.Drawing.Point(30, 17);
+            this.lblIngresos.Name = "lblIngresos";
+            this.lblIngresos.Size = new System.Drawing.Size(21, 23);
+            this.lblIngresos.TabIndex = 1;
+            this.lblIngresos.Text = "0";
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Font = new System.Drawing.Font("Century Gothic", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label4.ForeColor = System.Drawing.Color.ForestGreen;
+            this.label4.Location = new System.Drawing.Point(30, 40);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(78, 19);
+            this.label4.TabIndex = 0;
+            this.label4.Text = "Ingresos";
+            // 
             // panel1
             // 
             this.panel1.Controls.Add(this.tableLayoutPanel1);
@@ -416,9 +553,34 @@
             this.bunifuElipse6.ElipseRadius = 10;
             this.bunifuElipse6.TargetControl = this.chartEmpeños;
             // 
+            // chartEmpeños
+            // 
+            this.chartEmpeños.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            chartArea1.Name = "ChartArea1";
+            this.chartEmpeños.ChartAreas.Add(chartArea1);
+            this.chartEmpeños.DataSource = this.ingresosEgresosReporteBindingSource;
+            legend1.Name = "Legend1";
+            this.chartEmpeños.Legends.Add(legend1);
+            this.chartEmpeños.Location = new System.Drawing.Point(18, 7);
+            this.chartEmpeños.Name = "chartEmpeños";
+            series1.ChartArea = "ChartArea1";
+            series1.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Doughnut;
+            series1.Legend = "Legend1";
+            series1.Name = "Series1";
+            this.chartEmpeños.Series.Add(series1);
+            this.chartEmpeños.Size = new System.Drawing.Size(514, 300);
+            this.chartEmpeños.TabIndex = 7;
+            this.chartEmpeños.Text = "chart2";
+            // 
+            // ingresosEgresosReporteBindingSource
+            // 
+            this.ingresosEgresosReporteBindingSource.DataSource = typeof(Empeño.WindowsForms.ViewReports.IngresosEgresosReporte);
+            // 
             // bunifuElipse7
             // 
             this.bunifuElipse7.ElipseRadius = 15;
+            this.bunifuElipse7.TargetControl = this;
             // 
             // panel5
             // 
@@ -572,163 +734,6 @@
             this.panel13.TabIndex = 8;
             this.panel13.Paint += new System.Windows.Forms.PaintEventHandler(this.panel13_Paint);
             // 
-            // chartEmpeños
-            // 
-            this.chartEmpeños.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            chartArea1.Name = "ChartArea1";
-            this.chartEmpeños.ChartAreas.Add(chartArea1);
-            this.chartEmpeños.DataSource = this.ingresosEgresosReporteBindingSource;
-            legend1.Name = "Legend1";
-            this.chartEmpeños.Legends.Add(legend1);
-            this.chartEmpeños.Location = new System.Drawing.Point(18, 7);
-            this.chartEmpeños.Name = "chartEmpeños";
-            series1.ChartArea = "ChartArea1";
-            series1.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Doughnut;
-            series1.Legend = "Legend1";
-            series1.Name = "Series1";
-            this.chartEmpeños.Series.Add(series1);
-            this.chartEmpeños.Size = new System.Drawing.Size(514, 300);
-            this.chartEmpeños.TabIndex = 7;
-            this.chartEmpeños.Text = "chart2";
-            // 
-            // panel11
-            // 
-            this.panel11.BackColor = System.Drawing.Color.Gainsboro;
-            this.panel11.Controls.Add(this.lblTotal);
-            this.panel11.Controls.Add(this.lblTotal2);
-            this.panel11.Controls.Add(this.lblSalidas);
-            this.panel11.Controls.Add(this.label6);
-            this.panel11.Controls.Add(this.lblIngresos);
-            this.panel11.Controls.Add(this.label4);
-            this.panel11.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.panel11.Location = new System.Drawing.Point(0, 288);
-            this.panel11.Name = "panel11";
-            this.panel11.Size = new System.Drawing.Size(526, 78);
-            this.panel11.TabIndex = 0;
-            // 
-            // label4
-            // 
-            this.label4.AutoSize = true;
-            this.label4.Font = new System.Drawing.Font("Century Gothic", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label4.ForeColor = System.Drawing.Color.ForestGreen;
-            this.label4.Location = new System.Drawing.Point(30, 40);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(78, 19);
-            this.label4.TabIndex = 0;
-            this.label4.Text = "Ingresos";
-            // 
-            // lblIngresos
-            // 
-            this.lblIngresos.AutoSize = true;
-            this.lblIngresos.Font = new System.Drawing.Font("Century Gothic", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblIngresos.ForeColor = System.Drawing.Color.ForestGreen;
-            this.lblIngresos.Location = new System.Drawing.Point(30, 17);
-            this.lblIngresos.Name = "lblIngresos";
-            this.lblIngresos.Size = new System.Drawing.Size(21, 23);
-            this.lblIngresos.TabIndex = 1;
-            this.lblIngresos.Text = "0";
-            // 
-            // label6
-            // 
-            this.label6.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.label6.AutoSize = true;
-            this.label6.Font = new System.Drawing.Font("Century Gothic", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label6.ForeColor = System.Drawing.Color.Red;
-            this.label6.Location = new System.Drawing.Point(237, 40);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(67, 19);
-            this.label6.TabIndex = 2;
-            this.label6.Text = "Salidas";
-            // 
-            // lblSalidas
-            // 
-            this.lblSalidas.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.lblSalidas.AutoSize = true;
-            this.lblSalidas.Font = new System.Drawing.Font("Century Gothic", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblSalidas.ForeColor = System.Drawing.Color.Red;
-            this.lblSalidas.Location = new System.Drawing.Point(237, 17);
-            this.lblSalidas.Name = "lblSalidas";
-            this.lblSalidas.Size = new System.Drawing.Size(21, 23);
-            this.lblSalidas.TabIndex = 3;
-            this.lblSalidas.Text = "0";
-            // 
-            // lblTotal2
-            // 
-            this.lblTotal2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.lblTotal2.AutoSize = true;
-            this.lblTotal2.Font = new System.Drawing.Font("Century Gothic", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblTotal2.ForeColor = System.Drawing.Color.RoyalBlue;
-            this.lblTotal2.Location = new System.Drawing.Point(395, 40);
-            this.lblTotal2.Name = "lblTotal2";
-            this.lblTotal2.Size = new System.Drawing.Size(46, 19);
-            this.lblTotal2.TabIndex = 4;
-            this.lblTotal2.Text = "Total";
-            // 
-            // lblTotal
-            // 
-            this.lblTotal.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.lblTotal.AutoSize = true;
-            this.lblTotal.Font = new System.Drawing.Font("Century Gothic", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblTotal.ForeColor = System.Drawing.Color.RoyalBlue;
-            this.lblTotal.Location = new System.Drawing.Point(395, 17);
-            this.lblTotal.Name = "lblTotal";
-            this.lblTotal.Size = new System.Drawing.Size(21, 23);
-            this.lblTotal.TabIndex = 5;
-            this.lblTotal.Text = "0";
-            // 
-            // panel12
-            // 
-            this.panel12.BackColor = System.Drawing.Color.Gainsboro;
-            this.panel12.Controls.Add(this.label7);
-            this.panel12.Dock = System.Windows.Forms.DockStyle.Top;
-            this.panel12.Location = new System.Drawing.Point(0, 0);
-            this.panel12.Name = "panel12";
-            this.panel12.Size = new System.Drawing.Size(526, 36);
-            this.panel12.TabIndex = 2;
-            // 
-            // label7
-            // 
-            this.label7.AutoSize = true;
-            this.label7.BackColor = System.Drawing.Color.Gainsboro;
-            this.label7.Font = new System.Drawing.Font("Century Gothic", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label7.ForeColor = System.Drawing.Color.DimGray;
-            this.label7.Location = new System.Drawing.Point(16, 8);
-            this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(208, 23);
-            this.label7.TabIndex = 10;
-            this.label7.Text = "Movimientos del día";
-            // 
-            // dgvTransacciones
-            // 
-            this.dgvTransacciones.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
-            this.dgvTransacciones.BackgroundColor = System.Drawing.Color.WhiteSmoke;
-            this.dgvTransacciones.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.dgvTransacciones.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgvTransacciones.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.dgvTransacciones.Location = new System.Drawing.Point(0, 36);
-            this.dgvTransacciones.Name = "dgvTransacciones";
-            this.dgvTransacciones.RowHeadersWidth = 51;
-            this.dgvTransacciones.RowTemplate.Height = 24;
-            this.dgvTransacciones.Size = new System.Drawing.Size(526, 252);
-            this.dgvTransacciones.TabIndex = 3;
-            // 
-            // panel10
-            // 
-            this.panel10.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.panel10.BackColor = System.Drawing.Color.LightGray;
-            this.panel10.Controls.Add(this.dgvTransacciones);
-            this.panel10.Controls.Add(this.panel12);
-            this.panel10.Controls.Add(this.panel11);
-            this.panel10.Location = new System.Drawing.Point(11, 313);
-            this.panel10.Name = "panel10";
-            this.panel10.Size = new System.Drawing.Size(526, 366);
-            this.panel10.TabIndex = 8;
-            // 
             // label5
             // 
             this.label5.AutoSize = true;
@@ -741,14 +746,10 @@
             this.label5.TabIndex = 9;
             this.label5.Text = "Estado Empeños";
             // 
-            // ingresosEgresosReporteBindingSource
-            // 
-            this.ingresosEgresosReporteBindingSource.DataSource = typeof(Empeño.WindowsForms.ViewReports.IngresosEgresosReporte);
-            // 
             // frmTablero
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.AutoScaleDimensions = new System.Drawing.SizeF(120F, 120F);
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
             this.BackColor = System.Drawing.Color.WhiteSmoke;
             this.ClientSize = new System.Drawing.Size(1104, 793);
             this.Controls.Add(this.panel5);
@@ -769,8 +770,16 @@
             this.panel4.ResumeLayout(false);
             this.panel4.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pbPendientes)).EndInit();
+            this.panel10.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.dgvTransacciones)).EndInit();
+            this.panel12.ResumeLayout(false);
+            this.panel12.PerformLayout();
+            this.panel11.ResumeLayout(false);
+            this.panel11.PerformLayout();
             this.panel1.ResumeLayout(false);
             this.tableLayoutPanel1.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.chartEmpeños)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.ingresosEgresosReporteBindingSource)).EndInit();
             this.panel5.ResumeLayout(false);
             this.tableLayoutPanel2.ResumeLayout(false);
             this.panel7.ResumeLayout(false);
@@ -781,14 +790,6 @@
             this.panel9.PerformLayout();
             this.panel13.ResumeLayout(false);
             this.panel13.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.chartEmpeños)).EndInit();
-            this.panel11.ResumeLayout(false);
-            this.panel11.PerformLayout();
-            this.panel12.ResumeLayout(false);
-            this.panel12.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dgvTransacciones)).EndInit();
-            this.panel10.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.ingresosEgresosReporteBindingSource)).EndInit();
             this.ResumeLayout(false);
 
         }

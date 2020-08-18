@@ -49,6 +49,7 @@
             this.lblFecha = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.panelDetalleCierre = new System.Windows.Forms.Panel();
+            this.dgvDetalles = new System.Windows.Forms.DataGridView();
             this.txtCantidad = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
             this.btnDeleteDetalle = new System.Windows.Forms.Button();
@@ -63,7 +64,6 @@
             this.elipseDetalleCierre = new Bunifu.Framework.UI.BunifuElipse(this.components);
             this.bunifuElipse1 = new Bunifu.Framework.UI.BunifuElipse(this.components);
             this.printDocument1 = new System.Drawing.Printing.PrintDocument();
-            this.dgvDetalles = new System.Windows.Forms.DataGridView();
             this.panelCierreInformacion.SuspendLayout();
             this.panelDetalleCierre.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvDetalles)).BeginInit();
@@ -154,7 +154,7 @@
             this.btnDeleteCierreCaja.Font = new System.Drawing.Font("Century Gothic", 9F, System.Drawing.FontStyle.Bold);
             this.btnDeleteCierreCaja.ForeColor = System.Drawing.Color.White;
             this.btnDeleteCierreCaja.Image = ((System.Drawing.Image)(resources.GetObject("btnDeleteCierreCaja.Image")));
-            this.btnDeleteCierreCaja.Location = new System.Drawing.Point(250, 133);
+            this.btnDeleteCierreCaja.Location = new System.Drawing.Point(271, 133);
             this.btnDeleteCierreCaja.Name = "btnDeleteCierreCaja";
             this.btnDeleteCierreCaja.Size = new System.Drawing.Size(100, 45);
             this.btnDeleteCierreCaja.TabIndex = 7;
@@ -191,7 +191,7 @@
             this.btnCancelarCierreCaja.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnCancelarCierreCaja.Font = new System.Drawing.Font("Century Gothic", 9F, System.Drawing.FontStyle.Bold);
             this.btnCancelarCierreCaja.Image = ((System.Drawing.Image)(resources.GetObject("btnCancelarCierreCaja.Image")));
-            this.btnCancelarCierreCaja.Location = new System.Drawing.Point(129, 133);
+            this.btnCancelarCierreCaja.Location = new System.Drawing.Point(150, 133);
             this.btnCancelarCierreCaja.Name = "btnCancelarCierreCaja";
             this.btnCancelarCierreCaja.Size = new System.Drawing.Size(117, 45);
             this.btnCancelarCierreCaja.TabIndex = 4;
@@ -210,7 +210,7 @@
             this.btnGuardarCierreCaja.Image = ((System.Drawing.Image)(resources.GetObject("btnGuardarCierreCaja.Image")));
             this.btnGuardarCierreCaja.Location = new System.Drawing.Point(25, 133);
             this.btnGuardarCierreCaja.Name = "btnGuardarCierreCaja";
-            this.btnGuardarCierreCaja.Size = new System.Drawing.Size(100, 45);
+            this.btnGuardarCierreCaja.Size = new System.Drawing.Size(119, 45);
             this.btnGuardarCierreCaja.TabIndex = 3;
             this.btnGuardarCierreCaja.Text = " Guardar";
             this.btnGuardarCierreCaja.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
@@ -268,8 +268,62 @@
             this.panelDetalleCierre.Controls.Add(this.label6);
             this.panelDetalleCierre.Location = new System.Drawing.Point(25, 256);
             this.panelDetalleCierre.Name = "panelDetalleCierre";
-            this.panelDetalleCierre.Size = new System.Drawing.Size(1087, 428);
+            this.panelDetalleCierre.Size = new System.Drawing.Size(1087, 554);
             this.panelDetalleCierre.TabIndex = 8;
+            // 
+            // dgvDetalles
+            // 
+            this.dgvDetalles.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.dgvDetalles.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+            this.dgvDetalles.BackgroundColor = System.Drawing.Color.WhiteSmoke;
+            this.dgvDetalles.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.dgvDetalles.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.RaisedHorizontal;
+            this.dgvDetalles.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.None;
+            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(17)))), ((int)(((byte)(2)))), ((int)(((byte)(115)))));
+            dataGridViewCellStyle1.Font = new System.Drawing.Font("Century Gothic", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle1.ForeColor = System.Drawing.Color.White;
+            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(17)))), ((int)(((byte)(2)))), ((int)(((byte)(115)))));
+            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.Color.White;
+            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgvDetalles.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
+            this.dgvDetalles.ColumnHeadersHeight = 40;
+            this.dgvDetalles.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
+            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle2.Font = new System.Drawing.Font("Century Gothic", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(196)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
+            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgvDetalles.DefaultCellStyle = dataGridViewCellStyle2;
+            this.dgvDetalles.EnableHeadersVisualStyles = false;
+            this.dgvDetalles.GridColor = System.Drawing.SystemColors.Control;
+            this.dgvDetalles.Location = new System.Drawing.Point(25, 203);
+            this.dgvDetalles.Margin = new System.Windows.Forms.Padding(4);
+            this.dgvDetalles.Name = "dgvDetalles";
+            this.dgvDetalles.RowHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.None;
+            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle3.BackColor = System.Drawing.Color.White;
+            dataGridViewCellStyle3.Font = new System.Drawing.Font("Century Gothic", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle3.ForeColor = System.Drawing.Color.Black;
+            dataGridViewCellStyle3.SelectionBackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle3.SelectionForeColor = System.Drawing.Color.Black;
+            dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgvDetalles.RowHeadersDefaultCellStyle = dataGridViewCellStyle3;
+            this.dgvDetalles.RowHeadersVisible = false;
+            this.dgvDetalles.RowHeadersWidth = 40;
+            dataGridViewCellStyle4.BackColor = System.Drawing.Color.White;
+            dataGridViewCellStyle4.Font = new System.Drawing.Font("Century Gothic", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle4.ForeColor = System.Drawing.Color.Black;
+            this.dgvDetalles.RowsDefaultCellStyle = dataGridViewCellStyle4;
+            this.dgvDetalles.RowTemplate.DefaultCellStyle.BackColor = System.Drawing.Color.White;
+            this.dgvDetalles.RowTemplate.DividerHeight = 1;
+            this.dgvDetalles.RowTemplate.Height = 40;
+            this.dgvDetalles.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.dgvDetalles.Size = new System.Drawing.Size(1043, 325);
+            this.dgvDetalles.TabIndex = 24;
             // 
             // txtCantidad
             // 
@@ -300,7 +354,7 @@
             this.btnDeleteDetalle.Font = new System.Drawing.Font("Century Gothic", 9F, System.Drawing.FontStyle.Bold);
             this.btnDeleteDetalle.ForeColor = System.Drawing.Color.White;
             this.btnDeleteDetalle.Image = ((System.Drawing.Image)(resources.GetObject("btnDeleteDetalle.Image")));
-            this.btnDeleteDetalle.Location = new System.Drawing.Point(250, 130);
+            this.btnDeleteDetalle.Location = new System.Drawing.Point(280, 130);
             this.btnDeleteDetalle.Name = "btnDeleteDetalle";
             this.btnDeleteDetalle.Size = new System.Drawing.Size(100, 45);
             this.btnDeleteDetalle.TabIndex = 10;
@@ -316,7 +370,7 @@
             this.btnCancelar.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnCancelar.Font = new System.Drawing.Font("Century Gothic", 9F, System.Drawing.FontStyle.Bold);
             this.btnCancelar.Image = ((System.Drawing.Image)(resources.GetObject("btnCancelar.Image")));
-            this.btnCancelar.Location = new System.Drawing.Point(129, 130);
+            this.btnCancelar.Location = new System.Drawing.Point(159, 130);
             this.btnCancelar.Name = "btnCancelar";
             this.btnCancelar.Size = new System.Drawing.Size(117, 45);
             this.btnCancelar.TabIndex = 9;
@@ -335,7 +389,7 @@
             this.btnGuardarDetalle.Image = ((System.Drawing.Image)(resources.GetObject("btnGuardarDetalle.Image")));
             this.btnGuardarDetalle.Location = new System.Drawing.Point(25, 130);
             this.btnGuardarDetalle.Name = "btnGuardarDetalle";
-            this.btnGuardarDetalle.Size = new System.Drawing.Size(100, 45);
+            this.btnGuardarDetalle.Size = new System.Drawing.Size(129, 45);
             this.btnGuardarDetalle.TabIndex = 8;
             this.btnGuardarDetalle.Text = " Agregar";
             this.btnGuardarDetalle.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
@@ -417,72 +471,18 @@
             this.bunifuElipse1.ElipseRadius = 5;
             this.bunifuElipse1.TargetControl = this.btnGuardarCierreCaja;
             // 
-            // dgvDetalles
-            // 
-            this.dgvDetalles.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.dgvDetalles.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
-            this.dgvDetalles.BackgroundColor = System.Drawing.Color.WhiteSmoke;
-            this.dgvDetalles.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.dgvDetalles.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.RaisedHorizontal;
-            this.dgvDetalles.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.None;
-            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(17)))), ((int)(((byte)(2)))), ((int)(((byte)(115)))));
-            dataGridViewCellStyle1.Font = new System.Drawing.Font("Century Gothic", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle1.ForeColor = System.Drawing.Color.White;
-            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(17)))), ((int)(((byte)(2)))), ((int)(((byte)(115)))));
-            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.Color.White;
-            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dgvDetalles.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
-            this.dgvDetalles.ColumnHeadersHeight = 60;
-            this.dgvDetalles.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
-            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle2.Font = new System.Drawing.Font("Century Gothic", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(196)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
-            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dgvDetalles.DefaultCellStyle = dataGridViewCellStyle2;
-            this.dgvDetalles.EnableHeadersVisualStyles = false;
-            this.dgvDetalles.GridColor = System.Drawing.SystemColors.Control;
-            this.dgvDetalles.Location = new System.Drawing.Point(25, 203);
-            this.dgvDetalles.Margin = new System.Windows.Forms.Padding(4);
-            this.dgvDetalles.Name = "dgvDetalles";
-            this.dgvDetalles.RowHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.None;
-            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle3.BackColor = System.Drawing.Color.White;
-            dataGridViewCellStyle3.Font = new System.Drawing.Font("Century Gothic", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle3.ForeColor = System.Drawing.Color.Black;
-            dataGridViewCellStyle3.SelectionBackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle3.SelectionForeColor = System.Drawing.Color.Black;
-            dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dgvDetalles.RowHeadersDefaultCellStyle = dataGridViewCellStyle3;
-            this.dgvDetalles.RowHeadersVisible = false;
-            this.dgvDetalles.RowHeadersWidth = 51;
-            dataGridViewCellStyle4.BackColor = System.Drawing.Color.White;
-            dataGridViewCellStyle4.Font = new System.Drawing.Font("Century Gothic", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle4.ForeColor = System.Drawing.Color.Black;
-            this.dgvDetalles.RowsDefaultCellStyle = dataGridViewCellStyle4;
-            this.dgvDetalles.RowTemplate.DefaultCellStyle.BackColor = System.Drawing.Color.White;
-            this.dgvDetalles.RowTemplate.DividerHeight = 1;
-            this.dgvDetalles.RowTemplate.Height = 45;
-            this.dgvDetalles.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgvDetalles.Size = new System.Drawing.Size(1043, 216);
-            this.dgvDetalles.TabIndex = 24;
-            // 
             // frmCierreCaja
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.AutoScaleDimensions = new System.Drawing.SizeF(120F, 120F);
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
             this.AutoScroll = true;
             this.BackColor = System.Drawing.Color.White;
-            this.ClientSize = new System.Drawing.Size(1161, 715);
+            this.ClientSize = new System.Drawing.Size(1161, 834);
             this.Controls.Add(this.panelDetalleCierre);
             this.Controls.Add(this.panelCierreInformacion);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Name = "frmCierreCaja";
-            this.Text = "frmCierreCaja";
+            this.Text = "Cierre Caja";
             this.Load += new System.EventHandler(this.frmCierreCaja_Load);
             this.panelCierreInformacion.ResumeLayout(false);
             this.panelCierreInformacion.PerformLayout();
