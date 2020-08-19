@@ -495,6 +495,24 @@
             return inesem_ok;
         }
 
+        private void btnBackup_Click_1(object sender, EventArgs e)
+        {
+            bool listo = false;
+            string maquina = Environment.MachineName;
+            //SQLEXPRESS
+            maquina = ".";
+            listo = Create(maquina, "Empeno", "C:\\Backup\\empeno.bak");
+            if (listo)
+            {
+                MessageBox.Show("El BackUp se realizo de forma exitosa. Por favor revisar la carpeta C:\\Backup");
+            }
+            else
+            {
+                MessageBox.Show("Hubo un problema a la hora de generar el BackUp. Por favor contactarse con SuFacturaFacil para soporte.");
+            }
+        }
+
+      
         protected override void WndProc(ref Message m)
         {
             switch (m.Msg)

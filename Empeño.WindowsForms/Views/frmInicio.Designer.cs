@@ -558,15 +558,17 @@ namespace Empeño.WindowsForms.Views
             // 
             this.btnBackup.Anchor = System.Windows.Forms.AnchorStyles.Right;
             this.btnBackup.BackColor = System.Drawing.Color.Transparent;
-            this.btnBackup.ForeColor = System.Drawing.Color.Fuchsia;
+            this.btnBackup.ForeColor = System.Drawing.Color.Magenta;
             this.btnBackup.IconChar = FontAwesome.Sharp.IconChar.Database;
-            this.btnBackup.IconColor = System.Drawing.Color.Fuchsia;
-            this.btnBackup.Location = new System.Drawing.Point(886, 2);
+            this.btnBackup.IconColor = System.Drawing.Color.Magenta;
+            this.btnBackup.IconSize = 26;
+            this.btnBackup.Location = new System.Drawing.Point(805, 2);
+            this.btnBackup.Margin = new System.Windows.Forms.Padding(2);
             this.btnBackup.Name = "btnBackup";
-            this.btnBackup.Size = new System.Drawing.Size(32, 32);
+            this.btnBackup.Size = new System.Drawing.Size(26, 26);
             this.btnBackup.TabIndex = 8;
             this.btnBackup.TabStop = false;
-            this.btnBackup.Click += new System.EventHandler(this.btnBackup_Click);
+            this.btnBackup.Click += new System.EventHandler(this.btnBackup_Click_1);
             // 
             // lblSesionUsuario
             // 
@@ -825,5 +827,6 @@ namespace Empeño.WindowsForms.Views
         private FontAwesome.Sharp.IconButton mnuReporteVencidos;
         private Label lblSesionUsuario;
         private Label label2;
+        private FontAwesome.Sharp.IconPictureBox btnBackup;
     }
 }
