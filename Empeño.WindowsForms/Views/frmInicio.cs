@@ -6,6 +6,7 @@
     using FontAwesome.Sharp;
     using System;
     using System.Data.Entity;
+    using System.Data.SqlClient;
     using System.Drawing;
     using System.Linq;
     using System.Runtime.InteropServices;
@@ -442,6 +443,56 @@
 
             ActivateButton(sender, RGBColors.color3);
             OpenChildForm(new frmVencidos());
+        }
+
+        private void btnBackup_Click(object sender, EventArgs e)
+        {
+            bool listo = false;
+            string maquina = Environment.MachineName;
+            //SQLEXPRESS
+            maquina = ".";
+            listo = Create(maquina, "Empeno", "C:\\Backup\\empeno.bak");
+            if (listo)
+            {
+                MessageBox.Show("El BackUp se realizo de forma exitosa. Por favor revisar la carpeta C:\\Backup");
+            }
+            else
+            {
+                MessageBox.Show("Hubo un problema a la hora de generar el BackUp. Por favor contactarse con SuFacturaFacil para soporte.");
+            }
+
+        }
+
+        public static Boolean Create(String p_server, String p_database, String p_backup_file)
+        {
+            Boolean inesem_ok = true;
+            string sBackup = "BACKUP DATABASE " + p_database +
+            " TO DISK = '" + p_backup_file + "'" +
+            " WITH FORMAT, " +
+            " MEDIANAME ='EmpenoFinal', NAME = 'CopiaBD ';";
+
+            SqlConnectionStringBuilder csb = new SqlConnectionStringBuilder();
+            csb.DataSource = p_server;
+            csb.InitialCatalog = "master";
+            csb.IntegratedSecurity = true;
+            using (SqlConnection con = new SqlConnection(csb.ConnectionString))
+            {
+                try
+
+                {
+                    con.Open();
+                    SqlCommand cmdBackUp = new SqlCommand(sBackup, con);
+                    cmdBackUp.ExecuteNonQuery();
+                    con.Close();
+                }
+                catch (Exception ex)
+                {
+                    inesem_ok = false;
+                    con.Close();
+                }
+            }
+
+            return inesem_ok;
         }
 
         protected override void WndProc(ref Message m)

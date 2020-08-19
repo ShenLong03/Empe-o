@@ -55,6 +55,7 @@ namespace Empeño.WindowsForms.Views
             this.shapeContainer1 = new Microsoft.VisualBasic.PowerPacks.ShapeContainer();
             this.lineShape1 = new Microsoft.VisualBasic.PowerPacks.LineShape();
             this.panel3 = new System.Windows.Forms.Panel();
+            this.btnBackup = new FontAwesome.Sharp.IconPictureBox();
             this.lblSesionUsuario = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.btnRestore = new FontAwesome.Sharp.IconPictureBox();
@@ -78,6 +79,7 @@ namespace Empeño.WindowsForms.Views
             ((System.ComponentModel.ISupportInitialize)(this.btnMenu)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.panel3.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.btnBackup)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.btnRestore)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.btnMaximize)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.btnMinimize)).BeginInit();
@@ -535,6 +537,7 @@ namespace Empeño.WindowsForms.Views
             // panel3
             // 
             this.panel3.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(16)))), ((int)(((byte)(19)))), ((int)(((byte)(100)))));
+            this.panel3.Controls.Add(this.btnBackup);
             this.panel3.Controls.Add(this.lblSesionUsuario);
             this.panel3.Controls.Add(this.label2);
             this.panel3.Controls.Add(this.btnRestore);
@@ -550,6 +553,20 @@ namespace Empeño.WindowsForms.Views
             this.panel3.Size = new System.Drawing.Size(937, 48);
             this.panel3.TabIndex = 1;
             this.panel3.MouseMove += new System.Windows.Forms.MouseEventHandler(this.panel3_MouseMove);
+            // 
+            // btnBackup
+            // 
+            this.btnBackup.Anchor = System.Windows.Forms.AnchorStyles.Right;
+            this.btnBackup.BackColor = System.Drawing.Color.Transparent;
+            this.btnBackup.ForeColor = System.Drawing.Color.Fuchsia;
+            this.btnBackup.IconChar = FontAwesome.Sharp.IconChar.Database;
+            this.btnBackup.IconColor = System.Drawing.Color.Fuchsia;
+            this.btnBackup.Location = new System.Drawing.Point(886, 2);
+            this.btnBackup.Name = "btnBackup";
+            this.btnBackup.Size = new System.Drawing.Size(32, 32);
+            this.btnBackup.TabIndex = 8;
+            this.btnBackup.TabStop = false;
+            this.btnBackup.Click += new System.EventHandler(this.btnBackup_Click);
             // 
             // lblSesionUsuario
             // 
@@ -751,6 +768,7 @@ namespace Empeño.WindowsForms.Views
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.panel3.ResumeLayout(false);
             this.panel3.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.btnBackup)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.btnRestore)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.btnMaximize)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.btnMinimize)).EndInit();
