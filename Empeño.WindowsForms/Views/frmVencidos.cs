@@ -39,6 +39,8 @@ namespace Empeño.WindowsForms.Views
               .Include(x => x.Intereses).ToListAsync();
                 configuracion = _context.Configuraciones.FirstOrDefault();
                 LoadDetalle();
+                dtDesde.Value = DateTime.Today;
+                dtHasta.Value = DateTime.Today;
             }
             catch (Exception)
             {
@@ -336,6 +338,25 @@ namespace Empeño.WindowsForms.Views
 
         }
 
+        private async void btnBuscar_Click(object sender, EventArgs e)
+        {
+            try
+            {                
+                var hasta = dtHasta.Value.AddHours(23).AddHours(59);               
 
+                empeños = await _context.Empenos.Where(x =>x.FechaVencimiento>=dtDesde.Value && x.FechaVencimiento<=hasta
+                && !x.IsDelete && x.Estado == Estado.Vencido
+                 && !x.Retirado && x.FechaRetiro == null
+                 && !x.RetiradoAdministrador && x.FechaRetiroAdministrador == null)
+              .Include(x => x.Intereses).ToListAsync();
+                configuracion = _context.Configuraciones.FirstOrDefault();
+                LoadDetalle();              
+            }
+            catch (Exception)
+            {
+
+                MessageBox.Show("Error");
+            }
+        }
     }
 }

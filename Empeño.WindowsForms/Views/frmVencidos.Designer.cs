@@ -38,6 +38,9 @@
             this.dgvDetalles = new System.Windows.Forms.DataGridView();
             this.label6 = new System.Windows.Forms.Label();
             this.panelArqueo = new System.Windows.Forms.Panel();
+            this.btnBuscar = new System.Windows.Forms.Button();
+            this.textBox1 = new System.Windows.Forms.TextBox();
+            this.label2 = new System.Windows.Forms.Label();
             this.lblTotalProrroga = new System.Windows.Forms.Label();
             this.lblTotalRetirados = new System.Windows.Forms.Label();
             this.lblTotalVencidos = new System.Windows.Forms.Label();
@@ -47,20 +50,19 @@
             this.label4 = new System.Windows.Forms.Label();
             this.txtTotalVencido = new System.Windows.Forms.TextBox();
             this.label3 = new System.Windows.Forms.Label();
+            this.btnDelete = new System.Windows.Forms.Button();
             this.txtEmpleado = new System.Windows.Forms.TextBox();
             this.lblEmpleado = new System.Windows.Forms.Label();
+            this.btnCancelar = new System.Windows.Forms.Button();
+            this.btnImprimir = new System.Windows.Forms.Button();
             this.txtFecha = new System.Windows.Forms.TextBox();
             this.lblFecha = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.elipsePanelArqueo = new Bunifu.Framework.UI.BunifuElipse(this.components);
             this.elipseDetalles = new Bunifu.Framework.UI.BunifuElipse(this.components);
             this.printDocument1 = new System.Drawing.Printing.PrintDocument();
-            this.textBox1 = new System.Windows.Forms.TextBox();
-            this.label2 = new System.Windows.Forms.Label();
-            this.button1 = new System.Windows.Forms.Button();
-            this.btnDelete = new System.Windows.Forms.Button();
-            this.btnCancelar = new System.Windows.Forms.Button();
-            this.btnImprimir = new System.Windows.Forms.Button();
+            this.dtDesde = new System.Windows.Forms.DateTimePicker();
+            this.dtHasta = new System.Windows.Forms.DateTimePicker();
             this.panelDetalle.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvDetalles)).BeginInit();
             this.panelArqueo.SuspendLayout();
@@ -74,9 +76,9 @@
             this.panelDetalle.Controls.Add(this.dgvDetalles);
             this.panelDetalle.Controls.Add(this.label6);
             this.panelDetalle.Location = new System.Drawing.Point(19, 296);
-            this.panelDetalle.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.panelDetalle.Margin = new System.Windows.Forms.Padding(2);
             this.panelDetalle.Name = "panelDetalle";
-            this.panelDetalle.Size = new System.Drawing.Size(630, 414);
+            this.panelDetalle.Size = new System.Drawing.Size(682, 414);
             this.panelDetalle.TabIndex = 10;
             // 
             // dgvDetalles
@@ -130,7 +132,7 @@
             this.dgvDetalles.RowTemplate.DividerHeight = 1;
             this.dgvDetalles.RowTemplate.Height = 45;
             this.dgvDetalles.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgvDetalles.Size = new System.Drawing.Size(593, 359);
+            this.dgvDetalles.Size = new System.Drawing.Size(645, 359);
             this.dgvDetalles.TabIndex = 23;
             this.dgvDetalles.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvDetalles_CellContentClick_1);
             // 
@@ -151,7 +153,9 @@
             this.panelArqueo.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.panelArqueo.BackColor = System.Drawing.Color.LightGray;
-            this.panelArqueo.Controls.Add(this.button1);
+            this.panelArqueo.Controls.Add(this.dtHasta);
+            this.panelArqueo.Controls.Add(this.dtDesde);
+            this.panelArqueo.Controls.Add(this.btnBuscar);
             this.panelArqueo.Controls.Add(this.textBox1);
             this.panelArqueo.Controls.Add(this.label2);
             this.panelArqueo.Controls.Add(this.lblTotalProrroga);
@@ -172,11 +176,52 @@
             this.panelArqueo.Controls.Add(this.lblFecha);
             this.panelArqueo.Controls.Add(this.label1);
             this.panelArqueo.Location = new System.Drawing.Point(19, 37);
-            this.panelArqueo.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.panelArqueo.Margin = new System.Windows.Forms.Padding(2);
             this.panelArqueo.Name = "panelArqueo";
-            this.panelArqueo.Size = new System.Drawing.Size(631, 250);
+            this.panelArqueo.Size = new System.Drawing.Size(683, 250);
             this.panelArqueo.TabIndex = 9;
             this.panelArqueo.Paint += new System.Windows.Forms.PaintEventHandler(this.panelArqueo_Paint);
+            // 
+            // btnBuscar
+            // 
+            this.btnBuscar.BackColor = System.Drawing.Color.DarkViolet;
+            this.btnBuscar.FlatAppearance.BorderSize = 0;
+            this.btnBuscar.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnBuscar.Font = new System.Drawing.Font("Century Gothic", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnBuscar.ForeColor = System.Drawing.Color.White;
+            this.btnBuscar.Image = ((System.Drawing.Image)(resources.GetObject("btnBuscar.Image")));
+            this.btnBuscar.Location = new System.Drawing.Point(20, 189);
+            this.btnBuscar.Margin = new System.Windows.Forms.Padding(2);
+            this.btnBuscar.Name = "btnBuscar";
+            this.btnBuscar.Size = new System.Drawing.Size(92, 36);
+            this.btnBuscar.TabIndex = 30;
+            this.btnBuscar.Text = " Buscar";
+            this.btnBuscar.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
+            this.btnBuscar.UseVisualStyleBackColor = false;
+            this.btnBuscar.Click += new System.EventHandler(this.btnBuscar_Click);
+            // 
+            // textBox1
+            // 
+            this.textBox1.BackColor = System.Drawing.Color.WhiteSmoke;
+            this.textBox1.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.textBox1.Font = new System.Drawing.Font("Century Gothic", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.textBox1.Location = new System.Drawing.Point(20, 71);
+            this.textBox1.Margin = new System.Windows.Forms.Padding(2);
+            this.textBox1.Name = "textBox1";
+            this.textBox1.Size = new System.Drawing.Size(164, 23);
+            this.textBox1.TabIndex = 29;
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Font = new System.Drawing.Font("Century Gothic", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label2.ForeColor = System.Drawing.Color.DimGray;
+            this.label2.Location = new System.Drawing.Point(17, 50);
+            this.label2.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(59, 21);
+            this.label2.TabIndex = 28;
+            this.label2.Text = "Desde";
             // 
             // lblTotalProrroga
             // 
@@ -221,7 +266,7 @@
             this.txtTotalProrroga.Enabled = false;
             this.txtTotalProrroga.Font = new System.Drawing.Font("Century Gothic", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtTotalProrroga.Location = new System.Drawing.Point(475, 138);
-            this.txtTotalProrroga.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.txtTotalProrroga.Margin = new System.Windows.Forms.Padding(2);
             this.txtTotalProrroga.Name = "txtTotalProrroga";
             this.txtTotalProrroga.Size = new System.Drawing.Size(164, 23);
             this.txtTotalProrroga.TabIndex = 13;
@@ -246,7 +291,7 @@
             this.txtTotalRetirados.Enabled = false;
             this.txtTotalRetirados.Font = new System.Drawing.Font("Century Gothic", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtTotalRetirados.Location = new System.Drawing.Point(246, 138);
-            this.txtTotalRetirados.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.txtTotalRetirados.Margin = new System.Windows.Forms.Padding(2);
             this.txtTotalRetirados.Name = "txtTotalRetirados";
             this.txtTotalRetirados.Size = new System.Drawing.Size(164, 23);
             this.txtTotalRetirados.TabIndex = 11;
@@ -271,7 +316,7 @@
             this.txtTotalVencido.Enabled = false;
             this.txtTotalVencido.Font = new System.Drawing.Font("Century Gothic", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtTotalVencido.Location = new System.Drawing.Point(19, 138);
-            this.txtTotalVencido.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.txtTotalVencido.Margin = new System.Windows.Forms.Padding(2);
             this.txtTotalVencido.Name = "txtTotalVencido";
             this.txtTotalVencido.Size = new System.Drawing.Size(164, 23);
             this.txtTotalVencido.TabIndex = 9;
@@ -289,13 +334,30 @@
             this.label3.TabIndex = 8;
             this.label3.Text = "Total Vencidos";
             // 
+            // btnDelete
+            // 
+            this.btnDelete.BackColor = System.Drawing.Color.Crimson;
+            this.btnDelete.FlatAppearance.BorderSize = 0;
+            this.btnDelete.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnDelete.Font = new System.Drawing.Font("Century Gothic", 9F, System.Drawing.FontStyle.Bold);
+            this.btnDelete.ForeColor = System.Drawing.Color.White;
+            this.btnDelete.Image = ((System.Drawing.Image)(resources.GetObject("btnDelete.Image")));
+            this.btnDelete.Location = new System.Drawing.Point(310, 189);
+            this.btnDelete.Margin = new System.Windows.Forms.Padding(2);
+            this.btnDelete.Name = "btnDelete";
+            this.btnDelete.Size = new System.Drawing.Size(100, 36);
+            this.btnDelete.TabIndex = 7;
+            this.btnDelete.Text = " Eliminar";
+            this.btnDelete.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
+            this.btnDelete.UseVisualStyleBackColor = false;
+            // 
             // txtEmpleado
             // 
             this.txtEmpleado.BackColor = System.Drawing.Color.WhiteSmoke;
             this.txtEmpleado.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.txtEmpleado.Font = new System.Drawing.Font("Century Gothic", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtEmpleado.Location = new System.Drawing.Point(475, 71);
-            this.txtEmpleado.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.txtEmpleado.Margin = new System.Windows.Forms.Padding(2);
             this.txtEmpleado.Name = "txtEmpleado";
             this.txtEmpleado.Size = new System.Drawing.Size(164, 23);
             this.txtEmpleado.TabIndex = 6;
@@ -312,13 +374,47 @@
             this.lblEmpleado.TabIndex = 5;
             this.lblEmpleado.Text = "Empleado";
             // 
+            // btnCancelar
+            // 
+            this.btnCancelar.BackColor = System.Drawing.Color.Gold;
+            this.btnCancelar.FlatAppearance.BorderSize = 0;
+            this.btnCancelar.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnCancelar.Font = new System.Drawing.Font("Century Gothic", 9F, System.Drawing.FontStyle.Bold);
+            this.btnCancelar.Image = ((System.Drawing.Image)(resources.GetObject("btnCancelar.Image")));
+            this.btnCancelar.Location = new System.Drawing.Point(212, 189);
+            this.btnCancelar.Margin = new System.Windows.Forms.Padding(2);
+            this.btnCancelar.Name = "btnCancelar";
+            this.btnCancelar.Size = new System.Drawing.Size(94, 36);
+            this.btnCancelar.TabIndex = 4;
+            this.btnCancelar.Text = " Cancelar";
+            this.btnCancelar.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
+            this.btnCancelar.UseVisualStyleBackColor = false;
+            // 
+            // btnImprimir
+            // 
+            this.btnImprimir.BackColor = System.Drawing.Color.DeepSkyBlue;
+            this.btnImprimir.FlatAppearance.BorderSize = 0;
+            this.btnImprimir.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnImprimir.Font = new System.Drawing.Font("Century Gothic", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnImprimir.ForeColor = System.Drawing.Color.White;
+            this.btnImprimir.Image = ((System.Drawing.Image)(resources.GetObject("btnImprimir.Image")));
+            this.btnImprimir.Location = new System.Drawing.Point(116, 189);
+            this.btnImprimir.Margin = new System.Windows.Forms.Padding(2);
+            this.btnImprimir.Name = "btnImprimir";
+            this.btnImprimir.Size = new System.Drawing.Size(92, 36);
+            this.btnImprimir.TabIndex = 3;
+            this.btnImprimir.Text = " Enviar";
+            this.btnImprimir.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
+            this.btnImprimir.UseVisualStyleBackColor = false;
+            this.btnImprimir.Click += new System.EventHandler(this.btnGuardarCierreCaja_Click);
+            // 
             // txtFecha
             // 
             this.txtFecha.BackColor = System.Drawing.Color.WhiteSmoke;
             this.txtFecha.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.txtFecha.Font = new System.Drawing.Font("Century Gothic", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtFecha.Location = new System.Drawing.Point(246, 71);
-            this.txtFecha.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.txtFecha.Margin = new System.Windows.Forms.Padding(2);
             this.txtFecha.Name = "txtFecha";
             this.txtFecha.Size = new System.Drawing.Size(164, 23);
             this.txtFecha.TabIndex = 2;
@@ -357,96 +453,25 @@
             this.elipseDetalles.ElipseRadius = 20;
             this.elipseDetalles.TargetControl = this.panelDetalle;
             // 
-            // textBox1
+            // dtDesde
             // 
-            this.textBox1.BackColor = System.Drawing.Color.WhiteSmoke;
-            this.textBox1.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.textBox1.Font = new System.Drawing.Font("Century Gothic", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.textBox1.Location = new System.Drawing.Point(20, 71);
-            this.textBox1.Margin = new System.Windows.Forms.Padding(2);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(164, 23);
-            this.textBox1.TabIndex = 29;
+            this.dtDesde.CustomFormat = "dd/MM/yyyy";
+            this.dtDesde.Font = new System.Drawing.Font("Century Gothic", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.dtDesde.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
+            this.dtDesde.Location = new System.Drawing.Point(19, 71);
+            this.dtDesde.Name = "dtDesde";
+            this.dtDesde.Size = new System.Drawing.Size(164, 27);
+            this.dtDesde.TabIndex = 31;
             // 
-            // label2
+            // dtHasta
             // 
-            this.label2.AutoSize = true;
-            this.label2.Font = new System.Drawing.Font("Century Gothic", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label2.ForeColor = System.Drawing.Color.DimGray;
-            this.label2.Location = new System.Drawing.Point(17, 50);
-            this.label2.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(59, 21);
-            this.label2.TabIndex = 28;
-            this.label2.Text = "Desde";
-            // 
-            // button1
-            // 
-            this.button1.BackColor = System.Drawing.Color.DarkViolet;
-            this.button1.FlatAppearance.BorderSize = 0;
-            this.button1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button1.Font = new System.Drawing.Font("Century Gothic", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button1.ForeColor = System.Drawing.Color.White;
-            this.button1.Image = ((System.Drawing.Image)(resources.GetObject("button1.Image")));
-            this.button1.Location = new System.Drawing.Point(20, 189);
-            this.button1.Margin = new System.Windows.Forms.Padding(2);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(92, 36);
-            this.button1.TabIndex = 30;
-            this.button1.Text = " Buscar";
-            this.button1.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
-            this.button1.UseVisualStyleBackColor = false;
-            // 
-            // btnDelete
-            // 
-            this.btnDelete.BackColor = System.Drawing.Color.Crimson;
-            this.btnDelete.FlatAppearance.BorderSize = 0;
-            this.btnDelete.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnDelete.Font = new System.Drawing.Font("Century Gothic", 9F, System.Drawing.FontStyle.Bold);
-            this.btnDelete.ForeColor = System.Drawing.Color.White;
-            this.btnDelete.Image = ((System.Drawing.Image)(resources.GetObject("btnDelete.Image")));
-            this.btnDelete.Location = new System.Drawing.Point(310, 189);
-            this.btnDelete.Margin = new System.Windows.Forms.Padding(2);
-            this.btnDelete.Name = "btnDelete";
-            this.btnDelete.Size = new System.Drawing.Size(100, 36);
-            this.btnDelete.TabIndex = 7;
-            this.btnDelete.Text = " Eliminar";
-            this.btnDelete.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
-            this.btnDelete.UseVisualStyleBackColor = false;
-            // 
-            // btnCancelar
-            // 
-            this.btnCancelar.BackColor = System.Drawing.Color.Gold;
-            this.btnCancelar.FlatAppearance.BorderSize = 0;
-            this.btnCancelar.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnCancelar.Font = new System.Drawing.Font("Century Gothic", 9F, System.Drawing.FontStyle.Bold);
-            this.btnCancelar.Image = ((System.Drawing.Image)(resources.GetObject("btnCancelar.Image")));
-            this.btnCancelar.Location = new System.Drawing.Point(212, 189);
-            this.btnCancelar.Margin = new System.Windows.Forms.Padding(2);
-            this.btnCancelar.Name = "btnCancelar";
-            this.btnCancelar.Size = new System.Drawing.Size(94, 36);
-            this.btnCancelar.TabIndex = 4;
-            this.btnCancelar.Text = " Cancelar";
-            this.btnCancelar.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
-            this.btnCancelar.UseVisualStyleBackColor = false;
-            // 
-            // btnImprimir
-            // 
-            this.btnImprimir.BackColor = System.Drawing.Color.DeepSkyBlue;
-            this.btnImprimir.FlatAppearance.BorderSize = 0;
-            this.btnImprimir.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnImprimir.Font = new System.Drawing.Font("Century Gothic", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnImprimir.ForeColor = System.Drawing.Color.White;
-            this.btnImprimir.Image = ((System.Drawing.Image)(resources.GetObject("btnImprimir.Image")));
-            this.btnImprimir.Location = new System.Drawing.Point(116, 189);
-            this.btnImprimir.Margin = new System.Windows.Forms.Padding(2);
-            this.btnImprimir.Name = "btnImprimir";
-            this.btnImprimir.Size = new System.Drawing.Size(92, 36);
-            this.btnImprimir.TabIndex = 3;
-            this.btnImprimir.Text = " Enviar";
-            this.btnImprimir.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
-            this.btnImprimir.UseVisualStyleBackColor = false;
-            this.btnImprimir.Click += new System.EventHandler(this.btnGuardarCierreCaja_Click);
+            this.dtHasta.CustomFormat = "dd/MM/yyyy";
+            this.dtHasta.Font = new System.Drawing.Font("Century Gothic", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.dtHasta.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
+            this.dtHasta.Location = new System.Drawing.Point(246, 71);
+            this.dtHasta.Name = "dtHasta";
+            this.dtHasta.Size = new System.Drawing.Size(164, 27);
+            this.dtHasta.TabIndex = 32;
             // 
             // frmVencidos
             // 
@@ -454,11 +479,11 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
             this.AutoScroll = true;
             this.BackColor = System.Drawing.Color.White;
-            this.ClientSize = new System.Drawing.Size(714, 630);
+            this.ClientSize = new System.Drawing.Size(766, 738);
             this.Controls.Add(this.panelDetalle);
             this.Controls.Add(this.panelArqueo);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
-            this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.Margin = new System.Windows.Forms.Padding(2);
             this.Name = "frmVencidos";
             this.Text = "Vencidos";
             this.Load += new System.EventHandler(this.frmArqueo_Load);
@@ -497,8 +522,10 @@
         private System.Windows.Forms.Label lblTotalRetirados;
         private System.Windows.Forms.Label lblTotalVencidos;
         private System.Windows.Forms.DataGridView dgvDetalles;
-        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button btnBuscar;
         private System.Windows.Forms.TextBox textBox1;
         private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.DateTimePicker dtHasta;
+        private System.Windows.Forms.DateTimePicker dtDesde;
     }
 }
