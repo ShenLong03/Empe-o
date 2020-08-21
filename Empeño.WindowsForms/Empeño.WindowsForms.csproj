@@ -1176,6 +1176,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="LetraDegradadoGold0.ico" />
+    <None Include="Resources\airplane-11-16.png" />
     <Content Include="SqlServerTypes\readme.htm" />
     <Content Include="SqlServerTypes\x64\msvcr120.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>

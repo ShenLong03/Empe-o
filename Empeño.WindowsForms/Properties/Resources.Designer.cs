@@ -2663,6 +2663,16 @@ namespace Empeño.WindowsForms.Properties {
         /// <summary>
         ///   Busca un recurso adaptado de tipo System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap airplane_11_16 {
+            get {
+                object obj = ResourceManager.GetObject("airplane-11-16", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Busca un recurso adaptado de tipo System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap btnBlue {
             get {
                 object obj = ResourceManager.GetObject("btnBlue", resourceCulture);

@@ -190,22 +190,38 @@ namespace Empeño.WindowsForms.Views
                     Modulo = "Pagos",
                     Accion = "Crear"
                 });
-                empeño.MontoPendiente -= pago.Monto;
 
+                empeño.MontoPendiente -= pago.Monto;
+                
                 if (empeño.MontoPendiente < 1)
                 {
+                    await PagaInteres(pagoIntereses, false);
                     empeño.Estado = Estado.Cancelado;
-                    empeño.Retirado = true;
+                    empeño.Retirado = true;                    
                     _context.Intereses.RemoveRange(_context.Intereses.Where(i => i.EmpenoId == empleadoId && i.Pagado == 0));
                     await PrintRetiro(empeño, pago);
                 }
                 else
                 {
-                    await PrintAbono(empeño, pago);
+                    await PagaInteres(pagoIntereses, true);
+                    await PrintAbono(empeño, pago);                    
                 }
             }
+            else
+            {
+                await PagaInteres(pagoIntereses, true);              
+            }
+         
+            await _context.SaveChangesAsync();
 
-            if (pagoIntereses > 0 && !empeño.Retirado)
+            MessageBox.Show("Pago recibido");
+            this.Close();
+        }
+
+
+        public async Task PagaInteres(double pagoIntereses, bool print=true)
+        {
+            if (pagoIntereses > 0)
             {
                 var pago = new Pago
                 {
@@ -262,14 +278,12 @@ namespace Empeño.WindowsForms.Views
                     Modulo = "Intereses",
                     Accion = "Crear"
                 });
-                await PrintInteres(empeño, intereses, pago);
-            }
-          
 
-            await _context.SaveChangesAsync();
-
-            MessageBox.Show("Pago recibido");
-            this.Close();
+                if (print)
+                {
+                    await PrintInteres(empeño, intereses, pago);
+                }
+            }          
         }
 
         private void txtPagaInteres_TextChanged_1(object sender, EventArgs e)

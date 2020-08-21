@@ -121,8 +121,8 @@
   <data name="118-premium" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\118-premium.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="242-browser-2" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\242-browser-2.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="100-shopping-basket-12" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\100-shopping-basket-12.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="190-money-2" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\190-money-2.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -133,8 +133,14 @@
   <data name="035-payment-method-2" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\035-payment-method-2.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="027-sold-1" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\027-sold-1.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="107-online-shop-11" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\107-online-shop-11.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="018-shopping-cart-8" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\018-shopping-cart-8.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="061-user-1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\061-user-1.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="082-smartphone-7" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\082-smartphone-7.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -142,17 +148,14 @@
   <data name="303-online-shopping" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\303-online-shopping.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="050-invoice-5" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\050-invoice-5.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
   <data name="019-phone-call-1" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\019-phone-call-1.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="249-payment-method" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\249-payment-method.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="029-24-hours-2" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\029-24-hours-2.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="072-new-1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\072-new-1.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="287-sticker" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\287-sticker.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -175,17 +178,8 @@
   <data name="229-like-1" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\229-like-1.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="189-barcode-2" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\189-barcode-2.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="018-shopping-cart-8" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\018-shopping-cart-8.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
   <data name="228-credit-card-2" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\228-credit-card-2.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="225-open-1" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\225-open-1.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="185-credit-card-3" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\185-credit-card-3.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -196,20 +190,17 @@
   <data name="219-present" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\219-present.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="284-basket-1" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\284-basket-1.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
   <data name="042-delivery-truck-10" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\042-delivery-truck-10.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="003-online-shop-27" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\003-online-shop-27.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="063-shopping-bag-6" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\063-shopping-bag-6.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="251-credit-card" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\251-credit-card.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="201-wallet" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\201-wallet.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="039-browser-7" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\039-browser-7.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="085-barcode-4" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\085-barcode-4.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -225,6 +216,9 @@
   </data>
   <data name="211-browser-6" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\211-browser-6.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="162-package-1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\162-package-1.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="051-percentage-1" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\051-percentage-1.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -268,9 +262,6 @@
   <data name="299-gifts" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\299-gifts.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="233-browser-4" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\233-browser-4.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
   <data name="292-box" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\292-box.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
@@ -285,6 +276,9 @@
   </data>
   <data name="077-online-shop-19" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\077-online-shop-19.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="090-price-tag" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\090-price-tag.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="064-invoice-4" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\064-invoice-4.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -319,14 +313,14 @@
   <data name="245-like" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\245-like.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="286-placeholder" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\286-placeholder.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
   <data name="btnBlue" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\btnBlue.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="265-24-hours" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\265-24-hours.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="296-label" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\296-label.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="238-browser-3" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\238-browser-3.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="167-trolley" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\167-trolley.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -334,20 +328,14 @@
   <data name="097-online-shop-13" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\097-online-shop-13.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="184-exchange" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\184-exchange.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="044-diamond" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\044-diamond.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
   <data name="259-label-2" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\259-label-2.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="217-shopping-cart-1" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\217-shopping-cart-1.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="175-megaphone-1" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\175-megaphone-1.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="084-mouse" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\084-mouse.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="298-cart" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\298-cart.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -358,14 +346,20 @@
   <data name="078-credit-card-10" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\078-credit-card-10.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="251-credit-card" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\251-credit-card.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="307-close" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\307-close.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="176-gift-1" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\176-gift-1.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="196-shopping-cart-2" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\196-shopping-cart-2.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="095-online-shop-14" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\095-online-shop-14.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="305-labels" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\305-labels.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="029-24-hours-2" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\029-24-hours-2.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="073-dollar-3" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\073-dollar-3.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="152-money-4" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\152-money-4.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -385,9 +379,6 @@
   <data name="163-telephone" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\163-telephone.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="006-shopping-bag-10" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\006-shopping-bag-10.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
   <data name="092-shopping-bag-5" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\092-shopping-bag-5.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
@@ -400,8 +391,8 @@
   <data name="235-package" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\235-package.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="269-shopping-bag" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\269-shopping-bag.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="113-credit-card-8" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\113-credit-card-8.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="213-shirt" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\213-shirt.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -417,9 +408,6 @@
   </data>
   <data name="277-cart-1" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\277-cart-1.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="052-cloud-computing" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\052-cloud-computing.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="091-buy-3" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\091-buy-3.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -460,9 +448,6 @@
   <data name="096-close-1" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\096-close-1.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="218-delivery-truck-4" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\218-delivery-truck-4.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
   <data name="151-online-shop-4" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\151-online-shop-4.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
@@ -474,9 +459,6 @@
   </data>
   <data name="116-delivery-truck-6" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\116-delivery-truck-6.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="123-shopping-bag-4" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\123-shopping-bag-4.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="047-quality-3" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\047-quality-3.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -490,8 +472,17 @@
   <data name="133-shop-3" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\133-shop-3.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="111-percentage" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\111-percentage.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
   <data name="239-pack" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\239-pack.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Linea" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Linea.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="027-sold-1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\027-sold-1.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="117-drinks" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\117-drinks.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -517,14 +508,11 @@
   <data name="109-online-shop-10" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\109-online-shop-10.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="136-package-3" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\136-package-3.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
   <data name="021-calendar" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\021-calendar.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="084-mouse" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\084-mouse.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="266-milk" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\266-milk.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="080-online-shop-18" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\080-online-shop-18.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -562,8 +550,8 @@
   <data name="258-tablet-1" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\258-tablet-1.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="305-labels" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\305-labels.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="003-online-shop-27" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\003-online-shop-27.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="206-email" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\206-email.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -571,8 +559,8 @@
   <data name="138-wallet-1" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\138-wallet-1.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="196-shopping-cart-2" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\196-shopping-cart-2.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="218-delivery-truck-4" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\218-delivery-truck-4.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="177-barcode-3" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\177-barcode-3.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -586,14 +574,14 @@
   <data name="115-online-shop-8" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\115-online-shop-8.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="304-customer-service" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\304-customer-service.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
   <data name="102-buy-2" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\102-buy-2.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="100-shopping-basket-12" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\100-shopping-basket-12.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="011-shopping-bag-9" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\011-shopping-bag-9.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="184-exchange" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\184-exchange.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="154-dollar-2" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\154-dollar-2.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -607,8 +595,8 @@
   <data name="283-sticker-1" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\283-sticker-1.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="CuadroImagen" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\CuadroImagen.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="300-calculator" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\300-calculator.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="106-shopping-basket-11" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\106-shopping-basket-11.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -618,6 +606,9 @@
   </data>
   <data name="148-package-2" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\148-package-2.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="122-online-shop-7" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\122-online-shop-7.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="224-cash-register" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\224-cash-register.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -646,29 +637,29 @@
   <data name="183-dollar-1" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\183-dollar-1.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="122-online-shop-7" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\122-online-shop-7.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="296-label" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\296-label.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="230-qr-code" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\230-qr-code.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="209-smartphone-2" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\209-smartphone-2.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="265-24-hours" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\265-24-hours.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="146-tag-1" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\146-tag-1.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="300-calculator" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\300-calculator.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="CuadroImagen" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\CuadroImagen.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="203-discount-1" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\203-discount-1.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="061-user-1" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\061-user-1.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="242-browser-2" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\242-browser-2.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="111-percentage" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\111-percentage.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="095-online-shop-14" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\095-online-shop-14.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="179-telemarketer" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\179-telemarketer.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -676,8 +667,8 @@
   <data name="032-shopping-bag-8" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\032-shopping-bag-8.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="107-online-shop-11" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\107-online-shop-11.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="189-barcode-2" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\189-barcode-2.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="137-shopping-bag-3" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\137-shopping-bag-3.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -685,26 +676,32 @@
   <data name="007-piggy-bank-2" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\007-piggy-bank-2.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="238-browser-3" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\238-browser-3.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="123-shopping-bag-4" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\123-shopping-bag-4.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="275-store" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\275-store.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="175-megaphone-1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\175-megaphone-1.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="017-id-card" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\017-id-card.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="304-customer-service" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\304-customer-service.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="083-delivery-truck-8" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\083-delivery-truck-8.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="136-package-3" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\136-package-3.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="037-placeholder-2" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\037-placeholder-2.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="072-new-1" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\072-new-1.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="083-delivery-truck-8" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\083-delivery-truck-8.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="225-open-1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\225-open-1.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="209-smartphone-2" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\209-smartphone-2.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="302-sold" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\302-sold.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="055-tag-4" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\055-tag-4.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -718,14 +715,17 @@
   <data name="253-wishlist" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\253-wishlist.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="232-shopping-cart" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\232-shopping-cart.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
   <data name="053-money-9" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\053-money-9.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="306-shield" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\306-shield.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="090-price-tag" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\090-price-tag.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="269-shopping-bag" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\269-shopping-bag.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="261-payment" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\261-payment.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -736,17 +736,17 @@
   <data name="231-rating" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\231-rating.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="282-basket-2" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\282-basket-2.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
   <data name="308-shopping-stand" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\308-shopping-stand.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="023-barcode-5" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\023-barcode-5.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="307-close" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\307-close.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="220-payment-method-1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\220-payment-method-1.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="275-store" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\275-store.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="004-shopping-bag-11" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\004-shopping-bag-11.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -760,6 +760,9 @@
   <data name="250-online-shop" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\250-online-shop.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="127-store-2" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\127-store-2.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
   <data name="180-flask" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\180-flask.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
@@ -769,20 +772,20 @@
   <data name="098-tag-3" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\098-tag-3.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="162-package-1" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\162-package-1.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="176-gift-1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\176-gift-1.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="031-delivery-truck-11" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\031-delivery-truck-11.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="220-payment-method-1" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\220-payment-method-1.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="050-invoice-5" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\050-invoice-5.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="257-quality" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\257-quality.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="290-bag" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\290-bag.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="233-browser-4" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\233-browser-4.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="079-delivery-truck-9" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\079-delivery-truck-9.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -805,8 +808,8 @@
   <data name="260-delivery-truck-2" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\260-delivery-truck-2.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="113-credit-card-8" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\113-credit-card-8.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="006-shopping-bag-10" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\006-shopping-bag-10.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="143-laptop-2" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\143-laptop-2.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -847,8 +850,8 @@
   <data name="164-24-hours-1" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\164-24-hours-1.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="232-shopping-cart" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\232-shopping-cart.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="290-bag" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\290-bag.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="108-gift-card" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\108-gift-card.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -859,11 +862,11 @@
   <data name="159-money-3" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\159-money-3.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="266-milk" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\266-milk.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="011-shopping-bag-9" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\011-shopping-bag-9.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="039-browser-7" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\039-browser-7.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="052-cloud-computing" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\052-cloud-computing.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="155-exchange-1" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\155-exchange-1.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -874,14 +877,14 @@
   <data name="243-invoice" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\243-invoice.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="286-placeholder" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\286-placeholder.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="284-basket-1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\284-basket-1.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="302-sold" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\302-sold.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="063-shopping-bag-6" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\063-shopping-bag-6.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="073-dollar-3" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\073-dollar-3.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="282-basket-2" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\282-basket-2.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="033-online-shop-25" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\033-online-shop-25.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -904,10 +907,10 @@
   <data name="244-box-1" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\244-box-1.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="127-store-2" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\127-store-2.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="044-diamond" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\044-diamond.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="Linea" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\Linea.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="airplane-11-16" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\airplane-11-16.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
 </root>

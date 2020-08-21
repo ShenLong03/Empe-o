@@ -26,6 +26,7 @@ namespace Empeño.WindowsForms.Views
         List<Empeno> empeños = new List<Empeno>();
         int index;
         Configuracion configuracion = new Configuracion();
+        EmailFuncion emailFuncion = new EmailFuncion();
 
         public frmArqueo()
         {
@@ -54,9 +55,24 @@ namespace Empeño.WindowsForms.Views
             }
         }
 
-        private void btnGuardarCierreCaja_Click(object sender, EventArgs e)
+        private async void btnGuardarCierreCaja_Click(object sender, EventArgs e)
         {
-            Print();           
+            if (!funciones.ValidatePIN("Empeño"))
+                return;
+
+            var resp = MessageBox.Show("Está seguro que desea enviar el arqueo y sus observaciones al administrador del negocio","Confirmar", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+            if (resp== DialogResult.Yes)
+            {
+                var str = "<table><tr><td></td><td>Cantidad</td><td>Valor</td></tr>";
+                str += "<tr><td>Total General</td><td> " + lblTotalPrincipal.Text + " </td><td> " + txtTotalPrincipal.Text + " </td></tr>";
+                str += "<tr><td>Total Vigente</td><td> " + lblTotalAlDia.Text + " </td><td> " + txtTotalAlDia.Text + " </td></tr>";
+                str += "<tr><td>Total Vencidos</td><td> " + lblTotalVencidos.Text + " </td><td> " + txtTotalVencido.Text + " </td></tr>";
+                str += "<tr><td>Total Prorrogra</td><td> " + lblTotalProrroga.Text + " </td><td> " + txtTotalProrroga.Text + " </td></tr>";
+                str += "</table>";
+                await emailFuncion.SendMailArqueo(configuracion.EmailNotification, "Arqueo realizado en la sucursal " + configuracion.Compañia, "Arqueo realizado en la sucursal de Empeños " + configuracion.Compañia + " en " + configuracion.Direccion
+                    + "<br /> <h3>Observaciones</h3> " + txtObservaciones.Text, dgvDetalles, str);
+                MessageBox.Show("Mensaje enviado correctamente","Información",MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }            
         }
 
         #region Funciones
@@ -301,6 +317,11 @@ namespace Empeño.WindowsForms.Views
         private void panelArqueo_Paint(object sender, PaintEventArgs e)
         {
 
+        }
+
+        private void btnPrint_Click(object sender, EventArgs e)
+        {
+            Print();
         }
     }
 }
