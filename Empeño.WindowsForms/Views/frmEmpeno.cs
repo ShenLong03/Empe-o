@@ -1590,24 +1590,31 @@ namespace Empeño.WindowsForms.Views
 
         private async void iconButton10_Click(object sender, EventArgs e)
         {
-            if (empeñoId>0)
+            try
             {
-                var empeño = await _context.Empenos.FindAsync(empeñoId);
-                if (empeño!=null)
+                if (empeñoId > 0)
                 {
-                    if (empeño.FechaRetiro != null || empeño.Retirado || empeño.FechaRetiroAdministrador != null || empeño.RetiradoAdministrador || empeño.Estado == Estado.Anulado)
+                    var empeño = await _context.Empenos.FindAsync(empeñoId);
+                    if (empeño != null)
                     {
-                        MessageBox.Show("El registro no puede ser modificado", "Alerta", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                        return;
+                        if (empeño.FechaRetiro != null || empeño.Retirado || empeño.FechaRetiroAdministrador != null || empeño.RetiradoAdministrador || empeño.Estado == Estado.Anulado)
+                        {
+                            MessageBox.Show("El registro no puede ser modificado", "Alerta", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                            return;
+                        }
+                        var oscuro = new frmOscuro();
+                        oscuro.Show();
+                        var frm = new frmPagar(empeñoId);
+                        frm.ShowDialog();
+                        oscuro.Close();
+                        await BuscarEmpeño(empeñoId);
                     }
-                    var oscuro = new frmOscuro();
-                    oscuro.Show();
-                    var frm = new frmPagar(empeñoId);
-                    frm.ShowDialog();
-                    oscuro.Close();
-                    await BuscarEmpeño(empeñoId);
-                }              
-            }            
+                }
+            }
+            catch (Exception ex)
+            {
+
+            }
         }
 
         private async void txtMonto_TextChanged(object sender, EventArgs e)

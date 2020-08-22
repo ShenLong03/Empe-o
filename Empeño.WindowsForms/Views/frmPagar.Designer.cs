@@ -643,7 +643,6 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.txtPagaMonto.BackColor = System.Drawing.Color.WhiteSmoke;
             this.txtPagaMonto.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.txtPagaMonto.Enabled = false;
             this.txtPagaMonto.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F);
             this.txtPagaMonto.ForeColor = System.Drawing.Color.Black;
             this.txtPagaMonto.Location = new System.Drawing.Point(13, 99);

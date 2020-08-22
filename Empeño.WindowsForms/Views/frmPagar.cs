@@ -43,17 +43,27 @@ namespace Empeño.WindowsForms.Views
 
         private void txtPagaInteres_TextChanged_2(object sender, EventArgs e)
         {
-            var interes = double.Parse(txtInteresAPagar.Text);
+            try
+            {
+                if (!string.IsNullOrEmpty(txtPagaInteres.Text))
+                {
+                    var interes = double.Parse(txtInteresAPagar.Text);
 
-            var pagaInteres= double.Parse(txtPagaInteres.Text);
+                    var pagaInteres = double.Parse(txtPagaInteres.Text);
 
-            txtAdeudaIntereses.Text = (interes - pagaInteres).ToString("N2");
+                    txtAdeudaIntereses.Text = (interes - pagaInteres).ToString("N2");
 
-            var pagaMonto = double.Parse(txtPagaMonto.Text);
+                    var pagaMonto = double.Parse(txtPagaMonto.Text);
 
-            txtTotalAPagar.Text = (pagaInteres + pagaMonto).ToString("N2");
+                    txtTotalAPagar.Text = (pagaInteres + pagaMonto).ToString("N2");
 
-            txtPagaCon.Text = (pagaInteres + pagaMonto).ToString("N2");           
+                    txtPagaCon.Text = (pagaInteres + pagaMonto).ToString("N2");
+                }
+            }
+            catch (Exception ex)
+            {
+
+            }
         }
 
         private void txtPagaMonto_TextChanged(object sender, EventArgs e)
@@ -73,22 +83,31 @@ namespace Empeño.WindowsForms.Views
 
         private void txtPagaCon_TextChanged_1(object sender, EventArgs e)
         {
-            funciones.KeyNumber(sender);
-
-            if (string.IsNullOrEmpty(txtPagaCon.Text))
+            try
             {
-                txtPagaCon.Text = "0.00";
+                if (!string.IsNullOrEmpty(txtPagaCon.Text))
+                {
+                    funciones.KeyNumber(sender);
+
+                    if (string.IsNullOrEmpty(txtPagaCon.Text))
+                    {
+                        txtPagaCon.Text = "0.00";
+                    }
+                    else
+                    {
+                        txtPagaCon.Text = txtPagaCon.Text;
+                    }
+
+                    var monto = double.Parse(txtTotalAPagar.Text);
+
+                    var pagaMonto = double.Parse(txtPagaCon.Text);
+
+                    txtVuelto.Text = (pagaMonto - monto).ToString("N2");
+                }
             }
-            else
+            catch (Exception ex)
             {
-                txtPagaCon.Text = txtPagaCon.Text;
             }
-           
-            var monto = double.Parse(txtTotalAPagar.Text);
-
-            var pagaMonto = double.Parse(txtPagaCon.Text);
-
-            txtVuelto.Text = (pagaMonto - monto).ToString("N2");
         }
 
         private async void btnGuardarEmpeño_Click_1(object sender, EventArgs e)
@@ -172,7 +191,6 @@ namespace Empeño.WindowsForms.Views
          
             await _context.SaveChangesAsync();
 
-            MessageBox.Show("Pago recibido");
             this.Close();
         }
 
@@ -277,24 +295,34 @@ namespace Empeño.WindowsForms.Views
 
         private void txtPagaMonto_TextChanged_2(object sender, EventArgs e)
         {
-            funciones.KeyNumber(sender);
-
-            if (string.IsNullOrEmpty(txtPagaMonto.Text))
+            try
             {
-                txtPagaMonto.Text = "0.00";
+                if (!string.IsNullOrEmpty(txtPagaMonto.Text))
+                {
+                    funciones.KeyNumber(sender);
+
+                    if (string.IsNullOrEmpty(txtPagaMonto.Text))
+                    {
+                        txtPagaMonto.Text = "0.00";
+                    }
+
+                    var monto = double.Parse(txtMontoAPagar.Text);
+
+                    var pagaMonto = double.Parse(txtPagaMonto.Text);
+
+                    txtAdeudaMonto.Text = (monto - pagaMonto).ToString("N2");
+
+                    var pagaInteres = double.Parse(txtPagaInteres.Text);
+
+                    txtTotalAPagar.Text = (pagaInteres + pagaMonto).ToString("N2");
+
+                    txtPagaCon.Text = (pagaInteres + pagaMonto).ToString("N2");
+                }
             }
+            catch (Exception ex)
+            {
 
-            var monto = double.Parse(txtMontoAPagar.Text);
-
-            var pagaMonto = double.Parse(txtPagaMonto.Text);
-
-            txtAdeudaMonto.Text = (monto - pagaMonto).ToString("N2");
-
-            var pagaInteres = double.Parse(txtPagaInteres.Text);
-
-            txtTotalAPagar.Text = (pagaInteres + pagaMonto).ToString("N2");
-
-            txtPagaCon.Text = (pagaInteres + pagaMonto).ToString("N2");
+            }
         }
 
         #region Funciones
@@ -516,7 +544,6 @@ namespace Empeño.WindowsForms.Views
 
             if (interes < 1 || montoMinimo < 1)
             {
-                txtPagaMonto.Enabled = true;
                 txtPagaMonto.Text = "0.00";
                 txtTotalAPagar.Text = intereses;
                 txtPagaCon.Text = txtTotalAPagar.Text;
