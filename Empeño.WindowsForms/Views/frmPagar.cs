@@ -161,6 +161,8 @@ namespace Empeño.WindowsForms.Views
                 };
 
                 _context.Pago.Add(pago);
+                await _context.SaveChangesAsync();
+
                 await funciones.SaveBitacora(new ValorBitacora
                 {
                     Valor = JsonConvert.SerializeObject(pago),
