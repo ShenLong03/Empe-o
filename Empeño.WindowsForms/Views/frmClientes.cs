@@ -55,9 +55,13 @@ namespace Empeño.WindowsForms.Views
             Program.CargandoClose();
         }
 
-        public frmClientes()
+        public frmClientes(int id=0)
         {
             InitializeComponent();
+            if (id>0)
+            {
+                clienteId = id;
+            }
         }
 
         private async void frmClientes_Load(object sender, EventArgs e)
@@ -81,6 +85,11 @@ namespace Empeño.WindowsForms.Views
             txtFecha.Text = DateTime.Today.ToString("dd/MM/yyyy");
             chbActivo.Checked = true;
             txtFecha.Text = DateTime.Today.ToString("dd/MM/yyyy");
+
+            if (clienteId > 0)
+            {
+                await Editar((int)dgvClientes.SelectedRows[0].Cells[0].Value);
+            }
         }
 
         private async void txtBuscar_TextChanged(object sender, EventArgs e)
@@ -245,44 +254,43 @@ namespace Empeño.WindowsForms.Views
 
         private async void btnEditar_Click(object sender, EventArgs e)
         {
-            await Editar();
-
+            if (dgvClientes.SelectedRows.Count > 0)
+            {
+                await Editar((int)dgvClientes.SelectedRows[0].Cells[0].Value);
+            }          
         }
 
 
 
-        public async Task Editar()
+        public async Task Editar(int id)
         {
             try
-            {
-                if (dgvClientes.SelectedRows.Count > 0)
+            {               
+                var cliente = await _context.Clientes.FindAsync(id);
+                if (cliente == null)
                 {
-                    var cliente = await _context.Clientes.FindAsync(dgvClientes.SelectedRows[0].Cells[0].Value);
-                    if (cliente == null)
-                    {
-                        MessageBox.Show("Error", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                        clienteId = 0;
-                        return;
-                    }
-                    funciones.ResetForm(panelFormulario);
+                    MessageBox.Show("Error", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     clienteId = 0;
-                    clienteId = int.Parse(dgvClientes.SelectedRows[0].Cells[0].Value.ToString());
-                    txtIdentificacion.Text = cliente.Identificacion;
-                    txtNombre.Text = cliente.Nombre;
-                    txtTelefono.Text = cliente.Telefono;
-                    txtCorreo.Text = cliente.Correo;
-                    chbActivo.Checked = cliente.Activo;
-                    txtDireccion.Text = cliente.Direccion;
-                    txtComentario.Text = cliente.Comentario;
-                    txtFecha.Text = cliente.Fecha.ToString("dd/MM/yyyy");
-                    lblGanancias.Text = cliente.Empenos.Where(m => m.Pagos.Count() > 0).SelectMany(m => m.Pagos).Sum(p => p.Monto).ToString("N2");
-                    lblEmpeños.Text = cliente.Empenos.Where(m => !m.IsDelete).Count().ToString();
-                    funciones.BlockTextBox(panelFormulario, true);
-                    funciones.EditTextColor(panelFormulario);
-                    funciones.ShowLabels(panelFormulario);
-                    funciones.TextBoxColorBlank(panelFormulario);
-                    funciones.IntelligHolders(panelFormulario);
+                    return;
                 }
+                funciones.ResetForm(panelFormulario);
+                clienteId = 0;
+                clienteId = int.Parse(dgvClientes.SelectedRows[0].Cells[0].Value.ToString());
+                txtIdentificacion.Text = cliente.Identificacion;
+                txtNombre.Text = cliente.Nombre;
+                txtTelefono.Text = cliente.Telefono;
+                txtCorreo.Text = cliente.Correo;
+                chbActivo.Checked = cliente.Activo;
+                txtDireccion.Text = cliente.Direccion;
+                txtComentario.Text = cliente.Comentario;
+                txtFecha.Text = cliente.Fecha.ToString("dd/MM/yyyy");
+                lblGanancias.Text = cliente.Empenos.Where(m => m.Pagos.Count() > 0).SelectMany(m => m.Pagos).Sum(p => p.Monto).ToString("N2");
+                lblEmpeños.Text = cliente.Empenos.Where(m => !m.IsDelete).Count().ToString();
+                funciones.BlockTextBox(panelFormulario, true);
+                funciones.EditTextColor(panelFormulario);
+                funciones.ShowLabels(panelFormulario);
+                funciones.TextBoxColorBlank(panelFormulario);
+                funciones.IntelligHolders(panelFormulario);
             }
             catch (Exception)
             {
@@ -381,8 +389,11 @@ namespace Empeño.WindowsForms.Views
 
         private async void btnVer_Click(object sender, EventArgs e)
         {
-            await Editar();
-            funciones.BlockTextBox(panelFormulario, false);
+            if (dgvClientes.SelectedRows.Count > 0)
+            {
+                await Editar((int)dgvClientes.SelectedRows[0].Cells[0].Value);
+                funciones.BlockTextBox(panelFormulario, false);
+            }            
         }
 
         #region RenderSizeForm
@@ -418,7 +429,10 @@ namespace Empeño.WindowsForms.Views
 
         private async void dgvClientes_DoubleClick(object sender, EventArgs e)
         {
-            await Editar();
+            if (dgvClientes.SelectedRows.Count>0)
+            {
+                await Editar((int)dgvClientes.SelectedRows[0].Cells[0].Value);
+            }           
         }
 
         protected override void WndProc(ref Message m)

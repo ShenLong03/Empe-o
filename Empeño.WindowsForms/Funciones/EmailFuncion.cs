@@ -94,9 +94,58 @@ namespace Empeño.WindowsForms.Funciones
                 + "<table><thead><tr><th>EmpeñoId</th><th>Identificación</th><th>Nombre</th><th>Descripción</th><th>Estado</th><th>SubTotal</th></tr></thead><tbody>";
             foreach (DataGridViewRow item in detalle.Rows)
             {
-                str += "<tr><td>" + item.Cells[0].Value.ToString() + "</td>" + item.Cells[2].Value.ToString()  + "</td>" + item.Cells[3].Value.ToString() + "</td>" + item.Cells[1].Value.ToString() + "</td>" + "</td>" + item.Cells[4].Value.ToString() + "</td>" + "</td>" + item.Cells[9].Value.ToString() + "</td>";
+                str += "<tr><td>" + item.Cells[0].Value.ToString() + "</td>"
+                    + "<td>" + item.Cells[2].Value.ToString()  + "</td>" 
+                    + "<td>" + item.Cells[3].Value.ToString() + "</td>" 
+                    + "<td>" + item.Cells[1].Value.ToString() + "</td>" 
+                    + "<td>" + item.Cells[4].Value.ToString() + "</td>"
+                    + "<td>" + item.Cells[9].Value.ToString() + "</td>";
             }
             str += "</tbody></table><hr />" 
+                + totalesStr
+                + "<br /><br />Saludos.";
+
+            await SendMail(to, subject, str);
+        }
+
+        public async Task SendMailVencidos(string to, string subject, string body, DataGridView detalle, string totalesStr)
+        {
+            var empleado = _context.Empleados.Find(Program.EmpleadoId);
+            var configuracion = _context.Configuraciones.FirstOrDefault();
+
+            var str = "<p>Estimado " + configuracion.Nombre + ", <br /><br />"
+                + body + "</p><p>"
+                + "<b>Fecha</b> : " + DateTime.Today.ToString("dd/MM/yyyy") + "<br />"
+                + "<b>Realizado por</b>  : " + empleado.Nombre + "<br /></p>"
+                + "<h3>Detalles</h3><hr />"
+                + "<table><thead><tr><th>EmpeñoId</th><th>Identificación</th><th>Nombre</th><th>Descripción</th><th>Estado</th><th>Prorroga</th><th>Retirado</th><th>SubTotal</th></tr></thead><tbody>";
+            foreach (DataGridViewRow item in detalle.Rows)
+            {
+                str += "<tr><td>" + item.Cells[0].Value.ToString() + "</td>"
+                    + "<td>" + item.Cells[2].Value.ToString() + "</td>"
+                    + "<td>" + item.Cells[3].Value.ToString() + "</td>"
+                    + "<td>" + item.Cells[1].Value.ToString() + "</td>"
+                    + "<td>" + item.Cells[4].Value.ToString() + "</td>";
+
+                if ((bool)item.Cells[8].Value==true)
+                {
+                    str += "<td>X</td>";                    
+                }
+                else
+                {
+                    str += "<td></td>";
+                }
+                if ((bool)item.Cells[9].Value == true)
+                {
+                    str += "<td>X</td>";
+                }
+                else
+                {
+                    str += "<td></td>";
+                }
+                str += "<td>" + item.Cells[11].Value.ToString() + "</td></tr>";                                               
+            }
+            str += "</tbody></table><hr />"
                 + totalesStr
                 + "<br /><br />Saludos.";
 

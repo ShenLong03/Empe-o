@@ -101,8 +101,9 @@
             this.panel1.Controls.Add(this.lblDesde);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
             this.panel1.Location = new System.Drawing.Point(0, 0);
+            this.panel1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(1413, 476);
+            this.panel1.Size = new System.Drawing.Size(1109, 381);
             this.panel1.TabIndex = 5;
             this.panel1.Paint += new System.Windows.Forms.PaintEventHandler(this.panel1_Paint);
             // 
@@ -115,22 +116,25 @@
             this.button3.Font = new System.Drawing.Font("Century Gothic", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.button3.ForeColor = System.Drawing.Color.White;
             this.button3.Image = ((System.Drawing.Image)(resources.GetObject("button3.Image")));
-            this.button3.Location = new System.Drawing.Point(997, 391);
+            this.button3.Location = new System.Drawing.Point(777, 313);
+            this.button3.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(153, 47);
+            this.button3.Size = new System.Drawing.Size(122, 38);
             this.button3.TabIndex = 64;
             this.button3.Text = "Exportar";
             this.button3.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
             this.button3.UseVisualStyleBackColor = false;
+            this.button3.Visible = false;
             // 
             // txtArticulos
             // 
             this.txtArticulos.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.txtArticulos.Enabled = false;
             this.txtArticulos.Font = new System.Drawing.Font("Century Gothic", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtArticulos.Location = new System.Drawing.Point(900, 302);
+            this.txtArticulos.Location = new System.Drawing.Point(699, 242);
+            this.txtArticulos.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.txtArticulos.Name = "txtArticulos";
-            this.txtArticulos.Size = new System.Drawing.Size(250, 36);
+            this.txtArticulos.Size = new System.Drawing.Size(201, 30);
             this.txtArticulos.TabIndex = 63;
             this.txtArticulos.Text = "0.00";
             // 
@@ -140,9 +144,10 @@
             this.label4.AutoSize = true;
             this.label4.Font = new System.Drawing.Font("Century Gothic", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label4.ForeColor = System.Drawing.Color.DimGray;
-            this.label4.Location = new System.Drawing.Point(896, 280);
+            this.label4.Location = new System.Drawing.Point(696, 224);
+            this.label4.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(160, 19);
+            this.label4.Size = new System.Drawing.Size(132, 17);
             this.label4.TabIndex = 62;
             this.label4.Text = "Empeños Articulos";
             // 
@@ -151,9 +156,10 @@
             this.txtOro.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.txtOro.Enabled = false;
             this.txtOro.Font = new System.Drawing.Font("Century Gothic", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtOro.Location = new System.Drawing.Point(606, 302);
+            this.txtOro.Location = new System.Drawing.Point(464, 242);
+            this.txtOro.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.txtOro.Name = "txtOro";
-            this.txtOro.Size = new System.Drawing.Size(250, 36);
+            this.txtOro.Size = new System.Drawing.Size(201, 30);
             this.txtOro.TabIndex = 61;
             this.txtOro.Text = "0.00";
             // 
@@ -163,9 +169,10 @@
             this.label5.AutoSize = true;
             this.label5.Font = new System.Drawing.Font("Century Gothic", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label5.ForeColor = System.Drawing.Color.DimGray;
-            this.label5.Location = new System.Drawing.Point(602, 280);
+            this.label5.Location = new System.Drawing.Point(461, 224);
+            this.label5.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(146, 19);
+            this.label5.Size = new System.Drawing.Size(120, 17);
             this.label5.TabIndex = 60;
             this.label5.Text = "Empeños en Oro";
             // 
@@ -174,9 +181,10 @@
             this.txtPendiente.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.txtPendiente.Enabled = false;
             this.txtPendiente.Font = new System.Drawing.Font("Century Gothic", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtPendiente.Location = new System.Drawing.Point(900, 223);
+            this.txtPendiente.Location = new System.Drawing.Point(699, 178);
+            this.txtPendiente.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.txtPendiente.Name = "txtPendiente";
-            this.txtPendiente.Size = new System.Drawing.Size(250, 36);
+            this.txtPendiente.Size = new System.Drawing.Size(201, 30);
             this.txtPendiente.TabIndex = 59;
             this.txtPendiente.Text = "0.00";
             // 
@@ -186,9 +194,10 @@
             this.label3.AutoSize = true;
             this.label3.Font = new System.Drawing.Font("Century Gothic", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label3.ForeColor = System.Drawing.Color.DimGray;
-            this.label3.Location = new System.Drawing.Point(896, 201);
+            this.label3.Location = new System.Drawing.Point(696, 161);
+            this.label3.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(91, 19);
+            this.label3.Size = new System.Drawing.Size(76, 17);
             this.label3.TabIndex = 58;
             this.label3.Text = "Pendiente";
             // 
@@ -197,9 +206,10 @@
             this.txtMonto.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.txtMonto.Enabled = false;
             this.txtMonto.Font = new System.Drawing.Font("Century Gothic", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtMonto.Location = new System.Drawing.Point(606, 223);
+            this.txtMonto.Location = new System.Drawing.Point(464, 178);
+            this.txtMonto.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.txtMonto.Name = "txtMonto";
-            this.txtMonto.Size = new System.Drawing.Size(250, 36);
+            this.txtMonto.Size = new System.Drawing.Size(201, 30);
             this.txtMonto.TabIndex = 57;
             this.txtMonto.Text = "0.00";
             // 
@@ -209,9 +219,10 @@
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("Century Gothic", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label1.ForeColor = System.Drawing.Color.DimGray;
-            this.label1.Location = new System.Drawing.Point(602, 201);
+            this.label1.Location = new System.Drawing.Point(461, 161);
+            this.label1.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(60, 19);
+            this.label1.Size = new System.Drawing.Size(51, 17);
             this.label1.TabIndex = 56;
             this.label1.Text = "Monto";
             // 
@@ -223,14 +234,15 @@
             this.chartEmpeños.ChartAreas.Add(chartArea1);
             legend1.Name = "Legend1";
             this.chartEmpeños.Legends.Add(legend1);
-            this.chartEmpeños.Location = new System.Drawing.Point(19, 191);
+            this.chartEmpeños.Location = new System.Drawing.Point(15, 153);
+            this.chartEmpeños.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.chartEmpeños.Name = "chartEmpeños";
             series1.ChartArea = "ChartArea1";
             series1.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Doughnut;
             series1.Legend = "Legend1";
             series1.Name = "Series1";
             this.chartEmpeños.Series.Add(series1);
-            this.chartEmpeños.Size = new System.Drawing.Size(516, 275);
+            this.chartEmpeños.Size = new System.Drawing.Size(392, 220);
             this.chartEmpeños.TabIndex = 55;
             this.chartEmpeños.Text = "chart2";
             // 
@@ -238,9 +250,10 @@
             // 
             this.panel3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
             this.panel3.BackColor = System.Drawing.Color.DimGray;
-            this.panel3.Location = new System.Drawing.Point(19, 186);
+            this.panel3.Location = new System.Drawing.Point(15, 149);
+            this.panel3.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.panel3.Name = "panel3";
-            this.panel3.Size = new System.Drawing.Size(1380, 1);
+            this.panel3.Size = new System.Drawing.Size(1083, 1);
             this.panel3.TabIndex = 32;
             // 
             // ckbBorrados
@@ -248,9 +261,10 @@
             this.ckbBorrados.AutoSize = true;
             this.ckbBorrados.Font = new System.Drawing.Font("Century Gothic", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.ckbBorrados.ForeColor = System.Drawing.Color.Maroon;
-            this.ckbBorrados.Location = new System.Drawing.Point(807, 58);
+            this.ckbBorrados.Location = new System.Drawing.Point(646, 46);
+            this.ckbBorrados.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.ckbBorrados.Name = "ckbBorrados";
-            this.ckbBorrados.Size = new System.Drawing.Size(319, 23);
+            this.ckbBorrados.Size = new System.Drawing.Size(263, 21);
             this.ckbBorrados.TabIndex = 31;
             this.ckbBorrados.Text = "Borrados, Cancelados o Elminados";
             this.ckbBorrados.UseVisualStyleBackColor = true;
@@ -259,9 +273,10 @@
             // 
             this.panel4.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(16)))), ((int)(((byte)(19)))), ((int)(((byte)(100)))));
             this.panel4.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.panel4.Location = new System.Drawing.Point(0, 472);
+            this.panel4.Location = new System.Drawing.Point(0, 378);
+            this.panel4.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.panel4.Name = "panel4";
-            this.panel4.Size = new System.Drawing.Size(1413, 4);
+            this.panel4.Size = new System.Drawing.Size(1109, 3);
             this.panel4.TabIndex = 30;
             // 
             // label2
@@ -269,9 +284,10 @@
             this.label2.AutoSize = true;
             this.label2.Font = new System.Drawing.Font("Century Gothic", 12F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Underline))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label2.ForeColor = System.Drawing.Color.DimGray;
-            this.label2.Location = new System.Drawing.Point(371, 24);
+            this.label2.Location = new System.Drawing.Point(297, 19);
+            this.label2.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(83, 23);
+            this.label2.Size = new System.Drawing.Size(65, 19);
             this.label2.TabIndex = 29;
             this.label2.Text = "Estados";
             // 
@@ -283,9 +299,10 @@
             this.button2.Font = new System.Drawing.Font("Century Gothic", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.button2.ForeColor = System.Drawing.Color.White;
             this.button2.Image = ((System.Drawing.Image)(resources.GetObject("button2.Image")));
-            this.button2.Location = new System.Drawing.Point(607, 119);
+            this.button2.Location = new System.Drawing.Point(486, 95);
+            this.button2.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(153, 47);
+            this.button2.Size = new System.Drawing.Size(122, 38);
             this.button2.TabIndex = 28;
             this.button2.Text = "Cancelar";
             this.button2.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
@@ -300,9 +317,10 @@
             this.button1.Font = new System.Drawing.Font("Century Gothic", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.button1.ForeColor = System.Drawing.Color.White;
             this.button1.Image = ((System.Drawing.Image)(resources.GetObject("button1.Image")));
-            this.button1.Location = new System.Drawing.Point(606, 58);
+            this.button1.Location = new System.Drawing.Point(485, 46);
+            this.button1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(153, 47);
+            this.button1.Size = new System.Drawing.Size(122, 38);
             this.button1.TabIndex = 27;
             this.button1.Text = "Buscar";
             this.button1.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
@@ -314,9 +332,10 @@
             this.chbPerdidos.AutoSize = true;
             this.chbPerdidos.Font = new System.Drawing.Font("Century Gothic", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.chbPerdidos.ForeColor = System.Drawing.Color.DimGray;
-            this.chbPerdidos.Location = new System.Drawing.Point(463, 142);
+            this.chbPerdidos.Location = new System.Drawing.Point(370, 114);
+            this.chbPerdidos.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.chbPerdidos.Name = "chbPerdidos";
-            this.chbPerdidos.Size = new System.Drawing.Size(102, 23);
+            this.chbPerdidos.Size = new System.Drawing.Size(85, 21);
             this.chbPerdidos.TabIndex = 26;
             this.chbPerdidos.Text = "Perdidos";
             this.chbPerdidos.UseVisualStyleBackColor = true;
@@ -327,9 +346,10 @@
             this.chbRetirados.AutoSize = true;
             this.chbRetirados.Font = new System.Drawing.Font("Century Gothic", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.chbRetirados.ForeColor = System.Drawing.Color.DimGray;
-            this.chbRetirados.Location = new System.Drawing.Point(463, 100);
+            this.chbRetirados.Location = new System.Drawing.Point(370, 80);
+            this.chbRetirados.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.chbRetirados.Name = "chbRetirados";
-            this.chbRetirados.Size = new System.Drawing.Size(106, 23);
+            this.chbRetirados.Size = new System.Drawing.Size(89, 21);
             this.chbRetirados.TabIndex = 25;
             this.chbRetirados.Text = "Retirados";
             this.chbRetirados.UseVisualStyleBackColor = true;
@@ -340,9 +360,10 @@
             this.chbVencidos.AutoSize = true;
             this.chbVencidos.Font = new System.Drawing.Font("Century Gothic", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.chbVencidos.ForeColor = System.Drawing.Color.DimGray;
-            this.chbVencidos.Location = new System.Drawing.Point(290, 100);
+            this.chbVencidos.Location = new System.Drawing.Point(232, 80);
+            this.chbVencidos.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.chbVencidos.Name = "chbVencidos";
-            this.chbVencidos.Size = new System.Drawing.Size(109, 23);
+            this.chbVencidos.Size = new System.Drawing.Size(91, 21);
             this.chbVencidos.TabIndex = 24;
             this.chbVencidos.Text = "Vencidos";
             this.chbVencidos.UseVisualStyleBackColor = true;
@@ -353,9 +374,10 @@
             this.chbPendientes.AutoSize = true;
             this.chbPendientes.Font = new System.Drawing.Font("Century Gothic", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.chbPendientes.ForeColor = System.Drawing.Color.DimGray;
-            this.chbPendientes.Location = new System.Drawing.Point(290, 142);
+            this.chbPendientes.Location = new System.Drawing.Point(232, 114);
+            this.chbPendientes.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.chbPendientes.Name = "chbPendientes";
-            this.chbPendientes.Size = new System.Drawing.Size(121, 23);
+            this.chbPendientes.Size = new System.Drawing.Size(101, 21);
             this.chbPendientes.TabIndex = 19;
             this.chbPendientes.Text = "Pendientes";
             this.chbPendientes.UseVisualStyleBackColor = true;
@@ -366,9 +388,10 @@
             this.chbActivos.AutoSize = true;
             this.chbActivos.Font = new System.Drawing.Font("Century Gothic", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.chbActivos.ForeColor = System.Drawing.Color.DimGray;
-            this.chbActivos.Location = new System.Drawing.Point(463, 58);
+            this.chbActivos.Location = new System.Drawing.Point(370, 46);
+            this.chbActivos.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.chbActivos.Name = "chbActivos";
-            this.chbActivos.Size = new System.Drawing.Size(92, 23);
+            this.chbActivos.Size = new System.Drawing.Size(76, 21);
             this.chbActivos.TabIndex = 18;
             this.chbActivos.Text = "Activos";
             this.chbActivos.UseVisualStyleBackColor = true;
@@ -379,9 +402,10 @@
             this.chbTodo.AutoSize = true;
             this.chbTodo.Font = new System.Drawing.Font("Century Gothic", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.chbTodo.ForeColor = System.Drawing.Color.DimGray;
-            this.chbTodo.Location = new System.Drawing.Point(290, 58);
+            this.chbTodo.Location = new System.Drawing.Point(232, 46);
+            this.chbTodo.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.chbTodo.Name = "chbTodo";
-            this.chbTodo.Size = new System.Drawing.Size(71, 23);
+            this.chbTodo.Size = new System.Drawing.Size(60, 21);
             this.chbTodo.TabIndex = 17;
             this.chbTodo.Text = "Todo";
             this.chbTodo.UseVisualStyleBackColor = true;
@@ -392,9 +416,10 @@
             this.dtHasta.CustomFormat = "dd/MM/yyyy";
             this.dtHasta.Font = new System.Drawing.Font("Century Gothic", 13.8F);
             this.dtHasta.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
-            this.dtHasta.Location = new System.Drawing.Point(26, 130);
+            this.dtHasta.Location = new System.Drawing.Point(21, 104);
+            this.dtHasta.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.dtHasta.Name = "dtHasta";
-            this.dtHasta.Size = new System.Drawing.Size(235, 36);
+            this.dtHasta.Size = new System.Drawing.Size(189, 30);
             this.dtHasta.TabIndex = 16;
             // 
             // dtDesde
@@ -402,9 +427,10 @@
             this.dtDesde.CustomFormat = "dd/MM/yyyy";
             this.dtDesde.Font = new System.Drawing.Font("Century Gothic", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.dtDesde.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
-            this.dtDesde.Location = new System.Drawing.Point(23, 58);
+            this.dtDesde.Location = new System.Drawing.Point(18, 46);
+            this.dtDesde.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.dtDesde.Name = "dtDesde";
-            this.dtDesde.Size = new System.Drawing.Size(235, 36);
+            this.dtDesde.Size = new System.Drawing.Size(189, 30);
             this.dtDesde.TabIndex = 15;
             // 
             // lblHasta
@@ -412,9 +438,10 @@
             this.lblHasta.AutoSize = true;
             this.lblHasta.Font = new System.Drawing.Font("Century Gothic", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblHasta.ForeColor = System.Drawing.Color.DimGray;
-            this.lblHasta.Location = new System.Drawing.Point(23, 107);
+            this.lblHasta.Location = new System.Drawing.Point(18, 86);
+            this.lblHasta.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.lblHasta.Name = "lblHasta";
-            this.lblHasta.Size = new System.Drawing.Size(55, 19);
+            this.lblHasta.Size = new System.Drawing.Size(46, 17);
             this.lblHasta.TabIndex = 14;
             this.lblHasta.Text = "Hasta";
             // 
@@ -423,9 +450,10 @@
             this.lblDesde.AutoSize = true;
             this.lblDesde.Font = new System.Drawing.Font("Century Gothic", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblDesde.ForeColor = System.Drawing.Color.DimGray;
-            this.lblDesde.Location = new System.Drawing.Point(23, 35);
+            this.lblDesde.Location = new System.Drawing.Point(18, 28);
+            this.lblDesde.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.lblDesde.Name = "lblDesde";
-            this.lblDesde.Size = new System.Drawing.Size(62, 19);
+            this.lblDesde.Size = new System.Drawing.Size(51, 17);
             this.lblDesde.TabIndex = 13;
             this.lblDesde.Text = "Desde";
             // 
@@ -433,9 +461,10 @@
             // 
             this.panel2.Controls.Add(this.dgvEmpeños);
             this.panel2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel2.Location = new System.Drawing.Point(0, 476);
+            this.panel2.Location = new System.Drawing.Point(0, 381);
+            this.panel2.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(1413, 428);
+            this.panel2.Size = new System.Drawing.Size(1109, 249);
             this.panel2.TabIndex = 6;
             // 
             // dgvEmpeños
@@ -467,7 +496,6 @@
             this.dgvEmpeños.EnableHeadersVisualStyles = false;
             this.dgvEmpeños.GridColor = System.Drawing.SystemColors.Control;
             this.dgvEmpeños.Location = new System.Drawing.Point(0, 0);
-            this.dgvEmpeños.Margin = new System.Windows.Forms.Padding(4);
             this.dgvEmpeños.Name = "dgvEmpeños";
             this.dgvEmpeños.RowHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.None;
             dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
@@ -488,18 +516,19 @@
             this.dgvEmpeños.RowTemplate.DividerHeight = 1;
             this.dgvEmpeños.RowTemplate.Height = 45;
             this.dgvEmpeños.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgvEmpeños.Size = new System.Drawing.Size(1413, 428);
+            this.dgvEmpeños.Size = new System.Drawing.Size(1109, 249);
             this.dgvEmpeños.TabIndex = 22;
             // 
             // frmReporteEmpeños
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(120F, 120F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
             this.BackColor = System.Drawing.Color.White;
-            this.ClientSize = new System.Drawing.Size(1413, 904);
+            this.ClientSize = new System.Drawing.Size(1109, 630);
             this.Controls.Add(this.panel2);
             this.Controls.Add(this.panel1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
+            this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.Name = "frmReporteEmpeños";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Reporte Empeños";

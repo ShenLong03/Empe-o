@@ -32,6 +32,7 @@ namespace Empeño.WindowsForms.Views
         bool switchPago = false; 
         int empeñoId = 0;
         Configuracion configuracion = new Configuracion();
+        bool pagados = false;
 
         public frmEmpeno()
         {
@@ -1339,34 +1340,45 @@ namespace Empeño.WindowsForms.Views
 
         public void CargarPagos()
         {
-            if (dgvEmpeños.SelectedRows.Count > 0)
+            try
             {
-                empeñoId = int.Parse(dgvEmpeños.SelectedRows[0].Cells[0].Value.ToString());
-                using (DataContext _contextTemp = new DataContext())
+                if (dgvEmpeños.SelectedRows.Count > 0)
                 {
-
-                    var list = _contextTemp.Intereses.Where(p => p.EmpenoId == empeñoId)
-                        .Select(x => new
+                    empeñoId = int.Parse(dgvEmpeños.SelectedRows[0].Cells[0].Value.ToString());
+                    using (DataContext _contextTemp = new DataContext())
+                    {
+                        var listOriging = _contextTemp.Intereses.Where(p => p.EmpenoId == empeñoId);
+                        if (!pagados)
                         {
-                            Id = x.InteresesId,
-                            Interes = x.Empeno.Interes.Porcentaje + "%",
-                            Vence = x.FechaVencimiento,
-                            x.Monto,
-                            x.Pagado,
-                            Vencimiento = x.Monto == x.Pagado ? 0 : DbFunctions.DiffDays(DateTime.Today, x.FechaVencimiento),
-                        }).OrderByDescending(i => i.Id)
-                        .AsEnumerable()
-                        .Select(x => new
-                        {
-                            x.Id,
-                            x.Interes,
-                            Vence= Program.Meses(x.Vence.Month),
-                            Monto = x.Monto.ToString("N2"),
-                            Pagado = x.Pagado.ToString("N2"),
-                            Faltan = x.Vencimiento
-                        }).ToList();
-                    dgvPagos.DataSource = list; 
+                            listOriging = listOriging.Where(l => l.Pagado < l.Monto);
+                        }
+                        var list = listOriging
+                            .Select(x => new
+                            {
+                                Id = x.InteresesId,
+                                Interes = x.Empeno.Interes.Porcentaje + "%",
+                                Vence = x.FechaVencimiento,
+                                x.Monto,
+                                x.Pagado,
+                                Vencimiento = x.Monto == x.Pagado ? 0 : DbFunctions.DiffDays(DateTime.Today, x.FechaVencimiento),
+                            }).OrderByDescending(i => i.Id)
+                            .AsEnumerable()
+                            .Select(x => new
+                            {
+                                x.Id,
+                                x.Interes,
+                                Vence = Program.Meses(x.Vence.Month),
+                                Monto = x.Monto.ToString("N2"),
+                                Pagado = x.Pagado.ToString("N2"),
+                                Faltan = x.Vencimiento
+                            }).ToList();
+                        dgvPagos.DataSource = list;
+                    }
                 }
+            }
+            catch (Exception ex)
+            {
+
             }
         }
 
@@ -2231,7 +2243,7 @@ namespace Empeño.WindowsForms.Views
             cexcel.Cells[5, 1].value = "Tel. " + configuracion.Telefono;
             cexcel.Cells[6, 1].value = configuracion.Nombre;
             cexcel.Cells[7, 1].value = "Cédula: " + configuracion.Identificacion;
-            cexcel.Cells[7, 2].value = pago.PagoId;
+            cexcel.Cells[8, 2].value = pago.PagoId;
             cexcel.Cells[9, 2].value = usuario.Nombre;
             cexcel.Cells[10, 2].value = Program.Usuario.Usuario;
             cexcel.Cells[14, 2].value = empeno.Cliente.Identificacion;
@@ -2326,19 +2338,23 @@ namespace Empeño.WindowsForms.Views
                 if (pago!=null)
                 {
                     var empeño = pago.Empeno;
-                    var intereses = empeño.Intereses.Where(p => p.PagoId == pago.PagoId).ToList();
                     if (pago.TipoPago==TipoPago.Interes)
-                    {
-                        await PrintInteres(empeño, intereses, pago);
-                    }
-                    if (empeño.Estado==Estado.Anulado)
-                    {
-                        await PrintRetiro(empeño, pago);
+                    {                        
+                        var intereses = empeño.Intereses.Where(p => p.PagoId == pago.PagoId).ToList();                     
+                        await PrintInteres(empeño, intereses, pago);                                              
                     }
                     else
                     {
-                        await PrintAbono(empeño, pago);
+                        if (empeño.Estado == Estado.Cancelado)
+                        {
+                            await PrintRetiro(empeño, pago);
+                        }
+                        else
+                        {
+                            await PrintAbono(empeño, pago);
+                        }
                     }
+                   
                 }
             }
         }
@@ -2358,6 +2374,62 @@ namespace Empeño.WindowsForms.Views
         private void panel17_Paint(object sender, PaintEventArgs e)
         {
 
+        }
+
+        private void btnPagados_Click(object sender, EventArgs e)
+        {
+            if (!pagados)
+            {
+                pagados = true;
+                btnPagados.BackColor = Color.FromArgb(66, 133, 244);               
+            }
+            else
+            {
+                pagados = false;
+                btnPagados.BackColor = Color.DimGray;                           
+            }
+            CargarPagos();
+        }
+
+        private void btnEditar_Click_1(object sender, EventArgs e)
+        {
+            if (dgvClientes.SelectedRows.Count>0)
+            {
+                var oscuro = new frmOscuro();
+                oscuro.Show();
+                var frm = new frmClientes((int)dgvClientes.SelectedRows[0].Cells[0].Value);
+                frm.ShowDialog();
+                oscuro.Close();
+                if (Program.Cliente != null)
+                {
+                    Cliente cliente = Program.Cliente;
+                    clienteId = cliente.ClienteId;
+                    txtIdentificacion.Text = cliente.Identificacion;
+                    txtNombre.Text = cliente.Nombre;
+                    funciones.IntelligHolders(panelFormulario);
+                    chbEsOro.Checked = true;
+                    txtDescripcion.Focus();
+                }
+            }
+        }
+
+        private void iconButton1_Click(object sender, EventArgs e)
+        {
+            var oscuro = new frmOscuro();
+            oscuro.Show();
+            var frm = new frmClientes();
+            frm.ShowDialog();
+            oscuro.Close();
+            if (Program.Cliente != null)
+            {
+                Cliente cliente = Program.Cliente;
+                clienteId = cliente.ClienteId;
+                txtIdentificacion.Text = cliente.Identificacion;
+                txtNombre.Text = cliente.Nombre;
+                funciones.IntelligHolders(panelFormulario);
+                chbEsOro.Checked = true;
+                txtDescripcion.Focus();
+            }
         }
     }
 }

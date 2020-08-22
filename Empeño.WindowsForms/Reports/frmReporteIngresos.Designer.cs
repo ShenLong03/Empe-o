@@ -84,8 +84,9 @@
             this.panel2.Controls.Add(this.lblDesde);
             this.panel2.Dock = System.Windows.Forms.DockStyle.Top;
             this.panel2.Location = new System.Drawing.Point(0, 0);
+            this.panel2.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(1205, 461);
+            this.panel2.Size = new System.Drawing.Size(964, 369);
             this.panel2.TabIndex = 3;
             // 
             // chartVentas
@@ -94,7 +95,8 @@
             this.chartVentas.ChartAreas.Add(chartArea1);
             legend1.Name = "Legend1";
             this.chartVentas.Legends.Add(legend1);
-            this.chartVentas.Location = new System.Drawing.Point(12, 199);
+            this.chartVentas.Location = new System.Drawing.Point(10, 159);
+            this.chartVentas.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.chartVentas.Name = "chartVentas";
             series1.BorderWidth = 4;
             series1.ChartArea = "ChartArea1";
@@ -109,7 +111,7 @@
             series2.Name = "Egresos";
             this.chartVentas.Series.Add(series1);
             this.chartVentas.Series.Add(series2);
-            this.chartVentas.Size = new System.Drawing.Size(577, 237);
+            this.chartVentas.Size = new System.Drawing.Size(462, 190);
             this.chartVentas.TabIndex = 55;
             this.chartVentas.Text = "chart1";
             // 
@@ -122,22 +124,25 @@
             this.button3.Font = new System.Drawing.Font("Century Gothic", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.button3.ForeColor = System.Drawing.Color.White;
             this.button3.Image = ((System.Drawing.Image)(resources.GetObject("button3.Image")));
-            this.button3.Location = new System.Drawing.Point(990, 389);
+            this.button3.Location = new System.Drawing.Point(792, 311);
+            this.button3.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(153, 47);
+            this.button3.Size = new System.Drawing.Size(122, 38);
             this.button3.TabIndex = 54;
             this.button3.Text = "Exportar";
             this.button3.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
             this.button3.UseVisualStyleBackColor = false;
+            this.button3.Visible = false;
             // 
             // txtPendiente
             // 
             this.txtPendiente.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.txtPendiente.Enabled = false;
             this.txtPendiente.Font = new System.Drawing.Font("Century Gothic", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtPendiente.Location = new System.Drawing.Point(893, 221);
+            this.txtPendiente.Location = new System.Drawing.Point(714, 177);
+            this.txtPendiente.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.txtPendiente.Name = "txtPendiente";
-            this.txtPendiente.Size = new System.Drawing.Size(250, 36);
+            this.txtPendiente.Size = new System.Drawing.Size(201, 30);
             this.txtPendiente.TabIndex = 49;
             this.txtPendiente.Text = "0.00";
             // 
@@ -147,9 +152,10 @@
             this.label3.AutoSize = true;
             this.label3.Font = new System.Drawing.Font("Century Gothic", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label3.ForeColor = System.Drawing.Color.DimGray;
-            this.label3.Location = new System.Drawing.Point(889, 199);
+            this.label3.Location = new System.Drawing.Point(711, 159);
+            this.label3.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(67, 19);
+            this.label3.Size = new System.Drawing.Size(56, 17);
             this.label3.TabIndex = 48;
             this.label3.Text = "Salidas";
             // 
@@ -158,9 +164,10 @@
             this.txtMonto.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.txtMonto.Enabled = false;
             this.txtMonto.Font = new System.Drawing.Font("Century Gothic", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtMonto.Location = new System.Drawing.Point(599, 221);
+            this.txtMonto.Location = new System.Drawing.Point(479, 177);
+            this.txtMonto.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.txtMonto.Name = "txtMonto";
-            this.txtMonto.Size = new System.Drawing.Size(250, 36);
+            this.txtMonto.Size = new System.Drawing.Size(201, 30);
             this.txtMonto.TabIndex = 47;
             this.txtMonto.Text = "0.00";
             // 
@@ -170,9 +177,10 @@
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("Century Gothic", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label1.ForeColor = System.Drawing.Color.DimGray;
-            this.label1.Location = new System.Drawing.Point(595, 199);
+            this.label1.Location = new System.Drawing.Point(476, 159);
+            this.label1.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(78, 19);
+            this.label1.Size = new System.Drawing.Size(63, 17);
             this.label1.TabIndex = 46;
             this.label1.Text = "Ingresos";
             // 
@@ -180,18 +188,20 @@
             // 
             this.panel3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
             this.panel3.BackColor = System.Drawing.Color.DimGray;
-            this.panel3.Location = new System.Drawing.Point(12, 180);
+            this.panel3.Location = new System.Drawing.Point(10, 144);
+            this.panel3.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.panel3.Name = "panel3";
-            this.panel3.Size = new System.Drawing.Size(1143, 1);
+            this.panel3.Size = new System.Drawing.Size(914, 1);
             this.panel3.TabIndex = 44;
             // 
             // panel1
             // 
             this.panel1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(16)))), ((int)(((byte)(19)))), ((int)(((byte)(100)))));
             this.panel1.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.panel1.Location = new System.Drawing.Point(0, 457);
+            this.panel1.Location = new System.Drawing.Point(0, 366);
+            this.panel1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(1205, 4);
+            this.panel1.Size = new System.Drawing.Size(964, 3);
             this.panel1.TabIndex = 43;
             // 
             // label2
@@ -199,9 +209,10 @@
             this.label2.AutoSize = true;
             this.label2.Font = new System.Drawing.Font("Century Gothic", 12F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Underline))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label2.ForeColor = System.Drawing.Color.DimGray;
-            this.label2.Location = new System.Drawing.Point(320, 18);
+            this.label2.Location = new System.Drawing.Point(256, 14);
+            this.label2.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(167, 23);
+            this.label2.Size = new System.Drawing.Size(130, 19);
             this.label2.TabIndex = 42;
             this.label2.Text = "Ingreso / Egreso";
             // 
@@ -213,9 +224,10 @@
             this.btnCancelar.Font = new System.Drawing.Font("Century Gothic", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnCancelar.ForeColor = System.Drawing.Color.White;
             this.btnCancelar.Image = ((System.Drawing.Image)(resources.GetObject("btnCancelar.Image")));
-            this.btnCancelar.Location = new System.Drawing.Point(525, 114);
+            this.btnCancelar.Location = new System.Drawing.Point(420, 91);
+            this.btnCancelar.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.btnCancelar.Name = "btnCancelar";
-            this.btnCancelar.Size = new System.Drawing.Size(153, 47);
+            this.btnCancelar.Size = new System.Drawing.Size(122, 38);
             this.btnCancelar.TabIndex = 41;
             this.btnCancelar.Text = "Cancelar";
             this.btnCancelar.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
@@ -230,9 +242,10 @@
             this.btnBuscar.Font = new System.Drawing.Font("Century Gothic", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnBuscar.ForeColor = System.Drawing.Color.White;
             this.btnBuscar.Image = ((System.Drawing.Image)(resources.GetObject("btnBuscar.Image")));
-            this.btnBuscar.Location = new System.Drawing.Point(524, 53);
+            this.btnBuscar.Location = new System.Drawing.Point(419, 42);
+            this.btnBuscar.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.btnBuscar.Name = "btnBuscar";
-            this.btnBuscar.Size = new System.Drawing.Size(153, 47);
+            this.btnBuscar.Size = new System.Drawing.Size(122, 38);
             this.btnBuscar.TabIndex = 40;
             this.btnBuscar.Text = "Buscar";
             this.btnBuscar.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
@@ -244,9 +257,10 @@
             this.chbIngresos.AutoSize = true;
             this.chbIngresos.Font = new System.Drawing.Font("Century Gothic", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.chbIngresos.ForeColor = System.Drawing.Color.DimGray;
-            this.chbIngresos.Location = new System.Drawing.Point(364, 95);
+            this.chbIngresos.Location = new System.Drawing.Point(291, 76);
+            this.chbIngresos.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.chbIngresos.Name = "chbIngresos";
-            this.chbIngresos.Size = new System.Drawing.Size(100, 23);
+            this.chbIngresos.Size = new System.Drawing.Size(82, 21);
             this.chbIngresos.TabIndex = 37;
             this.chbIngresos.Text = "Ingresos";
             this.chbIngresos.UseVisualStyleBackColor = true;
@@ -257,9 +271,10 @@
             this.chbEgresos.AutoSize = true;
             this.chbEgresos.Font = new System.Drawing.Font("Century Gothic", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.chbEgresos.ForeColor = System.Drawing.Color.DimGray;
-            this.chbEgresos.Location = new System.Drawing.Point(364, 137);
+            this.chbEgresos.Location = new System.Drawing.Point(291, 110);
+            this.chbEgresos.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.chbEgresos.Name = "chbEgresos";
-            this.chbEgresos.Size = new System.Drawing.Size(94, 23);
+            this.chbEgresos.Size = new System.Drawing.Size(77, 21);
             this.chbEgresos.TabIndex = 36;
             this.chbEgresos.Text = "Egresos";
             this.chbEgresos.UseVisualStyleBackColor = true;
@@ -270,9 +285,10 @@
             this.chbTodo.AutoSize = true;
             this.chbTodo.Font = new System.Drawing.Font("Century Gothic", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.chbTodo.ForeColor = System.Drawing.Color.DimGray;
-            this.chbTodo.Location = new System.Drawing.Point(364, 53);
+            this.chbTodo.Location = new System.Drawing.Point(291, 42);
+            this.chbTodo.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.chbTodo.Name = "chbTodo";
-            this.chbTodo.Size = new System.Drawing.Size(71, 23);
+            this.chbTodo.Size = new System.Drawing.Size(60, 21);
             this.chbTodo.TabIndex = 34;
             this.chbTodo.Text = "Todo";
             this.chbTodo.UseVisualStyleBackColor = true;
@@ -283,9 +299,10 @@
             this.dtHasta.CustomFormat = "dd/MM/yyyy";
             this.dtHasta.Font = new System.Drawing.Font("Century Gothic", 13.8F);
             this.dtHasta.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
-            this.dtHasta.Location = new System.Drawing.Point(15, 125);
+            this.dtHasta.Location = new System.Drawing.Point(12, 100);
+            this.dtHasta.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.dtHasta.Name = "dtHasta";
-            this.dtHasta.Size = new System.Drawing.Size(235, 36);
+            this.dtHasta.Size = new System.Drawing.Size(189, 30);
             this.dtHasta.TabIndex = 33;
             // 
             // dtDesde
@@ -293,9 +310,10 @@
             this.dtDesde.CustomFormat = "dd/MM/yyyy";
             this.dtDesde.Font = new System.Drawing.Font("Century Gothic", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.dtDesde.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
-            this.dtDesde.Location = new System.Drawing.Point(12, 53);
+            this.dtDesde.Location = new System.Drawing.Point(10, 42);
+            this.dtDesde.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.dtDesde.Name = "dtDesde";
-            this.dtDesde.Size = new System.Drawing.Size(235, 36);
+            this.dtDesde.Size = new System.Drawing.Size(189, 30);
             this.dtDesde.TabIndex = 32;
             // 
             // lblHasta
@@ -303,9 +321,10 @@
             this.lblHasta.AutoSize = true;
             this.lblHasta.Font = new System.Drawing.Font("Century Gothic", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblHasta.ForeColor = System.Drawing.Color.DimGray;
-            this.lblHasta.Location = new System.Drawing.Point(12, 102);
+            this.lblHasta.Location = new System.Drawing.Point(10, 82);
+            this.lblHasta.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.lblHasta.Name = "lblHasta";
-            this.lblHasta.Size = new System.Drawing.Size(55, 19);
+            this.lblHasta.Size = new System.Drawing.Size(46, 17);
             this.lblHasta.TabIndex = 31;
             this.lblHasta.Text = "Hasta";
             // 
@@ -314,9 +333,10 @@
             this.lblDesde.AutoSize = true;
             this.lblDesde.Font = new System.Drawing.Font("Century Gothic", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblDesde.ForeColor = System.Drawing.Color.DimGray;
-            this.lblDesde.Location = new System.Drawing.Point(12, 30);
+            this.lblDesde.Location = new System.Drawing.Point(10, 24);
+            this.lblDesde.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.lblDesde.Name = "lblDesde";
-            this.lblDesde.Size = new System.Drawing.Size(62, 19);
+            this.lblDesde.Size = new System.Drawing.Size(51, 17);
             this.lblDesde.TabIndex = 30;
             this.lblDesde.Text = "Desde";
             // 
@@ -348,8 +368,7 @@
             this.dgvIngresos.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dgvIngresos.EnableHeadersVisualStyles = false;
             this.dgvIngresos.GridColor = System.Drawing.SystemColors.Control;
-            this.dgvIngresos.Location = new System.Drawing.Point(0, 461);
-            this.dgvIngresos.Margin = new System.Windows.Forms.Padding(4);
+            this.dgvIngresos.Location = new System.Drawing.Point(0, 369);
             this.dgvIngresos.Name = "dgvIngresos";
             this.dgvIngresos.RowHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.None;
             dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
@@ -370,18 +389,19 @@
             this.dgvIngresos.RowTemplate.DividerHeight = 1;
             this.dgvIngresos.RowTemplate.Height = 45;
             this.dgvIngresos.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgvIngresos.Size = new System.Drawing.Size(1205, 386);
+            this.dgvIngresos.Size = new System.Drawing.Size(964, 261);
             this.dgvIngresos.TabIndex = 23;
             // 
             // frmReporteIngresos
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(120F, 120F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
             this.BackColor = System.Drawing.Color.White;
-            this.ClientSize = new System.Drawing.Size(1205, 847);
+            this.ClientSize = new System.Drawing.Size(964, 630);
             this.Controls.Add(this.dgvIngresos);
             this.Controls.Add(this.panel2);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
+            this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.Name = "frmReporteIngresos";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Reporte de Ingresos";

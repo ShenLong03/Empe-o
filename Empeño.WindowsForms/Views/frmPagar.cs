@@ -31,55 +31,17 @@ namespace Empeño.WindowsForms.Views
             empeño = _context.Empenos.Find(id);
         }
 
-        private void btnCancelar_Click(object sender, EventArgs e)
+        private void btnCancelar_Click_1(object sender, EventArgs e)
         {
             this.Close();
         }
 
         private void panel1_Paint(object sender, PaintEventArgs e)
         {
-            var interes = empeño.Intereses.Sum(i => i.Monto - i.Pagado);
-            var intereses= interes.ToString("N2");
-            txtInteresAPagar.Text = intereses;
-            txtPagaInteres.Text = txtInteresAPagar.Text;                        
-            txtAdeudaIntereses.Text = (double.Parse(intereses) - double.Parse(txtInteresAPagar.Text)).ToString("N2");
-            txtAdeudaMonto.Text = empeño.MontoPendiente.ToString("N2");
-            var ultimoInteres = empeño.Intereses.OrderByDescending(o => o.InteresesId).FirstOrDefault();
-            if (ultimoInteres!=null)
-                txtProximaFecha.Text =ultimoInteres.FechaVencimiento.AddMonths(1).ToString("dd/MM/yyyy");
-
-            txtMontoAPagar.Text = empeño.MontoPendiente.ToString("N2");
-
-            montoMinimo = empeño.Intereses.Where(i=>i.FechaVencimiento<=DateTime.Today).Sum(i => i.Monto - i.Pagado);            
-
-            if (interes<1 || montoMinimo<1)
-            {
-                txtPagaMonto.Enabled = true;
-                txtPagaMonto.Text = "0.00";
-                txtTotalAPagar.Text = intereses;
-                txtPagaCon.Text = txtTotalAPagar.Text;
-                txtAdeudaMonto.Text = (double.Parse(txtMontoAPagar.Text) - double.Parse(txtPagaMonto.Text)).ToString("N2");
-            }
-            else
-            {
-                txtPagaMonto.Text = "0.00";
-                txtTotalAPagar.Text = txtPagaInteres.Text;
-                txtPagaCon.Text = txtPagaInteres.Text;
-            }
-            
-            txtFechaVencimiento.Text = empeño.FechaVencimiento.AddMonths(1).ToString("dd/MM/yyyy");
-            if (txtInteresAPagar.Text=="0.00")
-            {
-                txtPagaMonto.Focus();
-                txtPagaMonto.Text = empeño.MontoPendiente.ToString("N2");
-            }
-            else
-            {
-                txtPagaInteres.Focus();
-            }
+          
         }
 
-        private void txtPagaInteres_TextChanged(object sender, EventArgs e)
+        private void txtPagaInteres_TextChanged_2(object sender, EventArgs e)
         {
             var interes = double.Parse(txtInteresAPagar.Text);
 
@@ -91,17 +53,7 @@ namespace Empeño.WindowsForms.Views
 
             txtTotalAPagar.Text = (pagaInteres + pagaMonto).ToString("N2");
 
-            txtPagaCon.Text = (pagaInteres + pagaMonto).ToString("N2");
-
-            if (pagaInteres>=montoMinimo)
-            {
-                txtPagaMonto.Enabled = true;
-            }
-            else
-            {
-                txtPagaMonto.Enabled = false;
-                txtPagaMonto.Text = "0.00";
-            }
+            txtPagaCon.Text = (pagaInteres + pagaMonto).ToString("N2");           
         }
 
         private void txtPagaMonto_TextChanged(object sender, EventArgs e)
@@ -119,7 +71,7 @@ namespace Empeño.WindowsForms.Views
             txtPagaCon.Text = (pagaInteres + pagaMonto).ToString("N2");
         }
 
-        private void txtPagaCon_TextChanged(object sender, EventArgs e)
+        private void txtPagaCon_TextChanged_1(object sender, EventArgs e)
         {
             funciones.KeyNumber(sender);
 
@@ -139,7 +91,7 @@ namespace Empeño.WindowsForms.Views
             txtVuelto.Text = (pagaMonto - monto).ToString("N2");
         }
 
-        private async void btnGuardarEmpeño_Click(object sender, EventArgs e)
+        private async void btnGuardarEmpeño_Click_1(object sender, EventArgs e)
         {
             await Guardar();
         }
@@ -156,20 +108,26 @@ namespace Empeño.WindowsForms.Views
             double pagoMonto = double.Parse(txtPagaMonto.Text);
             double montoPendiente = double.Parse(txtMontoAPagar.Text);
 
-            if (montoMinimo != 0)
-            {
-                if ((pagoIntereses != montoIntereses && pagoIntereses <= montoMinimo) && (pagoMonto == montoPendiente))
-                {
-                    MessageBox.Show("Debe cumplir con un pago minimo mayor a " + montoMinimo.ToString("N2") + " cólon", "Información");
-                    return;
-                }
-            }
+            //if (montoMinimo != 0)
+            //{
+            //    if ((pagoIntereses != montoIntereses && pagoIntereses <= montoMinimo) && (pagoMonto == montoPendiente))
+            //    {
+            //        MessageBox.Show("Debe cumplir con un pago minimo mayor a " + montoMinimo.ToString("N2") + " cólon", "Información");
+            //        return;
+            //    }
+            //}
 
-            if ((pagoMonto >= montoPendiente) && (pagoIntereses < montoMinimo))
+            if ((pagoMonto > 0 && pagoMonto < montoPendiente) && (pagoIntereses < montoIntereses))
             {
-                MessageBox.Show("Para retirar la prenda debe pagar un minimo de intereses de " + montoMinimo.ToString("N2"), "Alerta", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show("Para abonar a la prenda debe pagar todos los intereses pendientes de " + montoIntereses.ToString("N2"), "Alerta", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
+
+            //if ((pagoMonto >= montoPendiente) && (pagoIntereses < montoMinimo))
+            //{
+            //    MessageBox.Show("Para retirar la prenda debe pagar un minimo de intereses de " + montoMinimo.ToString("N2"), "Alerta", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            //    return;
+            //}
 
             if (pagoMonto > 0)
             {
@@ -317,7 +275,7 @@ namespace Empeño.WindowsForms.Views
             }
         }
 
-        private void txtPagaMonto_TextChanged_1(object sender, EventArgs e)
+        private void txtPagaMonto_TextChanged_2(object sender, EventArgs e)
         {
             funciones.KeyNumber(sender);
 
@@ -403,7 +361,7 @@ namespace Empeño.WindowsForms.Views
             cexcel.Cells[5, 1].value = "Tel. " + configuracion.Telefono;
             cexcel.Cells[6, 1].value = configuracion.Nombre;
             cexcel.Cells[7, 1].value = "Cédula: " + configuracion.Identificacion;
-            cexcel.Cells[7, 2].value = pago.PagoId;
+            cexcel.Cells[8, 2].value = pago.PagoId;
             cexcel.Cells[9, 2].value = usuario.Nombre;
             cexcel.Cells[10, 2].value = Program.Usuario.Usuario;
             cexcel.Cells[14, 2].value = empeno.Cliente.Identificacion;
@@ -491,20 +449,20 @@ namespace Empeño.WindowsForms.Views
 
         #endregion
 
-        private void txtPagaMonto_Leave(object sender, EventArgs e)
+        private void txtPagaMonto_Leave_1(object sender, EventArgs e)
         {
             double number = double.Parse(txtPagaMonto.Text);
             txtPagaMonto.Text = (number).ToString("N2");
             txtPagaCon.Focus();
         }
 
-        private void txtPagaInteres_Leave(object sender, EventArgs e)
+        private void txtPagaInteres_Leave_1(object sender, EventArgs e)
         {
             double number = double.Parse(txtPagaInteres.Text);
             txtPagaInteres.Text = (number).ToString("N2");
         }
 
-        private async void txtPagaInteres_KeyUp(object sender, KeyEventArgs e)
+        private async void txtPagaInteres_KeyUp_1(object sender, KeyEventArgs e)
         {
             if (e.KeyCode == Keys.Down)
             {
@@ -516,7 +474,7 @@ namespace Empeño.WindowsForms.Views
             }
         }
 
-        private async void txtPagaMonto_KeyUp(object sender, KeyEventArgs e)
+        private async void txtPagaMonto_KeyUp_1(object sender, KeyEventArgs e)
         {
             if (e.KeyCode == Keys.Down)
             {
@@ -528,7 +486,7 @@ namespace Empeño.WindowsForms.Views
             }
         }
 
-        private async void txtPagaCon_KeyUp(object sender, KeyEventArgs e)
+        private async void txtPagaCon_KeyUp_1(object sender, KeyEventArgs e)
         {
             if (e.KeyCode == Keys.Down)
             {
@@ -537,6 +495,49 @@ namespace Empeño.WindowsForms.Views
             else if(e.KeyCode == Keys.Enter)
             {
                 await Guardar();
+            }
+        }
+
+        private void frmPagar_Load(object sender, EventArgs e)
+        {
+            var interes = empeño.Intereses.Sum(i => i.Monto - i.Pagado);
+            var intereses = interes.ToString("N2");
+            txtInteresAPagar.Text = intereses;
+            txtPagaInteres.Text = txtInteresAPagar.Text;
+            txtAdeudaIntereses.Text = (double.Parse(intereses) - double.Parse(txtInteresAPagar.Text)).ToString("N2");
+            txtAdeudaMonto.Text = empeño.MontoPendiente.ToString("N2");
+            var ultimoInteres = empeño.Intereses.OrderByDescending(o => o.InteresesId).FirstOrDefault();
+            if (ultimoInteres != null)
+                txtProximaFecha.Text = ultimoInteres.FechaVencimiento.AddMonths(1).ToString("dd/MM/yyyy");
+
+            txtMontoAPagar.Text = empeño.MontoPendiente.ToString("N2");
+
+            montoMinimo = empeño.Intereses.Where(i => i.FechaVencimiento <= DateTime.Today).Sum(i => i.Monto - i.Pagado);
+
+            if (interes < 1 || montoMinimo < 1)
+            {
+                txtPagaMonto.Enabled = true;
+                txtPagaMonto.Text = "0.00";
+                txtTotalAPagar.Text = intereses;
+                txtPagaCon.Text = txtTotalAPagar.Text;
+                txtAdeudaMonto.Text = (double.Parse(txtMontoAPagar.Text) - double.Parse(txtPagaMonto.Text)).ToString("N2");
+            }
+            else
+            {
+                txtPagaMonto.Text = "0.00";
+                txtTotalAPagar.Text = txtPagaInteres.Text;
+                txtPagaCon.Text = txtPagaInteres.Text;
+            }
+
+            txtFechaVencimiento.Text = empeño.FechaVencimiento.AddMonths(1).ToString("dd/MM/yyyy");
+            if (txtInteresAPagar.Text == "0.00")
+            {
+                txtPagaMonto.Focus();
+                txtPagaMonto.Text = empeño.MontoPendiente.ToString("N2");
+            }
+            else
+            {
+                txtPagaInteres.Focus();
             }
         }
     }

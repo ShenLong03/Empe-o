@@ -57,7 +57,7 @@ namespace Empeño.WindowsForms.Views
 
         private async void btnGuardarCierreCaja_Click(object sender, EventArgs e)
         {
-            if (!funciones.ValidatePIN("Empeño"))
+            if (!funciones.ValidatePIN("Editar Empeño"))
                 return;
 
             var resp = MessageBox.Show("Está seguro que desea enviar el arqueo y sus observaciones al administrador del negocio","Confirmar", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
@@ -128,7 +128,9 @@ namespace Empeño.WindowsForms.Views
             cexcel.Cells[23 + index, 3].value = saldoVencido.ToString("N2");
             cexcel.Cells[24 + index, 3].value = saldoRetirado.ToString("N2");
             cexcel.Cells[25 + index, 3].value = saldoProroga.ToString("N2");
-
+            string str = cexcel.Cells[27 + index, 1].value;
+            str = str.Replace("{Empleado}", empleado.Nombre);
+            cexcel.Cells[27 + index, 1].value = str;
             cexcel.ActiveWindow.SelectedSheets.PrintOut();
             System.Threading.Thread.Sleep(300);
             cexcel.ActiveWorkbook.Close(false);
@@ -321,6 +323,9 @@ namespace Empeño.WindowsForms.Views
 
         private void btnPrint_Click(object sender, EventArgs e)
         {
+            if (!funciones.ValidatePIN("Editar Empeño"))
+                    return;
+            
             Print();
         }
     }

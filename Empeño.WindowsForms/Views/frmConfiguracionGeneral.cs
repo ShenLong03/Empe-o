@@ -43,7 +43,11 @@ namespace Empeño.WindowsForms.Views
                 txtDirección.Text = configuracion.Direccion;
                 txtEmailAdmin.Text = configuracion.EmailNotification;
             }
-
+            else
+            {
+                txtPuerto.Text = "587";
+            }
+            
             txtCompania.Focus();
         }
 
@@ -67,7 +71,7 @@ namespace Empeño.WindowsForms.Views
                         Telefono = txtTelefono.Text,
                         Email = txtEmail.Text,
                         Password = txtPassword.Text,
-                        Puerto = int.Parse(txtPuerto.Text),
+                        Puerto = int.Parse(!string.IsNullOrEmpty(txtPuerto.Text)?txtPuerto.Text:"0"),
                         SMTP = txtSMTP.Text,
                         SSL = chkSSL.Checked,
                         Direccion = txtDirección.Text,
@@ -87,7 +91,7 @@ namespace Empeño.WindowsForms.Views
                     configuracion.Telefono = txtTelefono.Text;            
                     configuracion.Email = txtEmail.Text;
                     configuracion.Password = txtPassword.Text;
-                    configuracion.Puerto = int.Parse(txtPuerto.Text);
+                    configuracion.Puerto = int.Parse(!string.IsNullOrEmpty(txtPuerto.Text) ? txtPuerto.Text : "0");
                     configuracion.SMTP = txtSMTP.Text;
                     configuracion.SSL = chkSSL.Checked;
                     configuracion.Direccion = txtDirección.Text;

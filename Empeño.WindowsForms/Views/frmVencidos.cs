@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
+using System.Data.Entity.Infrastructure.Interception;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -21,6 +22,7 @@ namespace Empeño.WindowsForms.Views
         List<Empeno> empeños = new List<Empeno>();
         int index;
         Configuracion configuracion = new Configuracion();
+        EmailFuncion emailFuncion = new EmailFuncion();
 
         public frmVencidos()
         {
@@ -49,9 +51,25 @@ namespace Empeño.WindowsForms.Views
             }
         }
 
-        private void btnGuardarCierreCaja_Click(object sender, EventArgs e)
+        private async void btnGuardarCierreCaja_Click(object sender, EventArgs e)
         {
-            Print();
+            if (configuracion.EmailNotification != string.Empty) 
+            {
+                var empleado = await _context.Empleados.FindAsync(Program.EmpleadoId);
+                var str = "<p>" +
+                    "<table><tr><td></td><td>Cantidad</td><td>Valor</td></tr>" +
+                    "<tr><td>Total Vencidos</td><td>" + lblTotalVencidos.Text + "</td><td>"+ txtTotalVencido.Text +"</td></tr>" +
+                    "<tr><td>Total Vencidos Retirados</td><td>" + lblTotalRetirados.Text + "</td><td>" + txtTotalRetirados.Text + "</td></tr>" +
+                    "<tr><td>Total Vencidos Prorroga</td><td>" + lblTotalProrroga.Text + "</td><td>" + txtTotalProrroga.Text + "</td></tr>" +
+                    "</table></p>";
+
+                await emailFuncion.SendMailVencidos(configuracion.EmailNotification,
+                    "Notificacion del Proceso de Vencidos " + configuracion.Compañia,
+                    "<p>Se ha realizado departe del Local " + configuracion.Compañia + " en " 
+                    + configuracion.Direccion + ", un procesos de sacar vencidos por " + empleado.Nombre + "</p>",
+                    dgvDetalles, str) ;
+            }
+            //Print();
         }
 
         #region Funciones
