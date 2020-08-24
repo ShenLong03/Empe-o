@@ -432,6 +432,8 @@ namespace Empeño.WindowsForms.Funciones
             {
                 _context.Intereses.RemoveRange(_context.Intereses.Where(i => i.InteresesId != item.InteresesId && i.EmpenoId == item.EmpenoId && i.FechaVencimiento == item.FechaVencimiento));
             }
+            var proximoMes = DateTime.Today.AddMonths(1).AddDays(1);
+            _context.Intereses.RemoveRange(_context.Intereses.Where(i => i.FechaVencimiento > proximoMes));
             await _context.SaveChangesAsync();
         }
 
@@ -498,12 +500,16 @@ namespace Empeño.WindowsForms.Funciones
                                     .FirstOrDefaultAsync();
                         if (ultimoInteres != null)
                         {
-                            if (ultimoInteres.FechaVencimiento < DateTime.Today)
+                            if (ultimoInteres.FechaVencimiento < DateTime.Today && ultimoInteres.Monto>ultimoInteres.Pagado)
                             {
-                                empeño.Estado = Estado.Pendiente;
-                                _context.Entry(empeño).State = EntityState.Modified;
-                                await _context.SaveChangesAsync();
+                                empeño.Estado = Estado.Pendiente;                                
                             }
+                            else
+                            {
+                                empeño.Estado = Estado.Vigente;
+                            }
+                            _context.Entry(empeño).State = EntityState.Modified;
+                            await _context.SaveChangesAsync();
                         }
 
                     }
@@ -523,7 +529,7 @@ namespace Empeño.WindowsForms.Funciones
                         }
 
                         await _context.SaveChangesAsync();
-                    }                
+                    }                    
                 }
             }
             await SaveBitacora(new ValorBitacora
@@ -533,6 +539,106 @@ namespace Empeño.WindowsForms.Funciones
                 Accion = "Automatico"
             });
         }
+
+
+        public async Task ReviewEmpeño(int id)
+        {
+            var empeño = await _context.Empenos.FindAsync(id);
+
+            if (empeño!=null)
+            {                
+                if (empeño.Estado == Estado.Vigente || empeño.Estado == Estado.Vencido
+                        || empeño.Estado == Estado.Pendiente)
+                {
+                    var fechaCalculo = empeño.Fecha;
+                    if (empeño.Intereses.Any())
+                        fechaCalculo = empeño.Intereses.OrderByDescending(i => i.FechaVencimiento).FirstOrDefault().FechaVencimiento;
+
+                    int cantidadMeses = ((int)(DateTime.Today - fechaCalculo).TotalDays / 30);
+                    double sobrante = (DateTime.Today - fechaCalculo).TotalDays % 30;
+                    cantidadMeses += sobrante > 1 ? 1 : 0;
+
+                    var numeroIntereses = cantidadMeses;
+                    for (int i = 0; i < numeroIntereses; i++)
+                    {
+                        var intereses = new Intereses
+                        {
+                            EmpenoId = empeño.EmpenoId,
+                            FechaCreacion = DateTime.Now,
+                            Monto = (double)empeño.MontoPendiente * ((double)empeño.Interes.Porcentaje / (double)100)
+                        };
+
+                        if (_context.Intereses.Where(x => x.EmpenoId == empeño.EmpenoId).Count() > 0)
+                        {
+                            intereses.FechaVencimiento = _context.Intereses
+                                .Where(x => x.EmpenoId == empeño.EmpenoId)
+                                .OrderByDescending(x => x.InteresesId)
+                                .FirstOrDefault()
+                                .FechaVencimiento.AddMonths(1);
+                        }
+                        else
+                        {
+                            intereses.FechaVencimiento = empeño.FechaVencimiento.AddMonths(1);
+                        }
+                        using (DataContext temp = new DataContext())
+                        {
+                            var interesesFind = await temp.Intereses.Where(x => x.EmpenoId == empeño.EmpenoId && x.FechaVencimiento == intereses.FechaVencimiento).ToListAsync();
+                            if (interesesFind.Count() == 0)
+                            {
+                                _context.Intereses.Add(intereses);
+                                await _context.SaveChangesAsync();
+                            }
+                        }
+                    }
+                }
+
+                var count = await _context.Intereses.Where(i => i.EmpenoId == empeño.EmpenoId).ToListAsync();
+                if (count.Count() > 0)
+                {
+                    var ultimoInteres = await _context.Intereses.Where(p => p.EmpenoId == empeño.EmpenoId)
+                                .OrderByDescending(o => o.InteresesId)
+                                .FirstOrDefaultAsync();
+                    if (ultimoInteres != null)
+                    {
+                        if (ultimoInteres.FechaVencimiento < DateTime.Today && ultimoInteres.Monto > ultimoInteres.Pagado)
+                        {
+                            empeño.Estado = Estado.Pendiente;
+                        }
+                        else
+                        {
+                            empeño.Estado = Estado.Vigente;
+                        }
+                        _context.Entry(empeño).State = EntityState.Modified;
+                        await _context.SaveChangesAsync();
+                    }
+
+                }
+                if (empeño.FechaVencimiento < DateTime.Today)
+                {
+                    if (empeño.Retirado || empeño.FechaRetiro != null)
+                    {
+                        empeño.Estado = Estado.Cancelado;
+                    }
+                    else if (empeño.RetiradoAdministrador || empeño.FechaRetiroAdministrador != null)
+                    {
+                        empeño.Estado = Estado.Retirado;
+                    }
+                    else
+                    {
+                        empeño.Estado = Estado.Vencido;
+                    }
+
+                    await _context.SaveChangesAsync();
+                }
+            }
+            await SaveBitacora(new ValorBitacora
+            {
+                Valor = "Revisión Automatica de Empeños",
+                Modulo = "Revisar Empeños",
+                Accion = "Automatico"
+            });
+        }
+
 
         private string GetEstadoName(int i)
         {
