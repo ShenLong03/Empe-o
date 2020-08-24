@@ -121,6 +121,10 @@
     <Compile Include="Migrations\202008122108169_Initial_Pruebas.designer.cs">
       <DependentUpon>202008122108169_Initial_Pruebas.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202008241741369_NuevoCierre.cs" />
+    <Compile Include="Migrations\202008241741369_NuevoCierre.designer.cs">
+      <DependentUpon>202008241741369_NuevoCierre.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Transaccion.cs" />
     <Compile Include="Reports\frmReporteEmpeños.cs">
@@ -274,6 +278,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202008122108169_Initial_Pruebas.resx">
       <DependentUpon>202008122108169_Initial_Pruebas.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202008241741369_NuevoCierre.resx">
+      <DependentUpon>202008241741369_NuevoCierre.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Reports\Empeños.rdlc" />
     <EmbeddedResource Include="Reports\frmReporteEmpeños.resx">

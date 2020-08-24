@@ -15,10 +15,6 @@ namespace Empeño.CommonEF.Entities
 
         public double Valor { get; set; }
 
-        public double Cantidad { get; set; }
-
-        public double SubTotal { get { return Valor * Cantidad; } }
-
         public int CierreCajaId { get; set; }
 
         [JsonIgnore]

@@ -433,7 +433,7 @@ namespace Empeño.WindowsForms.Funciones
                 _context.Intereses.RemoveRange(_context.Intereses.Where(i => i.InteresesId != item.InteresesId && i.EmpenoId == item.EmpenoId && i.FechaVencimiento == item.FechaVencimiento));
             }
             var proximoMes = DateTime.Today.AddMonths(1).AddDays(1);
-            _context.Intereses.RemoveRange(_context.Intereses.Where(i => i.FechaVencimiento > proximoMes));
+            _context.Intereses.RemoveRange(_context.Intereses.Where(i => i.FechaVencimiento > proximoMes && i.Pagado<=0));
             await _context.SaveChangesAsync();
         }
 

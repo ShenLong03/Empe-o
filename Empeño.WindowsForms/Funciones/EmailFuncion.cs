@@ -67,14 +67,13 @@ namespace Empeño.WindowsForms.Funciones
                 + body
                 + "<b>Fecha</b> : " + cierreCaja.Fecha.ToString("dd/MM/yyyy") + "<br />"
                 + "<b>Realizado por</b>  : " + empleado.Nombre + "<br />"
-                + "<table><thead><tr><th>Concepto</th><th>Valor</th><th>Cantidad</th><th>SubTotal</th></tr></thead><tbody>";
+                + "<table><thead><tr><th>Concepto</th><th>Valor</th></tr></thead><tbody>";
                 foreach (var item in detalle)
                 {
-                    str += "<tr><td>" + item.Concepto + "</td>" + item.Valor + "</td>" + item.Cantidad + "</td>" + item.SubTotal + "</td>";
+                    str += "<tr><td>" + item.Concepto + "</td>" 
+                     + "<td>" + item.Valor + "</td>";
                 }
-                str+="</tbody></table>"
-                + "<b>Monto Inicial</b> : " + cierreCaja.SaldoInicial.ToString("N2") + "<br />"
-                + "<b>Ingresos</b> : " + (detalle.Sum(d=>d.SubTotal) - cierreCaja.SaldoInicial).ToString("N2") + "<br />"                
+                str+="</tbody></table>"               
                 + "<br /><br />Saludos.";
 
             await SendMail(to, subject, str);

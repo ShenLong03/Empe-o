@@ -8,6 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Data.Entity;
 using System.Drawing;
 using System.Globalization;
 using System.IO;
@@ -49,7 +50,6 @@ namespace Empeño.WindowsForms.Views
                 txtValor.Text = txtValor.Text == string.Empty? "0" : txtValor.Text;
                 detalle.Concepto = txtConcepto.Text;
                 detalle.Valor = double.Parse(txtValor.Text);
-                detalle.Cantidad = double.Parse(txtCantidad.Text);
                 detalles.Add(detalle);
                 LoadList();
                 txtConcepto.Focus();
@@ -63,94 +63,128 @@ namespace Empeño.WindowsForms.Views
             
             dgvDetalles.DataSource = detalles.Select(x=>new 
             {
-                Id=x.CierreCajaId,
                 x.Concepto,
                Valor= x.Valor.ToString("N2"),
-                x.Cantidad,
-               SubTotal= x.SubTotal.ToString("N2")
             }).ToList();
             dgvDetalles.Refresh();           
-            txtTotal.Text = ((double.Parse(textBox1.Text) * -1) + detalles.Sum(d => d.SubTotal)).ToString("N2");
+            txtTotal.Text = ((double.Parse(textBox1.Text) * -1) + detalles.Sum(d => d.Valor)).ToString("N2");
         }
 
         private async void frmCierreCaja_Load(object sender, EventArgs e)
         {
-            txtFecha.Text = DateTime.Now.ToString("dd/MM/yyyy HH:mm");
-            txtFecha.Enabled = false;
+            txtFecha.Value = DateTime.Today;
+            await ProcessClose();
+        }
+
+
+
+        public async Task ProcessClose()
+        {
+            await funciones.ReviewEmpeños();
+            var fecha = DateTime.ParseExact(txtFecha.Text, "dd/MM/yyyy", CultureInfo.InvariantCulture);
+
             empleadoId = await funciones.GetEmpleadoIdByUser(Program.Usuario.Usuario);
             empleadoId = empleadoId == null ? 1 : empleadoId;
             var empleado = await _context.Empleados.FindAsync(empleadoId);
             txtEmpleado.Text = empleado.Nombre;
             txtEmpleado.Enabled = false;
             textBox1.Text = "0.00";
-            double acumuladoInicial = _context.Empenos.Where(x => !x.IsDelete && (x.Estado == Estado.Vigente
-                    || x.Estado == Estado.Pendiente || x.Estado == Estado.Vencido)
-                    && x.Fecha < DateTime.Today).Sum(x => x.Monto);
 
-            detalles.Add(new DetalleCierreCaja
-            {
-                Concepto = "Total Acumunlado",
-                Cantidad = 1,
-                Valor = acumuladoInicial,                
-            });
-            var tomorrow = DateTime.Today.AddDays(1);
-            double? montoEmpeñoDia = _context.Empenos.Where(x => !x.IsDelete && x.Fecha >= DateTime.Today && x.Fecha <= tomorrow).ToList().Sum(x => x.Monto);
+            var empeñosActivos = _context.Empenos.Where(x => !x.IsDelete && (x.Estado == Estado.Vigente
+                       || x.Estado == Estado.Pendiente || x.Estado == Estado.Vencido));
+
+            double c1 = empeñosActivos.Where(x => x.Fecha < fecha
+                     && (!x.Retirado || x.FechaRetiro == fecha)).Sum(x => x.MontoPendiente);
+
+            double c2c3 = _context.Pago.Where(p => p.Fecha >= fecha && p.TipoPago == TipoPago.Principal).Any() ?
+                _context.Pago.Where(p => p.Fecha >= fecha && p.TipoPago == TipoPago.Principal).Select(x => x.Monto).Sum()
+                : 0;
+
+            double acumuladoInicial = c1 + c2c3;
+
+            //detalles.Add(new DetalleCierreCaja
+            //{
+            //    Concepto = "Total Acumunlado",
+            //    Valor = acumuladoInicial,
+            //});
+            txtAcumuladoInicial.Text = acumuladoInicial.ToString("N2");
+
+            var tomorrow = fecha.AddDays(1);
+            double? montoEmpeñoDia = empeñosActivos.Where(x => !x.IsDelete && x.Fecha >= fecha && x.Fecha < tomorrow).ToList().Sum(x => x.Monto);
+
+            txtMonto.Text = montoEmpeñoDia != null ? montoEmpeñoDia.Value.ToString("N2") : "0.00";
+
+            double? montoInteresDia = empeñosActivos
+                  .SelectMany(x => x.Pagos).Where(x => x.TipoPago == TipoPago.Interes && x.Fecha >= fecha && x.Fecha < tomorrow).ToList().Sum(x => x.Monto);
+
+            txtInteres.Text = montoInteresDia != null ? montoInteresDia.Value.ToString("N2") : "0.00";
+
+            double? abonoDia = empeñosActivos
+                .SelectMany(x => x.Pagos).Where(x => x.TipoPago == TipoPago.Principal && x.Fecha >=fecha && x.Fecha < tomorrow).ToList().Sum(x => x.Monto);
+
+            txtAbonos.Text = abonoDia != null ? abonoDia.Value.ToString("N2") : "0.00";
+
+            double? vencidos = _context.Empenos.Where(x => !x.IsDelete && x.FechaRetiroAdministrador >=fecha && x.FechaRetiroAdministrador < tomorrow).ToList().Sum(x => x.MontoPendiente);
+
+            txtVencimientos.Text = vencidos != null ? vencidos.Value.ToString("N2") : "0.00";
+
+            double? cancelados = _context.Empenos.Where(x => !x.IsDelete && (x.Estado == Estado.Cancelado
+                       || x.Retirado || x.FechaRetiro != null))
+                .SelectMany(x => x.Pagos).Where(x => x.TipoPago == TipoPago.Principal && x.Fecha >=fecha && x.Fecha < tomorrow).ToList().Sum(x => x.Monto);
+
+            txtCancelados.Text = cancelados != null ? cancelados.Value.ToString("N2") : "0.00";
+            txtAcumulado.Text = ((acumuladoInicial + montoEmpeñoDia) - (abonoDia + vencidos + cancelados)).Value.ToString("N2");
+
+            //detalles.Add(
+            // new DetalleCierreCaja
+            // {
+            //     Concepto = "Abonos al Principal",
+            //     Valor = abonoDia != null ? abonoDia.Value : 0
+            // });
+
             detalles.Add(
-            new DetalleCierreCaja
-            {
-                Concepto = "Total Monto Empeño Dia",
-                Cantidad = 1,
-                Valor =montoEmpeñoDia!=null? montoEmpeñoDia.Value:0
-            });
-            double? montoInteresDia = _context.Empenos.Where(x => !x.IsDelete)
-                  .SelectMany(x => x.Pagos).Where(x => x.TipoPago == TipoPago.Interes && x.Fecha >= DateTime.Today && x.Fecha <= tomorrow).ToList().Sum(x => x.Monto);
+              new DetalleCierreCaja
+              {
+                  Concepto = "Empeños",
+                  Valor = montoEmpeñoDia != null ? montoEmpeñoDia.Value : 0
+              });
+
             detalles.Add(
-             new DetalleCierreCaja
-             {
-                 Concepto = "Total Monto Interes Dia",
-                 Cantidad = 1,
-                 Valor = montoInteresDia!=null?montoInteresDia.Value:0
-             });
-            double? abonoDia = _context.Empenos.Where(x => !x.IsDelete)
-                .SelectMany(x => x.Pagos).Where(x => x.TipoPago == TipoPago.Principal && x.Fecha >= DateTime.Today && x.Fecha <= tomorrow).ToList().Sum(x => x.Monto);
+               new DetalleCierreCaja
+               {
+                   Concepto = "Intereses",
+                   Valor = montoInteresDia != null ? montoInteresDia.Value : 0
+               });
+
             detalles.Add(
-             new DetalleCierreCaja
-             {
-                 Concepto = "Total Monto Abonos Dia",
-                 Cantidad = 1,
-                 Valor = abonoDia != null ? abonoDia.Value : 0
-             });
-            double? vencidos = _context.Empenos.Where(x => !x.IsDelete && x.FechaRetiroAdministrador >= DateTime.Today && x.FechaRetiroAdministrador <= tomorrow).ToList().Sum(x => x.Monto);
+               new DetalleCierreCaja
+               {
+                   Concepto = "Retiros",
+                   Valor = cancelados != null ? cancelados.Value : 0
+               });
+
             detalles.Add(
-            new DetalleCierreCaja
-            {
-                Concepto = "Total Vencidos",
-                Cantidad = 1,
-                Valor = vencidos != null ? vencidos.Value : 0
-            });
-            double? cancelados = _context.Empenos.Where(x => !x.IsDelete && x.FechaRetiro >= DateTime.Today && x.FechaRetiro <= tomorrow).ToList().Sum(x => x.Monto);
+               new DetalleCierreCaja
+               {
+                   Concepto = "Vencidos",
+                   Valor = vencidos != null ? vencidos.Value : 0
+               });
+
             detalles.Add(
-            new DetalleCierreCaja
-            {
-                Concepto = "Total Cancelados",
-                Cantidad = 1,
-                Valor = cancelados != null ? cancelados.Value : 0
-            });
-            detalles.Add(
-            new DetalleCierreCaja
-            {
-                Concepto = "Acumulado Final",
-                Cantidad = 1,
-                Valor = (acumuladoInicial+montoEmpeñoDia - (abonoDia+vencidos+cancelados)).Value
-            });
+               new DetalleCierreCaja
+               {
+                   Concepto = "Acumulado",
+                   Valor = ((acumuladoInicial + montoEmpeñoDia) - (abonoDia + vencidos + cancelados)).Value
+               });
+
             LoadList();
         }
+
 
         private void txtConcepto_TextChanged(object sender, EventArgs e)
         {
             if (txtConcepto.Text!=string.Empty)
             {
-                txtCantidad.Text = "1";
             }
         }
 
@@ -210,7 +244,6 @@ namespace Empeño.WindowsForms.Views
             dgvDetalles.Refresh();
             txtConcepto.Text = "";
             txtValor.Text = "0";
-            txtCantidad.Text = "0";
         }
 
         private void btnDeleteCierreCaja_Click(object sender, EventArgs e)
@@ -222,7 +255,6 @@ namespace Empeño.WindowsForms.Views
         {
             txtConcepto.Text = "";
             txtValor.Text = "0";
-            txtCantidad.Text = "0";
         }
 
         private async void btnDeleteDetalle_Click(object sender, EventArgs e)
@@ -276,7 +308,6 @@ namespace Empeño.WindowsForms.Views
 
             double saldoInicial = double.Parse(textBox1.Text);
             cexcel.Cells[17 + index, 3].value = saldoInicial.ToString("N2");
-            cexcel.Cells[18 + index, 3].value = detalles.Sum(d=>d.SubTotal).ToString("N2");
             cexcel.Cells[19 + index, 3].value = txtTotal.Text;
             cexcel.ActiveWindow.SelectedSheets.PrintOut();
             System.Threading.Thread.Sleep(300);
@@ -285,7 +316,7 @@ namespace Empeño.WindowsForms.Views
         }
         #endregion
 
-        private void textBox1_TextChanged(object sender, EventArgs e)
+        private void textBox1_TextChanged_1(object sender, EventArgs e)
         {
             if (textBox1.Text== string.Empty)
             {
@@ -295,7 +326,7 @@ namespace Empeño.WindowsForms.Views
             double.TryParse(textBox1.Text,out number);
             if (number>0)
             {
-                txtTotal.Text = ((double.Parse(textBox1.Text) * -1) + detalles.Sum(d => d.SubTotal)).ToString("N2");
+                txtTotal.Text = ((double.Parse(textBox1.Text) * -1) + detalles.Sum(d => d.Valor)).ToString("N2");
             }
         }
 
@@ -317,6 +348,126 @@ namespace Empeño.WindowsForms.Views
             }
             double numero = double.Parse(txtValor.Text);
             txtValor.Text = numero.ToString("N2");
+        }
+
+        private void txtAcumuladoInicial_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void panel1_Paint(object sender, PaintEventArgs e)
+        {
+
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            var detalle = new DetalleCierreCaja();
+
+            if (txtConcepto.Text != string.Empty || txtValor.Text != string.Empty)
+            {
+                txtValor.Text = txtValor.Text == string.Empty ? "0" : txtValor.Text;
+                detalle.Concepto = txtConcepto.Text;
+                detalle.Valor = double.Parse(txtValor.Text);
+                detalles.Add(detalle);
+                LoadList();
+                txtConcepto.Focus();
+            }
+        }
+
+        private async void btnBuscar_Click(object sender, EventArgs e)
+        {
+            await ProcessClose();
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+
+        }
+
+    
+
+        private async void btnPrint_Click(object sender, EventArgs e)
+        {
+
+            var configuracion = await _context.Configuraciones.FirstOrDefaultAsync();
+            Microsoft.Office.Interop.Excel.Application cexcel = new Microsoft.Office.Interop.Excel.Application();
+            string pathch = Path.GetDirectoryName(System.Windows.Forms.Application.ExecutablePath);
+            pathch = $"{pathch}\\Empeños\\Comprobantes\\Cierre.xlsx";
+            cexcel.Workbooks.Open(pathch, true, true);
+
+            cexcel.Visible = false;
+            cexcel.Cells[3, 3].value = txtFecha.Value.ToShortDateString();
+            cexcel.Cells[5, 3].value = txtAcumuladoInicial.Text;
+            cexcel.Cells[6, 3].value = txtMonto.Text;
+            cexcel.Cells[8, 3].value = txtInteres.Text;
+            cexcel.Cells[10, 3].value = txtAbonos.Text;
+            cexcel.Cells[12, 3].value = txtVencimientos.Text;
+            cexcel.Cells[14, 3].value = txtCancelados.Text;
+            cexcel.Cells[16, 3].value = txtAcumulado.Text;
+            cexcel.ActiveWindow.SelectedSheets.PrintOut();
+            System.Threading.Thread.Sleep(300);
+            cexcel.ActiveWorkbook.Close(false);
+            cexcel.Quit();
+        }
+
+        private async void btnEnviarCierre_Click(object sender, EventArgs e)
+        {
+            if (!funciones.ValidatePIN("Empeño"))
+                return;
+
+            var fecha = DateTime.ParseExact(txtFecha.Text, "dd/MM/yyyy", CultureInfo.InvariantCulture);
+
+            var cierreCaja = new CierreCaja
+            {
+                Fecha = fecha,
+                EmpleadoId = Program.EmpleadoId,
+                SaldoInicial = double.Parse(textBox1.Text),
+                IsDelete = false,
+            };
+
+            _context.CierreCajas.Add(cierreCaja);
+            await _context.SaveChangesAsync();
+
+            detalles.ForEach(d => d.CierreCajaId = cierreCaja.CierreCajaId);
+            _context.DetalleCierreCajas.AddRange(detalles);
+            await _context.SaveChangesAsync();                       
+
+            var configuracion = _context.Configuraciones.FirstOrDefault();
+            if (!string.IsNullOrEmpty(configuracion.EmailNotification))
+            {
+                EmailFuncion emailFuncion = new EmailFuncion();
+                var empleado = await _context.Empleados.FindAsync(Program.EmpleadoId);
+                string str = "Se ha realizado el cierre de caja al ser el <b>" + cierreCaja.Fecha.ToLongDateString() + " " + cierreCaja.Fecha.ToLongTimeString() + "</b> por <b>" + empleado.Nombre + "</b>. <br /><br />";
+                await emailFuncion.SendMail(configuracion.EmailNotification, "Cierre de Caja " + cierreCaja.Fecha, str, detalles);
+                
+                MessageBox.Show("Mensaje enviado correctamente", "Información", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+        }
+
+        private void btnDeleteDetalle_Click_1(object sender, EventArgs e)
+        {
+            var resp = MessageBox.Show("Esta seguro que desea borrar los datos", "Confirmar", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+            if (resp == DialogResult.No)
+            {
+                return;
+            }
+
+            if (dgvDetalles.SelectedRows.Count > 0)
+            {
+                var index = dgvDetalles.SelectedRows[0].Index;
+
+                var detalle = detalles[index];
+
+                detalles.Remove(detalle);
+                LoadList();
+            }
+        }
+
+        private void btnCancelar_Click_1(object sender, EventArgs e)
+        {
+            txtConcepto.Text = "";
+            txtValor.Text = "0";
         }
     }
 }
