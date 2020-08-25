@@ -176,8 +176,11 @@ namespace Empeño.WindowsForms.Views
                 {
                     await PagaInteres(pagoIntereses, false);
                     empeño.Estado = Estado.Cancelado;
-                    empeño.Retirado = true;                    
+                    empeño.Retirado = true;
+                    empeño.FechaRetiro = DateTime.Today;
                     _context.Intereses.RemoveRange(_context.Intereses.Where(i => i.EmpenoId == empleadoId && i.Pagado == 0));
+                    _context.Entry(empeño).State = EntityState.Modified;
+                    await _context.SaveChangesAsync();
                     await PrintRetiro(empeño, pago);
                 }
                 else

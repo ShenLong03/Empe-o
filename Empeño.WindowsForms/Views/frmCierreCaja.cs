@@ -74,6 +74,7 @@ namespace Empeño.WindowsForms.Views
         {
             txtFecha.Value = DateTime.Today;
             await ProcessClose();
+            lblEspere.Visible = false;
         }
 
 
@@ -91,7 +92,7 @@ namespace Empeño.WindowsForms.Views
             textBox1.Text = "0.00";
 
             var empeñosActivos = _context.Empenos.Where(x => !x.IsDelete && (x.Estado == Estado.Vigente
-                       || x.Estado == Estado.Pendiente || x.Estado == Estado.Vencido));
+                       || x.Estado == Estado.Pendiente || x.Estado == Estado.Vencido) && !x.Retirado && x.FechaRetiro==null);
 
             double c1 = empeñosActivos.Where(x => x.Fecha < fecha
                      && (!x.Retirado || x.FechaRetiro == fecha)).Sum(x => x.MontoPendiente);
@@ -378,7 +379,18 @@ namespace Empeño.WindowsForms.Views
 
         private async void btnBuscar_Click(object sender, EventArgs e)
         {
-            await ProcessClose();
+            try
+            {
+                lblEspere.Visible = true;
+                await ProcessClose();
+                lblEspere.Visible = false;
+            }
+            catch (Exception)
+            {
+
+               
+            }
+            lblEspere.Visible = false;
         }
 
         private void button2_Click(object sender, EventArgs e)
