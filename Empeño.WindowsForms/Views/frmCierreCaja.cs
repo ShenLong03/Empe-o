@@ -114,7 +114,8 @@ namespace Empeño.WindowsForms.Views
 
             txtMonto.Text = montoEmpeñoDia != null ? montoEmpeñoDia.Value.ToString("N2") : "0.00";
 
-            double? montoInteresDia = empeñosActivos
+            double? montoInteresDia = _context.Empenos.Where(x => !x.IsDelete && (x.Estado == Estado.Vigente
+                       || x.Estado == Estado.Pendiente || x.Estado == Estado.Vencido || x.Estado==Estado.Cancelado))
                   .SelectMany(x => x.Pagos).Where(x => x.TipoPago == TipoPago.Interes && x.Fecha >= fecha && x.Fecha < tomorrow).ToList().Sum(x => x.Monto);
 
             txtInteres.Text = montoInteresDia != null ? montoInteresDia.Value.ToString("N2") : "0.00";
