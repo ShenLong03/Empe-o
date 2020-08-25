@@ -92,7 +92,7 @@ namespace Empeño.WindowsForms.Views
             textBox1.Text = "0.00";
 
             var empeñosActivos = _context.Empenos.Where(x => !x.IsDelete && (x.Estado == Estado.Vigente
-                       || x.Estado == Estado.Pendiente || x.Estado == Estado.Vencido) && !x.Retirado && x.FechaRetiro==null);
+                       || x.Estado == Estado.Pendiente || x.Estado == Estado.Vencido));
 
             double c1 = empeñosActivos.Where(x => x.Fecha < fecha
                      && (!x.Retirado || x.FechaRetiro == fecha)).Sum(x => x.MontoPendiente);
