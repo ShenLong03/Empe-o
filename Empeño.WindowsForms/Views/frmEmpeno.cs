@@ -1516,7 +1516,7 @@ namespace Empeño.WindowsForms.Views
             var cliente = await _context.Clientes.FindAsync(empeno.ClienteId);
             cexcel.Cells[14, 2].value = cliente.Identificacion;
             cexcel.Cells[15, 1].value = cliente.Nombre;
-            cexcel.Cells[16, 2].value = empeno.Fecha;
+            cexcel.Cells[16, 2].value = empeno.Fecha.ToString("dd/MM/yyyy");
             cexcel.Cells[17, 2].value = empeno.EmpenoId.ToString();            
 
             if (chbEsOro.Checked)
@@ -1559,7 +1559,7 @@ namespace Empeño.WindowsForms.Views
             cexcel.Cells[10, 2].value = empleado.Usuario;
             cexcel.Cells[14, 2].value = empeno.Cliente.Identificacion;
             cexcel.Cells[15, 1].value = empeno.Cliente.Nombre;
-            cexcel.Cells[16, 2].value = empeno.Fecha;
+            cexcel.Cells[16, 2].value = empeno.Fecha.ToString("dd/MM/yyyy");
             cexcel.Cells[17, 2].value = empeno.EmpenoId.ToString();
 
             if (chbEsOro.Checked)
