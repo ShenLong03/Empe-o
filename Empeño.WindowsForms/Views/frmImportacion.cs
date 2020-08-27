@@ -132,6 +132,7 @@ namespace Empeño.WindowsForms.Views
                 await ImportPagos();
                 lblContadorTabla.Text = "9";
                 progressBar2.Value = 9;
+                lblContadorTablaTotal.Text = "9";
                 MessageBox.Show("Datos importados correctamente", "Información", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
             }
