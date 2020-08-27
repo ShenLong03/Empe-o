@@ -18,7 +18,7 @@ using System.Windows.Forms;
 
 namespace Empeño.WindowsForms.Views
 {
-    public partial class frmPagar : Form
+    public partial class frmPagar : System.Windows.Forms.Form
     {
         public Empeno empeño = new Empeno();
         public DataContext _context = new DataContext();

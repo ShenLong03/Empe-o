@@ -21,7 +21,7 @@ using System.Windows.Forms;
 
 namespace Empeño.WindowsForms.Views
 {
-    public partial class frmEmpeno : Form
+    public partial class frmEmpeno : System.Windows.Forms.Form
     {
         DataContext _context = new DataContext();
         List<Cliente> clientesInicial = new List<Cliente>();

@@ -10,7 +10,7 @@ using System.Windows.Forms;
 
 namespace Empeño.WindowsForms.Views
 {
-    public partial class frmOscuro : Form
+    public partial class frmOscuro : System.Windows.Forms.Form
     {
         public frmOscuro()
         {

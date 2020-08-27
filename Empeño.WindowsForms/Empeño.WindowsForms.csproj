@@ -145,6 +145,12 @@
     <Compile Include="SqlServerTypes\Loader.cs" />
     <Compile Include="ViewReports\EmpeñoReporte.cs" />
     <Compile Include="ViewReports\IngresosEgresosReporte.cs" />
+    <Compile Include="Views\frmImportacion.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\frmImportacion.Designer.cs">
+      <DependentUpon>frmImportacion.cs</DependentUpon>
+    </Compile>
     <Compile Include="Views\frmVencidos.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -290,6 +296,9 @@
     <EmbeddedResource Include="Reports\frmReporteIngresos.resx">
       <DependentUpon>frmReporteIngresos.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Views\frmImportacion.resx">
+      <DependentUpon>frmImportacion.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Views\frmVencidos.resx">
       <DependentUpon>frmVencidos.cs</DependentUpon>
     </EmbeddedResource>
@@ -387,6 +396,10 @@
     <ProjectReference Include="..\Empeño.CommonEF\Empeño.CommonEF.csproj">
       <Project>{83FA4EA5-0C62-43B3-AA1A-D4E0F43A2B3C}</Project>
       <Name>Empeño.CommonEF</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Empeños.Importe\Empeños.Importe.csproj">
+      <Project>{BDEDB475-586D-43D0-8BE3-9F28C21D37CA}</Project>
+      <Name>Empeños.Importe</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

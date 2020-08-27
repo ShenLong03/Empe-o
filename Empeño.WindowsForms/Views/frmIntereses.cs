@@ -15,7 +15,7 @@ using System.Windows.Forms;
 
 namespace Empeño.WindowsForms.Views
 {
-    public partial class frmIntereses : Form, IDisposable
+    public partial class frmIntereses : System.Windows.Forms.Form, IDisposable
     {
         DataContext _context = new DataContext();
         Funciones.Funciones funciones = new Funciones.Funciones();

@@ -13,7 +13,7 @@ using System.Windows.Forms;
 
 namespace Empeño.WindowsForms.Views
 {
-    public partial class frmProroga : Form
+    public partial class frmProroga : System.Windows.Forms.Form
     {
         int EmpeñoId;
         DataContext _context = new DataContext();

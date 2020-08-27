@@ -13,7 +13,7 @@ using System.Windows.Forms;
 
 namespace Empeño.WindowsForms.Views
 {
-    public partial class frmEmpeñoInteres : Form
+    public partial class frmEmpeñoInteres : System.Windows.Forms.Form
     {
         DataContext _context = new DataContext();
         Intereses intereses = new Intereses();

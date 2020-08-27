@@ -18,7 +18,7 @@ using System.Windows.Forms.DataVisualization.Charting;
 
 namespace Empeño.WindowsForms.Views
 {
-    public partial class frmTablero : Form
+    public partial class frmTablero : System.Windows.Forms.Form
     {
         DataContext _context = new DataContext();
         List<Transaccion> transactionsToday = new List<Transaccion>();

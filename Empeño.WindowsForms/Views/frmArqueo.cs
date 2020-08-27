@@ -19,7 +19,7 @@ using System.Windows.Forms;
 
 namespace Empeño.WindowsForms.Views
 {
-    public partial class frmArqueo : Form
+    public partial class frmArqueo : System.Windows.Forms.Form
     {
         DataContext _context = new DataContext();
         Funciones.Funciones funciones = new Funciones.Funciones();

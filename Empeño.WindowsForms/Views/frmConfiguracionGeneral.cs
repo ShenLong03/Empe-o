@@ -13,7 +13,7 @@ using System.Windows.Forms;
 
 namespace Empeño.WindowsForms.Views
 {
-    public partial class frmConfiguracionGeneral : Form
+    public partial class frmConfiguracionGeneral : System.Windows.Forms.Form
     {
         private DataContext _context = new DataContext();
         int configuracionId = 0;

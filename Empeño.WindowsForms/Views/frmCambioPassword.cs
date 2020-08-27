@@ -13,7 +13,7 @@ using System.Windows.Forms;
 
 namespace Empeño.WindowsForms.Views
 {
-    public partial class frmCambioPassword : Form
+    public partial class frmCambioPassword : System.Windows.Forms.Form
     {
         DataContext _context = new DataContext();
         Funciones.Funciones funciones = new Funciones.Funciones();

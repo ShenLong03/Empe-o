@@ -15,7 +15,7 @@ using System.Windows.Forms;
 
 namespace Empeño.WindowsForms.Views
 {
-    public partial class frmVencidos : Form
+    public partial class frmVencidos : System.Windows.Forms.Form
     {
         DataContext _context = new DataContext();
         Funciones.Funciones funciones = new Funciones.Funciones();

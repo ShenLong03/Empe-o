@@ -15,7 +15,7 @@ using System.Windows.Forms;
 
 namespace Empeño.WindowsForms.Reports
 {
-    public partial class frmReporteEmpeños : Form
+    public partial class frmReporteEmpeños : System.Windows.Forms.Form
     {
         public int xClick = 0, yClick = 0;        
         int lx, ly;

@@ -13,7 +13,7 @@ using System.Windows.Forms;
 
 namespace Empeño.WindowsForms.Views
 {
-    public partial class frmPIN : Form
+    public partial class frmPIN : System.Windows.Forms.Form
     {
         string Modulo;
         DataContext _context = new DataContext();

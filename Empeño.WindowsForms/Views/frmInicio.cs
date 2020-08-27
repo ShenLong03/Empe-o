@@ -12,7 +12,7 @@
     using System.Runtime.InteropServices;
     using System.Windows.Forms;
 
-    public partial class frmInicio : Form
+    public partial class frmInicio : System.Windows.Forms.Form
     {
         public int xClick = 0, yClick = 0;
         private IconButton currentBtn;

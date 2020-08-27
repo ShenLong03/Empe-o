@@ -13,7 +13,7 @@ using System.Windows.Forms;
 
 namespace Empeño.WindowsForms
 {
-    public partial class frmPrincipal : Form
+    public partial class frmPrincipal : System.Windows.Forms.Form
     {
 
         DataContext _context = new DataContext();

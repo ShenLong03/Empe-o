@@ -15,7 +15,7 @@ using System.Windows.Forms;
 
 namespace Empeño.WindowsForms.Views
 {
-    public partial class frmEmpleados : Form, IDisposable
+    public partial class frmEmpleados : System.Windows.Forms.Form, IDisposable
     {
         DataContext _context = new DataContext();
         int empleadoId = 0;

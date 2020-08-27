@@ -20,7 +20,7 @@ using System.Windows.Forms;
 
 namespace Empeño.WindowsForms.Views
 {
-    public partial class frmCierreCaja : Form
+    public partial class frmCierreCaja : System.Windows.Forms.Form
     {
         List<DetalleCierreCaja> detalles = new List<DetalleCierreCaja>();
         DataContext _context = new DataContext();

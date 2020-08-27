@@ -10,7 +10,7 @@ using System.Windows.Forms;
 
 namespace Empeño.WindowsForms.Views
 {
-    public partial class frmCargando : Form
+    public partial class frmCargando : System.Windows.Forms.Form
     {
         public frmCargando(Size size, Point location)
         {

@@ -85,7 +85,7 @@ namespace Empeño.WindowsForms
             //END TODO
             Application.SetCompatibleTextRenderingDefault(false);
             //Application.Run(new frmCargando(new Size(800,600), new Point(50,50)));
-            Application.Run(new frmLogin());
+            Application.Run(new frmImportacion());
         }
 
         public static void GetCargando(Size size, Point location) 
