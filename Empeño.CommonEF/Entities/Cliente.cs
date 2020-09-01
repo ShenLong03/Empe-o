@@ -27,6 +27,8 @@
 
         public bool Activo { get; set; } = true;
 
+        public bool IsDelete { get; set; } = false;
+
         public virtual ICollection<Empeno> Empenos { get; set; }
 
         public Cliente()

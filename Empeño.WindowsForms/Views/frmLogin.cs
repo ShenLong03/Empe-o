@@ -70,8 +70,9 @@ namespace Empeño.WindowsForms.Views
             else
             {
                 label1.Visible = true;
-                lblError.Text = "Ingreso Incorrecto";
+                lblError.Text = " Ingreso Incorrecto";
                 lblError.ForeColor = Color.White;
+                lblError.Visible = true;
                 pictureBox1.Visible = true;
             }
         }

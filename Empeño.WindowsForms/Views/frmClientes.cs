@@ -63,7 +63,7 @@ namespace Empeño.WindowsForms.Views
         private async void frmClientes_Load(object sender, EventArgs e)
         {
             Program.Cliente = null;
-            dgvClientes.DataSource = await _context.Clientes.Select(x => new
+            dgvClientes.DataSource = await _context.Clientes.Where(c => !c.IsDelete).Select(x => new
             {
                 Id = x.ClienteId,
                 x.Identificacion,
@@ -120,13 +120,13 @@ namespace Empeño.WindowsForms.Views
                     var cliente = new Cliente
                     {
                         ClienteId = clienteId,
-                        Identificacion = txtIdentificacion.Text,
-                        Nombre = txtNombre.Text,
-                        Telefono = txtTelefono.Text,
-                        Correo = txtCorreo.Text,
+                        Identificacion = txtIdentificacion.Text==lblIdentificacion.Text?string.Empty:txtIdentificacion.Text,
+                        Nombre = txtNombre.Text == lblNombre.Text ? string.Empty : txtNombre.Text,
+                        Telefono = txtTelefono.Text == lblTelefono.Text ? string.Empty : txtTelefono.Text,
+                        Correo = txtCorreo.Text == lblCorreo.Text ? string.Empty : txtCorreo.Text,
                         Activo = chbActivo.Checked,
-                        Direccion = txtDireccion.Text,
-                        Comentario = txtComentario.Text,
+                        Direccion = txtDireccion.Text == lblDireccion.Text ? string.Empty : txtDireccion.Text,
+                        Comentario = txtComentario.Text == lblComentario.Text ? string.Empty : txtComentario.Text,
                         Fecha = DateTime.ParseExact(txtFecha.Text, "dd/MM/yyyy", CultureInfo.InvariantCulture),
                     };
 
@@ -136,13 +136,13 @@ namespace Empeño.WindowsForms.Views
                 else
                 {
                     var cliente = _context.Clientes.Find(clienteId);
-                    cliente.Identificacion = txtIdentificacion.Text;
-                    cliente.Correo = txtCorreo.Text;
-                    cliente.Nombre = txtNombre.Text;
-                    cliente.Telefono = txtTelefono.Text;
+                    cliente.Identificacion = txtIdentificacion.Text == lblIdentificacion.Text ? string.Empty : txtIdentificacion.Text;
+                    cliente.Correo = txtCorreo.Text == lblCorreo.Text ? string.Empty : txtCorreo.Text;
+                    cliente.Nombre = txtNombre.Text == lblNombre.Text ? string.Empty : txtNombre.Text;
+                    cliente.Telefono = txtTelefono.Text == lblTelefono.Text ? string.Empty : txtTelefono.Text;
                     cliente.Activo = chbActivo.Checked;
-                    cliente.Direccion = txtDireccion.Text;
-                    cliente.Comentario = txtComentario.Text;
+                    cliente.Direccion = txtDireccion.Text == lblDireccion.Text ? string.Empty : txtDireccion.Text;
+                    cliente.Comentario = txtComentario.Text == lblComentario.Text ? string.Empty : txtComentario.Text;
                     cliente.Fecha = DateTime.ParseExact(txtFecha.Text, "dd/MM/yyyy", CultureInfo.InvariantCulture);
                     _context.Entry(cliente).State = EntityState.Modified;
                 }
@@ -228,7 +228,7 @@ namespace Empeño.WindowsForms.Views
 
         public async Task LoadData()
         {
-            dgvClientes.DataSource = await _context.Clientes.Select(x => new
+            dgvClientes.DataSource = await _context.Clientes.Where(c=>!c.IsDelete).Select(x => new
             {
                 Id = x.ClienteId,
                 x.Nombre,
@@ -282,6 +282,7 @@ namespace Empeño.WindowsForms.Views
                 funciones.EditTextColor(panelFormulario);
                 funciones.ShowLabels(panelFormulario);
                 funciones.TextBoxColorBlank(panelFormulario);
+                funciones.IntelligHolders(panelFormulario);
             }
         }
 
@@ -387,7 +388,29 @@ namespace Empeño.WindowsForms.Views
         private const int HTBOTTOMRIGHT = 17;
         private Rectangle sizeGripRectangle;
 
-
+        private async void btnEliminar_Click(object sender, EventArgs e)
+        {
+            if (dgvClientes.SelectedRows.Count > 0)
+            {
+                var resp = MessageBox.Show("Esta seguro que desea borrar los datos", "Pregunta", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                if (resp==DialogResult.Yes)
+                {
+                    var cliente = await _context.Clientes.FindAsync(dgvClientes.SelectedRows[0].Cells[0].Value);
+                    if (cliente != null)
+                    {
+                        cliente.IsDelete = true;
+                        _context.Entry(cliente).State = EntityState.Modified;
+                        await _context.SaveChangesAsync();
+                        await LoadData();
+                    }
+                }
+                       
+            }
+            else
+            {
+                MessageBox.Show("Seleccione un cliente", "Información", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+        }
 
         protected override void WndProc(ref Message m)
         {

@@ -49,17 +49,22 @@
             this.label4 = new System.Windows.Forms.Label();
             this.txtTotalVencido = new System.Windows.Forms.TextBox();
             this.label3 = new System.Windows.Forms.Label();
+            this.btnDelete = new System.Windows.Forms.Button();
             this.txtEmpleado = new System.Windows.Forms.TextBox();
             this.lblEmpleado = new System.Windows.Forms.Label();
+            this.btnCancelar = new System.Windows.Forms.Button();
+            this.btnImprimir = new System.Windows.Forms.Button();
             this.txtFecha = new System.Windows.Forms.TextBox();
             this.lblFecha = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.elipsePanelArqueo = new Bunifu.Framework.UI.BunifuElipse(this.components);
             this.elipseDetalles = new Bunifu.Framework.UI.BunifuElipse(this.components);
             this.printDocument1 = new System.Drawing.Printing.PrintDocument();
-            this.btnDelete = new System.Windows.Forms.Button();
-            this.btnCancelar = new System.Windows.Forms.Button();
-            this.btnImprimir = new System.Windows.Forms.Button();
+            this.lblTotalPrincipal = new System.Windows.Forms.Label();
+            this.lblTotalAlDia = new System.Windows.Forms.Label();
+            this.lblTotalVencidos = new System.Windows.Forms.Label();
+            this.lblTotalRetirados = new System.Windows.Forms.Label();
+            this.lblTotalProrroga = new System.Windows.Forms.Label();
             this.panelDetalle.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvDetalles)).BeginInit();
             this.panelArqueo.SuspendLayout();
@@ -117,6 +122,11 @@
             this.panelArqueo.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.panelArqueo.BackColor = System.Drawing.Color.LightGray;
+            this.panelArqueo.Controls.Add(this.lblTotalProrroga);
+            this.panelArqueo.Controls.Add(this.lblTotalRetirados);
+            this.panelArqueo.Controls.Add(this.lblTotalVencidos);
+            this.panelArqueo.Controls.Add(this.lblTotalAlDia);
+            this.panelArqueo.Controls.Add(this.lblTotalPrincipal);
             this.panelArqueo.Controls.Add(this.txtTotalGeneral);
             this.panelArqueo.Controls.Add(this.label9);
             this.panelArqueo.Controls.Add(this.txtTotalAlDia);
@@ -303,6 +313,22 @@
             this.label3.TabIndex = 8;
             this.label3.Text = "Total Vencidos";
             // 
+            // btnDelete
+            // 
+            this.btnDelete.BackColor = System.Drawing.Color.Crimson;
+            this.btnDelete.FlatAppearance.BorderSize = 0;
+            this.btnDelete.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnDelete.Font = new System.Drawing.Font("Century Gothic", 9F, System.Drawing.FontStyle.Bold);
+            this.btnDelete.ForeColor = System.Drawing.Color.White;
+            this.btnDelete.Image = ((System.Drawing.Image)(resources.GetObject("btnDelete.Image")));
+            this.btnDelete.Location = new System.Drawing.Point(249, 230);
+            this.btnDelete.Name = "btnDelete";
+            this.btnDelete.Size = new System.Drawing.Size(100, 45);
+            this.btnDelete.TabIndex = 7;
+            this.btnDelete.Text = " Eliminar";
+            this.btnDelete.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
+            this.btnDelete.UseVisualStyleBackColor = false;
+            // 
             // txtEmpleado
             // 
             this.txtEmpleado.BackColor = System.Drawing.Color.WhiteSmoke;
@@ -323,6 +349,38 @@
             this.lblEmpleado.Size = new System.Drawing.Size(113, 23);
             this.lblEmpleado.TabIndex = 5;
             this.lblEmpleado.Text = "Empleado";
+            // 
+            // btnCancelar
+            // 
+            this.btnCancelar.BackColor = System.Drawing.Color.Gold;
+            this.btnCancelar.FlatAppearance.BorderSize = 0;
+            this.btnCancelar.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnCancelar.Font = new System.Drawing.Font("Century Gothic", 9F, System.Drawing.FontStyle.Bold);
+            this.btnCancelar.Image = ((System.Drawing.Image)(resources.GetObject("btnCancelar.Image")));
+            this.btnCancelar.Location = new System.Drawing.Point(128, 230);
+            this.btnCancelar.Name = "btnCancelar";
+            this.btnCancelar.Size = new System.Drawing.Size(117, 45);
+            this.btnCancelar.TabIndex = 4;
+            this.btnCancelar.Text = " Cancelar";
+            this.btnCancelar.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
+            this.btnCancelar.UseVisualStyleBackColor = false;
+            // 
+            // btnImprimir
+            // 
+            this.btnImprimir.BackColor = System.Drawing.Color.DeepSkyBlue;
+            this.btnImprimir.FlatAppearance.BorderSize = 0;
+            this.btnImprimir.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnImprimir.Font = new System.Drawing.Font("Century Gothic", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnImprimir.ForeColor = System.Drawing.Color.White;
+            this.btnImprimir.Image = ((System.Drawing.Image)(resources.GetObject("btnImprimir.Image")));
+            this.btnImprimir.Location = new System.Drawing.Point(24, 230);
+            this.btnImprimir.Name = "btnImprimir";
+            this.btnImprimir.Size = new System.Drawing.Size(100, 45);
+            this.btnImprimir.TabIndex = 3;
+            this.btnImprimir.Text = " Imprimir";
+            this.btnImprimir.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
+            this.btnImprimir.UseVisualStyleBackColor = false;
+            this.btnImprimir.Click += new System.EventHandler(this.btnGuardarCierreCaja_Click);
             // 
             // txtFecha
             // 
@@ -366,53 +424,60 @@
             this.elipseDetalles.ElipseRadius = 20;
             this.elipseDetalles.TargetControl = this.panelDetalle;
             // 
-            // btnDelete
+            // lblTotalPrincipal
             // 
-            this.btnDelete.BackColor = System.Drawing.Color.Crimson;
-            this.btnDelete.FlatAppearance.BorderSize = 0;
-            this.btnDelete.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnDelete.Font = new System.Drawing.Font("Century Gothic", 9F, System.Drawing.FontStyle.Bold);
-            this.btnDelete.ForeColor = System.Drawing.Color.White;
-            this.btnDelete.Image = ((System.Drawing.Image)(resources.GetObject("btnDelete.Image")));
-            this.btnDelete.Location = new System.Drawing.Point(249, 230);
-            this.btnDelete.Name = "btnDelete";
-            this.btnDelete.Size = new System.Drawing.Size(100, 45);
-            this.btnDelete.TabIndex = 7;
-            this.btnDelete.Text = " Eliminar";
-            this.btnDelete.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
-            this.btnDelete.UseVisualStyleBackColor = false;
+            this.lblTotalPrincipal.AutoSize = true;
+            this.lblTotalPrincipal.Font = new System.Drawing.Font("Century Gothic", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblTotalPrincipal.ForeColor = System.Drawing.Color.Black;
+            this.lblTotalPrincipal.Location = new System.Drawing.Point(738, 54);
+            this.lblTotalPrincipal.Name = "lblTotalPrincipal";
+            this.lblTotalPrincipal.Size = new System.Drawing.Size(26, 30);
+            this.lblTotalPrincipal.TabIndex = 22;
+            this.lblTotalPrincipal.Text = "0";
             // 
-            // btnCancelar
+            // lblTotalAlDia
             // 
-            this.btnCancelar.BackColor = System.Drawing.Color.Gold;
-            this.btnCancelar.FlatAppearance.BorderSize = 0;
-            this.btnCancelar.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnCancelar.Font = new System.Drawing.Font("Century Gothic", 9F, System.Drawing.FontStyle.Bold);
-            this.btnCancelar.Image = ((System.Drawing.Image)(resources.GetObject("btnCancelar.Image")));
-            this.btnCancelar.Location = new System.Drawing.Point(128, 230);
-            this.btnCancelar.Name = "btnCancelar";
-            this.btnCancelar.Size = new System.Drawing.Size(117, 45);
-            this.btnCancelar.TabIndex = 4;
-            this.btnCancelar.Text = " Cancelar";
-            this.btnCancelar.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
-            this.btnCancelar.UseVisualStyleBackColor = false;
+            this.lblTotalAlDia.AutoSize = true;
+            this.lblTotalAlDia.Font = new System.Drawing.Font("Century Gothic", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblTotalAlDia.ForeColor = System.Drawing.Color.Black;
+            this.lblTotalAlDia.Location = new System.Drawing.Point(149, 132);
+            this.lblTotalAlDia.Name = "lblTotalAlDia";
+            this.lblTotalAlDia.Size = new System.Drawing.Size(26, 30);
+            this.lblTotalAlDia.TabIndex = 23;
+            this.lblTotalAlDia.Text = "0";
             // 
-            // btnImprimir
+            // lblTotalVencidos
             // 
-            this.btnImprimir.BackColor = System.Drawing.Color.DeepSkyBlue;
-            this.btnImprimir.FlatAppearance.BorderSize = 0;
-            this.btnImprimir.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnImprimir.Font = new System.Drawing.Font("Century Gothic", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnImprimir.ForeColor = System.Drawing.Color.White;
-            this.btnImprimir.Image = ((System.Drawing.Image)(resources.GetObject("btnImprimir.Image")));
-            this.btnImprimir.Location = new System.Drawing.Point(24, 230);
-            this.btnImprimir.Name = "btnImprimir";
-            this.btnImprimir.Size = new System.Drawing.Size(100, 45);
-            this.btnImprimir.TabIndex = 3;
-            this.btnImprimir.Text = " Imprimir";
-            this.btnImprimir.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
-            this.btnImprimir.UseVisualStyleBackColor = false;
-            this.btnImprimir.Click += new System.EventHandler(this.btnGuardarCierreCaja_Click);
+            this.lblTotalVencidos.AutoSize = true;
+            this.lblTotalVencidos.Font = new System.Drawing.Font("Century Gothic", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblTotalVencidos.ForeColor = System.Drawing.Color.Black;
+            this.lblTotalVencidos.Location = new System.Drawing.Point(458, 132);
+            this.lblTotalVencidos.Name = "lblTotalVencidos";
+            this.lblTotalVencidos.Size = new System.Drawing.Size(26, 30);
+            this.lblTotalVencidos.TabIndex = 24;
+            this.lblTotalVencidos.Text = "0";
+            // 
+            // lblTotalRetirados
+            // 
+            this.lblTotalRetirados.AutoSize = true;
+            this.lblTotalRetirados.Font = new System.Drawing.Font("Century Gothic", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblTotalRetirados.ForeColor = System.Drawing.Color.Black;
+            this.lblTotalRetirados.Location = new System.Drawing.Point(741, 132);
+            this.lblTotalRetirados.Name = "lblTotalRetirados";
+            this.lblTotalRetirados.Size = new System.Drawing.Size(26, 30);
+            this.lblTotalRetirados.TabIndex = 25;
+            this.lblTotalRetirados.Text = "0";
+            // 
+            // lblTotalProrroga
+            // 
+            this.lblTotalProrroga.AutoSize = true;
+            this.lblTotalProrroga.Font = new System.Drawing.Font("Century Gothic", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblTotalProrroga.ForeColor = System.Drawing.Color.Black;
+            this.lblTotalProrroga.Location = new System.Drawing.Point(1039, 132);
+            this.lblTotalProrroga.Name = "lblTotalProrroga";
+            this.lblTotalProrroga.Size = new System.Drawing.Size(26, 30);
+            this.lblTotalProrroga.TabIndex = 26;
+            this.lblTotalProrroga.Text = "0";
             // 
             // frmArqueo
             // 
@@ -467,5 +532,10 @@
         private System.Windows.Forms.Label label8;
         private System.Windows.Forms.TextBox txtTotalGeneral;
         private System.Windows.Forms.Label label9;
+        private System.Windows.Forms.Label lblTotalProrroga;
+        private System.Windows.Forms.Label lblTotalRetirados;
+        private System.Windows.Forms.Label lblTotalVencidos;
+        private System.Windows.Forms.Label lblTotalAlDia;
+        private System.Windows.Forms.Label lblTotalPrincipal;
     }
 }

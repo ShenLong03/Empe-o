@@ -1,10 +1,13 @@
 ﻿namespace Empeño.WindowsForms.Views
 {
     using Empeño.CommonEF.Entities;
+    using Empeño.WindowsForms.Data;
     using Empeño.WindowsForms.Reports;
     using FontAwesome.Sharp;
     using System;
+    using System.Data.Entity;
     using System.Drawing;
+    using System.Runtime.InteropServices;
     using System.Windows.Forms;
 
     public partial class frmInicio : Form
@@ -15,6 +18,8 @@
         int cont = 0;
         int lx, ly;
         int sw, sh;
+        DataContext _context = new DataContext();
+        Funciones.Funciones funciones = new Funciones.Funciones();
 
         public frmInicio()
         {
@@ -33,7 +38,7 @@
         }
         #endregion
 
-        private void frmInicio_Load(object sender, EventArgs e)
+        private async void frmInicio_Load(object sender, EventArgs e)
         {
             //TODO: Quitar esto es solo para forzar el login
             if (Program.Usuario == null)
@@ -44,6 +49,15 @@
             btnRestore.Visible = false;
             btnMaximize.Visible = true;
             timer1.Start();
+            try
+            {
+                //await funciones.ReviewDuplicateEmpeños();
+                //funciones.ReviewEmpeños();
+            }
+            catch (Exception ex)
+            {
+
+            }
         }
 
         #region Menu
@@ -100,8 +114,15 @@
             showSubMenu(panelSubMenuReportes);
         }
 
-        private void mnuEmpeños_Click(object sender, EventArgs e)
+        private async void mnuEmpeños_Click(object sender, EventArgs e)
         {
+            var configuracion = await _context.Configuraciones.FirstOrDefaultAsync();
+            if (configuracion==null)
+            {
+                MessageBox.Show("Para poder ingresar a este modulo primero debe configurar los datos generales del negocio en el modulo de configuración", "Alerta", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
             ActivateButton(sender, RGBColors.color1);
             OpenChildForm(new frmEmpeno());
             hideSubMenu();
@@ -441,6 +462,11 @@
             Program.Usuario = null;
             frmLogin login = new frmLogin();
             login.Show();
+        }
+
+        private void mnuReporteArqueo_Paint(object sender, PaintEventArgs e)
+        {
+
         }
 
         protected override void WndProc(ref Message m)

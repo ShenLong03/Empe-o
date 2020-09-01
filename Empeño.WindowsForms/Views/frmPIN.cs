@@ -66,7 +66,7 @@ namespace Empeño.WindowsForms.Views
             Program.Acceso = false;
             Program.EmpleadoId = await funciones.GetEmpleadoIdByUser(perfil.Usuario);
 
-            if (perfil.Perfil.Nombre == "Administrador")
+            if (perfil.Perfil.Nombre == "Administrador" || perfil.Perfil.Nombre == "SuperUsuario")
                 Program.Acceso = true;
 
             switch (Modulo)
@@ -76,19 +76,31 @@ namespace Empeño.WindowsForms.Views
                         Program.Acceso = true;
                     break;
                 case "Cierre Caja":
-                    if (perfil.Perfil.Nombre == "Administrador" || perfil.Perfil.Nombre == "Supervisor")
+                    if (perfil.Perfil.Nombre == "Empleado" || perfil.Perfil.Nombre == "Administrador" || perfil.Perfil.Nombre == "Supervisor")
                         Program.Acceso = true;
                     break;
                 case "Arqueo":
-                    if (perfil.Perfil.Nombre == "Administrador" || perfil.Perfil.Nombre == "Supervisor")
+                    if (perfil.Perfil.Nombre == "Empleado" || perfil.Perfil.Nombre == "Administrador" || perfil.Perfil.Nombre == "Supervisor")
                         Program.Acceso = true;
                     break;
                 case "Empeño":
+                    if (perfil.Perfil.Nombre == "Empleado" || perfil.Perfil.Nombre == "Administrador" || perfil.Perfil.Nombre == "Supervisor")
+                        Program.Acceso = true;
+                    break;
+                case "Borrar Empeño":
+                    if (perfil.Perfil.Nombre == "Administrador" || perfil.Perfil.Nombre == "Supervisor")
+                        Program.Acceso = true;
+                    break;
+                case "Borrar Pago":
+                    if (perfil.Perfil.Nombre == "Administrador" || perfil.Perfil.Nombre == "Supervisor")
+                        Program.Acceso = true;
+                    break;
+                case "Editar Pago":
                     if (perfil.Perfil.Nombre == "Administrador" || perfil.Perfil.Nombre == "Supervisor")
                         Program.Acceso = true;
                     break;
                 case "Pago":
-                    if (perfil.Perfil.Nombre == "Administrador" || perfil.Perfil.Nombre == "Supervisor")
+                    if (perfil.Perfil.Nombre == "Empleado" || perfil.Perfil.Nombre == "Administrador" || perfil.Perfil.Nombre == "Supervisor")
                         Program.Acceso = true;
                     break;
                 case "Empleado":

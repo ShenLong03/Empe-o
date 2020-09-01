@@ -3,16 +3,16 @@
     using System;
     using System.Data.Entity.Migrations;
     
-    public partial class newChangeConfiguration : DbMigration
+    public partial class addIsDeleteCustomers : DbMigration
     {
         public override void Up()
         {
-            AddColumn("dbo.Configuracions", "Compañia", c => c.String());
+            AddColumn("dbo.Clientes", "IsDelete", c => c.Boolean(nullable: false));
         }
         
         public override void Down()
         {
-            DropColumn("dbo.Configuracions", "Compañia");
+            DropColumn("dbo.Clientes", "IsDelete");
         }
     }
 }

@@ -56,21 +56,19 @@ namespace Empeño.WindowsForms.Views
         }
 
         private async void frmEmpeno_Load(object sender, EventArgs e)
-        {
-
+        {            
             Realizado.Text = Program.Usuario.Usuario;
             cbInteres.DataSource = await _context.Interes.ToListAsync();
             cbInteres.DisplayMember = "Nombre";
             cbInteres.ValueMember = "InteresId";
             cbInteres.Text = "Porcentaje";
-            configuracion = _context.Configuraciones.FirstOrDefault();
+            configuracion = await _context.Configuraciones.FirstOrDefaultAsync();
             mesesVencimiento = configuracion.Meses;
             funciones.ResetForm(panelFormulario);
             chbEsOro.Checked = true;
             Fecha.Text = DateTime.Today.ToString("dd/MM/yyyy");
             lblVence.Text = DateTime.Today.AddMonths(mesesVencimiento).ToString("dd/MM/yyyy");
-
-            await funciones.ReviewEmpeños();
+          
         }
 
         private void panel4_Paint(object sender, PaintEventArgs e)
@@ -87,7 +85,7 @@ namespace Empeño.WindowsForms.Views
         {
             if (txtBuscar.Text != " Buscar" && txtBuscar.Text != "")
             {
-                dgvClientes.DataSource = await _context.Clientes.Where(w => w.Nombre.Contains(txtBuscar.Text) || w.Identificacion.Contains(txtBuscar.Text)).Select(x => new
+                dgvClientes.DataSource = await _context.Clientes.Where(w =>!w.IsDelete && (w.Nombre.Contains(txtBuscar.Text) || w.Identificacion.Contains(txtBuscar.Text))).Select(x => new
                 {
                     Id = x.ClienteId,
                     x.Identificacion,
@@ -100,7 +98,8 @@ namespace Empeño.WindowsForms.Views
                 int.TryParse(txtBuscar.Text, out number);
                 if (number != 0)
                 {
-                    dgvEmpeños.DataSource = await _context.Empenos.Where(w => w.EmpenoId == number && !w.IsDelete).Select(x => new
+                    await funciones.ReviewDuplicateEmpeños(number);
+                    var listEmpeños = await _context.Empenos.Where(w => w.EmpenoId == number && !w.IsDelete && !w.RetiradoAdministrador).Select(x => new
                     {
                         Id = x.EmpenoId,
                         x.Descripcion,
@@ -110,14 +109,28 @@ namespace Empeño.WindowsForms.Views
                         Fecha = SqlFunctions.DateName("day", x.Fecha) + "/" + SqlFunctions.DateName("month", x.Fecha) + "/" + SqlFunctions.DateName("year", x.Fecha),
                         Vence = SqlFunctions.DateName("day", x.FechaVencimiento) + "/" + SqlFunctions.DateName("month", x.FechaVencimiento) + "/" + SqlFunctions.DateName("year", x.FechaVencimiento),
                         Interes = x.Interes.Porcentaje + "%",
-                        x.Monto,
+                        Monto = x.Monto,
                         Pendiente = x.MontoPendiente
                     }).ToListAsync();
+
+                    dgvEmpeños.DataSource =  listEmpeños.AsEnumerable().Select(x => new
+                    {
+                        x.Id,
+                        x.Descripcion,
+                        x.Empleado,
+                        x.Es_Oro,
+                        x.Estado,
+                        x.Fecha,
+                        x.Vence,
+                        x.Interes,
+                        Monto = x.Monto.ToString("N2"),
+                        Pendiente = x.Pendiente.ToString("N2")
+                    }).ToList();
 
                     var empeño = await _context.Empenos.FindAsync(number);
                     if (empeño != null)
                     {
-                        dgvClientes.DataSource = await _context.Clientes.Where(w => w.ClienteId == empeño.ClienteId).Select(x => new
+                        dgvClientes.DataSource = await _context.Clientes.Where(w => !w.IsDelete && w.ClienteId == empeño.ClienteId).Select(x => new
                         {
                             Id = x.ClienteId,
                             x.Identificacion,
@@ -339,6 +352,7 @@ namespace Empeño.WindowsForms.Views
                 empeño.Descripcion = txtDescripcion.Text;
                 empeño.EditorId = Program.EmpleadoId;
                 empeño.EsOro = chbEsOro.Checked;
+                empeño.Comentario = txtComentario.Text != lblComentario.Text ? txtComentario.Text : string.Empty;
                 var fecha = DateTime.ParseExact(Fecha.Text, "dd/MM/yyyy", CultureInfo.InvariantCulture);
                 if (empeño.Fecha != fecha)
                 {
@@ -399,8 +413,18 @@ namespace Empeño.WindowsForms.Views
                     Vence = SqlFunctions.DateName("day", x.FechaVencimiento) + "/" + SqlFunctions.DateName("month", x.FechaVencimiento) + "/" + SqlFunctions.DateName("year", x.FechaVencimiento),
                     x.Monto,
                     x.Pagado,
-                    Faltan = DbFunctions.DiffDays(DateTime.Today, x.FechaVencimiento),
-                }).ToList();
+                    Vencimiento = x.Monto == x.Pagado ? 0 : DbFunctions.DiffDays(DateTime.Today, x.FechaVencimiento),
+                }).OrderByDescending(i => i.Id)
+                    .AsEnumerable()
+                    .Select(x => new
+                    {
+                        x.Id,
+                        x.Interes,
+                        x.Vence,
+                        Monto = x.Monto.ToString("N2"),
+                        Pagado = x.Pagado.ToString("N2"),
+                       Faltan=x.Vencimiento
+                    }).ToList();
             }
             else
             {
@@ -419,8 +443,8 @@ namespace Empeño.WindowsForms.Views
                     InteresId = await funciones.GetInteresIdByNombre(cbInteres.Text),
                     Monto = double.Parse(txtMonto.Text),
                     MontoPendiente = double.Parse(txtMonto.Text),
-                    Comentario = txtComentario.Text
-                };
+                    Comentario = txtComentario.Text != lblComentario.Text ? txtComentario.Text : string.Empty
+            };
 
                 var interes = await _context.Interes.FindAsync(empeño.InteresId);
 
@@ -459,8 +483,18 @@ namespace Empeño.WindowsForms.Views
                     Vence = SqlFunctions.DateName("day", x.FechaVencimiento) + "/" + SqlFunctions.DateName("month", x.FechaVencimiento) + "/" + SqlFunctions.DateName("year", x.FechaVencimiento),
                     x.Monto,
                     x.Pagado,
-                    Faltan = DbFunctions.DiffDays(DateTime.Today, x.FechaVencimiento),
-                }).ToList();
+                    Vencimiento = x.Monto == x.Pagado ? 0 : DbFunctions.DiffDays(DateTime.Today, x.FechaVencimiento),
+                }).OrderByDescending(i => i.Id)
+                    .AsEnumerable()
+                    .Select(x => new
+                    {
+                        x.Id,
+                        x.Interes,
+                        x.Vence,
+                        Monto = x.Monto.ToString("N2"),
+                        Pagado = x.Pagado.ToString("N2"),
+                       Faltan=x.Vencimiento
+                    }).ToList();
 
                 await Print(empeño);
                 var cliente = _context.Clientes.Find(empeño.ClienteId);
@@ -469,7 +503,7 @@ namespace Empeño.WindowsForms.Views
                     await emailFuncion.SendMail(empeño.Cliente.Correo, "Creación de Empeño " + configuracion.Compañia + " #" + empeño.EmpenoId, empeño);
             }
 
-            dgvEmpeños.DataSource = await _context.Empenos.Where(x => x.EmpenoId == empeñoId && !x.IsDelete).Select(x => new
+            var listEmpeños = await _context.Empenos.Where(w => w.EmpenoId == empeñoId && !w.IsDelete && !w.RetiradoAdministrador).Select(x => new
             {
                 Id = x.EmpenoId,
                 x.Descripcion,
@@ -479,11 +513,25 @@ namespace Empeño.WindowsForms.Views
                 Fecha = SqlFunctions.DateName("day", x.Fecha) + "/" + SqlFunctions.DateName("month", x.Fecha) + "/" + SqlFunctions.DateName("year", x.Fecha),
                 Vence = SqlFunctions.DateName("day", x.FechaVencimiento) + "/" + SqlFunctions.DateName("month", x.FechaVencimiento) + "/" + SqlFunctions.DateName("year", x.FechaVencimiento),
                 Interes = x.Interes.Porcentaje + "%",
-                x.Monto,
+                Monto = x.Monto,
                 Pendiente = x.MontoPendiente
             }).ToListAsync();
 
-            dgvClientes.DataSource = _context.Clientes.Where(w => w.ClienteId == clienteId).Select(x => new
+            dgvEmpeños.DataSource = listEmpeños.AsEnumerable().Select(x => new
+            {          
+                x.Id,
+                x.Descripcion,
+                x.Empleado,
+                x.Es_Oro,
+                x.Estado,
+                x.Fecha,
+                x.Vence,
+                x.Interes,
+                Monto = x.Monto.ToString("N2"),
+                Pendiente = x.Pendiente.ToString("N2")
+            }).ToList();
+
+            dgvClientes.DataSource = _context.Clientes.Where(w => !w.IsDelete && w.ClienteId == clienteId).Select(x => new
             {
                 Id = x.ClienteId,
                 x.Identificacion,
@@ -508,7 +556,7 @@ namespace Empeño.WindowsForms.Views
                     txtIdentificacion.Text = empeño.Cliente.Identificacion;
                     txtNombre.Text = empeño.Cliente.Nombre;
                     txtDescripcion.Text = empeño.Descripcion;
-                    txtComentario.Text = "";
+                    txtComentario.Text = empeño.Comentario;
                     cbInteres.DataSource = await _context.Interes.ToListAsync();
                     cbInteres.Text = empeño.Interes.Nombre;
                     txtMonto.Text = empeño.Monto.ToString();
@@ -543,7 +591,7 @@ namespace Empeño.WindowsForms.Views
                     txtIdentificacion.Text = empeño.Cliente.Identificacion;
                     txtNombre.Text = empeño.Cliente.Nombre;
                     txtDescripcion.Text = empeño.Descripcion;
-                    txtComentario.Text = "";
+                    txtComentario.Text = empeño.Comentario;
                     cbInteres.DataSource = await _context.Interes.ToListAsync();
                     cbInteres.Text = empeño.Interes.Nombre;
                     txtMonto.Text = empeño.Monto.ToString();
@@ -563,16 +611,16 @@ namespace Empeño.WindowsForms.Views
             switch (index)
             {
                 case 0:
-                    empeños = empeños.Where(w => !w.IsDelete && (w.Estado == Estado.Activo || w.Estado == Estado.Pendiente || w.Estado == Estado.Vencido));
+                    empeños = empeños.Where(w => !w.IsDelete && !w.RetiradoAdministrador && (w.Estado == Estado.Activo || w.Estado == Estado.Pendiente || w.Estado == Estado.Vencido));
                     break;
                 case 1:
-                    empeños = empeños.Where(w => w.IsDelete);
+                    empeños = empeños.Where(w => w.IsDelete && !w.RetiradoAdministrador);
                     break;
                 case 2:
-                    empeños = empeños.Where(w => !w.IsDelete && (w.Estado == Estado.Retirada || w.Retirado || w.FechaRetiro != null));
+                    empeños = empeños.Where(w => !w.IsDelete && !w.RetiradoAdministrador && (w.Estado == Estado.Retirada || w.Retirado || w.FechaRetiro != null));
                     break;
                 case 3:
-                    empeños = empeños.Where(w => !w.IsDelete && (w.RetiradoAdministrador || w.FechaRetiroAdministrador != null));
+                    empeños = empeños.Where(w => !w.IsDelete && !w.RetiradoAdministrador && (w.RetiradoAdministrador || w.FechaRetiroAdministrador != null));
                     break;
                 default:
                     break;
@@ -592,7 +640,8 @@ namespace Empeño.WindowsForms.Views
                 empeños = empeños.Where(w => w.EmpenoId == number);
             }
 
-            dgvEmpeños.DataSource = empeños.Select(x => new
+
+            var listEmpeños = await empeños.Select(x => new
             {
                 Id = x.EmpenoId,
                 x.Descripcion,
@@ -602,8 +651,22 @@ namespace Empeño.WindowsForms.Views
                 Fecha = SqlFunctions.DateName("day", x.Fecha) + "/" + SqlFunctions.DateName("month", x.Fecha) + "/" + SqlFunctions.DateName("year", x.Fecha),
                 Vence = SqlFunctions.DateName("day", x.FechaVencimiento) + "/" + SqlFunctions.DateName("month", x.FechaVencimiento) + "/" + SqlFunctions.DateName("year", x.FechaVencimiento),
                 Interes = x.Interes.Porcentaje + "%",
-                x.Monto,
+                Monto = x.Monto,
                 Pendiente = x.MontoPendiente
+            }).ToListAsync();
+
+            dgvEmpeños.DataSource = listEmpeños.AsEnumerable().Select(x => new
+            {
+                x.Id,
+                x.Descripcion,
+                x.Empleado,
+                x.Es_Oro,
+                x.Estado,
+                x.Fecha,
+                x.Vence,
+                x.Interes,
+                Monto = x.Monto.ToString("N2"),
+                Pendiente = x.Pendiente.ToString("N2")
             }).ToList();
 
             DataGridViewColumn column = dgvEmpeños.Columns[0];
@@ -736,8 +799,9 @@ namespace Empeño.WindowsForms.Views
             var _context = new DataContext();
             if (dgvEmpeños.SelectedRows.Count > 0)
             {
+                int empeñoId = int.Parse(dgvEmpeños.SelectedRows[0].Cells[0].Value.ToString());
                 var empeño = await _context.Empenos.FindAsync(dgvEmpeños.SelectedRows[0].Cells[0].Value);
-
+                await funciones.ReviewDuplicateEmpeños(empeño.EmpenoId);
                 if (empeño != null)
                 {
                     int cantidadMeses = ((int)(DateTime.Today - empeño.Fecha).TotalDays / 30);
@@ -752,25 +816,33 @@ namespace Empeño.WindowsForms.Views
                         {
                             var intereses = new Intereses
                             {
-                                EmpenoId = empeño.EmpenoId,
+                                EmpenoId = empeñoId,
                                 FechaCreacion = DateTime.Now,
                                 Monto = (double)empeño.MontoPendiente * ((double)empeño.Interes.Porcentaje / (double)100)
                             };
 
-                            if (empeño.Intereses.Count() > 0)
+                            if (_context.Intereses.Where(x=>x.EmpenoId==empeñoId).Count() > 0)
                             {
-                                intereses.FechaVencimiento = empeño.Intereses.OrderByDescending(x => x.InteresesId).FirstOrDefault().FechaVencimiento.AddMonths(1);
+                                intereses.FechaVencimiento = _context.Intereses
+                                    .Where(x => x.EmpenoId == empeñoId)
+                                    .OrderByDescending(x => x.InteresesId)
+                                    .FirstOrDefault()
+                                    .FechaVencimiento.AddMonths(1);
                             }
                             else
                             {
                                 intereses.FechaVencimiento = empeño.FechaVencimiento.AddMonths(1);
                             }
-                            if (_context.Intereses.Where(x => x.EmpenoId == empeño.EmpenoId && x.FechaVencimiento == intereses.FechaVencimiento).Count() == 0)
+                            using (DataContext temp= new DataContext())
                             {
-                                _context.Intereses.Add(intereses);
+                                var interesesFind = await temp.Intereses.Where(x => x.EmpenoId == empeño.EmpenoId && x.FechaVencimiento == intereses.FechaVencimiento).ToListAsync();
+                                if (interesesFind.Count() == 0)
+                                {
+                                    _context.Intereses.Add(intereses);
+                                    await _context.SaveChangesAsync();
+                                } 
                             }
-                        }
-                        await _context.SaveChangesAsync();
+                        }                       
                         await funciones.SaveBitacora(new ValorBitacora
                         {
                             Valor = JsonConvert.SerializeObject(_context.Intereses.Where(x => x.EmpenoId == empeño.EmpenoId).ToList()),
@@ -840,7 +912,7 @@ namespace Empeño.WindowsForms.Views
                     txtIdentificacion.Text = empeño.Cliente.Identificacion;
                     txtNombre.Text = empeño.Cliente.Nombre;
                     txtDescripcion.Text = empeño.Descripcion;
-                    txtComentario.Text = "";
+                    txtComentario.Text = empeño.Comentario;
                     cbInteres.DataSource = await _context.Interes.ToListAsync();
                     cbInteres.Text = empeño.Interes.Nombre;
                     txtMonto.Text = empeño.Monto.ToString();
@@ -910,7 +982,7 @@ namespace Empeño.WindowsForms.Views
             if (id > 0)
             {
                 var empeño = await _context.Empenos.FindAsync(id);
-
+                await funciones.ReviewDuplicateEmpeños(id);
                 int cantidadMeses = ((int)(DateTime.Today - empeño.Fecha).TotalDays / 30);
                 double sobrante = (DateTime.Today - empeño.Fecha).TotalDays % 30;
                 cantidadMeses += sobrante > 1 ? 1 : 0;
@@ -1009,7 +1081,7 @@ namespace Empeño.WindowsForms.Views
                     txtIdentificacion.Text = empeño.Cliente.Identificacion;
                     txtNombre.Text = empeño.Cliente.Nombre;
                     txtDescripcion.Text = empeño.Descripcion;
-                    txtComentario.Text = "";
+                    txtComentario.Text = empeño.Comentario;
                     cbInteres.DataSource = await _context.Interes.ToListAsync();
                     cbInteres.Text = empeño.Interes.Nombre;
                     txtMonto.Text = empeño.Monto.ToString();
@@ -1039,7 +1111,7 @@ namespace Empeño.WindowsForms.Views
             if (dgvEmpeños.SelectedRows.Count > 0)
             {
                 empeñoId = int.Parse(dgvEmpeños.SelectedRows[0].Cells[0].Value.ToString());
-                var list = await _context.Intereses.Where(p => p.EmpenoId == empeñoId)
+                var list = _context.Intereses.Where(p => p.EmpenoId == empeñoId)
                     .Select(x => new
                     {
                         Id = x.InteresesId,
@@ -1047,8 +1119,18 @@ namespace Empeño.WindowsForms.Views
                         Vence = SqlFunctions.DateName("day", x.FechaVencimiento) + "/" + SqlFunctions.DateName("month", x.FechaVencimiento) + "/" + SqlFunctions.DateName("year", x.FechaVencimiento),
                         x.Monto,
                         x.Pagado,
-                        Vencimiento = x.Monto==x.Pagado ? 0: DbFunctions.DiffDays(DateTime.Today, x.FechaVencimiento),
-                    }).OrderByDescending(i => i.Id).ToListAsync();
+                        Vencimiento = x.Monto == x.Pagado ? 0 : DbFunctions.DiffDays(DateTime.Today, x.FechaVencimiento),
+                    }).OrderByDescending(i => i.Id)
+                    .AsEnumerable()
+                    .Select(x => new
+                    {
+                        x.Id,
+                        x.Interes,
+                        x.Vence,
+                        Monto = x.Monto.ToString("N2"),
+                        Pagado=x.Pagado.ToString("N2"),
+                       Faltan=x.Vencimiento
+                    }).ToList();
                 dgvPagos.DataSource = list;
             }
         }
@@ -1056,6 +1138,7 @@ namespace Empeño.WindowsForms.Views
         private async void dgvEmpeños_DoubleClick(object sender, EventArgs e)
         {
             await BuscarEmpeño();
+            //await funciones.ReviewDuplicateEmpeños(int.Parse(dgvEmpeños.SelectedRows[0].Cells[0].Value.ToString()));
             await CargarPagos();
         }
 
@@ -1077,7 +1160,7 @@ namespace Empeño.WindowsForms.Views
         {
             if (!string.IsNullOrEmpty(txtIdentificacion.Text))
             {
-                var cliente = await _context.Clientes.SingleOrDefaultAsync(c => c.Identificacion == txtIdentificacion.Text);
+                var cliente = await _context.Clientes.SingleOrDefaultAsync(c => !c.IsDelete && c.Identificacion == txtIdentificacion.Text);
                 if (cliente != null)
                 {
                     clienteId = cliente.ClienteId;
@@ -1124,7 +1207,7 @@ namespace Empeño.WindowsForms.Views
         {
             if (!string.IsNullOrEmpty(txtIdentificacion.Text))
             {
-                var cliente = await _context.Clientes.SingleOrDefaultAsync(c => c.Identificacion == txtIdentificacion.Text);
+                var cliente = await _context.Clientes.SingleOrDefaultAsync(c => !c.IsDelete && c.Identificacion == txtIdentificacion.Text);
                 if (cliente != null)
                 {
                     clienteId = cliente.ClienteId;
@@ -1248,31 +1331,49 @@ namespace Empeño.WindowsForms.Views
         private async void btnHoy_Click(object sender, EventArgs e)
         {
             CleanForm();
-            dgvEmpeños.DataSource = await _context.Empenos.Where(x => !x.IsDelete && (x.Retirado == false && x.FechaRetiro == null
-              && !x.RetiradoAdministrador && x.FechaRetiroAdministrador == null)
-              && (x.Estado == Estado.Pendiente || x.Estado == Estado.Vencido)
-              && (x.Intereses.Where(i => i.FechaVencimiento == DateTime.Today).Count() > 0)).Select(x => new
-              {
-                  Id = x.EmpenoId,
-                  x.Descripcion,
-                  Empleado = x.Empleado.Nombre,
-                  Es_Oro = x.EsOro,
-                  x.Estado,
-                  Fecha = SqlFunctions.DateName("day", x.Fecha) + "/" + SqlFunctions.DateName("month", x.Fecha) + "/" + SqlFunctions.DateName("year", x.Fecha),
-                  Vence = SqlFunctions.DateName("day", x.FechaVencimiento) + "/" + SqlFunctions.DateName("month", x.FechaVencimiento) + "/" + SqlFunctions.DateName("year", x.FechaVencimiento),
-                  Interes = x.Interes.Porcentaje + "%",
-                  x.Monto,
-                  Pendiente = x.MontoPendiente
-              }).ToListAsync();
+
+
+            var listEmpeños = await _context.Empenos.Where(x => !x.IsDelete && !x.RetiradoAdministrador && (x.Retirado == false && x.FechaRetiro == null
+             && !x.RetiradoAdministrador && x.FechaRetiroAdministrador == null)
+             && (x.Estado == Estado.Pendiente || x.Estado == Estado.Vencido
+             || (x.Intereses.Where(i => i.FechaVencimiento == DateTime.Today).Count() > 0))).Select(x => new
+             {
+                Id = x.EmpenoId,
+                x.Descripcion,
+                Empleado = x.Empleado.Nombre,
+                Es_Oro = x.EsOro,
+                x.Estado,
+                Fecha = SqlFunctions.DateName("day", x.Fecha) + "/" + SqlFunctions.DateName("month", x.Fecha) + "/" + SqlFunctions.DateName("year", x.Fecha),
+                Vence = SqlFunctions.DateName("day", x.FechaVencimiento) + "/" + SqlFunctions.DateName("month", x.FechaVencimiento) + "/" + SqlFunctions.DateName("year", x.FechaVencimiento),
+                Interes = x.Interes.Porcentaje + "%",
+                Monto = x.Monto,
+                Pendiente = x.MontoPendiente
+            }).ToListAsync();
+
+            dgvEmpeños.DataSource = listEmpeños.AsEnumerable().Select(x => new
+            {
+                x.Id,
+                x.Descripcion,
+                x.Empleado,
+                x.Es_Oro,
+                x.Estado,
+                x.Fecha,
+                x.Vence,
+                x.Interes,
+                Monto = x.Monto.ToString("N2"),
+                Pendiente = x.Pendiente.ToString("N2")
+            }).ToList();
+          
             lblCatidadEmpeños.Text = dgvEmpeños.Rows.Count.ToString();
         }
 
         private async void btnPendientes_Click(object sender, EventArgs e)
         {
             CleanForm();
-            dgvEmpeños.DataSource = await _context.Empenos.Where(x => !x.IsDelete && (x.Retirado == false && x.FechaRetiro == null
+            var listEmpeños = await _context.Empenos.Where(x => !x.IsDelete && !x.RetiradoAdministrador && (x.Retirado == false && x.FechaRetiro == null
              && !x.RetiradoAdministrador && x.FechaRetiroAdministrador == null)
-             && (x.Estado == Estado.Pendiente || x.Estado == Estado.Vencido)).Select(x => new
+             && (x.Estado == Estado.Pendiente || x.Estado == Estado.Vencido
+             || (x.Intereses.Where(i => i.FechaVencimiento == DateTime.Today).Count() > 0))).Select(x => new
              {
                  Id = x.EmpenoId,
                  x.Descripcion,
@@ -1282,9 +1383,24 @@ namespace Empeño.WindowsForms.Views
                  Fecha = SqlFunctions.DateName("day", x.Fecha) + "/" + SqlFunctions.DateName("month", x.Fecha) + "/" + SqlFunctions.DateName("year", x.Fecha),
                  Vence = SqlFunctions.DateName("day", x.FechaVencimiento) + "/" + SqlFunctions.DateName("month", x.FechaVencimiento) + "/" + SqlFunctions.DateName("year", x.FechaVencimiento),
                  Interes = x.Interes.Porcentaje + "%",
-                 x.Monto,
+                 Monto = x.Monto,
                  Pendiente = x.MontoPendiente
              }).ToListAsync();
+
+            dgvEmpeños.DataSource = listEmpeños.AsEnumerable().Select(x => new
+            {
+                x.Id,
+                x.Descripcion,
+                x.Empleado,
+                x.Es_Oro,
+                x.Estado,
+                x.Fecha,
+                x.Vence,
+                x.Interes,
+                Monto = x.Monto.ToString("N2"),
+                Pendiente = x.Pendiente.ToString("N2")
+            }).ToList();
+
             dgvEmpeños.ClearSelection();
             lblCatidadEmpeños.Text = dgvEmpeños.Rows.Count.ToString();
         }
@@ -1412,7 +1528,7 @@ namespace Empeño.WindowsForms.Views
             cexcel.Cells[24, 3].value = empeno.FechaVencimiento.ToString("dd/MM/yyyy");
             string FechaVence = lblVence.Text;
             cexcel.Cells[26, 3].value = ((double)empeno.Monto * ((double)empeno.Interes.Porcentaje / (double)100)).ToString("N2");
-            cexcel.Cells[28, 3].value = "Pendiente";
+            cexcel.Cells[28, 3].value = "Anulada";
             cexcel.ActiveWindow.SelectedSheets.PrintOut();
             System.Threading.Thread.Sleep(300);
             cexcel.ActiveWorkbook.Close(false);
@@ -1436,7 +1552,7 @@ namespace Empeño.WindowsForms.Views
         {
             frmOscuro oscuro = new frmOscuro();
             oscuro.Show();
-            frmPIN pin = new frmPIN("Empeño");
+            frmPIN pin = new frmPIN("Borrar Empeño");
             pin.ShowDialog();
             if (!Program.Acceso)
             {
@@ -1490,7 +1606,7 @@ namespace Empeño.WindowsForms.Views
         {
             frmOscuro oscuro = new frmOscuro();
             oscuro.Show();
-            frmPIN pin = new frmPIN("Empeño");
+            frmPIN pin = new frmPIN("Editar Pago");
             pin.ShowDialog();
             if (!Program.Acceso)
             {
@@ -1522,7 +1638,7 @@ namespace Empeño.WindowsForms.Views
         {
             frmOscuro oscuro = new frmOscuro();
             oscuro.Show();
-            frmPIN pin = new frmPIN("Empeño");
+            frmPIN pin = new frmPIN("Borrar Pago");
             pin.ShowDialog();
             if (!Program.Acceso)
             {
@@ -1541,6 +1657,11 @@ namespace Empeño.WindowsForms.Views
             }           
             oscuro.Close();
             await CargarPagos();
+        }
+
+        private void dgvClientes_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+
         }
     }
 }

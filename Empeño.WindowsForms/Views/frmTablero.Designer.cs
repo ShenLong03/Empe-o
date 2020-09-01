@@ -37,32 +37,41 @@
             System.Windows.Forms.DataVisualization.Charting.Series series2 = new System.Windows.Forms.DataVisualization.Charting.Series();
             System.Windows.Forms.DataVisualization.Charting.Series series3 = new System.Windows.Forms.DataVisualization.Charting.Series();
             this.bunifuElipse1 = new Bunifu.Framework.UI.BunifuElipse(this.components);
-            this.bunifuElipse2 = new Bunifu.Framework.UI.BunifuElipse(this.components);
-            this.bunifuElipse3 = new Bunifu.Framework.UI.BunifuElipse(this.components);
-            this.bunifuElipse4 = new Bunifu.Framework.UI.BunifuElipse(this.components);
-            this.bunifuElipse5 = new Bunifu.Framework.UI.BunifuElipse(this.components);
-            this.panel1 = new System.Windows.Forms.Panel();
-            this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
-            this.panel6 = new System.Windows.Forms.Panel();
-            this.lblMas30Dias = new System.Windows.Forms.Label();
-            this.lblTotalVencidos = new System.Windows.Forms.Label();
-            this.lbl1 = new System.Windows.Forms.Label();
-            this.pbVencidos = new FontAwesome.Sharp.IconPictureBox();
-            this.panel4 = new System.Windows.Forms.Panel();
-            this.lblPendientesHoy = new System.Windows.Forms.Label();
-            this.lblTotalPendientes = new System.Windows.Forms.Label();
-            this.label14 = new System.Windows.Forms.Label();
-            this.pbPendientes = new FontAwesome.Sharp.IconPictureBox();
             this.panel3 = new System.Windows.Forms.Panel();
             this.lblEmpeñosNuevos = new System.Windows.Forms.Label();
             this.pbEmpeños = new FontAwesome.Sharp.IconPictureBox();
             this.lblTotalEmpeños = new System.Windows.Forms.Label();
             this.label8 = new System.Windows.Forms.Label();
+            this.bunifuElipse2 = new Bunifu.Framework.UI.BunifuElipse(this.components);
             this.panel2 = new System.Windows.Forms.Panel();
             this.lblClientesNuevos = new System.Windows.Forms.Label();
             this.lblTotalClientes = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.pbClientes = new FontAwesome.Sharp.IconPictureBox();
+            this.bunifuElipse3 = new Bunifu.Framework.UI.BunifuElipse(this.components);
+            this.panel6 = new System.Windows.Forms.Panel();
+            this.lblMas30Dias = new System.Windows.Forms.Label();
+            this.lblTotalVencidos = new System.Windows.Forms.Label();
+            this.lbl1 = new System.Windows.Forms.Label();
+            this.pbVencidos = new FontAwesome.Sharp.IconPictureBox();
+            this.bunifuElipse4 = new Bunifu.Framework.UI.BunifuElipse(this.components);
+            this.panel4 = new System.Windows.Forms.Panel();
+            this.lblPendientesHoy = new System.Windows.Forms.Label();
+            this.lblTotalPendientes = new System.Windows.Forms.Label();
+            this.label14 = new System.Windows.Forms.Label();
+            this.pbPendientes = new FontAwesome.Sharp.IconPictureBox();
+            this.bunifuElipse5 = new Bunifu.Framework.UI.BunifuElipse(this.components);
+            this.panel10 = new System.Windows.Forms.Panel();
+            this.dgvTransacciones = new System.Windows.Forms.DataGridView();
+            this.panel11 = new System.Windows.Forms.Panel();
+            this.lblTotal = new System.Windows.Forms.Label();
+            this.lblTotal2 = new System.Windows.Forms.Label();
+            this.lblSalidas = new System.Windows.Forms.Label();
+            this.label6 = new System.Windows.Forms.Label();
+            this.lblIngresos = new System.Windows.Forms.Label();
+            this.label4 = new System.Windows.Forms.Label();
+            this.panel1 = new System.Windows.Forms.Panel();
+            this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.panel5 = new System.Windows.Forms.Panel();
             this.chartEmpeños = new System.Windows.Forms.DataVisualization.Charting.Chart();
             this.panel7 = new System.Windows.Forms.Panel();
@@ -73,27 +82,21 @@
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.comboBox1 = new System.Windows.Forms.ComboBox();
-            this.panel10 = new System.Windows.Forms.Panel();
-            this.panel11 = new System.Windows.Forms.Panel();
-            this.dgvTransacciones = new System.Windows.Forms.DataGridView();
-            this.label4 = new System.Windows.Forms.Label();
-            this.lblIngresos = new System.Windows.Forms.Label();
-            this.label6 = new System.Windows.Forms.Label();
-            this.lblSalidas = new System.Windows.Forms.Label();
-            this.lblTotal = new System.Windows.Forms.Label();
-            this.lblTotal2 = new System.Windows.Forms.Label();
             this.bunifuElipse6 = new Bunifu.Framework.UI.BunifuElipse(this.components);
             this.ingresosEgresosReporteBindingSource = new System.Windows.Forms.BindingSource(this.components);
-            this.panel1.SuspendLayout();
-            this.tableLayoutPanel1.SuspendLayout();
-            this.panel6.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pbVencidos)).BeginInit();
-            this.panel4.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pbPendientes)).BeginInit();
             this.panel3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pbEmpeños)).BeginInit();
             this.panel2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pbClientes)).BeginInit();
+            this.panel6.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pbVencidos)).BeginInit();
+            this.panel4.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pbPendientes)).BeginInit();
+            this.panel10.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvTransacciones)).BeginInit();
+            this.panel11.SuspendLayout();
+            this.panel1.SuspendLayout();
+            this.tableLayoutPanel1.SuspendLayout();
             this.panel5.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.chartEmpeños)).BeginInit();
             this.panel7.SuspendLayout();
@@ -101,9 +104,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.chartVentas)).BeginInit();
             this.panel9.SuspendLayout();
-            this.panel10.SuspendLayout();
-            this.panel11.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dgvTransacciones)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.ingresosEgresosReporteBindingSource)).BeginInit();
             this.SuspendLayout();
             // 
@@ -112,53 +112,135 @@
             this.bunifuElipse1.ElipseRadius = 10;
             this.bunifuElipse1.TargetControl = this.panel3;
             // 
+            // panel3
+            // 
+            this.panel3.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(128)))), ((int)(((byte)(187)))));
+            this.panel3.Controls.Add(this.lblEmpeñosNuevos);
+            this.panel3.Controls.Add(this.pbEmpeños);
+            this.panel3.Controls.Add(this.lblTotalEmpeños);
+            this.panel3.Controls.Add(this.label8);
+            this.panel3.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panel3.Location = new System.Drawing.Point(3, 3);
+            this.panel3.Name = "panel3";
+            this.panel3.Size = new System.Drawing.Size(270, 94);
+            this.panel3.TabIndex = 25;
+            // 
+            // lblEmpeñosNuevos
+            // 
+            this.lblEmpeñosNuevos.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.lblEmpeñosNuevos.AutoSize = true;
+            this.lblEmpeñosNuevos.Font = new System.Drawing.Font("Century Gothic", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblEmpeñosNuevos.ForeColor = System.Drawing.Color.White;
+            this.lblEmpeñosNuevos.Location = new System.Drawing.Point(7, 72);
+            this.lblEmpeñosNuevos.Name = "lblEmpeñosNuevos";
+            this.lblEmpeñosNuevos.Size = new System.Drawing.Size(146, 19);
+            this.lblEmpeñosNuevos.TabIndex = 9;
+            this.lblEmpeñosNuevos.Text = "75 nuevos empeños";
+            // 
+            // pbEmpeños
+            // 
+            this.pbEmpeños.BackColor = System.Drawing.Color.Transparent;
+            this.pbEmpeños.IconChar = FontAwesome.Sharp.IconChar.DiceD20;
+            this.pbEmpeños.IconColor = System.Drawing.Color.White;
+            this.pbEmpeños.IconSize = 88;
+            this.pbEmpeños.Location = new System.Drawing.Point(178, 3);
+            this.pbEmpeños.Name = "pbEmpeños";
+            this.pbEmpeños.Size = new System.Drawing.Size(88, 89);
+            this.pbEmpeños.TabIndex = 7;
+            this.pbEmpeños.TabStop = false;
+            // 
+            // lblTotalEmpeños
+            // 
+            this.lblTotalEmpeños.AutoSize = true;
+            this.lblTotalEmpeños.Font = new System.Drawing.Font("Century Gothic", 24F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblTotalEmpeños.ForeColor = System.Drawing.Color.White;
+            this.lblTotalEmpeños.Location = new System.Drawing.Point(3, 29);
+            this.lblTotalEmpeños.Name = "lblTotalEmpeños";
+            this.lblTotalEmpeños.Size = new System.Drawing.Size(119, 47);
+            this.lblTotalEmpeños.TabIndex = 8;
+            this.lblTotalEmpeños.Text = "1 520";
+            // 
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.label8.Font = new System.Drawing.Font("Century Gothic", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label8.ForeColor = System.Drawing.Color.White;
+            this.label8.Location = new System.Drawing.Point(7, 8);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(85, 21);
+            this.label8.TabIndex = 7;
+            this.label8.Text = "Empeños";
+            // 
             // bunifuElipse2
             // 
             this.bunifuElipse2.ElipseRadius = 10;
             this.bunifuElipse2.TargetControl = this.panel2;
             // 
+            // panel2
+            // 
+            this.panel2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(176)))), ((int)(((byte)(92)))));
+            this.panel2.Controls.Add(this.lblClientesNuevos);
+            this.panel2.Controls.Add(this.lblTotalClientes);
+            this.panel2.Controls.Add(this.label3);
+            this.panel2.Controls.Add(this.pbClientes);
+            this.panel2.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panel2.Location = new System.Drawing.Point(279, 3);
+            this.panel2.Name = "panel2";
+            this.panel2.Size = new System.Drawing.Size(270, 94);
+            this.panel2.TabIndex = 24;
+            // 
+            // lblClientesNuevos
+            // 
+            this.lblClientesNuevos.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.lblClientesNuevos.AutoSize = true;
+            this.lblClientesNuevos.Font = new System.Drawing.Font("Century Gothic", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblClientesNuevos.ForeColor = System.Drawing.Color.White;
+            this.lblClientesNuevos.Location = new System.Drawing.Point(11, 72);
+            this.lblClientesNuevos.Name = "lblClientesNuevos";
+            this.lblClientesNuevos.Size = new System.Drawing.Size(134, 19);
+            this.lblClientesNuevos.TabIndex = 6;
+            this.lblClientesNuevos.Text = "10 nuevos clientes";
+            // 
+            // lblTotalClientes
+            // 
+            this.lblTotalClientes.AutoSize = true;
+            this.lblTotalClientes.Font = new System.Drawing.Font("Century Gothic", 24F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblTotalClientes.ForeColor = System.Drawing.Color.White;
+            this.lblTotalClientes.Location = new System.Drawing.Point(7, 29);
+            this.lblTotalClientes.Name = "lblTotalClientes";
+            this.lblTotalClientes.Size = new System.Drawing.Size(86, 47);
+            this.lblTotalClientes.TabIndex = 4;
+            this.lblTotalClientes.Text = "250";
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Font = new System.Drawing.Font("Century Gothic", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label3.ForeColor = System.Drawing.Color.White;
+            this.label3.Location = new System.Drawing.Point(11, 8);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(76, 21);
+            this.label3.TabIndex = 3;
+            this.label3.Text = "Clientes";
+            // 
+            // pbClientes
+            // 
+            this.pbClientes.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.pbClientes.BackColor = System.Drawing.Color.Transparent;
+            this.pbClientes.IconChar = FontAwesome.Sharp.IconChar.User;
+            this.pbClientes.IconColor = System.Drawing.Color.White;
+            this.pbClientes.IconSize = 88;
+            this.pbClientes.Location = new System.Drawing.Point(179, 3);
+            this.pbClientes.Name = "pbClientes";
+            this.pbClientes.Size = new System.Drawing.Size(88, 88);
+            this.pbClientes.TabIndex = 0;
+            this.pbClientes.TabStop = false;
+            // 
             // bunifuElipse3
             // 
             this.bunifuElipse3.ElipseRadius = 10;
             this.bunifuElipse3.TargetControl = this.panel6;
-            // 
-            // bunifuElipse4
-            // 
-            this.bunifuElipse4.ElipseRadius = 10;
-            this.bunifuElipse4.TargetControl = this.panel4;
-            // 
-            // bunifuElipse5
-            // 
-            this.bunifuElipse5.ElipseRadius = 20;
-            this.bunifuElipse5.TargetControl = this.panel10;
-            // 
-            // panel1
-            // 
-            this.panel1.Controls.Add(this.tableLayoutPanel1);
-            this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
-            this.panel1.Location = new System.Drawing.Point(0, 0);
-            this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(1104, 100);
-            this.panel1.TabIndex = 0;
-            // 
-            // tableLayoutPanel1
-            // 
-            this.tableLayoutPanel1.ColumnCount = 4;
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 25F));
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 25F));
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 25F));
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 25F));
-            this.tableLayoutPanel1.Controls.Add(this.panel6, 0, 0);
-            this.tableLayoutPanel1.Controls.Add(this.panel4, 0, 0);
-            this.tableLayoutPanel1.Controls.Add(this.panel3, 0, 0);
-            this.tableLayoutPanel1.Controls.Add(this.panel2, 0, 0);
-            this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 0);
-            this.tableLayoutPanel1.Name = "tableLayoutPanel1";
-            this.tableLayoutPanel1.RowCount = 1;
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(1104, 100);
-            this.tableLayoutPanel1.TabIndex = 0;
             // 
             // panel6
             // 
@@ -221,6 +303,11 @@
             this.pbVencidos.TabIndex = 7;
             this.pbVencidos.TabStop = false;
             // 
+            // bunifuElipse4
+            // 
+            this.bunifuElipse4.ElipseRadius = 10;
+            this.bunifuElipse4.TargetControl = this.panel4;
+            // 
             // panel4
             // 
             this.panel4.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(161)))), ((int)(((byte)(66)))), ((int)(((byte)(179)))));
@@ -282,125 +369,146 @@
             this.pbPendientes.TabIndex = 7;
             this.pbPendientes.TabStop = false;
             // 
-            // panel3
+            // bunifuElipse5
             // 
-            this.panel3.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(128)))), ((int)(((byte)(187)))));
-            this.panel3.Controls.Add(this.lblEmpeñosNuevos);
-            this.panel3.Controls.Add(this.pbEmpeños);
-            this.panel3.Controls.Add(this.lblTotalEmpeños);
-            this.panel3.Controls.Add(this.label8);
-            this.panel3.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel3.Location = new System.Drawing.Point(3, 3);
-            this.panel3.Name = "panel3";
-            this.panel3.Size = new System.Drawing.Size(270, 94);
-            this.panel3.TabIndex = 25;
+            this.bunifuElipse5.ElipseRadius = 20;
+            this.bunifuElipse5.TargetControl = this.panel10;
             // 
-            // lblEmpeñosNuevos
+            // panel10
             // 
-            this.lblEmpeñosNuevos.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.lblEmpeñosNuevos.AutoSize = true;
-            this.lblEmpeñosNuevos.Font = new System.Drawing.Font("Century Gothic", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblEmpeñosNuevos.ForeColor = System.Drawing.Color.White;
-            this.lblEmpeñosNuevos.Location = new System.Drawing.Point(7, 72);
-            this.lblEmpeñosNuevos.Name = "lblEmpeñosNuevos";
-            this.lblEmpeñosNuevos.Size = new System.Drawing.Size(146, 19);
-            this.lblEmpeñosNuevos.TabIndex = 9;
-            this.lblEmpeñosNuevos.Text = "75 nuevos empeños";
-            // 
-            // pbEmpeños
-            // 
-            this.pbEmpeños.BackColor = System.Drawing.Color.Transparent;
-            this.pbEmpeños.IconChar = FontAwesome.Sharp.IconChar.DiceD20;
-            this.pbEmpeños.IconColor = System.Drawing.Color.White;
-            this.pbEmpeños.IconSize = 88;
-            this.pbEmpeños.Location = new System.Drawing.Point(178, 3);
-            this.pbEmpeños.Name = "pbEmpeños";
-            this.pbEmpeños.Size = new System.Drawing.Size(88, 89);
-            this.pbEmpeños.TabIndex = 7;
-            this.pbEmpeños.TabStop = false;
-            // 
-            // lblTotalEmpeños
-            // 
-            this.lblTotalEmpeños.AutoSize = true;
-            this.lblTotalEmpeños.Font = new System.Drawing.Font("Century Gothic", 24F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblTotalEmpeños.ForeColor = System.Drawing.Color.White;
-            this.lblTotalEmpeños.Location = new System.Drawing.Point(3, 29);
-            this.lblTotalEmpeños.Name = "lblTotalEmpeños";
-            this.lblTotalEmpeños.Size = new System.Drawing.Size(119, 47);
-            this.lblTotalEmpeños.TabIndex = 8;
-            this.lblTotalEmpeños.Text = "1 520";
-            // 
-            // label8
-            // 
-            this.label8.AutoSize = true;
-            this.label8.Font = new System.Drawing.Font("Century Gothic", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label8.ForeColor = System.Drawing.Color.White;
-            this.label8.Location = new System.Drawing.Point(7, 8);
-            this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(85, 21);
-            this.label8.TabIndex = 7;
-            this.label8.Text = "Empeños";
-            // 
-            // panel2
-            // 
-            this.panel2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(176)))), ((int)(((byte)(92)))));
-            this.panel2.Controls.Add(this.lblClientesNuevos);
-            this.panel2.Controls.Add(this.lblTotalClientes);
-            this.panel2.Controls.Add(this.label3);
-            this.panel2.Controls.Add(this.pbClientes);
-            this.panel2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel2.Location = new System.Drawing.Point(279, 3);
-            this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(270, 94);
-            this.panel2.TabIndex = 24;
-            // 
-            // lblClientesNuevos
-            // 
-            this.lblClientesNuevos.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.lblClientesNuevos.AutoSize = true;
-            this.lblClientesNuevos.Font = new System.Drawing.Font("Century Gothic", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblClientesNuevos.ForeColor = System.Drawing.Color.White;
-            this.lblClientesNuevos.Location = new System.Drawing.Point(11, 72);
-            this.lblClientesNuevos.Name = "lblClientesNuevos";
-            this.lblClientesNuevos.Size = new System.Drawing.Size(134, 19);
-            this.lblClientesNuevos.TabIndex = 6;
-            this.lblClientesNuevos.Text = "10 nuevos clientes";
-            // 
-            // lblTotalClientes
-            // 
-            this.lblTotalClientes.AutoSize = true;
-            this.lblTotalClientes.Font = new System.Drawing.Font("Century Gothic", 24F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblTotalClientes.ForeColor = System.Drawing.Color.White;
-            this.lblTotalClientes.Location = new System.Drawing.Point(7, 29);
-            this.lblTotalClientes.Name = "lblTotalClientes";
-            this.lblTotalClientes.Size = new System.Drawing.Size(86, 47);
-            this.lblTotalClientes.TabIndex = 4;
-            this.lblTotalClientes.Text = "250";
-            // 
-            // label3
-            // 
-            this.label3.AutoSize = true;
-            this.label3.Font = new System.Drawing.Font("Century Gothic", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label3.ForeColor = System.Drawing.Color.White;
-            this.label3.Location = new System.Drawing.Point(11, 8);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(76, 21);
-            this.label3.TabIndex = 3;
-            this.label3.Text = "Clientes";
-            // 
-            // pbClientes
-            // 
-            this.pbClientes.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            this.panel10.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.pbClientes.BackColor = System.Drawing.Color.Transparent;
-            this.pbClientes.IconChar = FontAwesome.Sharp.IconChar.User;
-            this.pbClientes.IconColor = System.Drawing.Color.White;
-            this.pbClientes.IconSize = 88;
-            this.pbClientes.Location = new System.Drawing.Point(179, 3);
-            this.pbClientes.Name = "pbClientes";
-            this.pbClientes.Size = new System.Drawing.Size(88, 88);
-            this.pbClientes.TabIndex = 0;
-            this.pbClientes.TabStop = false;
+            this.panel10.BackColor = System.Drawing.Color.LightGray;
+            this.panel10.Controls.Add(this.dgvTransacciones);
+            this.panel10.Controls.Add(this.panel11);
+            this.panel10.Location = new System.Drawing.Point(568, 316);
+            this.panel10.Name = "panel10";
+            this.panel10.Size = new System.Drawing.Size(528, 311);
+            this.panel10.TabIndex = 8;
+            // 
+            // dgvTransacciones
+            // 
+            this.dgvTransacciones.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+            this.dgvTransacciones.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgvTransacciones.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.dgvTransacciones.Location = new System.Drawing.Point(0, 0);
+            this.dgvTransacciones.Name = "dgvTransacciones";
+            this.dgvTransacciones.RowHeadersWidth = 51;
+            this.dgvTransacciones.RowTemplate.Height = 24;
+            this.dgvTransacciones.Size = new System.Drawing.Size(528, 233);
+            this.dgvTransacciones.TabIndex = 1;
+            // 
+            // panel11
+            // 
+            this.panel11.Controls.Add(this.lblTotal);
+            this.panel11.Controls.Add(this.lblTotal2);
+            this.panel11.Controls.Add(this.lblSalidas);
+            this.panel11.Controls.Add(this.label6);
+            this.panel11.Controls.Add(this.lblIngresos);
+            this.panel11.Controls.Add(this.label4);
+            this.panel11.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.panel11.Location = new System.Drawing.Point(0, 233);
+            this.panel11.Name = "panel11";
+            this.panel11.Size = new System.Drawing.Size(528, 78);
+            this.panel11.TabIndex = 0;
+            // 
+            // lblTotal
+            // 
+            this.lblTotal.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.lblTotal.AutoSize = true;
+            this.lblTotal.Font = new System.Drawing.Font("Century Gothic", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblTotal.Location = new System.Drawing.Point(425, 17);
+            this.lblTotal.Name = "lblTotal";
+            this.lblTotal.Size = new System.Drawing.Size(21, 23);
+            this.lblTotal.TabIndex = 5;
+            this.lblTotal.Text = "0";
+            // 
+            // lblTotal2
+            // 
+            this.lblTotal2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.lblTotal2.AutoSize = true;
+            this.lblTotal2.Font = new System.Drawing.Font("Century Gothic", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblTotal2.ForeColor = System.Drawing.Color.DimGray;
+            this.lblTotal2.Location = new System.Drawing.Point(425, 40);
+            this.lblTotal2.Name = "lblTotal2";
+            this.lblTotal2.Size = new System.Drawing.Size(46, 19);
+            this.lblTotal2.TabIndex = 4;
+            this.lblTotal2.Text = "Total";
+            // 
+            // lblSalidas
+            // 
+            this.lblSalidas.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.lblSalidas.AutoSize = true;
+            this.lblSalidas.Font = new System.Drawing.Font("Century Gothic", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblSalidas.Location = new System.Drawing.Point(237, 17);
+            this.lblSalidas.Name = "lblSalidas";
+            this.lblSalidas.Size = new System.Drawing.Size(21, 23);
+            this.lblSalidas.TabIndex = 3;
+            this.lblSalidas.Text = "0";
+            // 
+            // label6
+            // 
+            this.label6.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.label6.AutoSize = true;
+            this.label6.Font = new System.Drawing.Font("Century Gothic", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label6.ForeColor = System.Drawing.Color.DimGray;
+            this.label6.Location = new System.Drawing.Point(237, 40);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(67, 19);
+            this.label6.TabIndex = 2;
+            this.label6.Text = "Salidas";
+            // 
+            // lblIngresos
+            // 
+            this.lblIngresos.AutoSize = true;
+            this.lblIngresos.Font = new System.Drawing.Font("Century Gothic", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblIngresos.Location = new System.Drawing.Point(30, 17);
+            this.lblIngresos.Name = "lblIngresos";
+            this.lblIngresos.Size = new System.Drawing.Size(21, 23);
+            this.lblIngresos.TabIndex = 1;
+            this.lblIngresos.Text = "0";
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Font = new System.Drawing.Font("Century Gothic", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label4.ForeColor = System.Drawing.Color.DimGray;
+            this.label4.Location = new System.Drawing.Point(30, 40);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(78, 19);
+            this.label4.TabIndex = 0;
+            this.label4.Text = "Ingresos";
+            // 
+            // panel1
+            // 
+            this.panel1.Controls.Add(this.tableLayoutPanel1);
+            this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
+            this.panel1.Location = new System.Drawing.Point(0, 0);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(1104, 100);
+            this.panel1.TabIndex = 0;
+            // 
+            // tableLayoutPanel1
+            // 
+            this.tableLayoutPanel1.ColumnCount = 4;
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 25F));
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 25F));
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 25F));
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 25F));
+            this.tableLayoutPanel1.Controls.Add(this.panel6, 0, 0);
+            this.tableLayoutPanel1.Controls.Add(this.panel4, 0, 0);
+            this.tableLayoutPanel1.Controls.Add(this.panel3, 0, 0);
+            this.tableLayoutPanel1.Controls.Add(this.panel2, 0, 0);
+            this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 0);
+            this.tableLayoutPanel1.Name = "tableLayoutPanel1";
+            this.tableLayoutPanel1.RowCount = 1;
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(1104, 100);
+            this.tableLayoutPanel1.TabIndex = 0;
             // 
             // panel5
             // 
@@ -521,9 +629,10 @@
             // 
             // label1
             // 
+            this.label1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.label1.AutoSize = true;
             this.label1.ForeColor = System.Drawing.Color.DimGray;
-            this.label1.Location = new System.Drawing.Point(291, 13);
+            this.label1.Location = new System.Drawing.Point(252, 13);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(50, 17);
             this.label1.TabIndex = 1;
@@ -531,119 +640,21 @@
             // 
             // comboBox1
             // 
+            this.comboBox1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.comboBox1.FormattingEnabled = true;
-            this.comboBox1.Location = new System.Drawing.Point(344, 7);
+            this.comboBox1.Items.AddRange(new object[] {
+            "1 semana",
+            "15 días",
+            "1 mes",
+            "3 meses",
+            "6 meses",
+            "1 año"});
+            this.comboBox1.Location = new System.Drawing.Point(371, 7);
             this.comboBox1.Name = "comboBox1";
             this.comboBox1.Size = new System.Drawing.Size(140, 24);
             this.comboBox1.TabIndex = 0;
-            // 
-            // panel10
-            // 
-            this.panel10.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.panel10.BackColor = System.Drawing.Color.LightGray;
-            this.panel10.Controls.Add(this.dgvTransacciones);
-            this.panel10.Controls.Add(this.panel11);
-            this.panel10.Location = new System.Drawing.Point(568, 316);
-            this.panel10.Name = "panel10";
-            this.panel10.Size = new System.Drawing.Size(528, 311);
-            this.panel10.TabIndex = 8;
-            // 
-            // panel11
-            // 
-            this.panel11.Controls.Add(this.lblTotal);
-            this.panel11.Controls.Add(this.lblTotal2);
-            this.panel11.Controls.Add(this.lblSalidas);
-            this.panel11.Controls.Add(this.label6);
-            this.panel11.Controls.Add(this.lblIngresos);
-            this.panel11.Controls.Add(this.label4);
-            this.panel11.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.panel11.Location = new System.Drawing.Point(0, 233);
-            this.panel11.Name = "panel11";
-            this.panel11.Size = new System.Drawing.Size(528, 78);
-            this.panel11.TabIndex = 0;
-            // 
-            // dgvTransacciones
-            // 
-            this.dgvTransacciones.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
-            this.dgvTransacciones.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgvTransacciones.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.dgvTransacciones.Location = new System.Drawing.Point(0, 0);
-            this.dgvTransacciones.Name = "dgvTransacciones";
-            this.dgvTransacciones.RowHeadersWidth = 51;
-            this.dgvTransacciones.RowTemplate.Height = 24;
-            this.dgvTransacciones.Size = new System.Drawing.Size(528, 233);
-            this.dgvTransacciones.TabIndex = 1;
-            // 
-            // label4
-            // 
-            this.label4.AutoSize = true;
-            this.label4.Font = new System.Drawing.Font("Century Gothic", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label4.ForeColor = System.Drawing.Color.DimGray;
-            this.label4.Location = new System.Drawing.Point(30, 40);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(78, 19);
-            this.label4.TabIndex = 0;
-            this.label4.Text = "Ingresos";
-            // 
-            // lblIngresos
-            // 
-            this.lblIngresos.AutoSize = true;
-            this.lblIngresos.Font = new System.Drawing.Font("Century Gothic", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblIngresos.Location = new System.Drawing.Point(30, 17);
-            this.lblIngresos.Name = "lblIngresos";
-            this.lblIngresos.Size = new System.Drawing.Size(21, 23);
-            this.lblIngresos.TabIndex = 1;
-            this.lblIngresos.Text = "0";
-            // 
-            // label6
-            // 
-            this.label6.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.label6.AutoSize = true;
-            this.label6.Font = new System.Drawing.Font("Century Gothic", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label6.ForeColor = System.Drawing.Color.DimGray;
-            this.label6.Location = new System.Drawing.Point(237, 40);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(67, 19);
-            this.label6.TabIndex = 2;
-            this.label6.Text = "Salidas";
-            // 
-            // lblSalidas
-            // 
-            this.lblSalidas.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.lblSalidas.AutoSize = true;
-            this.lblSalidas.Font = new System.Drawing.Font("Century Gothic", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblSalidas.Location = new System.Drawing.Point(237, 17);
-            this.lblSalidas.Name = "lblSalidas";
-            this.lblSalidas.Size = new System.Drawing.Size(21, 23);
-            this.lblSalidas.TabIndex = 3;
-            this.lblSalidas.Text = "0";
-            // 
-            // lblTotal
-            // 
-            this.lblTotal.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.lblTotal.AutoSize = true;
-            this.lblTotal.Font = new System.Drawing.Font("Century Gothic", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblTotal.Location = new System.Drawing.Point(425, 17);
-            this.lblTotal.Name = "lblTotal";
-            this.lblTotal.Size = new System.Drawing.Size(21, 23);
-            this.lblTotal.TabIndex = 5;
-            this.lblTotal.Text = "0";
-            // 
-            // lblTotal2
-            // 
-            this.lblTotal2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.lblTotal2.AutoSize = true;
-            this.lblTotal2.Font = new System.Drawing.Font("Century Gothic", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblTotal2.ForeColor = System.Drawing.Color.DimGray;
-            this.lblTotal2.Location = new System.Drawing.Point(425, 40);
-            this.lblTotal2.Name = "lblTotal2";
-            this.lblTotal2.Size = new System.Drawing.Size(46, 19);
-            this.lblTotal2.TabIndex = 4;
-            this.lblTotal2.Text = "Total";
+            this.comboBox1.Text = "1 semana";
+            this.comboBox1.SelectedIndexChanged += new System.EventHandler(this.comboBox1_SelectedIndexChanged);
             // 
             // bunifuElipse6
             // 
@@ -666,20 +677,24 @@
             this.Name = "frmTablero";
             this.Text = "Tablero";
             this.Load += new System.EventHandler(this.frmTablero_Load);
-            this.panel1.ResumeLayout(false);
-            this.tableLayoutPanel1.ResumeLayout(false);
-            this.panel6.ResumeLayout(false);
-            this.panel6.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pbVencidos)).EndInit();
-            this.panel4.ResumeLayout(false);
-            this.panel4.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pbPendientes)).EndInit();
             this.panel3.ResumeLayout(false);
             this.panel3.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pbEmpeños)).EndInit();
             this.panel2.ResumeLayout(false);
             this.panel2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pbClientes)).EndInit();
+            this.panel6.ResumeLayout(false);
+            this.panel6.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pbVencidos)).EndInit();
+            this.panel4.ResumeLayout(false);
+            this.panel4.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pbPendientes)).EndInit();
+            this.panel10.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.dgvTransacciones)).EndInit();
+            this.panel11.ResumeLayout(false);
+            this.panel11.PerformLayout();
+            this.panel1.ResumeLayout(false);
+            this.tableLayoutPanel1.ResumeLayout(false);
             this.panel5.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.chartEmpeños)).EndInit();
             this.panel7.ResumeLayout(false);
@@ -688,10 +703,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.chartVentas)).EndInit();
             this.panel9.ResumeLayout(false);
             this.panel9.PerformLayout();
-            this.panel10.ResumeLayout(false);
-            this.panel11.ResumeLayout(false);
-            this.panel11.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dgvTransacciones)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.ingresosEgresosReporteBindingSource)).EndInit();
             this.ResumeLayout(false);
 

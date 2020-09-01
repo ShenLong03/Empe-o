@@ -7,13 +7,13 @@ namespace Empeño.WindowsForms.Migrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.4.4")]
-    public sealed partial class lastChanges : IMigrationMetadata
+    public sealed partial class addIsDeleteCustomers : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(lastChanges));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(addIsDeleteCustomers));
         
         string IMigrationMetadata.Id
         {
-            get { return "202007292335396_lastChanges"; }
+            get { return "202007311724201_addIsDeleteCustomers"; }
         }
         
         string IMigrationMetadata.Source

@@ -33,13 +33,14 @@ namespace Empeño.WindowsForms.Views
             frmOscuro oscuro = new frmOscuro();
             oscuro.Show();
             frmPIN pin = new frmPIN("Empeño");
-            pin.ShowDialog();
+            pin.ShowDialog();            
             if (!Program.Acceso)
             {
                 oscuro.Close();
                 MessageBox.Show("No tiene acceso a este módulo");
                 return;
             }
+            oscuro.Close();
             intereses.Monto = double.Parse(txtMonto.Text);
             intereses.Pagado = double.Parse(txtPagado.Text);
             intereses.FechaCreacion = dtFecha.Value;
@@ -47,6 +48,7 @@ namespace Empeño.WindowsForms.Views
 
             _context.Entry(intereses).State = EntityState.Modified;
             await _context.SaveChangesAsync();
+            this.Close();
         }
 
         private void frmEmpeñoInteres_Load(object sender, EventArgs e)

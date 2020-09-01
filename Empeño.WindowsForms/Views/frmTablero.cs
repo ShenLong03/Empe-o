@@ -13,6 +13,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Windows.Forms.DataVisualization.Charting;
 
 namespace Empeño.WindowsForms.Views
 {
@@ -36,9 +37,98 @@ namespace Empeño.WindowsForms.Views
             
         }
 
+
+        public async Task LoadCharts()
+        {
+            chartEmpeños.Update();
+            chartVentas.Update();
+            DateTime desde = DateTime.Today;
+
+            var index = comboBox1.SelectedIndex;
+            switch (index)
+            {
+                case 0:
+                    desde = DateTime.Today.AddDays(-8);
+                    break;
+                case 1:
+                    desde = DateTime.Today.AddDays(-15);
+                    break;
+                case 2:
+                    desde = DateTime.Today.AddMonths(-1);
+                    break;
+                case 3:
+                    desde = DateTime.Today.AddMonths(-3);
+                    break;
+                case 4:
+                    desde = DateTime.Today.AddMonths(-6);
+                    break;
+                case 5:
+                    desde = DateTime.Today.AddYears(-1);
+                    break;
+                default:
+                    break;
+            }
+
+            DateTime hasta = DateTime.Today;
+
+            var egresos = await _context.Empenos.Where(x => x.Fecha >= desde && x.Fecha <= hasta).ToListAsync();
+            var ingresos = await _context.Pago.Where(x => x.Fecha >= desde && x.Fecha <= hasta).ToListAsync();
+
+            var list = new List<IngresosEgresosReporte>();
+
+            foreach (var item in egresos)
+            {
+                list.Add(new IngresosEgresosReporte
+                {
+                    EmpeñoId = item.EmpenoId,
+                    Cliente = item.Cliente.Nombre,
+                    Egresos = item.Monto,
+                    Tipo = "Empeño",
+                    Empleado = item.Empleado.Nombre,
+                    Fecha = item.Fecha.Date,
+                    Identificacion = item.Cliente.Identificacion,
+                    Ingresos = null
+                });
+            }
+
+            foreach (var item in ingresos)
+            {
+                list.Add(new IngresosEgresosReporte
+                {
+                    EmpeñoId = item.EmpenoId,
+                    Cliente = item.Empeno.Cliente.Nombre,
+                    Egresos = null,
+                    Tipo = item.TipoPago == CommonEF.Enum.TipoPago.Interes ? "Interes" :
+                    item.TipoPago == CommonEF.Enum.TipoPago.Principal ? "Principal" : "",
+                    Empleado = item.Empleado.Nombre,
+                    Fecha = item.Fecha.Date,
+                    Identificacion = item.Empeno.Cliente.Identificacion,
+                    Ingresos = item.Monto
+                });
+            }
+
+
+            chartVentas.Series[0].Points.Clear();
+            chartVentas.Series[1].Points.Clear();
+            chartEmpeños.Series[0].Points.Clear();
+
+            chartVentas.Series[0].Points.DataBindXY(list.OrderBy(i => i.Fecha).Select(i => i.Fecha.Date.ToString("dd/MM")).ToList(), list.Select(i => i.Ingresos).ToList());
+            chartVentas.Series[1].Points.DataBindXY(list.OrderBy(i => i.Fecha).Select(i => i.Fecha.Date.ToString("dd/MM")).ToList(), list.Select(i => i.Egresos).ToList());
+
+            var listEmpeños = _context.Empenos.Where(d=>!d.IsDelete).ToList();
+
+            for (int i = 0; i < 5; i++)
+            {
+                var estado = GetEstado(i);
+                chartEmpeños.Series[0].Points.AddXY(GetEstadoName(i), _context.Empenos.Where(x => x.Estado == estado).Count());
+            }
+            chartEmpeños.Update();
+            chartVentas.Update();
+        }
+
         private async void frmTablero_Load(object sender, EventArgs e)
         {
-            DateTime desde = DateTime.Today.AddMonths(-4);
+            DateTime desde = DateTime.Today.AddDays(-8);
             DateTime hasta = DateTime.Today;
 
             var egresos = await _context.Empenos.Where(x => x.Fecha >= desde && x.Fecha <= hasta).ToListAsync();
@@ -171,6 +261,11 @@ namespace Empeño.WindowsForms.Views
                 default:
                     return Estado.Activo;
             }
+        }
+
+        private async void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            await LoadCharts();
         }
     }
 }

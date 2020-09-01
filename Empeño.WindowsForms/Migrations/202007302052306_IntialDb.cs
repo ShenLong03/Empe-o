@@ -3,7 +3,7 @@
     using System;
     using System.Data.Entity.Migrations;
     
-    public partial class InitialDb : DbMigration
+    public partial class IntialDb : DbMigration
     {
         public override void Up()
         {
@@ -16,24 +16,54 @@
                         Error = c.Int(nullable: false),
                         Valor = c.String(),
                         Mensaje = c.String(),
+                        EmpleadoId = c.Int(),
+                        Usuario = c.String(),
                     })
-                .PrimaryKey(t => t.BitacoraId);
+                .PrimaryKey(t => t.BitacoraId)
+                .ForeignKey("dbo.Empleadoes", t => t.EmpleadoId)
+                .Index(t => t.EmpleadoId);
             
             CreateTable(
-                "dbo.Clientes",
+                "dbo.Empleadoes",
                 c => new
                     {
-                        ClienteId = c.Int(nullable: false, identity: true),
-                        Identificacion = c.String(),
+                        EmpleadoId = c.Int(nullable: false, identity: true),
                         Nombre = c.String(),
                         Telefono = c.String(),
                         Correo = c.String(),
-                        Direccion = c.String(),
-                        Comentario = c.String(),
-                        Fecha = c.DateTime(nullable: false),
+                        Usuario = c.String(),
                         Activo = c.Boolean(nullable: false),
+                        IsDelete = c.Boolean(nullable: false),
                     })
-                .PrimaryKey(t => t.ClienteId);
+                .PrimaryKey(t => t.EmpleadoId);
+            
+            CreateTable(
+                "dbo.CierreCajas",
+                c => new
+                    {
+                        CierreCajaId = c.Int(nullable: false, identity: true),
+                        Fecha = c.DateTime(nullable: false),
+                        EmpleadoId = c.Int(nullable: false),
+                        SaldoInicial = c.Double(nullable: false),
+                        IsDelete = c.Boolean(nullable: false),
+                    })
+                .PrimaryKey(t => t.CierreCajaId)
+                .ForeignKey("dbo.Empleadoes", t => t.EmpleadoId)
+                .Index(t => t.EmpleadoId);
+            
+            CreateTable(
+                "dbo.DetalleCierreCajas",
+                c => new
+                    {
+                        DetalleCierreCajaId = c.Int(nullable: false, identity: true),
+                        Concepto = c.String(),
+                        Valor = c.Double(nullable: false),
+                        Cantidad = c.Double(nullable: false),
+                        CierreCajaId = c.Int(nullable: false),
+                    })
+                .PrimaryKey(t => t.DetalleCierreCajaId)
+                .ForeignKey("dbo.CierreCajas", t => t.CierreCajaId)
+                .Index(t => t.CierreCajaId);
             
             CreateTable(
                 "dbo.Empenoes",
@@ -56,6 +86,8 @@
                         FechaRetiroAdministrador = c.DateTime(),
                         Retirado = c.Boolean(nullable: false),
                         RetiradoAdministrador = c.Boolean(nullable: false),
+                        Prorroga = c.Boolean(nullable: false),
+                        IsDelete = c.Boolean(nullable: false),
                     })
                 .PrimaryKey(t => t.EmpenoId)
                 .ForeignKey("dbo.Clientes", t => t.ClienteId)
@@ -68,17 +100,20 @@
                 .Index(t => t.InteresId);
             
             CreateTable(
-                "dbo.Empleadoes",
+                "dbo.Clientes",
                 c => new
                     {
-                        EmpleadoId = c.Int(nullable: false, identity: true),
+                        ClienteId = c.Int(nullable: false, identity: true),
+                        Identificacion = c.String(),
                         Nombre = c.String(),
                         Telefono = c.String(),
                         Correo = c.String(),
-                        Usuario = c.String(),
+                        Direccion = c.String(),
+                        Comentario = c.String(),
+                        Fecha = c.DateTime(nullable: false),
                         Activo = c.Boolean(nullable: false),
                     })
-                .PrimaryKey(t => t.EmpleadoId);
+                .PrimaryKey(t => t.ClienteId);
             
             CreateTable(
                 "dbo.Interes",
@@ -127,14 +162,39 @@
                 .Index(t => t.EmpleadoId);
             
             CreateTable(
+                "dbo.Prorrogas",
+                c => new
+                    {
+                        ProrrogaId = c.Int(nullable: false, identity: true),
+                        Fecha = c.DateTime(nullable: false),
+                        DiasProrroga = c.Int(nullable: false),
+                        EmpenoId = c.Int(nullable: false),
+                        EmpleadoId = c.Int(nullable: false),
+                        Comentario = c.String(),
+                    })
+                .PrimaryKey(t => t.ProrrogaId)
+                .ForeignKey("dbo.Empenoes", t => t.EmpenoId)
+                .ForeignKey("dbo.Empleadoes", t => t.EmpleadoId)
+                .Index(t => t.EmpenoId)
+                .Index(t => t.EmpleadoId);
+            
+            CreateTable(
                 "dbo.Configuracions",
                 c => new
                     {
                         ConfiguracionId = c.Int(nullable: false, identity: true),
+                        Compañia = c.String(),
                         Identificacion = c.String(),
                         Nombre = c.String(),
                         Telefono = c.String(),
+                        Direccion = c.String(),
                         Meses = c.Int(nullable: false),
+                        EmailNotification = c.String(),
+                        Email = c.String(),
+                        Password = c.String(),
+                        SMTP = c.String(),
+                        Puerto = c.Int(nullable: false),
+                        SSL = c.Boolean(nullable: false),
                     })
                 .PrimaryKey(t => t.ConfiguracionId);
             
@@ -144,8 +204,11 @@
                     {
                         PerfilId = c.Int(nullable: false, identity: true),
                         Nombre = c.String(),
+                        Perfil_PerfilId = c.Int(),
                     })
-                .PrimaryKey(t => t.PerfilId);
+                .PrimaryKey(t => t.PerfilId)
+                .ForeignKey("dbo.Perfils", t => t.Perfil_PerfilId)
+                .Index(t => t.Perfil_PerfilId);
             
             CreateTable(
                 "dbo.Users",
@@ -167,6 +230,9 @@
         public override void Down()
         {
             DropForeignKey("dbo.Users", "PerfilId", "dbo.Perfils");
+            DropForeignKey("dbo.Perfils", "Perfil_PerfilId", "dbo.Perfils");
+            DropForeignKey("dbo.Prorrogas", "EmpleadoId", "dbo.Empleadoes");
+            DropForeignKey("dbo.Prorrogas", "EmpenoId", "dbo.Empenoes");
             DropForeignKey("dbo.Pagoes", "EmpleadoId", "dbo.Empleadoes");
             DropForeignKey("dbo.Pagoes", "EmpenoId", "dbo.Empenoes");
             DropForeignKey("dbo.Intereses", "EmpenoId", "dbo.Empenoes");
@@ -174,7 +240,13 @@
             DropForeignKey("dbo.Empenoes", "EmpleadoId", "dbo.Empleadoes");
             DropForeignKey("dbo.Empenoes", "EditorId", "dbo.Empleadoes");
             DropForeignKey("dbo.Empenoes", "ClienteId", "dbo.Clientes");
+            DropForeignKey("dbo.CierreCajas", "EmpleadoId", "dbo.Empleadoes");
+            DropForeignKey("dbo.DetalleCierreCajas", "CierreCajaId", "dbo.CierreCajas");
+            DropForeignKey("dbo.Bitacoras", "EmpleadoId", "dbo.Empleadoes");
             DropIndex("dbo.Users", new[] { "PerfilId" });
+            DropIndex("dbo.Perfils", new[] { "Perfil_PerfilId" });
+            DropIndex("dbo.Prorrogas", new[] { "EmpleadoId" });
+            DropIndex("dbo.Prorrogas", new[] { "EmpenoId" });
             DropIndex("dbo.Pagoes", new[] { "EmpleadoId" });
             DropIndex("dbo.Pagoes", new[] { "EmpenoId" });
             DropIndex("dbo.Intereses", new[] { "EmpenoId" });
@@ -182,15 +254,21 @@
             DropIndex("dbo.Empenoes", new[] { "EditorId" });
             DropIndex("dbo.Empenoes", new[] { "EmpleadoId" });
             DropIndex("dbo.Empenoes", new[] { "ClienteId" });
+            DropIndex("dbo.DetalleCierreCajas", new[] { "CierreCajaId" });
+            DropIndex("dbo.CierreCajas", new[] { "EmpleadoId" });
+            DropIndex("dbo.Bitacoras", new[] { "EmpleadoId" });
             DropTable("dbo.Users");
             DropTable("dbo.Perfils");
             DropTable("dbo.Configuracions");
+            DropTable("dbo.Prorrogas");
             DropTable("dbo.Pagoes");
             DropTable("dbo.Intereses");
             DropTable("dbo.Interes");
-            DropTable("dbo.Empleadoes");
-            DropTable("dbo.Empenoes");
             DropTable("dbo.Clientes");
+            DropTable("dbo.Empenoes");
+            DropTable("dbo.DetalleCierreCajas");
+            DropTable("dbo.CierreCajas");
+            DropTable("dbo.Empleadoes");
             DropTable("dbo.Bitacoras");
         }
     }

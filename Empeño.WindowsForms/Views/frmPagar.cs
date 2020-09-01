@@ -142,7 +142,7 @@ namespace Empeño.WindowsForms.Views
 
             if (montoMinimo!=0)
             {
-                if (double.Parse(txtPagaInteres.Text) <= montoMinimo && (double.Parse(txtPagaMonto.Text) == double.Parse(txtMontoAPagar.Text)))
+                if (double.Parse(txtPagaInteres.Text) != double.Parse(txtInteresAPagar.Text) && double.Parse(txtPagaInteres.Text) <= montoMinimo && (double.Parse(txtPagaMonto.Text) == double.Parse(txtMontoAPagar.Text)))
                 {
                     MessageBox.Show("Debe cumplir con un pago minimo mayor a " + montoMinimo.ToString("N2") + " cólon", "Información");
                     return;
@@ -181,7 +181,8 @@ namespace Empeño.WindowsForms.Views
                 });
                 List<Intereses> intereses = new List<Intereses>();
                 var sobrante = pago.Monto;
-                foreach (var item in _context.Intereses.Where(i=>i.EmpenoId==pago.EmpenoId && i.Pagado<i.Monto).ToList())
+                var listInteres = await _context.Intereses.Where(i => i.EmpenoId == pago.EmpenoId && i.Pagado < i.Monto).ToListAsync();
+                foreach (var item in listInteres)
                 {
                     if ((item.Monto-item.Pagado)>sobrante)
                     {
@@ -206,7 +207,6 @@ namespace Empeño.WindowsForms.Views
                         _context.Entry(item).State = EntityState.Modified;
                     }
                 }
-                await _context.SaveChangesAsync();
                 await funciones.SaveBitacora(new ValorBitacora
                 {
                     Valor = JsonConvert.SerializeObject(intereses),
@@ -322,7 +322,7 @@ namespace Empeño.WindowsForms.Views
             cexcel.Cells[6, 1].value = configuracion.Nombre;
             cexcel.Cells[7, 1].value = "Cédula: " + configuracion.Identificacion;
             cexcel.Cells[9, 2].value = usuario.Nombre;
-            cexcel.Cells[10, 2].value = Program.Usuario.Usuario;
+            cexcel.Cells[10, 2].value = usuario.Usuario;
             cexcel.Cells[14, 2].value = empeno.Cliente.Identificacion;
             cexcel.Cells[15, 1].value = empeno.Cliente.Nombre;
             cexcel.Cells[16, 2].value = empeno.Cliente.Fecha;
@@ -341,7 +341,7 @@ namespace Empeño.WindowsForms.Views
             cexcel.Cells[25, 3].value = txtAdeudaMonto.Text;
             cexcel.Cells[27, 3].value = txtPagaMonto.Text;
             cexcel.Cells[29, 3].value = empeno.FechaVencimiento.ToString("dd/MM/yyyy");
-            cexcel.Cells[31, 3].value = "Pendiente";
+            cexcel.Cells[31, 3].value = empeno.Estado.ToString();
             cexcel.ActiveWindow.SelectedSheets.PrintOut();
             System.Threading.Thread.Sleep(300);
             cexcel.ActiveWorkbook.Close(false);
@@ -408,7 +408,7 @@ namespace Empeño.WindowsForms.Views
 
             var empleado = _context.Empleados.Find(Program.EmpleadoId);
             cexcel.Cells[9, 2].value = empleado.Nombre;
-            cexcel.Cells[10, 2].value = Program.Usuario.Usuario;
+            cexcel.Cells[10, 2].value = empleado.Usuario;
             cexcel.Cells[14, 2].value = empeno.Cliente.Identificacion;
             cexcel.Cells[15, 1].value = empeno.Cliente.Nombre;
             cexcel.Cells[16, 2].value = empeno.Cliente.Fecha;
@@ -416,32 +416,32 @@ namespace Empeño.WindowsForms.Views
 
             if (empeno.EsOro)
             {
-                cexcel.Cells[18, 1].value = "ORO : " + empeno.Descripcion;
+                cexcel.Cells[19, 1].value = "ORO : " + empeno.Descripcion;
             }
             else
             {
-                cexcel.Cells[18, 1].value = empeno.Descripcion;
+                cexcel.Cells[19, 1].value = empeno.Descripcion;
             }
 
             var index = 0;
             foreach (var item in intereses)
             {
-                cexcel.Cells[25+index, 1].value = item.FechaVencimiento.ToString("dd/MM/yyyy");
-                cexcel.Cells[25+index, 3].value = item.Pagado.ToString("N2");
+                cexcel.Cells[26+index, 1].value = item.FechaVencimiento.ToString("dd/MM/yyyy");
+                cexcel.Cells[26+index, 3].value = item.Pagado.ToString("N2");
 
                 Microsoft.Office.Interop.Excel.Worksheet ws = cexcel.ActiveSheet as Microsoft.Office.Interop.Excel.Worksheet;
 
-                Range line = (Range)cexcel.Rows[26+ index];
+                Range line = (Range)cexcel.Rows[27+ index];
                 line.Insert();
                 ++index;
-                ws.get_Range("A" + (25 + index), "B" + (25 + index)).Merge();
-                ws.get_Range("C" + (25 + index), "D" + (25 + index)).Merge();
+                ws.get_Range("A" + (26 + index), "B" + (26 + index)).Merge();
+                ws.get_Range("C" + (26 + index), "D" + (26 + index)).Merge();
                 
             }
                         
-            cexcel.Cells[27 + index, 3].value =txtInteresAPagar.Text;
-            cexcel.Cells[29 + index, 3].value = empeno.FechaVencimiento.ToString("dd/MM/yyyy");
-            cexcel.Cells[31 + index, 3].value = empeno.Estado.ToString();
+            cexcel.Cells[28 + index, 3].value =txtInteresAPagar.Text;
+            cexcel.Cells[30 + index, 3].value = empeno.FechaVencimiento.ToString("dd/MM/yyyy");
+            cexcel.Cells[32 + index, 3].value = empeno.Estado.ToString();
            
             cexcel.ActiveWindow.SelectedSheets.PrintOut();
             System.Threading.Thread.Sleep(300);

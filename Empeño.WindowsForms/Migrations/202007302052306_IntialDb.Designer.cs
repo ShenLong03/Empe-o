@@ -7,13 +7,13 @@ namespace Empeño.WindowsForms.Migrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.4.4")]
-    public sealed partial class newChangeEmail : IMigrationMetadata
+    public sealed partial class IntialDb : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(newChangeEmail));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(IntialDb));
         
         string IMigrationMetadata.Id
         {
-            get { return "202007271733520_newChangeEmail"; }
+            get { return "202007302052306_IntialDb"; }
         }
         
         string IMigrationMetadata.Source

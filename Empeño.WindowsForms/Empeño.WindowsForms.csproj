@@ -102,49 +102,13 @@
     <Compile Include="Data\EmpenoMap.cs" />
     <Compile Include="Funciones\EmailFuncion.cs" />
     <Compile Include="Funciones\Funciones.cs" />
-    <Compile Include="Migrations\202007150401233_InitialDb.cs" />
-    <Compile Include="Migrations\202007150401233_InitialDb.designer.cs">
-      <DependentUpon>202007150401233_InitialDb.cs</DependentUpon>
+    <Compile Include="Migrations\202007302052306_IntialDb.cs" />
+    <Compile Include="Migrations\202007302052306_IntialDb.designer.cs">
+      <DependentUpon>202007302052306_IntialDb.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\202007180154196_NewChanges_CierreCaja.cs" />
-    <Compile Include="Migrations\202007180154196_NewChanges_CierreCaja.designer.cs">
-      <DependentUpon>202007180154196_NewChanges_CierreCaja.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\202007221449053_UpdateNewArqueo.cs" />
-    <Compile Include="Migrations\202007221449053_UpdateNewArqueo.designer.cs">
-      <DependentUpon>202007221449053_UpdateNewArqueo.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\202007221516541_UpdateNewArqueo2.cs" />
-    <Compile Include="Migrations\202007221516541_UpdateNewArqueo2.designer.cs">
-      <DependentUpon>202007221516541_UpdateNewArqueo2.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\202007222137359_newChangeConfiguration.cs" />
-    <Compile Include="Migrations\202007222137359_newChangeConfiguration.designer.cs">
-      <DependentUpon>202007222137359_newChangeConfiguration.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\202007230112242_newChangeProfileUser.cs" />
-    <Compile Include="Migrations\202007230112242_newChangeProfileUser.designer.cs">
-      <DependentUpon>202007230112242_newChangeProfileUser.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\202007231722531_newChangesAccess.cs" />
-    <Compile Include="Migrations\202007231722531_newChangesAccess.designer.cs">
-      <DependentUpon>202007231722531_newChangesAccess.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\202007242226491_newChangeCierreCaja.cs" />
-    <Compile Include="Migrations\202007242226491_newChangeCierreCaja.designer.cs">
-      <DependentUpon>202007242226491_newChangeCierreCaja.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\202007271733520_newChangeEmail.cs" />
-    <Compile Include="Migrations\202007271733520_newChangeEmail.designer.cs">
-      <DependentUpon>202007271733520_newChangeEmail.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\202007292335396_lastChanges.cs" />
-    <Compile Include="Migrations\202007292335396_lastChanges.designer.cs">
-      <DependentUpon>202007292335396_lastChanges.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\202007301620048_addEmailItemConfiguration.cs" />
-    <Compile Include="Migrations\202007301620048_addEmailItemConfiguration.designer.cs">
-      <DependentUpon>202007301620048_addEmailItemConfiguration.cs</DependentUpon>
+    <Compile Include="Migrations\202007311724201_addIsDeleteCustomers.cs" />
+    <Compile Include="Migrations\202007311724201_addIsDeleteCustomers.designer.cs">
+      <DependentUpon>202007311724201_addIsDeleteCustomers.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Transaccion.cs" />
@@ -281,38 +245,11 @@
     <Compile Include="Views\frmTablero.Designer.cs">
       <DependentUpon>frmTablero.cs</DependentUpon>
     </Compile>
-    <EmbeddedResource Include="Migrations\202007150401233_InitialDb.resx">
-      <DependentUpon>202007150401233_InitialDb.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\202007302052306_IntialDb.resx">
+      <DependentUpon>202007302052306_IntialDb.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202007180154196_NewChanges_CierreCaja.resx">
-      <DependentUpon>202007180154196_NewChanges_CierreCaja.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202007221449053_UpdateNewArqueo.resx">
-      <DependentUpon>202007221449053_UpdateNewArqueo.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202007221516541_UpdateNewArqueo2.resx">
-      <DependentUpon>202007221516541_UpdateNewArqueo2.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202007222137359_newChangeConfiguration.resx">
-      <DependentUpon>202007222137359_newChangeConfiguration.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202007230112242_newChangeProfileUser.resx">
-      <DependentUpon>202007230112242_newChangeProfileUser.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202007231722531_newChangesAccess.resx">
-      <DependentUpon>202007231722531_newChangesAccess.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202007242226491_newChangeCierreCaja.resx">
-      <DependentUpon>202007242226491_newChangeCierreCaja.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202007271733520_newChangeEmail.resx">
-      <DependentUpon>202007271733520_newChangeEmail.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202007292335396_lastChanges.resx">
-      <DependentUpon>202007292335396_lastChanges.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202007301620048_addEmailItemConfiguration.resx">
-      <DependentUpon>202007301620048_addEmailItemConfiguration.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\202007311724201_addIsDeleteCustomers.resx">
+      <DependentUpon>202007311724201_addIsDeleteCustomers.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Reports\Empeños.rdlc" />
     <EmbeddedResource Include="Reports\frmReporteEmpeños.resx">

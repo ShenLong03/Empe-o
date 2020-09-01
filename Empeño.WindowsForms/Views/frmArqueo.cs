@@ -192,7 +192,17 @@ namespace Empeño.WindowsForms.Views
             dgvDetalles.DataSource = null;
             dgvDetalles.Rows.Clear();
             dgvDetalles.Columns.Clear();
-            dgvDetalles.Refresh();   
+            dgvDetalles.Refresh();
+
+            var totalPrincipal = empeños.Sum(l => l.Monto);
+            lblTotalPrincipal.Text = empeños.Count().ToString();
+            var totalIntereses = empeños.SelectMany(l => l.Intereses).Sum(l => l.Monto);
+            var totalGeneral = totalPrincipal + totalIntereses;
+          
+            var totalProrroga = empeños.Where(m => m.Prorrogas.Count() > 0).Sum(m => m.Monto + m.Intereses.Sum(i => i.Monto));
+            lblTotalProrroga.Text = empeños.Where(m => m.Prorrogas.Count() > 0).Count().ToString();
+            var totalActivos = empeños.Where(m => m.Estado == Estado.Activo || m.Estado == Estado.Pendiente).Sum(m => m.Monto + m.Intereses.Sum(i=>i.Monto));
+            lblTotalAlDia.Text = empeños.Where(m => m.Estado == Estado.Activo || m.Estado == Estado.Pendiente).Count().ToString();
 
             var list = empeños.Select(x => new
             {
@@ -228,6 +238,7 @@ namespace Empeño.WindowsForms.Views
                 x.Prorrogas,
                 x.Monto,
                 MontoPendiente = (x.MontoPendiente + (x.Intereses != null ? x.Intereses.Sum(i => i.Monto - i.Pagado) : 0)).ToString("N2"),
+                x.Intereses
             }).ToList();
 
             dgvDetalles.DataSource = list2.Select(x => new
@@ -244,18 +255,12 @@ namespace Empeño.WindowsForms.Views
                 x.RetiradoAdministrador,
                 x.Monto,
                 x.MontoPendiente,
-            }).ToList(); ;
-
-            var totalPrincipal = empeños.Sum(l => l.MontoPendiente);
-            var totalIntereses = empeños.SelectMany(l => l.Intereses).Sum(l => l.Monto - l.Pagado);
-            var totalGeneral = totalPrincipal + totalIntereses;
-
-            var totalPendiente = list2.Where(l => l.Estado == Estado.Pendiente).Sum(l => double.Parse(l.MontoPendiente));
-            var totalVencido = list2.Where(l => l.Estado == Estado.Vencido && l.Prorrogas.Count() == 0 && !l.RetiradoAdministrador).Sum(l => double.Parse(l.MontoPendiente));
-            var totalRetirados = list2.Where(l => l.RetiradoAdministrador || l.FechaRetiroAdministrador != null).Sum(l => double.Parse(l.MontoPendiente));
-            var totalProrroga = empeños.Where(m => m.Prorrogas.Count() > 0).Sum(m => m.MontoPendiente + m.Intereses.Sum(i => i.Monto - i.Pagado));
-            var totalActivos = empeños.Where(m => m.Estado == Estado.Activo || m.Estado == Estado.Pendiente).Sum(m => m.MontoPendiente);
-
+            }).ToList();
+            
+            var totalVencido = empeños.Where(l => l.Estado == Estado.Vencido && l.Prorrogas.Count() == 0 && !l.RetiradoAdministrador).Sum(l => l.Monto + l.Intereses.Sum(i => i.Monto));
+            lblTotalVencidos.Text = empeños.Where(l => l.Estado == Estado.Vencido && l.Prorrogas.Count() == 0 && !l.RetiradoAdministrador).Count().ToString();
+            var totalRetirados = list2.Where(l => l.RetiradoAdministrador || l.FechaRetiroAdministrador != null).Sum(l => l.Monto + l.Intereses.Sum(i => i.Monto));
+            lblTotalRetirados.Text = list2.Where(l => l.RetiradoAdministrador || l.FechaRetiroAdministrador != null).Count().ToString();
 
             ////ADD BOTONES COLUMNS
             var buttonDataGridView = new DataGridViewButtonColumn();

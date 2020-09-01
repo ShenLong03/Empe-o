@@ -214,6 +214,7 @@ namespace Empeño.WindowsForms.Views
             this.mnuReporteArqueo.Name = "mnuReporteArqueo";
             this.mnuReporteArqueo.Size = new System.Drawing.Size(1346, 740);
             this.mnuReporteArqueo.TabIndex = 2;
+            this.mnuReporteArqueo.Paint += new System.Windows.Forms.PaintEventHandler(this.mnuReporteArqueo_Paint);
             this.mnuReporteArqueo.MouseMove += new System.Windows.Forms.MouseEventHandler(this.panel_MouseMove);
             // 
             // timerOcultar

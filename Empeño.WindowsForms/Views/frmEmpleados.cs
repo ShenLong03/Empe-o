@@ -86,6 +86,12 @@ namespace Empeño.WindowsForms.Views
                 }
                 if (empleadoId == 0)
                 {
+                    if (_context.User.Where(d=>d.Codigo==txtPIN.Text).Count()>0)
+                    {
+                        MessageBox.Show("Debe seleccionar un PIN diferente", "Alerta", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        return;
+                    }
+
                     var empleado = new Empleado
                     {
                         EmpleadoId = empleadoId,

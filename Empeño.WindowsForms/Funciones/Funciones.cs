@@ -383,11 +383,44 @@ namespace Empeño.WindowsForms.Funciones
             }
         }
 
+        public async Task ReviewDuplicateEmpeños()
+        {
+            var empeños = await _context.Empenos.Where(w => (w.Estado == Estado.Activo
+              || w.Estado == Estado.Pendiente
+              || w.Estado == Estado.Vencido)).ToListAsync();
+
+            if (empeños.Count > 0)
+            {
+                foreach (var empeño in empeños)
+                {
+                   
+                    var intereses = await _context.Intereses.Where(i => i.EmpenoId == empeño.EmpenoId).ToListAsync();
+
+                    foreach (var item in intereses)
+                    {
+                        _context.Intereses.RemoveRange(_context.Intereses.Where(i => i.InteresesId!=item.InteresesId && i.EmpenoId == item.EmpenoId && i.FechaVencimiento == item.FechaVencimiento));
+                    }                    
+                }
+                await _context.SaveChangesAsync();
+            }
+        }
+
+        public async Task ReviewDuplicateEmpeños(int empeñoId)
+        {           
+            var intereses = await _context.Intereses.Where(i => i.EmpenoId == empeñoId).ToListAsync();
+
+            foreach (var item in intereses)
+            {
+                _context.Intereses.RemoveRange(_context.Intereses.Where(i => i.InteresesId != item.InteresesId && i.EmpenoId == item.EmpenoId && i.FechaVencimiento == item.FechaVencimiento));
+            }
+            await _context.SaveChangesAsync();
+        }
+
         public async Task ReviewEmpeños() 
         {
-            var empeños = _context.Empenos.Where(w => (w.Estado == Estado.Activo
+            var empeños = await _context.Empenos.Where(w => (w.Estado == Estado.Activo
               || w.Estado == Estado.Pendiente
-              || w.Estado == Estado.Vencido)).ToList();
+              || w.Estado == Estado.Vencido)).ToListAsync();
 
             if (empeños.Count>0)
             {
@@ -410,22 +443,31 @@ namespace Empeño.WindowsForms.Funciones
                                 Monto = (double)empeño.MontoPendiente * ((double)empeño.Interes.Porcentaje / (double)100)
                             };
 
-                            if (empeño.Intereses.Count() > 0)
+                            if (_context.Intereses.Where(x => x.EmpenoId == empeño.EmpenoId).Count() > 0)
                             {
-                                intereses.FechaVencimiento = empeño.Intereses.OrderByDescending(x=>x.InteresesId).FirstOrDefault().FechaVencimiento.AddMonths(1);
+                                intereses.FechaVencimiento = _context.Intereses
+                                    .Where(x => x.EmpenoId == empeño.EmpenoId)
+                                    .OrderByDescending(x => x.InteresesId)
+                                    .FirstOrDefault()
+                                    .FechaVencimiento.AddMonths(1);
                             }
                             else
                             {
                                 intereses.FechaVencimiento = empeño.FechaVencimiento.AddMonths(1);
                             }
-                            if (_context.Intereses.Where(x => x.EmpenoId == empeño.EmpenoId && x.FechaVencimiento == intereses.FechaVencimiento).Count() == 0)
+                            using (DataContext temp = new DataContext())
                             {
-                                _context.Intereses.Add(intereses);
-                            }                           
-                        }
-                        await _context.SaveChangesAsync();
+                                var interesesFind = await temp.Intereses.Where(x => x.EmpenoId == empeño.EmpenoId && x.FechaVencimiento == intereses.FechaVencimiento).ToListAsync();
+                                if (interesesFind.Count() == 0)
+                                {
+                                    _context.Intereses.Add(intereses);
+                                    await _context.SaveChangesAsync();
+                                }
+                            }                            
+                        }                        
                     }
-                    if (_context.Intereses.Where(i => i.EmpenoId == empeño.EmpenoId).Count() > 0)
+                    var count = await _context.Intereses.Where(i => i.EmpenoId == empeño.EmpenoId).ToListAsync();
+                    if (count.Count() > 0)
                     {
                         var ultimoInteres = await _context.Intereses.Where(p => p.EmpenoId == empeño.EmpenoId)
                                     .OrderByDescending(o => o.InteresesId)
@@ -507,7 +549,6 @@ namespace Empeño.WindowsForms.Funciones
             {
                 bitacora.Usuario = Program.Usuario.Usuario;
                 var empleadoId = await GetEmpleadoIdByUser(Program.Usuario.Usuario);
-                var empleado = await _context.Empleados.FindAsync(empleadoId);
                 bitacora.EmpleadoId = empleadoId;
             }
 
