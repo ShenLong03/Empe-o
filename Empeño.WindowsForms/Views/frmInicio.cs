@@ -99,13 +99,13 @@
 
         private void mnuReporte_Click(object sender, EventArgs e)
         {
-            if (panelSubMenuReportes.Width <= 60)
+            if (panel1.Width <= 60)
             {
-                panelSubMenuReportes.Width = 280;
+                panel1.Width = 280;
                 mnuInicio.Text = "Inicio";
                 mnuConfiguracion.Text = "Configuración";
                 mnuEmpeños.Text = "Empeños";
-                mnuClientes.Text = "Empleados";
+                mnuClientes.Text = "Clientes";
                 mnuReporte.Text = "Caja";
                 mnuTablero.Text = "Tablero";
                 mnuLogout.Text = "Cerrar";
@@ -147,7 +147,7 @@
                 mnuInicio.Text = "Inicio";
                 mnuConfiguracion.Text = "Configuración";
                 mnuEmpeños.Text = "Empeños";
-                mnuClientes.Text = "Empleados";
+                mnuClientes.Text = "Clientes";
                 mnuReporte.Text = "Caja";
                 mnuTablero.Text = "Tablero";
                 mnuLogout.Text = "Cerrar";

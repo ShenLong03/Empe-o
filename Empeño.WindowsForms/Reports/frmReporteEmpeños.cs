@@ -51,13 +51,9 @@ namespace Empeño.WindowsForms.Reports
                 UltimoPago=x.Pagos.Max(p=>p.Fecha),
                 Vencimiento=x.FechaVencimiento,                
             });
-            ReportDataSource rpd = new ReportDataSource("EmpeñoReporte",listEmpeños);
 
-            rvEmpeños.LocalReport.ReportEmbeddedResource = "Empeño.WindowsForms.Reports.Empeños.rdlc";
-            rvEmpeños.LocalReport.DataSources.Clear();
-            rvEmpeños.LocalReport.DataSources.Add(rpd);
-
-            this.rvEmpeños.RefreshReport();
+            dgvEmpeños.DataSource = listEmpeños.ToList();
+            dgvEmpeños.Refresh();
             
             chbTodo.Checked = true;
             chbActivos.Checked = false;
@@ -123,6 +119,9 @@ namespace Empeño.WindowsForms.Reports
 
             var list = await _context.Empenos.Where(e => e.Fecha >= desde && e.Fecha <= hasta && e.IsDelete==ckbBorrados.Checked).ToListAsync();
 
+            dgvEmpeños.DataSource = null;
+            dgvEmpeños.Rows.Clear();
+            
             if (!chbTodo.Checked)
             {
                 if (!chbActivos.Checked)
@@ -160,13 +159,9 @@ namespace Empeño.WindowsForms.Reports
                 //UltimoPago = x.Pagos.Max(p => p.Fecha),
                 Vencimiento = x.FechaVencimiento,
             });
-            ReportDataSource rpd = new ReportDataSource("EmpeñoReporte", listEmpeños);
 
-            rvEmpeños.LocalReport.ReportEmbeddedResource = "Empeño.WindowsForms.Reports.Empeños.rdlc";
-            rvEmpeños.LocalReport.DataSources.Clear();
-            rvEmpeños.LocalReport.DataSources.Add(rpd);
-            rvEmpeños.Dock = DockStyle.Fill;
-            this.rvEmpeños.RefreshReport();
+            dgvEmpeños.DataSource = listEmpeños.ToList();
+            dgvEmpeños.Refresh();
         }
 
         private void label2_Click(object sender, EventArgs e)

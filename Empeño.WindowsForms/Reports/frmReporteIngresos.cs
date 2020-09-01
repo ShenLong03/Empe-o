@@ -64,15 +64,8 @@ namespace Empeño.WindowsForms.Reports
                 });
             }
 
-            ReportDataSource rpd = new ReportDataSource("IngresosEgresosReporte", list.OrderBy(f => f.Fecha));
-
-            rvIngresos.LocalReport.ReportEmbeddedResource = "Empeño.WindowsForms.Reports.IngresosEgresos.rdlc";
-            rvIngresos.LocalReport.DataSources.Clear();
-            rvIngresos.LocalReport.DataSources.Add(rpd);
-            //rvIngresosEgresos.Dock = DockStyle.Fill;
-            //rvIngresosEgresos.Width = 800;
-            //rvIngresosEgresos.Height = 600;
-            this.rvIngresos.RefreshReport();
+            dgvIngresos.DataSource = list.ToList();
+            dgvIngresos.Refresh();
             chbTodo.Checked = true;
             chbIngresos.Checked = false;
             chbEgresos.Checked = false;
@@ -192,19 +185,8 @@ namespace Empeño.WindowsForms.Reports
                 }
             }
 
-            ReportDataSource rpd = new ReportDataSource("IngresosEgresosReporte", list.OrderBy(f => f.Fecha));
-
-            rvIngresos.LocalReport.ReportEmbeddedResource = "Empeño.WindowsForms.Reports.IngresosEgresos.rdlc";
-            rvIngresos.LocalReport.DataSources.Clear();
-            rvIngresos.LocalReport.DataSources.Add(rpd);
-            //rvIngresosEgresos.Dock = DockStyle.Fill;
-            //rvIngresosEgresos.Width = 800;
-            //rvIngresosEgresos.Height = 600;
-            this.rvIngresos.RefreshReport();
-            //chbTodo.Checked = true;
-            //chbIngresos.Checked = false;
-            //chbEgresos.Checked = false;
-            this.rvIngresos.RefreshReport();
+            dgvIngresos.DataSource = list.ToList();
+            dgvIngresos.Refresh();
         } 
 
         private async void btnBuscar_Click(object sender, EventArgs e)

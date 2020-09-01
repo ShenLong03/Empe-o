@@ -29,7 +29,12 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmReporteEmpeños));
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.ckbBorrados = new System.Windows.Forms.CheckBox();
             this.panel4 = new System.Windows.Forms.Panel();
             this.label2 = new System.Windows.Forms.Label();
             this.button2 = new System.Windows.Forms.Button();
@@ -45,10 +50,10 @@
             this.lblHasta = new System.Windows.Forms.Label();
             this.lblDesde = new System.Windows.Forms.Label();
             this.panel2 = new System.Windows.Forms.Panel();
-            this.rvEmpeños = new Microsoft.Reporting.WinForms.ReportViewer();
-            this.ckbBorrados = new System.Windows.Forms.CheckBox();
+            this.dgvEmpeños = new System.Windows.Forms.DataGridView();
             this.panel1.SuspendLayout();
             this.panel2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvEmpeños)).BeginInit();
             this.SuspendLayout();
             // 
             // panel1
@@ -74,6 +79,18 @@
             this.panel1.Size = new System.Drawing.Size(1413, 202);
             this.panel1.TabIndex = 5;
             this.panel1.Paint += new System.Windows.Forms.PaintEventHandler(this.panel1_Paint);
+            // 
+            // ckbBorrados
+            // 
+            this.ckbBorrados.AutoSize = true;
+            this.ckbBorrados.Font = new System.Drawing.Font("Century Gothic", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.ckbBorrados.ForeColor = System.Drawing.Color.Maroon;
+            this.ckbBorrados.Location = new System.Drawing.Point(807, 58);
+            this.ckbBorrados.Name = "ckbBorrados";
+            this.ckbBorrados.Size = new System.Drawing.Size(319, 23);
+            this.ckbBorrados.TabIndex = 31;
+            this.ckbBorrados.Text = "Borrados, Cancelados o Elminados";
+            this.ckbBorrados.UseVisualStyleBackColor = true;
             // 
             // panel4
             // 
@@ -251,33 +268,65 @@
             // 
             // panel2
             // 
-            this.panel2.Controls.Add(this.rvEmpeños);
+            this.panel2.Controls.Add(this.dgvEmpeños);
             this.panel2.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel2.Location = new System.Drawing.Point(0, 202);
             this.panel2.Name = "panel2";
             this.panel2.Size = new System.Drawing.Size(1413, 702);
             this.panel2.TabIndex = 6;
             // 
-            // rvEmpeños
+            // dgvEmpeños
             // 
-            this.rvEmpeños.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.rvEmpeños.Location = new System.Drawing.Point(0, 0);
-            this.rvEmpeños.Name = "rvEmpeños";
-            this.rvEmpeños.ServerReport.BearerToken = null;
-            this.rvEmpeños.Size = new System.Drawing.Size(1413, 702);
-            this.rvEmpeños.TabIndex = 5;
-            // 
-            // ckbBorrados
-            // 
-            this.ckbBorrados.AutoSize = true;
-            this.ckbBorrados.Font = new System.Drawing.Font("Century Gothic", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.ckbBorrados.ForeColor = System.Drawing.Color.Maroon;
-            this.ckbBorrados.Location = new System.Drawing.Point(807, 58);
-            this.ckbBorrados.Name = "ckbBorrados";
-            this.ckbBorrados.Size = new System.Drawing.Size(319, 23);
-            this.ckbBorrados.TabIndex = 31;
-            this.ckbBorrados.Text = "Borrados, Cancelados o Elminados";
-            this.ckbBorrados.UseVisualStyleBackColor = true;
+            this.dgvEmpeños.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+            this.dgvEmpeños.BackgroundColor = System.Drawing.Color.WhiteSmoke;
+            this.dgvEmpeños.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.dgvEmpeños.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.RaisedHorizontal;
+            this.dgvEmpeños.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.None;
+            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(17)))), ((int)(((byte)(2)))), ((int)(((byte)(115)))));
+            dataGridViewCellStyle1.Font = new System.Drawing.Font("Century Gothic", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle1.ForeColor = System.Drawing.Color.White;
+            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(17)))), ((int)(((byte)(2)))), ((int)(((byte)(115)))));
+            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.Color.White;
+            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgvEmpeños.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
+            this.dgvEmpeños.ColumnHeadersHeight = 60;
+            this.dgvEmpeños.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
+            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle2.Font = new System.Drawing.Font("Century Gothic", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(196)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
+            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgvEmpeños.DefaultCellStyle = dataGridViewCellStyle2;
+            this.dgvEmpeños.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.dgvEmpeños.EnableHeadersVisualStyles = false;
+            this.dgvEmpeños.GridColor = System.Drawing.SystemColors.Control;
+            this.dgvEmpeños.Location = new System.Drawing.Point(0, 0);
+            this.dgvEmpeños.Margin = new System.Windows.Forms.Padding(4);
+            this.dgvEmpeños.Name = "dgvEmpeños";
+            this.dgvEmpeños.RowHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.None;
+            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle3.BackColor = System.Drawing.Color.White;
+            dataGridViewCellStyle3.Font = new System.Drawing.Font("Century Gothic", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle3.ForeColor = System.Drawing.Color.Black;
+            dataGridViewCellStyle3.SelectionBackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle3.SelectionForeColor = System.Drawing.Color.Black;
+            dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgvEmpeños.RowHeadersDefaultCellStyle = dataGridViewCellStyle3;
+            this.dgvEmpeños.RowHeadersVisible = false;
+            this.dgvEmpeños.RowHeadersWidth = 51;
+            dataGridViewCellStyle4.BackColor = System.Drawing.Color.White;
+            dataGridViewCellStyle4.Font = new System.Drawing.Font("Century Gothic", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle4.ForeColor = System.Drawing.Color.Black;
+            this.dgvEmpeños.RowsDefaultCellStyle = dataGridViewCellStyle4;
+            this.dgvEmpeños.RowTemplate.DefaultCellStyle.BackColor = System.Drawing.Color.White;
+            this.dgvEmpeños.RowTemplate.DividerHeight = 1;
+            this.dgvEmpeños.RowTemplate.Height = 45;
+            this.dgvEmpeños.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.dgvEmpeños.Size = new System.Drawing.Size(1413, 702);
+            this.dgvEmpeños.TabIndex = 22;
             // 
             // frmReporteEmpeños
             // 
@@ -295,6 +344,7 @@
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
             this.panel2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.dgvEmpeños)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -310,7 +360,6 @@
         private System.Windows.Forms.Label lblHasta;
         private System.Windows.Forms.Label lblDesde;
         private System.Windows.Forms.Panel panel2;
-        private Microsoft.Reporting.WinForms.ReportViewer rvEmpeños;
         private System.Windows.Forms.CheckBox chbPerdidos;
         private System.Windows.Forms.CheckBox chbRetirados;
         private System.Windows.Forms.CheckBox chbVencidos;
@@ -319,5 +368,6 @@
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Panel panel4;
         private System.Windows.Forms.CheckBox ckbBorrados;
+        private System.Windows.Forms.DataGridView dgvEmpeños;
     }
 }
