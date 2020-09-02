@@ -48,16 +48,7 @@
             hideSubMenu();
             btnRestore.Visible = false;
             btnMaximize.Visible = true;
-            timer1.Start();
-            try
-            {
-                //await funciones.ReviewDuplicateEmpeños();
-                //funciones.ReviewEmpeños();
-            }
-            catch (Exception ex)
-            {
-
-            }
+            timer1.Start();            
         }
 
         #region Menu

@@ -50,7 +50,6 @@ namespace Empeño.WindowsForms.Views
 
         private async void btnAcceder_Click(object sender, EventArgs e)
         {
-
             Acceder();
         }
 
@@ -62,8 +61,8 @@ namespace Empeño.WindowsForms.Views
             {
                 this.Hide();
                 Program.Usuario = usuario;
-                //frmBienvenida bienvenida = new frmBienvenida();
-                //bienvenida.ShowDialog();
+                frmBienvenida bienvenida = new frmBienvenida();
+                bienvenida.ShowDialog();
                 frmInicio inicio = new frmInicio();
                 inicio.Show();
             }

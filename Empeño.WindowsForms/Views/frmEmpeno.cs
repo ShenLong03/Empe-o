@@ -796,144 +796,151 @@ namespace Empeño.WindowsForms.Views
 
         public async Task BuscarEmpeño()
         {
-            var _context = new DataContext();
-            if (dgvEmpeños.SelectedRows.Count > 0)
+            try
             {
-                int empeñoId = int.Parse(dgvEmpeños.SelectedRows[0].Cells[0].Value.ToString());
-                var empeño = await _context.Empenos.FindAsync(dgvEmpeños.SelectedRows[0].Cells[0].Value);
-                await funciones.ReviewDuplicateEmpeños(empeño.EmpenoId);
-                if (empeño != null)
+                var _context = new DataContext();
+                if (dgvEmpeños.SelectedRows.Count > 0)
                 {
-                    int cantidadMeses = ((int)(DateTime.Today - empeño.Fecha).TotalDays / 30);
-                    double sobrante = (DateTime.Today - empeño.Fecha).TotalDays % 30;
-                    cantidadMeses += sobrante > 1 ? 1 : 0;
-                    int cantidadIntereses = empeño.Intereses.Count();
-
-                    if (cantidadMeses > cantidadIntereses)
+                    int empeñoId = int.Parse(dgvEmpeños.SelectedRows[0].Cells[0].Value.ToString());
+                    var empeño = await _context.Empenos.FindAsync(dgvEmpeños.SelectedRows[0].Cells[0].Value);
+                    await funciones.ReviewDuplicateEmpeños(empeño.EmpenoId);
+                    if (empeño != null)
                     {
-                        var numeroIntereses = cantidadMeses - cantidadIntereses;
-                        for (int i = 0; i < numeroIntereses; i++)
-                        {
-                            var intereses = new Intereses
-                            {
-                                EmpenoId = empeñoId,
-                                FechaCreacion = DateTime.Now,
-                                Monto = (double)empeño.MontoPendiente * ((double)empeño.Interes.Porcentaje / (double)100)
-                            };
+                        int cantidadMeses = ((int)(DateTime.Today - empeño.Fecha).TotalDays / 30);
+                        double sobrante = (DateTime.Today - empeño.Fecha).TotalDays % 30;
+                        cantidadMeses += sobrante > 1 ? 1 : 0;
+                        int cantidadIntereses = empeño.Intereses.Count();
 
-                            if (_context.Intereses.Where(x=>x.EmpenoId==empeñoId).Count() > 0)
+                        if (cantidadMeses > cantidadIntereses)
+                        {
+                            var numeroIntereses = cantidadMeses - cantidadIntereses;
+                            for (int i = 0; i < numeroIntereses; i++)
                             {
-                                intereses.FechaVencimiento = _context.Intereses
-                                    .Where(x => x.EmpenoId == empeñoId)
-                                    .OrderByDescending(x => x.InteresesId)
-                                    .FirstOrDefault()
-                                    .FechaVencimiento.AddMonths(1);
+                                var intereses = new Intereses
+                                {
+                                    EmpenoId = empeñoId,
+                                    FechaCreacion = DateTime.Now,
+                                    Monto = (double)empeño.MontoPendiente * ((double)empeño.Interes.Porcentaje / (double)100)
+                                };
+
+                                if (_context.Intereses.Where(x => x.EmpenoId == empeñoId).Count() > 0)
+                                {
+                                    intereses.FechaVencimiento = _context.Intereses
+                                        .Where(x => x.EmpenoId == empeñoId)
+                                        .OrderByDescending(x => x.InteresesId)
+                                        .FirstOrDefault()
+                                        .FechaVencimiento.AddMonths(1);
+                                }
+                                else
+                                {
+                                    intereses.FechaVencimiento = empeño.FechaVencimiento.AddMonths(1);
+                                }
+                                using (DataContext temp = new DataContext())
+                                {
+                                    var interesesFind = await temp.Intereses.Where(x => x.EmpenoId == empeño.EmpenoId && x.FechaVencimiento == intereses.FechaVencimiento).ToListAsync();
+                                    if (interesesFind.Count() == 0)
+                                    {
+                                        _context.Intereses.Add(intereses);
+                                        await _context.SaveChangesAsync();
+                                    }
+                                }
+                            }
+                            await funciones.SaveBitacora(new ValorBitacora
+                            {
+                                Valor = JsonConvert.SerializeObject(_context.Intereses.Where(x => x.EmpenoId == empeño.EmpenoId).ToList()),
+                                Modulo = "Intereses",
+                                Accion = "Crear"
+                            });
+                        }
+                        if (_context.Intereses.Where(i => i.EmpenoId == empeño.EmpenoId).Count() > 0)
+                        {
+                            var ultimoInteres = await _context.Intereses.Where(p => p.EmpenoId == empeño.EmpenoId)
+                                        .OrderByDescending(o => o.InteresesId)
+                                        .FirstOrDefaultAsync();
+                            if (ultimoInteres != null)
+                            {
+                                if (ultimoInteres.FechaVencimiento < DateTime.Today && ultimoInteres.Monto > ultimoInteres.Pagado)
+                                {
+                                    empeño.Estado = Estado.Pendiente;
+                                    _context.Entry(empeño).State = EntityState.Modified;
+                                    await _context.SaveChangesAsync();
+                                    await funciones.SaveBitacora(new ValorBitacora
+                                    {
+                                        Valor = JsonConvert.SerializeObject(empeño),
+                                        Modulo = "Empeños",
+                                        Accion = "Editar"
+                                    });
+                                }
+                            }
+
+                        }
+                        else if (_context.Intereses.Where(i => i.EmpenoId == empeño.EmpenoId && i.Monto > i.Pagado && i.FechaVencimiento < DateTime.Today).Count() > 0)
+                        {
+                            empeño.Estado = Estado.Pendiente;
+                            _context.Entry(empeño).State = EntityState.Modified;
+                            await _context.SaveChangesAsync();
+                            await funciones.SaveBitacora(new ValorBitacora
+                            {
+                                Valor = JsonConvert.SerializeObject(empeño),
+                                Modulo = "Empeños",
+                                Accion = "Editar"
+                            });
+                        }
+                        if (empeño.FechaVencimiento < DateTime.Today)
+                        {
+                            if (empeño.Retirado || empeño.FechaRetiro != null)
+                            {
+                                empeño.Estado = Estado.Retirada;
+                            }
+                            else if (empeño.RetiradoAdministrador || empeño.FechaRetiroAdministrador != null)
+                            {
+                                empeño.Estado = Estado.Perdido;
                             }
                             else
                             {
-                                intereses.FechaVencimiento = empeño.FechaVencimiento.AddMonths(1);
+                                empeño.Estado = Estado.Vencido;
                             }
-                            using (DataContext temp= new DataContext())
-                            {
-                                var interesesFind = await temp.Intereses.Where(x => x.EmpenoId == empeño.EmpenoId && x.FechaVencimiento == intereses.FechaVencimiento).ToListAsync();
-                                if (interesesFind.Count() == 0)
-                                {
-                                    _context.Intereses.Add(intereses);
-                                    await _context.SaveChangesAsync();
-                                } 
-                            }
-                        }                       
-                        await funciones.SaveBitacora(new ValorBitacora
-                        {
-                            Valor = JsonConvert.SerializeObject(_context.Intereses.Where(x => x.EmpenoId == empeño.EmpenoId).ToList()),
-                            Modulo = "Intereses",
-                            Accion = "Crear"
-                        });
-                    }
-                    if (_context.Intereses.Where(i => i.EmpenoId == empeño.EmpenoId).Count() > 0)
-                    {
-                        var ultimoInteres = await _context.Intereses.Where(p => p.EmpenoId == empeño.EmpenoId)
-                                    .OrderByDescending(o => o.InteresesId)
-                                    .FirstOrDefaultAsync();
-                        if (ultimoInteres != null)
-                        {
-                            if (ultimoInteres.FechaVencimiento < DateTime.Today && ultimoInteres.Monto > ultimoInteres.Pagado)
-                            {
-                                empeño.Estado = Estado.Pendiente;
-                                _context.Entry(empeño).State = EntityState.Modified;
-                                await _context.SaveChangesAsync();
-                                await funciones.SaveBitacora(new ValorBitacora
-                                {
-                                    Valor = JsonConvert.SerializeObject(empeño),
-                                    Modulo = "Empeños",
-                                    Accion = "Editar"
-                                });
-                            }
-                        }
 
-                    }
-                    else if (_context.Intereses.Where(i => i.EmpenoId == empeño.EmpenoId && i.Monto>i.Pagado && i.FechaVencimiento<DateTime.Today).Count() > 0)
-                    {
-                        empeño.Estado = Estado.Pendiente;
-                        _context.Entry(empeño).State = EntityState.Modified;
-                        await _context.SaveChangesAsync();
-                        await funciones.SaveBitacora(new ValorBitacora
-                        {
-                            Valor = JsonConvert.SerializeObject(empeño),
-                            Modulo = "Empeños",
-                            Accion = "Editar"
-                        });
-                    }
-                    if (empeño.FechaVencimiento < DateTime.Today)
-                    {
-                        if (empeño.Retirado || empeño.FechaRetiro != null)
-                        {
-                            empeño.Estado = Estado.Retirada;
+                            await _context.SaveChangesAsync();
+                            await funciones.SaveBitacora(new ValorBitacora
+                            {
+                                Valor = JsonConvert.SerializeObject(empeño),
+                                Modulo = "Empeños",
+                                Accion = "Editar"
+                            });
                         }
-                        else if (empeño.RetiradoAdministrador || empeño.FechaRetiroAdministrador != null)
+                        empeñoId = empeño.EmpenoId;
+                        lblNumeroEmpeño.Text = empeñoId.ToString();
+                        txtIdentificacion.Text = empeño.Cliente.Identificacion;
+                        txtNombre.Text = empeño.Cliente.Nombre;
+                        txtDescripcion.Text = empeño.Descripcion;
+                        txtComentario.Text = empeño.Comentario;
+                        cbInteres.DataSource = await _context.Interes.ToListAsync();
+                        cbInteres.Text = empeño.Interes.Nombre;
+                        txtMonto.Text = empeño.Monto.ToString();
+                        Realizado.Text = empeño.Empleado.Usuario;
+                        chbEsOro.Checked = empeño.EsOro;
+                        Realizado.Text = empeño.Empleado.Usuario;
+                        lblVence.Text = empeño.FechaVencimiento.ToString("dd/MM/yyyy");
+                        ChangeState(lblEstado, empeño.Estado);
+                        Fecha.Text = empeño.Fecha.ToString("dd/MM/yyyy");
+
+                        funciones.ShowLabels(panelFormulario);
+                        if (empeño.FechaRetiro != null || empeño.Retirado || empeño.FechaRetiroAdministrador != null || empeño.RetiradoAdministrador || empeño.Estado == Estado.Retirada)
                         {
-                            empeño.Estado = Estado.Perdido;
+                            funciones.BlockTextBox(panelFormulario, false);
                         }
                         else
                         {
-                            empeño.Estado = Estado.Vencido;
+                            funciones.BlockTextBox(panelFormulario, true);
+                            funciones.EditTextColor(panelFormulario);
                         }
-
-                        await _context.SaveChangesAsync();
-                        await funciones.SaveBitacora(new ValorBitacora
-                        {
-                            Valor = JsonConvert.SerializeObject(empeño),
-                            Modulo = "Empeños",
-                            Accion = "Editar"
-                        });
-                    }
-                    empeñoId = empeño.EmpenoId;
-                    lblNumeroEmpeño.Text = empeñoId.ToString();
-                    txtIdentificacion.Text = empeño.Cliente.Identificacion;
-                    txtNombre.Text = empeño.Cliente.Nombre;
-                    txtDescripcion.Text = empeño.Descripcion;
-                    txtComentario.Text = empeño.Comentario;
-                    cbInteres.DataSource = await _context.Interes.ToListAsync();
-                    cbInteres.Text = empeño.Interes.Nombre;
-                    txtMonto.Text = empeño.Monto.ToString();
-                    Realizado.Text = empeño.Empleado.Usuario;
-                    chbEsOro.Checked = empeño.EsOro;
-                    Realizado.Text = empeño.Empleado.Usuario;
-                    lblVence.Text = empeño.FechaVencimiento.ToString("dd/MM/yyyy");
-                    ChangeState(lblEstado, empeño.Estado);
-                    Fecha.Text = empeño.Fecha.ToString("dd/MM/yyyy");
-
-                    funciones.ShowLabels(panelFormulario);
-                    if (empeño.FechaRetiro != null || empeño.Retirado || empeño.FechaRetiroAdministrador != null || empeño.RetiradoAdministrador || empeño.Estado == Estado.Retirada)
-                    {
-                        funciones.BlockTextBox(panelFormulario, false);
-                    }
-                    else
-                    {
-                        funciones.BlockTextBox(panelFormulario, true);
-                        funciones.EditTextColor(panelFormulario);
                     }
                 }
+            }
+            catch (Exception)
+            {
+
             }
         }
 
@@ -1137,9 +1144,16 @@ namespace Empeño.WindowsForms.Views
 
         private async void dgvEmpeños_DoubleClick(object sender, EventArgs e)
         {
-            await BuscarEmpeño();
-            //await funciones.ReviewDuplicateEmpeños(int.Parse(dgvEmpeños.SelectedRows[0].Cells[0].Value.ToString()));
-            await CargarPagos();
+            try
+            {
+                await BuscarEmpeño();
+                //await funciones.ReviewDuplicateEmpeños(int.Parse(dgvEmpeños.SelectedRows[0].Cells[0].Value.ToString()));
+                await CargarPagos();
+            }
+            catch (Exception)
+            {
+
+            }
         }
 
         private void btnCancelar_Click(object sender, EventArgs e)
@@ -1330,79 +1344,93 @@ namespace Empeño.WindowsForms.Views
 
         private async void btnHoy_Click(object sender, EventArgs e)
         {
-            CleanForm();
-
-
-            var listEmpeños = await _context.Empenos.Where(x => !x.IsDelete && !x.RetiradoAdministrador && (x.Retirado == false && x.FechaRetiro == null
-             && !x.RetiradoAdministrador && x.FechaRetiroAdministrador == null)
-             && (x.Estado == Estado.Pendiente || x.Estado == Estado.Vencido
-             || (x.Intereses.Where(i => i.FechaVencimiento == DateTime.Today).Count() > 0))).Select(x => new
-             {
-                Id = x.EmpenoId,
-                x.Descripcion,
-                Empleado = x.Empleado.Nombre,
-                Es_Oro = x.EsOro,
-                x.Estado,
-                Fecha = SqlFunctions.DateName("day", x.Fecha) + "/" + SqlFunctions.DateName("month", x.Fecha) + "/" + SqlFunctions.DateName("year", x.Fecha),
-                Vence = SqlFunctions.DateName("day", x.FechaVencimiento) + "/" + SqlFunctions.DateName("month", x.FechaVencimiento) + "/" + SqlFunctions.DateName("year", x.FechaVencimiento),
-                Interes = x.Interes.Porcentaje + "%",
-                Monto = x.Monto,
-                Pendiente = x.MontoPendiente
-            }).ToListAsync();
-
-            dgvEmpeños.DataSource = listEmpeños.AsEnumerable().Select(x => new
+            try
             {
-                x.Id,
-                x.Descripcion,
-                x.Empleado,
-                x.Es_Oro,
-                x.Estado,
-                x.Fecha,
-                x.Vence,
-                x.Interes,
-                Monto = x.Monto.ToString("N2"),
-                Pendiente = x.Pendiente.ToString("N2")
-            }).ToList();
-          
-            lblCatidadEmpeños.Text = dgvEmpeños.Rows.Count.ToString();
+                CleanForm();
+
+
+                var listEmpeños = await _context.Empenos.Where(x => !x.IsDelete && !x.RetiradoAdministrador && (x.Retirado == false && x.FechaRetiro == null
+                 && !x.RetiradoAdministrador && x.FechaRetiroAdministrador == null)
+                 && (x.Estado == Estado.Pendiente || x.Estado == Estado.Vencido
+                 || (x.Intereses.Where(i => i.FechaVencimiento == DateTime.Today).Count() > 0))).Select(x => new
+                 {
+                     Id = x.EmpenoId,
+                     x.Descripcion,
+                     Empleado = x.Empleado.Nombre,
+                     Es_Oro = x.EsOro,
+                     x.Estado,
+                     Fecha = SqlFunctions.DateName("day", x.Fecha) + "/" + SqlFunctions.DateName("month", x.Fecha) + "/" + SqlFunctions.DateName("year", x.Fecha),
+                     Vence = SqlFunctions.DateName("day", x.FechaVencimiento) + "/" + SqlFunctions.DateName("month", x.FechaVencimiento) + "/" + SqlFunctions.DateName("year", x.FechaVencimiento),
+                     Interes = x.Interes.Porcentaje + "%",
+                     Monto = x.Monto,
+                     Pendiente = x.MontoPendiente
+                 }).ToListAsync();
+
+                dgvEmpeños.DataSource = listEmpeños.AsEnumerable().Select(x => new
+                {
+                    x.Id,
+                    x.Descripcion,
+                    x.Empleado,
+                    x.Es_Oro,
+                    x.Estado,
+                    x.Fecha,
+                    x.Vence,
+                    x.Interes,
+                    Monto = x.Monto.ToString("N2"),
+                    Pendiente = x.Pendiente.ToString("N2")
+                }).ToList();
+
+                lblCatidadEmpeños.Text = dgvEmpeños.Rows.Count.ToString();
+            }
+            catch (Exception)
+            {
+
+            }
         }
 
         private async void btnPendientes_Click(object sender, EventArgs e)
         {
-            CleanForm();
-            var listEmpeños = await _context.Empenos.Where(x => !x.IsDelete && !x.RetiradoAdministrador && (x.Retirado == false && x.FechaRetiro == null
-             && !x.RetiradoAdministrador && x.FechaRetiroAdministrador == null)
-             && (x.Estado == Estado.Pendiente || x.Estado == Estado.Vencido
-             || (x.Intereses.Where(i => i.FechaVencimiento == DateTime.Today).Count() > 0))).Select(x => new
-             {
-                 Id = x.EmpenoId,
-                 x.Descripcion,
-                 Empleado = x.Empleado.Nombre,
-                 Es_Oro = x.EsOro,
-                 x.Estado,
-                 Fecha = SqlFunctions.DateName("day", x.Fecha) + "/" + SqlFunctions.DateName("month", x.Fecha) + "/" + SqlFunctions.DateName("year", x.Fecha),
-                 Vence = SqlFunctions.DateName("day", x.FechaVencimiento) + "/" + SqlFunctions.DateName("month", x.FechaVencimiento) + "/" + SqlFunctions.DateName("year", x.FechaVencimiento),
-                 Interes = x.Interes.Porcentaje + "%",
-                 Monto = x.Monto,
-                 Pendiente = x.MontoPendiente
-             }).ToListAsync();
-
-            dgvEmpeños.DataSource = listEmpeños.AsEnumerable().Select(x => new
+            try
             {
-                x.Id,
-                x.Descripcion,
-                x.Empleado,
-                x.Es_Oro,
-                x.Estado,
-                x.Fecha,
-                x.Vence,
-                x.Interes,
-                Monto = x.Monto.ToString("N2"),
-                Pendiente = x.Pendiente.ToString("N2")
-            }).ToList();
+                CleanForm();
+                var listEmpeños = await _context.Empenos.Where(x => !x.IsDelete && !x.RetiradoAdministrador && (x.Retirado == false && x.FechaRetiro == null
+                 && !x.RetiradoAdministrador && x.FechaRetiroAdministrador == null)
+                 && (x.Estado == Estado.Pendiente || x.Estado == Estado.Vencido
+                 || (x.Intereses.Where(i => i.FechaVencimiento == DateTime.Today).Count() > 0))).Select(x => new
+                 {
+                     Id = x.EmpenoId,
+                     x.Descripcion,
+                     Empleado = x.Empleado.Nombre,
+                     Es_Oro = x.EsOro,
+                     x.Estado,
+                     Fecha = SqlFunctions.DateName("day", x.Fecha) + "/" + SqlFunctions.DateName("month", x.Fecha) + "/" + SqlFunctions.DateName("year", x.Fecha),
+                     Vence = SqlFunctions.DateName("day", x.FechaVencimiento) + "/" + SqlFunctions.DateName("month", x.FechaVencimiento) + "/" + SqlFunctions.DateName("year", x.FechaVencimiento),
+                     Interes = x.Interes.Porcentaje + "%",
+                     Monto = x.Monto,
+                     Pendiente = x.MontoPendiente
+                 }).ToListAsync();
 
-            dgvEmpeños.ClearSelection();
-            lblCatidadEmpeños.Text = dgvEmpeños.Rows.Count.ToString();
+                dgvEmpeños.DataSource = listEmpeños.AsEnumerable().Select(x => new
+                {
+                    x.Id,
+                    x.Descripcion,
+                    x.Empleado,
+                    x.Es_Oro,
+                    x.Estado,
+                    x.Fecha,
+                    x.Vence,
+                    x.Interes,
+                    Monto = x.Monto.ToString("N2"),
+                    Pendiente = x.Pendiente.ToString("N2")
+                }).ToList();
+
+                dgvEmpeños.ClearSelection();
+                lblCatidadEmpeños.Text = dgvEmpeños.Rows.Count.ToString();
+            }
+            catch (Exception)
+            {
+
+            }
         }
 
         private void dgvEmpeños_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)

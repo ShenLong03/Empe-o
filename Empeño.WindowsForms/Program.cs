@@ -33,6 +33,7 @@ namespace Empeño.WindowsForms
             Acceso = false;
             Application.EnableVisualStyles();
             PerfilSeedDb.CheckPerfiles();
+            SuperUsuarioSeedDb.CheckSuperUsuario();
             //TODO:Datos de Prueba            
             //ClienteSeedDb.CheckClientes();
             //END TODO
