@@ -154,13 +154,19 @@
         "Entry"
         {
         "MsmKey" = "8:_66A95625A0FCC913CA015B6F80396F37"
-        "OwnerKey" = "8:_2610C7B935BC40CA8BC350C99A187AC9"
+        "OwnerKey" = "8:_D0CF8E95C225B0A6644D2505A0FA77AB"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
         "MsmKey" = "8:_66A95625A0FCC913CA015B6F80396F37"
         "OwnerKey" = "8:_82C70F928A53F0CDD09431BD4F8E50BE"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_66A95625A0FCC913CA015B6F80396F37"
+        "OwnerKey" = "8:_2610C7B935BC40CA8BC350C99A187AC9"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -351,6 +357,12 @@
         }
         "Entry"
         {
+        "MsmKey" = "8:_D0CF8E95C225B0A6644D2505A0FA77AB"
+        "OwnerKey" = "8:_2610C7B935BC40CA8BC350C99A187AC9"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
         "MsmKey" = "8:_DC8714856614F4F2F76BD07DAD047658"
         "OwnerKey" = "8:_751AC12EF72D74C0ED515358A8408177"
         "MsmSig" = "8:_UNDEFINED"
@@ -478,12 +490,6 @@
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_66A95625A0FCC913CA015B6F80396F37"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_UNDEFINED"
         "OwnerKey" = "8:_94FB556318A81E3A263F08000AEE5768"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -491,6 +497,18 @@
         {
         "MsmKey" = "8:_UNDEFINED"
         "OwnerKey" = "8:_AB58D0089DCF8EAADB77C58292AA57E6"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_D0CF8E95C225B0A6644D2505A0FA77AB"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_66A95625A0FCC913CA015B6F80396F37"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -1660,6 +1678,37 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_D0CF8E95C225B0A6644D2505A0FA77AB"
+            {
+            "AssemblyRegister" = "3:1"
+            "AssemblyIsInGAC" = "11:FALSE"
+            "AssemblyAsmDisplayName" = "8:Empeños.Importe, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL"
+                "ScatterAssemblies"
+                {
+                    "_D0CF8E95C225B0A6644D2505A0FA77AB"
+                    {
+                    "Name" = "8:Empeños.Importe.exe"
+                    "Attributes" = "3:512"
+                    }
+                }
+            "SourcePath" = "8:Empeños.Importe.exe"
+            "TargetName" = "8:"
+            "Tag" = "8:"
+            "Folder" = "8:_B091F437752548AD9DBF76A36784B9B4"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:TRUE"
+            "IsolateTo" = "8:"
+            }
             "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_DC8714856614F4F2F76BD07DAD047658"
             {
             "AssemblyRegister" = "3:1"
@@ -1924,15 +1973,15 @@
         {
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:Empeño"
-        "ProductCode" = "8:{85F26D94-C443-43F8-9EDB-2092933296C0}"
-        "PackageCode" = "8:{9F709A9D-59B2-42EB-B71E-B4456F950740}"
+        "ProductCode" = "8:{89CF2E39-BA3D-4A13-BC8C-2A14804C7D93}"
+        "PackageCode" = "8:{BF48EDDE-51A8-4F61-A390-C553635617DC}"
         "UpgradeCode" = "8:{DCBBE32D-7BAD-440D-AB80-55BA2ED0D35D}"
         "AspNetVersion" = "8:4.0.30319.0"
         "RestartWWWService" = "11:FALSE"
         "RemovePreviousVersions" = "11:FALSE"
         "DetectNewerInstalledVersion" = "11:TRUE"
         "InstallAllUsers" = "11:FALSE"
-        "ProductVersion" = "8:1.0"
+        "ProductVersion" = "8:1.1"
         "Manufacturer" = "8:Amaru Systems"
         "ARPHELPTELEPHONE" = "8:"
         "ARPHELPLINK" = "8:http://amarusystems.com/"

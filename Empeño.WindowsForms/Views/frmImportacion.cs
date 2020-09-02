@@ -29,7 +29,7 @@ namespace Empeño.WindowsForms.Views
         private void frmConfiguracionGeneral_Load(object sender, EventArgs e)
         {
             lblContadorTabla.Text = "0";
-            lblContadorTablaTotal.Text = "7";
+            lblContadorTablaTotal.Text = "9";
             if (_context.Configuraciones.Count()>0)
             {
                 var configuracion = _context.Configuraciones.FirstOrDefault();
@@ -111,7 +111,8 @@ namespace Empeño.WindowsForms.Views
                 
                 lblContadorTabla.Text = "1";
                 progressBar2.Value = 1;
-                await AddInteres();
+                //await AddInteres();
+                await ImportInteres();
                 lblContadorTabla.Text = "2";
                 progressBar2.Value = 2;
                 await ImportEmpleados();
@@ -138,10 +139,12 @@ namespace Empeño.WindowsForms.Views
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message.ToString(), "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Error: "
+                     + ((ex.InnerException != null)
+                     ? ex.InnerException.Message.ToString()
+                     : ex.Message.ToString()));
             }
         }
-
 
         public async Task AddInteres()
         {
@@ -207,7 +210,10 @@ namespace Empeño.WindowsForms.Views
             }
             catch (Exception ex)
             {
-                MessageBox.Show("error");
+                MessageBox.Show("Error: "
+                     + ((ex.InnerException != null)
+                     ? ex.InnerException.Message.ToString()
+                     : ex.Message.ToString()));
             }
         }
 
@@ -247,7 +253,10 @@ namespace Empeño.WindowsForms.Views
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Hubo un error en la importacion del interes", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Error: "
+                     + ((ex.InnerException != null)
+                     ? ex.InnerException.Message.ToString()
+                     : ex.Message.ToString()));
             }
         }
 
@@ -286,10 +295,12 @@ namespace Empeño.WindowsForms.Views
                     await context.SaveChangesAsync();
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-
-                throw;
+                MessageBox.Show("Error: "
+                     + ((ex.InnerException != null)
+                     ? ex.InnerException.Message.ToString()
+                     : ex.Message.ToString()));
             }
         }
 
@@ -327,10 +338,13 @@ namespace Empeño.WindowsForms.Views
                     await context.SaveChangesAsync();
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
 
-                throw;
+                MessageBox.Show("Error: "
+                     + ((ex.InnerException != null)
+                     ? ex.InnerException.Message.ToString()
+                     : ex.Message.ToString()));
             }
         }
 
@@ -371,10 +385,13 @@ namespace Empeño.WindowsForms.Views
                     await context.SaveChangesAsync();
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
 
-                throw;
+                MessageBox.Show("Error: "
+                     + ((ex.InnerException != null)
+                     ? ex.InnerException.Message.ToString()
+                     : ex.Message.ToString()));
             }
         }
 
@@ -398,7 +415,7 @@ namespace Empeño.WindowsForms.Views
                     {
                         count++;
                         var cliente = await GetCustomerID(item.Cedula_Cliente);
-
+                        var interes = await GetInteresID((double)item.Porcentaje.Porcentaje1);
                         newList.Add(new Empeño.CommonEF.Entities.Empeno
                         {
                             EmpenoId = (int)item.Numero_Empeño,
@@ -412,7 +429,7 @@ namespace Empeño.WindowsForms.Views
                             FechaRetiro = item.fretiro,
                             FechaRetiroAdministrador = null,
                             FechaVencimiento = item.Fecha_Vencimiento,
-                            InteresId = item.Id_Porcentaje,
+                            InteresId = interes.InteresId,
                             IsDelete = false,
                             Monto = item.Monto_Empeño,
                             MontoPendiente = item.Saldo_Pendiente,
@@ -437,11 +454,36 @@ namespace Empeño.WindowsForms.Views
                     await context.SaveChangesAsync();
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
+            {
+                 MessageBox.Show("Error: " 
+                     + ((ex.InnerException != null)
+                     ? ex.InnerException.Message.ToString()
+                     : ex.Message.ToString()));                    
+            }
+        }
+
+        private async Task<Empeño.CommonEF.Entities.Interes> GetInteresID(double porcentaje)
+        {
+            try
+            {
+                using (DataContext context = new DataContext())
+                {
+                    if (context.Interes.Where(x => x.Porcentaje == porcentaje).Any())
+                    {
+                        return await context.Interes.Where(x => x.Porcentaje == porcentaje).FirstOrDefaultAsync();
+                    }
+                }
+            }
+            catch (Exception ex)
             {
 
-                throw;
+                MessageBox.Show("Error: "
+                     + ((ex.InnerException != null)
+                     ? ex.InnerException.Message.ToString()
+                     : ex.Message.ToString()));
             }
+            return null;
         }
 
         public async Task ImportIntereses()
@@ -480,10 +522,13 @@ namespace Empeño.WindowsForms.Views
                     await context.SaveChangesAsync();
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
 
-                throw;
+                MessageBox.Show("Error: "
+                     + ((ex.InnerException != null)
+                     ? ex.InnerException.Message.ToString()
+                     : ex.Message.ToString()));
             }
         }
 
@@ -494,10 +539,10 @@ namespace Empeño.WindowsForms.Views
                 await AbonosPrincipal();
                 await PagoIntereses();
             }
-            catch (Exception)
+            catch (Exception ex)
             {
 
-                throw;
+                MessageBox.Show("Error: " + ex.Message.ToString());
             }
         }
 
@@ -538,10 +583,13 @@ namespace Empeño.WindowsForms.Views
                     await context.SaveChangesAsync();
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
 
-                throw;
+                MessageBox.Show("Error: "
+                     + ((ex.InnerException != null)
+                     ? ex.InnerException.Message.ToString()
+                     : ex.Message.ToString()));
             }
         }
 
@@ -583,10 +631,13 @@ namespace Empeño.WindowsForms.Views
                     await context.SaveChangesAsync();
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
 
-                throw;
+                MessageBox.Show("Error: "
+                     + ((ex.InnerException != null)
+                     ? ex.InnerException.Message.ToString()
+                     : ex.Message.ToString()));
             }
         }
 
@@ -602,8 +653,13 @@ namespace Empeño.WindowsForms.Views
                     }
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+
+                MessageBox.Show("Error: "
+                     + ((ex.InnerException != null)
+                     ? ex.InnerException.Message.ToString()
+                     : ex.Message.ToString()));
             }
             return null;
         }     
