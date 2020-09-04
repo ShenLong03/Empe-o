@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Text;
@@ -18,8 +19,10 @@ namespace Empeño.CommonEF.Entities
 
         public bool IsDelete { get; set; } = false;
 
+        [JsonIgnore]
         public virtual ICollection<DetalleCierreCaja> Detalles { get; set; }
 
+        [JsonIgnore]
         public virtual Empleado Empleado { get; set; }
     }
 }

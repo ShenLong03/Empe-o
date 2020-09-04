@@ -1,6 +1,7 @@
 ﻿namespace Empeño.CommonEF.Entities
 {
     using Enum;
+    using Newtonsoft.Json;
     using System;
     using System.ComponentModel.DataAnnotations;
 
@@ -21,8 +22,10 @@
 
         public string Comentario { get; set; }
 
+        [JsonIgnore]
         public virtual Empeno Empeno { get; set; }
 
+        [JsonIgnore]
         public virtual Empleado Empleado { get; set; }
 
         public Pago()

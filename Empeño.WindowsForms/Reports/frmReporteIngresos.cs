@@ -71,6 +71,20 @@ namespace Empeño.WindowsForms.Reports
             chbEgresos.Checked = false;
             dtDesde.Value = month;
             dtHasta.Value = DateTime.Today;
+
+            list = list.OrderBy(l => l.Fecha).ToList();
+            var minDate = list.Min(l => l.Fecha);
+            var maxDate = list.Max(l => l.Fecha);
+
+            while (minDate < maxDate)
+            {
+                chartVentas.Series[0].Points.AddXY(minDate.ToString("dd/MM"), list.Where(l => l.Fecha == minDate).Sum(i => i.Ingresos));
+                chartVentas.Series[1].Points.AddXY(minDate.ToString("dd/MM"), list.Where(l => l.Fecha == minDate).Sum(i => i.Egresos));
+                minDate = minDate.AddDays(1);
+            }
+
+            txtMonto.Text = list.Sum(l => l.Ingresos).Value.ToString("N2");
+            txtPendiente.Text = list.Sum(l => l.Egresos).Value.ToString("N2");
         }
 
 
@@ -187,6 +201,20 @@ namespace Empeño.WindowsForms.Reports
 
             dgvIngresos.DataSource = list.ToList();
             dgvIngresos.Refresh();
+            list = list.OrderBy(l => l.Fecha).ToList();
+            var minDate = list.Min(l => l.Fecha);
+            var maxDate = list.Max(l => l.Fecha);
+
+            while (minDate < maxDate)
+            {
+                chartVentas.Series[0].Points.AddXY(minDate.ToString("dd/MM"), list.Where(l => l.Fecha == minDate).Sum(i => i.Ingresos));
+                chartVentas.Series[1].Points.AddXY(minDate.ToString("dd/MM"), list.Where(l => l.Fecha == minDate).Sum(i => i.Egresos));
+                minDate = minDate.AddDays(1);
+            }
+
+            txtMonto.Text = list.Sum(l => l.Ingresos).Value.ToString("N2");
+            txtPendiente.Text = list.Sum(l => l.Egresos).Value.ToString("N2");
+
         } 
 
         private async void btnBuscar_Click(object sender, EventArgs e)

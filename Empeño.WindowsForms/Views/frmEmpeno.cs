@@ -38,17 +38,6 @@ namespace Empeño.WindowsForms.Views
             empenosInicial.Add(new Empeno());
         }
 
-        private void tableLayoutPrincipal_Paint(object sender, PaintEventArgs e)
-        {
-
-        }
-
-        private void panel2_Paint(object sender, PaintEventArgs e)
-        {
-
-        }
-
-
 
         private void tableLayoutPanel1_Paint(object sender, PaintEventArgs e)
         {
@@ -404,7 +393,7 @@ namespace Empeño.WindowsForms.Views
                 });
 
                 lblNumeroEmpeño.Text = empeño.EmpenoId.ToString();
-                ChangeState(lblEstado, Estado.Activo);
+                ChangeState(lblEstado, Estado.Activo, empeño);
 
                 dgvPagos.DataSource = _context.Intereses.Where(i => i.EmpenoId == empeño.EmpenoId).Select(x => new
                 {
@@ -457,7 +446,7 @@ namespace Empeño.WindowsForms.Views
                     Accion = "Crear"
                 });
                 lblNumeroEmpeño.Text = empeño.EmpenoId.ToString();
-                ChangeState(lblEstado, Estado.Activo);
+                ChangeState(lblEstado, Estado.Activo, empeño);
                 empeñoId = empeño.EmpenoId;
                 var intereses = new Intereses
                 {
@@ -922,7 +911,7 @@ namespace Empeño.WindowsForms.Views
                         chbEsOro.Checked = empeño.EsOro;
                         Realizado.Text = empeño.Empleado.Usuario;
                         lblVence.Text = empeño.FechaVencimiento.ToString("dd/MM/yyyy");
-                        ChangeState(lblEstado, empeño.Estado);
+                        ChangeState(lblEstado, empeño.Estado, empeño);
                         Fecha.Text = empeño.Fecha.ToString("dd/MM/yyyy");
 
                         funciones.ShowLabels(panelFormulario);
@@ -947,6 +936,61 @@ namespace Empeño.WindowsForms.Views
         public void ChangeState(Label label, Estado estado)
         {
             label.Visible = false;
+            switch (estado)
+            {
+                case Estado.Activo:
+                    label.Text = "Activo";
+                    label.BackColor = Color.Blue;
+                    label.ForeColor = Color.White;
+                    break;
+                case Estado.Pendiente:
+                    label.Text = "Pendiente";
+                    label.BackColor = Color.OrangeRed;
+                    label.ForeColor = Color.White;
+                    break;
+                case Estado.Vencido:
+                    label.Text = "Vencido";
+                    label.BackColor = Color.Red;
+                    label.ForeColor = Color.White;
+                    break;
+                case Estado.Cancelada:
+                    label.Text = "Pendiente";
+                    label.BackColor = Color.Yellow;
+                    label.ForeColor = Color.Black;
+                    break;
+                case Estado.Retirada:
+                    label.Text = "Retirada";
+                    label.BackColor = Color.ForestGreen;
+                    label.ForeColor = Color.White;
+                    break;
+                default:
+                    label.Text = "Activo";
+                    label.BackColor = Color.Blue;
+                    label.ForeColor = Color.White;
+                    break;
+            }
+            label.Visible = true;
+        }
+
+        public void ChangeState(Label label, Estado estado, Empeno empeño)
+        {
+            label.Visible = false;
+            if (empeño.IsDelete)
+            {
+                label.Text = "Eliminado";
+                label.BackColor = Color.DarkRed;
+                label.ForeColor = Color.White;
+                label.Visible = true;
+                return;
+            }
+            if (empeño.RetiradoAdministrador || empeño.FechaRetiroAdministrador!=null)
+            {
+                label.Text = "Perdido";
+                label.BackColor = Color.Purple;
+                label.ForeColor = Color.White;
+                label.Visible = true;
+                return;
+            }
             switch (estado)
             {
                 case Estado.Activo:
@@ -1098,7 +1142,7 @@ namespace Empeño.WindowsForms.Views
                     Fecha.Text = empeño.Fecha.ToString("dd/MM/yyyy");
                     lblVence.Text = empeño.FechaVencimiento.ToString("dd/MM/yyyy");
                     lblNumeroEmpeño.Text = empeño.EmpenoId.ToString();
-                    ChangeState(lblEstado, empeño.Estado);
+                    ChangeState(lblEstado, empeño.Estado, empeño);
                     funciones.ShowLabels(panelFormulario);
                     if (empeño.FechaRetiro != null || empeño.Retirado || empeño.FechaRetiroAdministrador != null || empeño.RetiradoAdministrador || empeño.Estado == Estado.Retirada)
                     {
@@ -1348,11 +1392,13 @@ namespace Empeño.WindowsForms.Views
             {
                 CleanForm();
 
-
-                var listEmpeños = await _context.Empenos.Where(x => !x.IsDelete && !x.RetiradoAdministrador && (x.Retirado == false && x.FechaRetiro == null
-                 && !x.RetiradoAdministrador && x.FechaRetiroAdministrador == null)
-                 && (x.Estado == Estado.Pendiente || x.Estado == Estado.Vencido
-                 || (x.Intereses.Where(i => i.FechaVencimiento == DateTime.Today).Count() > 0))).Select(x => new
+                var listEmpeños = await _context.Empenos.Where(x => ((x.Intereses.Where(i => i.Monto > i.Pagado && i.FechaVencimiento == DateTime.Today).Count() > 0)
+                || (x.MontoPendiente > 0 && x.FechaVencimiento == DateTime.Today)
+                )
+                && (!x.IsDelete && !x.RetiradoAdministrador && x.Retirado == false && x.FechaRetiro == null
+                && !x.RetiradoAdministrador && x.FechaRetiroAdministrador == null)
+                && (x.Estado == Estado.Pendiente || x.Estado == Estado.Vencido)
+                 ).Select(x => new
                  {
                      Id = x.EmpenoId,
                      x.Descripcion,
@@ -1393,10 +1439,11 @@ namespace Empeño.WindowsForms.Views
             try
             {
                 CleanForm();
-                var listEmpeños = await _context.Empenos.Where(x => !x.IsDelete && !x.RetiradoAdministrador && (x.Retirado == false && x.FechaRetiro == null
+                var listEmpeños = await _context.Empenos.Where(x => ((x.Intereses.Where(i => i.Monto > i.Pagado).Count() > 0) || x.MontoPendiente > 0)
+                && (!x.IsDelete && !x.RetiradoAdministrador && x.Retirado == false && x.FechaRetiro == null
                  && !x.RetiradoAdministrador && x.FechaRetiroAdministrador == null)
-                 && (x.Estado == Estado.Pendiente || x.Estado == Estado.Vencido
-                 || (x.Intereses.Where(i => i.FechaVencimiento == DateTime.Today).Count() > 0))).Select(x => new
+                 && (x.Estado == Estado.Pendiente || x.Estado == Estado.Vencido)
+                 ).Select(x => new
                  {
                      Id = x.EmpenoId,
                      x.Descripcion,

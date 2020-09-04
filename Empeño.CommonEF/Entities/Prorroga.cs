@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Text;
@@ -22,8 +23,10 @@ namespace Empeño.CommonEF.Entities
         [DataType(DataType.MultilineText)]
         public string Comentario { get; set; }
 
+        [JsonIgnore]
         public virtual Empeno Empeno { get; set; }
 
+        [JsonIgnore]
         public virtual Empleado Empleado { get; set; }
     }
 }
