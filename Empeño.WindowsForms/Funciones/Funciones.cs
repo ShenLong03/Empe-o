@@ -668,7 +668,7 @@ namespace Empeño.WindowsForms.Funciones
                                 {
                                     empeño.Estado = Estado.Vencido;
                                 }
-
+                                _context.Entry(empeño).State = EntityState.Modified;
                                 await _context.SaveChangesAsync();
                             }
                         }

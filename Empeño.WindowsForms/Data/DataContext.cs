@@ -48,5 +48,7 @@ namespace Empeño.WindowsForms.Data
         public DbSet<DetalleCierreCaja> DetalleCierreCajas { get; set; }
 
         public DbSet<Prorroga> Prorrogas { get; set; }
+
+        public DbSet<Vencimientos> Vencimientos { get; set; }
     }
 }

@@ -105,11 +105,11 @@ namespace Empeño.WindowsForms.Views
             this.WindowState = FormWindowState.Minimized;
         }
 
-        private void txtContrasena_KeyUp(object sender, KeyEventArgs e)
+        private async void txtContrasena_KeyUp(object sender, KeyEventArgs e)
         {
             if (e.KeyCode==Keys.Enter)
             {
-                Acceder();
+                await Acceder();
             }
         }
 

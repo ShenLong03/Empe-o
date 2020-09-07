@@ -103,6 +103,11 @@ namespace Empeño.WindowsForms.Views
             this.btnPagar = new FontAwesome.Sharp.IconButton();
             this.btnGuardarEmpeño = new FontAwesome.Sharp.IconButton();
             this.panelFormulario = new System.Windows.Forms.Panel();
+            this.subMenuEstado = new System.Windows.Forms.Panel();
+            this.btnEstadoRetirado = new System.Windows.Forms.Button();
+            this.btnEstadoCancelado = new System.Windows.Forms.Button();
+            this.btnEstadoVencido = new System.Windows.Forms.Button();
+            this.btnEstadoVigente = new System.Windows.Forms.Button();
             this.btnReimprimirPago = new FontAwesome.Sharp.IconButton();
             this.Fecha = new System.Windows.Forms.TextBox();
             this.btnIntereses = new FontAwesome.Sharp.IconButton();
@@ -171,6 +176,7 @@ namespace Empeño.WindowsForms.Views
             this.tableLayoutPanel6.SuspendLayout();
             this.panel13.SuspendLayout();
             this.panelFormulario.SuspendLayout();
+            this.subMenuEstado.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvPagos)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox8)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox7)).BeginInit();
@@ -310,7 +316,7 @@ namespace Empeño.WindowsForms.Views
             this.dgvClientes.EnableHeadersVisualStyles = false;
             this.dgvClientes.GridColor = System.Drawing.SystemColors.Control;
             this.dgvClientes.Location = new System.Drawing.Point(0, 0);
-            this.dgvClientes.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.dgvClientes.Margin = new System.Windows.Forms.Padding(4);
             this.dgvClientes.Name = "dgvClientes";
             this.dgvClientes.RowHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.None;
             dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
@@ -637,7 +643,7 @@ namespace Empeño.WindowsForms.Views
             this.dgvEmpeños.EnableHeadersVisualStyles = false;
             this.dgvEmpeños.GridColor = System.Drawing.SystemColors.Control;
             this.dgvEmpeños.Location = new System.Drawing.Point(0, 50);
-            this.dgvEmpeños.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.dgvEmpeños.Margin = new System.Windows.Forms.Padding(4);
             this.dgvEmpeños.Name = "dgvEmpeños";
             this.dgvEmpeños.RowHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.None;
             dataGridViewCellStyle7.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
@@ -983,11 +989,12 @@ namespace Empeño.WindowsForms.Views
             this.lblEstado.Location = new System.Drawing.Point(215, 5);
             this.lblEstado.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.lblEstado.Name = "lblEstado";
-            this.lblEstado.Padding = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.lblEstado.Padding = new System.Windows.Forms.Padding(4);
             this.lblEstado.Size = new System.Drawing.Size(70, 27);
             this.lblEstado.TabIndex = 5;
             this.lblEstado.Text = "Activo";
             this.lblEstado.Visible = false;
+            this.lblEstado.Click += new System.EventHandler(this.lblEstado_Click);
             // 
             // label7
             // 
@@ -1175,6 +1182,7 @@ namespace Empeño.WindowsForms.Views
             // panelFormulario
             // 
             this.panelFormulario.AutoScroll = true;
+            this.panelFormulario.Controls.Add(this.subMenuEstado);
             this.panelFormulario.Controls.Add(this.btnReimprimirPago);
             this.panelFormulario.Controls.Add(this.Fecha);
             this.panelFormulario.Controls.Add(this.btnIntereses);
@@ -1215,6 +1223,75 @@ namespace Empeño.WindowsForms.Views
             this.panelFormulario.Size = new System.Drawing.Size(504, 583);
             this.panelFormulario.TabIndex = 2;
             this.panelFormulario.Paint += new System.Windows.Forms.PaintEventHandler(this.panelFormulario_Paint);
+            // 
+            // subMenuEstado
+            // 
+            this.subMenuEstado.Anchor = System.Windows.Forms.AnchorStyles.Top;
+            this.subMenuEstado.Controls.Add(this.btnEstadoRetirado);
+            this.subMenuEstado.Controls.Add(this.btnEstadoCancelado);
+            this.subMenuEstado.Controls.Add(this.btnEstadoVencido);
+            this.subMenuEstado.Controls.Add(this.btnEstadoVigente);
+            this.subMenuEstado.Location = new System.Drawing.Point(157, 3);
+            this.subMenuEstado.Name = "subMenuEstado";
+            this.subMenuEstado.Size = new System.Drawing.Size(200, 170);
+            this.subMenuEstado.TabIndex = 51;
+            this.subMenuEstado.Visible = false;
+            // 
+            // btnEstadoRetirado
+            // 
+            this.btnEstadoRetirado.BackColor = System.Drawing.Color.WhiteSmoke;
+            this.btnEstadoRetirado.Dock = System.Windows.Forms.DockStyle.Top;
+            this.btnEstadoRetirado.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnEstadoRetirado.Font = new System.Drawing.Font("Century Gothic", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnEstadoRetirado.Location = new System.Drawing.Point(0, 126);
+            this.btnEstadoRetirado.Name = "btnEstadoRetirado";
+            this.btnEstadoRetirado.Size = new System.Drawing.Size(200, 42);
+            this.btnEstadoRetirado.TabIndex = 3;
+            this.btnEstadoRetirado.Text = "Retirado";
+            this.btnEstadoRetirado.UseVisualStyleBackColor = false;
+            this.btnEstadoRetirado.Click += new System.EventHandler(this.btnEstadoRetirado_Click);
+            // 
+            // btnEstadoCancelado
+            // 
+            this.btnEstadoCancelado.BackColor = System.Drawing.Color.WhiteSmoke;
+            this.btnEstadoCancelado.Dock = System.Windows.Forms.DockStyle.Top;
+            this.btnEstadoCancelado.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnEstadoCancelado.Font = new System.Drawing.Font("Century Gothic", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnEstadoCancelado.Location = new System.Drawing.Point(0, 84);
+            this.btnEstadoCancelado.Name = "btnEstadoCancelado";
+            this.btnEstadoCancelado.Size = new System.Drawing.Size(200, 42);
+            this.btnEstadoCancelado.TabIndex = 2;
+            this.btnEstadoCancelado.Text = "Cancelado";
+            this.btnEstadoCancelado.UseVisualStyleBackColor = false;
+            this.btnEstadoCancelado.Click += new System.EventHandler(this.btnEstadoCancelado_Click);
+            // 
+            // btnEstadoVencido
+            // 
+            this.btnEstadoVencido.BackColor = System.Drawing.Color.WhiteSmoke;
+            this.btnEstadoVencido.Dock = System.Windows.Forms.DockStyle.Top;
+            this.btnEstadoVencido.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnEstadoVencido.Font = new System.Drawing.Font("Century Gothic", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnEstadoVencido.Location = new System.Drawing.Point(0, 42);
+            this.btnEstadoVencido.Name = "btnEstadoVencido";
+            this.btnEstadoVencido.Size = new System.Drawing.Size(200, 42);
+            this.btnEstadoVencido.TabIndex = 1;
+            this.btnEstadoVencido.Text = "Vencido";
+            this.btnEstadoVencido.UseVisualStyleBackColor = false;
+            this.btnEstadoVencido.Click += new System.EventHandler(this.btnEstadoVencido_Click);
+            // 
+            // btnEstadoVigente
+            // 
+            this.btnEstadoVigente.BackColor = System.Drawing.Color.WhiteSmoke;
+            this.btnEstadoVigente.Dock = System.Windows.Forms.DockStyle.Top;
+            this.btnEstadoVigente.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnEstadoVigente.Font = new System.Drawing.Font("Century Gothic", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnEstadoVigente.Location = new System.Drawing.Point(0, 0);
+            this.btnEstadoVigente.Name = "btnEstadoVigente";
+            this.btnEstadoVigente.Size = new System.Drawing.Size(200, 42);
+            this.btnEstadoVigente.TabIndex = 0;
+            this.btnEstadoVigente.Text = "Vigente";
+            this.btnEstadoVigente.UseVisualStyleBackColor = false;
+            this.btnEstadoVigente.Click += new System.EventHandler(this.btnEstadoVigente_Click);
             // 
             // btnReimprimirPago
             // 
@@ -1414,7 +1491,7 @@ namespace Empeño.WindowsForms.Views
             this.dgvPagos.EnableHeadersVisualStyles = false;
             this.dgvPagos.GridColor = System.Drawing.SystemColors.Control;
             this.dgvPagos.Location = new System.Drawing.Point(2, 568);
-            this.dgvPagos.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.dgvPagos.Margin = new System.Windows.Forms.Padding(4);
             this.dgvPagos.Name = "dgvPagos";
             this.dgvPagos.RowHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.None;
             dataGridViewCellStyle11.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
@@ -1792,7 +1869,7 @@ namespace Empeño.WindowsForms.Views
             this.panelBuscar.Controls.Add(this.txtBuscar);
             this.panelBuscar.Dock = System.Windows.Forms.DockStyle.Top;
             this.panelBuscar.Location = new System.Drawing.Point(0, 0);
-            this.panelBuscar.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.panelBuscar.Margin = new System.Windows.Forms.Padding(4);
             this.panelBuscar.Name = "panelBuscar";
             this.panelBuscar.Padding = new System.Windows.Forms.Padding(5, 5, 25, 5);
             this.panelBuscar.Size = new System.Drawing.Size(1370, 45);
@@ -1859,7 +1936,7 @@ namespace Empeño.WindowsForms.Views
             this.Controls.Add(this.panelBuscar);
             this.Font = new System.Drawing.Font("Century Gothic", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
-            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "frmEmpeno";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Empeño";
@@ -1900,6 +1977,7 @@ namespace Empeño.WindowsForms.Views
             this.panel13.ResumeLayout(false);
             this.panelFormulario.ResumeLayout(false);
             this.panelFormulario.PerformLayout();
+            this.subMenuEstado.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dgvPagos)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox8)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox7)).EndInit();
@@ -2013,5 +2091,10 @@ namespace Empeño.WindowsForms.Views
         private FontAwesome.Sharp.IconButton btnReimprimirPago;
         private FontAwesome.Sharp.IconButton iconButton1;
         private FontAwesome.Sharp.IconButton btnPagados;
+        private Panel subMenuEstado;
+        private Button btnEstadoRetirado;
+        private Button btnEstadoCancelado;
+        private Button btnEstadoVencido;
+        private Button btnEstadoVigente;
     }
 }

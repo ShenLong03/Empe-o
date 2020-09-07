@@ -125,6 +125,10 @@
     <Compile Include="Migrations\202008241741369_NuevoCierre.designer.cs">
       <DependentUpon>202008241741369_NuevoCierre.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202009072012402_Update_1_3_7.cs" />
+    <Compile Include="Migrations\202009072012402_Update_1_3_7.designer.cs">
+      <DependentUpon>202009072012402_Update_1_3_7.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Transaccion.cs" />
     <Compile Include="Reports\frmReporteEmpeños.cs">
@@ -281,6 +285,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202008241741369_NuevoCierre.resx">
       <DependentUpon>202008241741369_NuevoCierre.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202009072012402_Update_1_3_7.resx">
+      <DependentUpon>202009072012402_Update_1_3_7.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Reports\Empeños.rdlc" />
     <EmbeddedResource Include="Reports\frmReporteEmpeños.resx">

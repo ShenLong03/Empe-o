@@ -127,26 +127,12 @@ namespace Empeño.WindowsForms.Views
             double pagoMonto = double.Parse(txtPagaMonto.Text);
             double montoPendiente = double.Parse(txtMontoAPagar.Text);
 
-            //if (montoMinimo != 0)
-            //{
-            //    if ((pagoIntereses != montoIntereses && pagoIntereses <= montoMinimo) && (pagoMonto == montoPendiente))
-            //    {
-            //        MessageBox.Show("Debe cumplir con un pago minimo mayor a " + montoMinimo.ToString("N2") + " cólon", "Información");
-            //        return;
-            //    }
-            //}
 
             if ((pagoMonto > 0 && pagoMonto < montoPendiente) && (pagoIntereses < montoIntereses))
             {
                 MessageBox.Show("Para abonar a la prenda debe pagar todos los intereses pendientes de " + montoIntereses.ToString("N2"), "Alerta", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
-
-            //if ((pagoMonto >= montoPendiente) && (pagoIntereses < montoMinimo))
-            //{
-            //    MessageBox.Show("Para retirar la prenda debe pagar un minimo de intereses de " + montoMinimo.ToString("N2"), "Alerta", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-            //    return;
-            //}
 
             if (pagoMonto > 0)
             {
@@ -185,6 +171,9 @@ namespace Empeño.WindowsForms.Views
                 }
                 else
                 {
+                    empeño.Estado = Estado.Vigente;
+                    _context.Entry(empeño).State = EntityState.Modified;
+                    await _context.SaveChangesAsync();
                     await PagaInteres(pagoIntereses, true);
                     await PrintAbono(empeño, pago);                    
                 }
@@ -253,6 +242,8 @@ namespace Empeño.WindowsForms.Views
                         _context.Entry(item).State = EntityState.Modified;
                     }
                 }
+
+                await _context.SaveChangesAsync();
                 await funciones.SaveBitacora(new ValorBitacora
                 {
                     Valor = JsonConvert.SerializeObject(intereses),
@@ -260,9 +251,16 @@ namespace Empeño.WindowsForms.Views
                     Accion = "Crear"
                 });
 
-                if (print)
+                var id = empeño.EmpenoId;
+                await funciones.ReviewEmpeño(id);
+                empeño = null;
+                using (DataContext contextTemp= new DataContext())
                 {
-                    await PrintInteres(empeño, intereses, pago);
+                    empeño = await contextTemp.Empenos.FindAsync(id);
+                    if (print)
+                    {
+                        await PrintInteres(empeño, intereses, pago);
+                    } 
                 }
             }          
         }

@@ -128,7 +128,7 @@ namespace Empeño.WindowsForms.Views
         }
 
 
-        public async Task PrintVencido(Empeno objempeño)
+        public async Task PrintVencido(Empeno objempeño, Vencimientos vencimientos)
         {
             var configuracion = await _context.Configuraciones.FirstOrDefaultAsync();
             Microsoft.Office.Interop.Excel.Application cexcel = new Microsoft.Office.Interop.Excel.Application();
@@ -139,13 +139,13 @@ namespace Empeño.WindowsForms.Views
             var empleado = await _context.Empleados.FindAsync(Program.EmpleadoId);
 
             cexcel.Visible = false;
-               
+            cexcel.Cells[7, 2].value = vencimientos.Consecutivo;
             cexcel.Cells[8, 2].value = empleado.Nombre;
             cexcel.Cells[9, 2].value = empleado.Usuario;
             cexcel.Cells[13, 2].value = objempeño.Cliente.Identificacion;
             cexcel.Cells[14, 1].value = objempeño.Cliente.Nombre;
 
-            cexcel.Cells[15, 2].value = objempeño.Fecha;
+            cexcel.Cells[15, 2].value = vencimientos.Fecha.ToString("dd/MM/yyyy");
             cexcel.Cells[16, 2].value = objempeño.EmpenoId;
 
             cexcel.Cells[18, 1].value = objempeño.Descripcion;
@@ -188,7 +188,7 @@ namespace Empeño.WindowsForms.Views
                 {
                     int empeñoId = int.Parse(dgvDetalles.SelectedRows[0].Cells[0].Value.ToString());
                     var temporal = empeños.Where(x => x.EmpenoId == empeñoId).SingleOrDefault();
-                    var empeño = _context.Empenos.Where(x => x.EmpenoId == empeñoId).SingleOrDefault();
+                    var empeño = await _context.Empenos.Where(x => x.EmpenoId == empeñoId).SingleOrDefaultAsync();
                     temporal.EditorId = await funciones.GetEmpleadoIdByUser(Program.Usuario.Usuario);
                     empeño.EditorId = await funciones.GetEmpleadoIdByUser(Program.Usuario.Usuario);
                     temporal.FechaRetiroAdministrador = DateTime.Now;
@@ -198,7 +198,32 @@ namespace Empeño.WindowsForms.Views
                     empeño.Estado = Estado.Retirado;
                     _context.Entry(empeño).State = EntityState.Modified;
                     await _context.SaveChangesAsync();
-                    await PrintVencido(empeño);
+
+                    var vencimiento = new Vencimientos();
+                    if (_context.Vencimientos.Any())
+                    {
+                        vencimiento = new Vencimientos
+                        {
+                            Consecutivo = _context.Vencimientos.Max(v => v.Consecutivo) + 1,
+                            EmpenoId = empeñoId,
+                            EmpleadoId = empeño.EditorId.Value,
+                            Fecha = DateTime.Today,
+                        };
+                    }
+                    else
+                    {
+                        vencimiento = new Vencimientos
+                        {
+                            Consecutivo = 1,
+                            EmpenoId = empeñoId,
+                            EmpleadoId = empeño.EditorId.Value,
+                            Fecha = DateTime.Today,
+                        };
+                    }                    
+
+                    _context.Vencimientos.Add(vencimiento) ;
+                    await _context.SaveChangesAsync();
+                    await PrintVencido(empeño, vencimiento);
                 }
                 else if (result == DialogResult.No)
                 {

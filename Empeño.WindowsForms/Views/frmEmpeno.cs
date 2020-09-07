@@ -579,6 +579,7 @@ namespace Empeño.WindowsForms.Views
                     txtMonto.Text = empeño.Monto.ToString("N2");
                     Realizado.Text = empleado.Usuario;
                     chbEsOro.Checked = empeño.EsOro;
+
                     if (switchPago)
                     {
                         await LoadPays();
@@ -594,6 +595,7 @@ namespace Empeño.WindowsForms.Views
                     else
                     {
                         funciones.BlockTextBox(panelFormulario, true);
+                        lblVence.Enabled = true;
                     }
 
                 }
@@ -855,6 +857,7 @@ namespace Empeño.WindowsForms.Views
                 {
                     funciones.BlockTextBox(panelFormulario, false);
                 }
+                this.empeñoId = empeñoId;
             }
             catch (Exception ex){  }
         }
@@ -894,10 +897,12 @@ namespace Empeño.WindowsForms.Views
                         || empeño.Estado == Estado.Anulado || empeño.Estado==Estado.Cancelado || empeño.Estado==Estado.Retirado)
                     {
                         funciones.BlockTextBox(panelFormulario, false);
+                        lblVence.Enabled = false;
                     }
                     else
                     {
                         funciones.BlockTextBox(panelFormulario, true);
+                        lblVence.Enabled = true;
                         funciones.EditTextColor(panelFormulario);
 
                         if (switchPago)
@@ -1559,7 +1564,7 @@ namespace Empeño.WindowsForms.Views
             cexcel.Cells[10, 2].value = empleado.Usuario;
             cexcel.Cells[14, 2].value = empeno.Cliente.Identificacion;
             cexcel.Cells[15, 1].value = empeno.Cliente.Nombre;
-            cexcel.Cells[16, 2].value = empeno.Fecha.ToString("dd/MM/yyyy");
+            cexcel.Cells[16, 2].value = DateTime.Today.ToString("dd/MM/yyyy");
             cexcel.Cells[17, 2].value = empeno.EmpenoId.ToString();
 
             if (chbEsOro.Checked)
@@ -1743,6 +1748,12 @@ namespace Empeño.WindowsForms.Views
                         else
                         {
                             empeño.MontoPendiente += monto;
+                            if (empeño.Estado==Estado.Cancelado || empeño.Retirado || empeño.FechaRetiro!=null)
+                            {
+                                empeño.Estado = Estado.Vigente;
+                                empeño.Retirado = false;
+                                empeño.FechaRetiro = null;
+                            }
                         }
                         _context.Pago.Remove(pago);
                         _contextTemp.Entry(empeño).State = EntityState.Modified;
@@ -2118,6 +2129,159 @@ namespace Empeño.WindowsForms.Views
                 chbEsOro.Checked = true;
                 txtDescripcion.Focus();
             }
+        }
+
+        private void lblEstado_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if (!subMenuEstado.Visible)
+                {
+                    var resp = MessageBox.Show("Sólo un Supervisor tiene el permiso de cambiar un estado desde este módulo" + System.Environment.NewLine
+                               + "¿Esta seguro que desea modificar el estado del empeño?", "Confirmación",
+                               MessageBoxButtons.YesNo, MessageBoxIcon.Information);
+                    if (resp == DialogResult.Yes)
+                    {
+                        if (!funciones.ValidatePIN("Editar Empeño"))
+                            return;
+
+                        subMenuEstado.Visible = true;
+                    }
+                }
+                else
+                {
+                    subMenuEstado.Visible = false;
+                }
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+
+        private async void btnEstadoVigente_Click(object sender, EventArgs e)
+        {
+            try
+            {                
+                if (empeñoId > 0)
+                {
+                    using (DataContext dataContext= new DataContext())
+                    {
+                        var empeño = await dataContext.Empenos.FindAsync(empeñoId);
+                        if (empeño!=null)
+                        {
+                            empeño.Estado = Estado.Vigente;
+                            empeño.FechaRetiro = null;
+                            empeño.Retirado = false;
+                            empeño.FechaRetiroAdministrador = null;
+                            empeño.RetiradoAdministrador = false;
+
+                            dataContext.Entry(empeño).State = EntityState.Modified;
+                            await dataContext.SaveChangesAsync();
+                            await BuscarEmpeño(empeño.EmpenoId);
+                        }
+                    }
+                }
+            }
+            catch (Exception)
+            {
+
+            }
+            subMenuEstado.Visible = false;
+        }
+
+        private async void btnEstadoVencido_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if (empeñoId > 0)
+                {
+                    using (DataContext dataContext = new DataContext())
+                    {
+                        var empeño = await dataContext.Empenos.FindAsync(empeñoId);
+                        if (empeño != null)
+                        {
+                            empeño.Estado = Estado.Vencido;
+                            empeño.FechaRetiro = null;
+                            empeño.Retirado = false;
+                            empeño.FechaRetiroAdministrador = null;
+                            empeño.RetiradoAdministrador = false;
+
+                            dataContext.Entry(empeño).State = EntityState.Modified;
+                            await dataContext.SaveChangesAsync();
+                            await BuscarEmpeño(empeño.EmpenoId);
+                        }
+                    }
+                }
+            }
+            catch (Exception)
+            {
+
+            }
+            subMenuEstado.Visible = false;
+        }
+
+        private async void btnEstadoCancelado_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if (empeñoId > 0)
+                {
+                    using (DataContext dataContext = new DataContext())
+                    {
+                        var empeño = await dataContext.Empenos.FindAsync(empeñoId);
+                        if (empeño != null)
+                        {
+                            empeño.Estado = Estado.Cancelado;
+                            empeño.FechaRetiro = DateTime.Today;
+                            empeño.Retirado = true;
+                            empeño.FechaRetiroAdministrador = null;
+                            empeño.RetiradoAdministrador = false;
+
+                            dataContext.Entry(empeño).State = EntityState.Modified;
+                            await dataContext.SaveChangesAsync();
+                            await BuscarEmpeño(empeño.EmpenoId);
+                        }
+                    }
+                }
+            }
+            catch (Exception)
+            {
+
+            }
+            subMenuEstado.Visible = false;
+        }
+
+        private async void btnEstadoRetirado_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if (empeñoId > 0)
+                {
+                    using (DataContext dataContext = new DataContext())
+                    {
+                        var empeño = await dataContext.Empenos.FindAsync(empeñoId);
+                        if (empeño != null)
+                        {
+                            empeño.Estado = Estado.Retirado;
+                            empeño.FechaRetiro = null;
+                            empeño.Retirado = false;
+                            empeño.FechaRetiroAdministrador = DateTime.Today;
+                            empeño.RetiradoAdministrador = true;
+
+                            dataContext.Entry(empeño).State = EntityState.Modified;
+                            await dataContext.SaveChangesAsync();
+                            await BuscarEmpeño(empeño.EmpenoId);
+                        }
+                    }
+                }
+            }
+            catch (Exception)
+            {
+
+            }
+            subMenuEstado.Visible = false;
         }
     }
 }
