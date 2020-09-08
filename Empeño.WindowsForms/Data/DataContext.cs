@@ -14,13 +14,14 @@ namespace Empeño.WindowsForms.Data
     {
         public DataContext() : base("DefaultConnection")
         {
-
+             Database.SetInitializer(new MigrateDatabaseToLatestVersion<DataContext, Empeño.WindowsForms.Migrations.Configuration>());
         }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             modelBuilder.Conventions.Remove<OneToManyCascadeDeleteConvention>();
             modelBuilder.Configurations.Add(new EmpenoMap());
+            base.OnModelCreating(modelBuilder);
         }
 
         public DbSet<Bitacora> Bitacoras { get; set; }

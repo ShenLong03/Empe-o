@@ -3,7 +3,6 @@ using Empeño.CommonEF.Enum;
 using Empeño.CommonEF.Models;
 using Empeño.WindowsForms.Data;
 using Empeño.WindowsForms.Funciones;
-using Empeño.WindowsForms.Migrations;
 using Microsoft.Office.Interop.Excel;
 using Newtonsoft.Json;
 using System;

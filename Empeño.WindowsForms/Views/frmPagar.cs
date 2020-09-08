@@ -21,6 +21,7 @@ namespace Empeño.WindowsForms.Views
     public partial class frmPagar : Form
     {
         public Empeno empeño = new Empeno();
+        public int empeñoId = 0;
         public DataContext _context = new DataContext();
         double montoMinimo = 0;
         Funciones.Funciones funciones = new Funciones.Funciones();
@@ -29,6 +30,7 @@ namespace Empeño.WindowsForms.Views
         {
             InitializeComponent();
             empeño = _context.Empenos.Find(id);
+            empeñoId = id;
             if (valor > 0)
                 valorInteres = valor;
         }
@@ -128,7 +130,8 @@ namespace Empeño.WindowsForms.Views
             double pagoIntereses = double.Parse(txtPagaInteres.Text);
             double pagoMonto = double.Parse(txtPagaMonto.Text);
             double montoPendiente = double.Parse(txtMontoAPagar.Text);
-
+            empeño = null;
+            var empeñoTemp = _context.Empenos.Find(empeñoId);
 
             if ((pagoMonto > 0 && pagoMonto < montoPendiente) && (pagoIntereses < montoMinimo))
             {
@@ -140,7 +143,7 @@ namespace Empeño.WindowsForms.Views
             {
                 var pago = new Pago
                 {
-                    EmpenoId = empeño.EmpenoId,
+                    EmpenoId = empeñoTemp.EmpenoId,
                     Comentario = txtComentario.Text == "Comentario" ? string.Empty : txtComentario.Text,
                     EmpleadoId = Program.EmpleadoId,
                     Fecha = DateTime.Now,
@@ -158,26 +161,26 @@ namespace Empeño.WindowsForms.Views
                     Accion = "Crear"
                 });
 
-                empeño.MontoPendiente -= pago.Monto;
+                empeñoTemp.MontoPendiente -= pago.Monto;
                 
-                if (empeño.MontoPendiente < 1)
+                if (empeñoTemp.MontoPendiente < 1)
                 {
                     await PagaInteres(pagoIntereses, false);
-                    empeño.Estado = Estado.Cancelado;
-                    empeño.Retirado = true;
-                    empeño.FechaRetiro = DateTime.Today;
+                    empeñoTemp.Estado = Estado.Cancelado;
+                    empeñoTemp.Retirado = true;
+                    empeñoTemp.FechaRetiro = DateTime.Today;
                     _context.Intereses.RemoveRange(_context.Intereses.Where(i => i.EmpenoId == empleadoId && i.Pagado == 0));
-                    _context.Entry(empeño).State = EntityState.Modified;
+                    _context.Entry(empeñoTemp).State = EntityState.Modified;
                     await _context.SaveChangesAsync();
-                    await PrintRetiro(empeño, pago);
+                    await PrintRetiro(empeñoTemp, pago);
                 }
                 else
                 {
-                    empeño.Estado = Estado.Vigente;
-                    _context.Entry(empeño).State = EntityState.Modified;
+                    empeñoTemp.Estado = Estado.Vigente;
+                    _context.Entry(empeñoTemp).State = EntityState.Modified;
                     await _context.SaveChangesAsync();
                     await PagaInteres(pagoIntereses, true);
-                    await PrintAbono(empeño, pago);                    
+                    await PrintAbono(empeñoTemp, pago);                    
                 }
             }
             else
@@ -193,6 +196,7 @@ namespace Empeño.WindowsForms.Views
 
         public async Task PagaInteres(double pagoIntereses, bool print=true)
         {
+            empeño = await _context.Empenos.FindAsync(empeñoId);
             if (pagoIntereses > 0)
             {
                 var pago = new Pago
@@ -340,7 +344,7 @@ namespace Empeño.WindowsForms.Views
             cexcel.Workbooks.Open(pathch, true, true);
 
             cexcel.Visible = false;
-            var usuario = _context.Empleados.Find(Program.EmpleadoId);
+            var usuario = await _context.Empleados.FindAsync(Program.EmpleadoId);
 
             cexcel.Visible = false;
             cexcel.Cells[3, 1].value = configuracion.Compañia;
@@ -386,7 +390,7 @@ namespace Empeño.WindowsForms.Views
             cexcel.Workbooks.Open(pathch, true, true);
 
             cexcel.Visible = false;
-            var usuario = _context.Empleados.Find(Program.EmpleadoId);
+            var usuario = await _context.Empleados.FindAsync(Program.EmpleadoId);
 
             cexcel.Visible = false;
             cexcel.Cells[3, 1].value = configuracion.Compañia;
@@ -436,7 +440,7 @@ namespace Empeño.WindowsForms.Views
             cexcel.Cells[6, 1].value = configuracion.Nombre;
             cexcel.Cells[7, 1].value = "Cédula: " + configuracion.Identificacion;
 
-            var empleado = _context.Empleados.Find(Program.EmpleadoId);
+            var empleado = await _context.Empleados.FindAsync(Program.EmpleadoId);
             cexcel.Cells[8, 2].value = pago.PagoId;
             cexcel.Cells[9, 2].value = empleado.Nombre;
             cexcel.Cells[10, 2].value = empleado.Usuario;
