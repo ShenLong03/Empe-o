@@ -406,6 +406,7 @@ namespace Empeño.WindowsForms.Views
                     var oldList = await _oldContext.Empeño.ToListAsync();
                     lblContadorTotal.Text = oldList.Count().ToString();
                     var newList = new List<Empeño.CommonEF.Entities.Empeno>();
+                    var vencidos = new List<Empeño.CommonEF.Entities.Vencimientos>();
                     progressBar1.Minimum = 0;
                     progressBar1.Maximum = oldList.Count();
                     progressBar1.Step = 1;
@@ -446,9 +447,23 @@ namespace Empeño.WindowsForms.Views
                             ? Empeño.CommonEF.Enum.Estado.Anulado
                             : Empeño.CommonEF.Enum.Estado.Pendiente
                         });
+                        if (item.Numero_Consecutivo!=null)
+                        {
+                            if (item.Numero_Consecutivo.Value > 0)
+                                vencidos.Add(new Vencimientos
+                                {
+                                    Consecutivo = item.Numero_Consecutivo.Value,
+                                    EmpenoId = (int)item.Numero_Empeño,
+                                    Fecha = item.fretiro != null ? item.fretiro.Value : DateTime.Today,
+                                    EmpleadoId = 3,
+                                });
+                        }
                         progressBar1.Value = count;
                         lblContador.Text = count.ToString();
                     }
+
+                    if (vencidos.Count()>0)
+                        context.Vencimientos.AddRange(vencidos);
 
                     context.Empenos.AddRange(newList);
                     await context.SaveChangesAsync();
