@@ -74,7 +74,8 @@ namespace Empeño.WindowsForms.Views
         {
             try
             {
-                funciones.ReviewEmpeños();
+                //Dura demasiado ejecutando, solo lo vamos a dejar al inicio
+                //funciones.ReviewEmpeños();
                 txtFecha.Value = DateTime.Today;
                 await ProcessClose();
                 lblEspere.Visible = false;
