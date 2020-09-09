@@ -9,7 +9,8 @@
     {
         public Configuration()
         {
-            AutomaticMigrationsEnabled = false;
+            AutomaticMigrationsEnabled = true;
+            ContextKey = "Empeño.WindowsForms.Data.DataContext";
         }
 
         protected override void Seed(Empeño.WindowsForms.Data.DataContext context)

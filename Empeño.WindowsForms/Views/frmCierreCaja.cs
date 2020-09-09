@@ -72,18 +72,25 @@ namespace Empeño.WindowsForms.Views
 
         private async void frmCierreCaja_Load(object sender, EventArgs e)
         {
-            txtFecha.Value = DateTime.Today;
-            await ProcessClose();
-            lblEspere.Visible = false;
+            try
+            {
+                funciones.ReviewEmpeños();
+                txtFecha.Value = DateTime.Today;
+                await ProcessClose();
+                lblEspere.Visible = false;
+            }
+            catch (Exception)
+            {
+
+            }
         }
 
 
 
         public async Task ProcessClose()
-        {
-            await funciones.ReviewEmpeños();
+        {            
             var fecha = DateTime.ParseExact(txtFecha.Text, "dd/MM/yyyy", CultureInfo.InvariantCulture);
-
+            var tomorrow = fecha.AddDays(1);
             empleadoId = await funciones.GetEmpleadoIdByUser(Program.Usuario.Usuario);
             empleadoId = empleadoId == null ? 1 : empleadoId;
             var empleado = await _context.Empleados.FindAsync(empleadoId);
@@ -95,7 +102,7 @@ namespace Empeño.WindowsForms.Views
                        || x.Estado == Estado.Pendiente || x.Estado == Estado.Vencido));
 
             double c1 = empeñosActivos.Where(x => x.Fecha < fecha
-                     && (!x.Retirado || x.FechaRetiro == fecha)).Sum(x => x.MontoPendiente);
+                     && (!x.Retirado || (x.FechaRetiroAdministrador >= fecha && x.FechaRetiroAdministrador<tomorrow))).Sum(x => x.MontoPendiente);
 
             double c2c3 = _context.Pago.Where(p => p.Fecha >= fecha && p.TipoPago == TipoPago.Principal).Any() ?
                 _context.Pago.Where(p => p.Fecha >= fecha && p.TipoPago == TipoPago.Principal).Select(x => x.Monto).Sum()
@@ -103,14 +110,10 @@ namespace Empeño.WindowsForms.Views
 
             double acumuladoInicial = c1 + c2c3;
 
-            //detalles.Add(new DetalleCierreCaja
-            //{
-            //    Concepto = "Total Acumunlado",
-            //    Valor = acumuladoInicial,
-            //});
+          
             txtAcumuladoInicial.Text = acumuladoInicial.ToString("N2");
 
-            var tomorrow = fecha.AddDays(1);
+           
             double? montoEmpeñoDia = empeñosActivos.Where(x => !x.IsDelete && x.Fecha >= fecha && x.Fecha < tomorrow).ToList().Sum(x => x.Monto);
 
             txtMonto.Text = montoEmpeñoDia != null ? montoEmpeñoDia.Value.ToString("N2") : "0.00";
@@ -137,12 +140,7 @@ namespace Empeño.WindowsForms.Views
             txtCancelados.Text = cancelados != null ? cancelados.Value.ToString("N2") : "0.00";
             txtAcumulado.Text = ((acumuladoInicial + montoEmpeñoDia) - (abonoDia + vencidos + cancelados)).Value.ToString("N2");
 
-            //detalles.Add(
-            // new DetalleCierreCaja
-            // {
-            //     Concepto = "Abonos al Principal",
-            //     Valor = abonoDia != null ? abonoDia.Value : 0
-            // });
+
 
             detalles.Add(
               new DetalleCierreCaja
@@ -150,6 +148,13 @@ namespace Empeño.WindowsForms.Views
                   Concepto = "Empeños",
                   Valor = montoEmpeñoDia != null ? montoEmpeñoDia.Value : 0
               });
+
+            detalles.Add(
+            new DetalleCierreCaja
+                {
+                    Concepto = "Monto de Abonos",
+                    Valor = abonoDia != null ? abonoDia.Value : 0
+                });
 
             detalles.Add(
                new DetalleCierreCaja
@@ -410,6 +415,7 @@ namespace Empeño.WindowsForms.Views
             cexcel.Workbooks.Open(pathch, true, true);
 
             cexcel.Visible = false;
+            cexcel.Cells[2, 1].value = $"Empeños y Venta       {configuracion.Compañia}";
             cexcel.Cells[3, 3].value = txtFecha.Value.ToShortDateString();
             cexcel.Cells[5, 3].value = txtAcumuladoInicial.Text;
             cexcel.Cells[6, 3].value = txtMonto.Text;
