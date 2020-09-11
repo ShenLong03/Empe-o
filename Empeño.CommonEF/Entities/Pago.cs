@@ -10,6 +10,8 @@
         [Key]
         public int PagoId { get; set; }
 
+        public double? Consecutivo { get; set; }
+
         public DateTime Fecha { get; set; } = DateTime.Now;
 
         public int EmpenoId { get; set; }

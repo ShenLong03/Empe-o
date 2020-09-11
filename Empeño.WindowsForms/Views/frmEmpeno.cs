@@ -386,16 +386,7 @@ namespace Empeño.WindowsForms.Views
                             Faltan = x.Vencimiento
                         }).ToList();
 
-                    dgvPagos.ClearSelection();//If you want
-
-                    int nRowIndex = dgvPagos.Rows.Count - 1;
-                    int nColumnIndex = 3;
-
-                    dgvPagos.Rows[nRowIndex].Selected = true;
-                    dgvPagos.Rows[nRowIndex].Cells[nColumnIndex].Selected = true;
-
-                    //In case if you want to scroll down as well.
-                    dgvPagos.FirstDisplayedScrollingRowIndex = nRowIndex;
+                    dgvPagos.ClearSelection();//If you want                  
                 }
                 else
                 {
@@ -511,15 +502,6 @@ namespace Empeño.WindowsForms.Views
                         }).ToList();
 
                     dgvPagos.ClearSelection();//If you want
-
-                    int nRowIndex = dgvPagos.Rows.Count - 1;
-                    int nColumnIndex = 3;
-
-                    dgvPagos.Rows[nRowIndex].Selected = true;
-                    dgvPagos.Rows[nRowIndex].Cells[nColumnIndex].Selected = true;
-
-                    //In case if you want to scroll down as well.
-                    dgvPagos.FirstDisplayedScrollingRowIndex = nRowIndex;
 
                     await Print(empeño);
                     var cliente = _context.Clientes.Find(empeño.ClienteId);
@@ -1081,16 +1063,7 @@ namespace Empeño.WindowsForms.Views
                                 Faltan = x.Vencimiento
                             }).ToList();
                         dgvPagos.DataSource = list;
-                        dgvPagos.ClearSelection();//If you want
-
-                        int nRowIndex = dgvPagos.Rows.Count - 1;
-                        int nColumnIndex = 3;
-
-                        dgvPagos.Rows[nRowIndex].Selected = true;
-                        dgvPagos.Rows[nRowIndex].Cells[nColumnIndex].Selected = true;
-
-                        //In case if you want to scroll down as well.
-                        dgvPagos.FirstDisplayedScrollingRowIndex = nRowIndex;
+                        dgvPagos.ClearSelection();//If you want                        
                     }
                 }
             }
@@ -1693,30 +1666,33 @@ namespace Empeño.WindowsForms.Views
 
         private async void iconButton3_Click(object sender, EventArgs e)
         {
-            if (!funciones.ValidatePIN("Editar Pago"))
-                return;
-
-            frmOscuro oscuro = new frmOscuro();
-            oscuro.Show();
-            int interesId = int.Parse(dgvPagos.SelectedRows[0].Cells[0].Value.ToString());
-            frmEmpeñoInteres frmEmpeñoInteres = new frmEmpeñoInteres(interesId);
-            frmEmpeñoInteres.ShowDialog();
-            try
+            if (dgvPagos.SelectedRows.Count>0)
             {
-                if (switchPago)
-                {
-                    await LoadPays();
-                }
-                else
-                {
-                    CargarPagos();
-                }
-            }
-            catch (Exception)
-            {
+                if (!funciones.ValidatePIN("Editar Pago"))
+                    return;
 
+                frmOscuro oscuro = new frmOscuro();
+                oscuro.Show();
+                int interesId = int.Parse(dgvPagos.SelectedRows[0].Cells[0].Value.ToString());
+                frmEmpeñoInteres frmEmpeñoInteres = new frmEmpeñoInteres(interesId);
+                frmEmpeñoInteres.ShowDialog();
+                try
+                {
+                    if (switchPago)
+                    {
+                        await LoadPays();
+                    }
+                    else
+                    {
+                        CargarPagos();
+                    }
+                }
+                catch (Exception)
+                {
+
+                }
+                oscuro.Close(); 
             }
-            oscuro.Close();
         }
 
         private void cbInteres_SelectedIndexChanged_1(object sender, EventArgs e)
@@ -1734,89 +1710,92 @@ namespace Empeño.WindowsForms.Views
 
         private async void iconButton4_Click(object sender, EventArgs e)
         {
-            using (DataContext _contextTemp=new DataContext())
+            if (dgvPagos.SelectedRows.Count>0)
             {
-                if (!funciones.ValidatePIN("Borrar Pago"))
-                    return;
-
-                var resp = MessageBox.Show("Esta seguro que desea elminar los datos", "Confirmar", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
-                if (resp == DialogResult.Yes)
+                using (DataContext _contextTemp = new DataContext())
                 {
-                    int interesId = int.Parse(dgvPagos.SelectedRows[0].Cells[0].Value.ToString());
-                    if (switchPago)
+                    if (!funciones.ValidatePIN("Borrar Pago"))
+                        return;
+
+                    var resp = MessageBox.Show("Esta seguro que desea elminar los datos", "Confirmar", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                    if (resp == DialogResult.Yes)
                     {
-                        var pago = await _context.Pago.FindAsync(interesId);
-                        var monto = pago.Monto;
-                        var empeño = await _contextTemp.Empenos.FindAsync(pago.EmpenoId);
-
-                        if (pago.TipoPago == TipoPago.Interes)
+                        int interesId = int.Parse(dgvPagos.SelectedRows[0].Cells[0].Value.ToString());
+                        if (switchPago)
                         {
-                            var list =  _contextTemp.Intereses.Where(i => i.PagoId == pago.PagoId).OrderByDescending(i => i.InteresesId).ToList();
+                            var pago = await _context.Pago.FindAsync(interesId);
+                            var monto = pago.Monto;
+                            var empeño = await _contextTemp.Empenos.FindAsync(pago.EmpenoId);
 
-                            foreach (var item in list)
+                            if (pago.TipoPago == TipoPago.Interes)
                             {
-                                if (monto > item.Pagado)
-                                {
-                                    monto -= item.Pagado;
-                                    item.Pagado = 0;
-                                    item.PagoId = null;
-                                    _contextTemp.Entry(item).State = EntityState.Modified;
-                                    empeño.FechaVencimiento = empeño.FechaVencimiento.AddMonths(-1);
-                                }
-                                else
-                                {
-                                    bool pagado = false;
-                                   
-                                    if (item.Monto == item.Pagado)
-                                        pagado = true;
+                                var list = _contextTemp.Intereses.Where(i => i.PagoId == pago.PagoId).OrderByDescending(i => i.InteresesId).ToList();
 
-                                    item.Pagado -= monto;
-                                    item.PagoId = null;
-                                    monto = 0;
-                                    _contextTemp.Entry(item).State = EntityState.Modified;
-
-                                    if (item.Monto > item.Pagado && pagado)
+                                foreach (var item in list)
+                                {
+                                    if (monto > item.Pagado)
                                     {
+                                        monto -= item.Pagado;
+                                        item.Pagado = 0;
+                                        item.PagoId = null;
+                                        _contextTemp.Entry(item).State = EntityState.Modified;
                                         empeño.FechaVencimiento = empeño.FechaVencimiento.AddMonths(-1);
                                     }
-                                }
-                                if (monto == 0)
-                                    break;
-                            }
+                                    else
+                                    {
+                                        bool pagado = false;
 
+                                        if (item.Monto == item.Pagado)
+                                            pagado = true;
+
+                                        item.Pagado -= monto;
+                                        item.PagoId = null;
+                                        monto = 0;
+                                        _contextTemp.Entry(item).State = EntityState.Modified;
+
+                                        if (item.Monto > item.Pagado && pagado)
+                                        {
+                                            empeño.FechaVencimiento = empeño.FechaVencimiento.AddMonths(-1);
+                                        }
+                                    }
+                                    if (monto == 0)
+                                        break;
+                                }
+
+                            }
+                            else
+                            {
+                                empeño.MontoPendiente += monto;
+                                if (empeño.Estado == Estado.Cancelado || empeño.Retirado || empeño.FechaRetiro != null)
+                                {
+                                    empeño.Estado = Estado.Vigente;
+                                    empeño.Retirado = false;
+                                    empeño.FechaRetiro = null;
+                                }
+                            }
+                            _context.Pago.Remove(pago);
+                            _contextTemp.Entry(empeño).State = EntityState.Modified;
                         }
                         else
                         {
-                            empeño.MontoPendiente += monto;
-                            if (empeño.Estado==Estado.Cancelado || empeño.Retirado || empeño.FechaRetiro!=null)
-                            {
-                                empeño.Estado = Estado.Vigente;
-                                empeño.Retirado = false;
-                                empeño.FechaRetiro = null;
-                            }
+                            var intereses = await _context.Intereses.FindAsync(interesId);
+                            _context.Intereses.Remove(intereses);
                         }
-                        _context.Pago.Remove(pago);
-                        _contextTemp.Entry(empeño).State = EntityState.Modified;
-                    }
-                    else
-                    {
-                        var intereses = await _context.Intereses.FindAsync(interesId);
-                        _context.Intereses.Remove(intereses);
-                    }
-                    
-                    await _context.SaveChangesAsync();
-                    await _contextTemp.SaveChangesAsync();
-                    MessageBox.Show("Elemento eliminado correctamente", "Información", MessageBoxButtons.OK, MessageBoxIcon.Information); 
-                }
-            }
 
-            if (switchPago)
-            {
-                await LoadPays();
-            }
-            else
-            {
-                CargarPagos();
+                        await _context.SaveChangesAsync();
+                        await _contextTemp.SaveChangesAsync();
+                        MessageBox.Show("Elemento eliminado correctamente", "Información", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    }
+                }
+
+                if (switchPago)
+                {
+                    await LoadPays();
+                }
+                else
+                {
+                    CargarPagos();
+                } 
             }
         }
 
@@ -1895,16 +1874,7 @@ namespace Empeño.WindowsForms.Views
                     Monto=x.Monto.ToString("N2")
                 }).ToList();
 
-                dgvPagos.ClearSelection();//If you want
-
-                int nRowIndex = dgvPagos.Rows.Count - 1;
-                int nColumnIndex = 3;
-
-                dgvPagos.Rows[nRowIndex].Selected = true;
-                dgvPagos.Rows[nRowIndex].Cells[nColumnIndex].Selected = true;
-
-                //In case if you want to scroll down as well.
-                dgvPagos.FirstDisplayedScrollingRowIndex = nRowIndex;
+                dgvPagos.ClearSelection();//If you want               
             }           
         }
 
@@ -1943,7 +1913,7 @@ namespace Empeño.WindowsForms.Views
             cexcel.Cells[6, 1].value = configuracion.Nombre;
             cexcel.Cells[7, 1].value = "Cédula: " + configuracion.Identificacion;
 
-            cexcel.Cells[8, 2].value = pago.PagoId;
+            cexcel.Cells[8, 2].value = pago.Consecutivo;
             cexcel.Cells[9, 2].value = usuario.Nombre;
             cexcel.Cells[10, 2].value = usuario.Usuario;
             cexcel.Cells[14, 2].value = empeno.Cliente.Identificacion;
@@ -1988,7 +1958,7 @@ namespace Empeño.WindowsForms.Views
             cexcel.Cells[5, 1].value = "Tel. " + configuracion.Telefono;
             cexcel.Cells[6, 1].value = configuracion.Nombre;
             cexcel.Cells[7, 1].value = "Cédula: " + configuracion.Identificacion;
-            cexcel.Cells[8, 2].value = pago.PagoId;
+            cexcel.Cells[8, 2].value = pago.Consecutivo;
             cexcel.Cells[9, 2].value = usuario.Nombre;
             cexcel.Cells[10, 2].value = Program.Usuario.Usuario;
             cexcel.Cells[14, 2].value = empeno.Cliente.Identificacion;
@@ -2031,7 +2001,7 @@ namespace Empeño.WindowsForms.Views
             cexcel.Cells[7, 1].value = "Cédula: " + configuracion.Identificacion;
 
             var empleado = await _context.Empleados.FindAsync(empeno.EmpleadoId);
-            cexcel.Cells[8, 2].value = pago.PagoId;
+            cexcel.Cells[8, 2].value = pago.Consecutivo;
             cexcel.Cells[9, 2].value = empleado.Nombre;
             cexcel.Cells[10, 2].value = empleado.Usuario;
             cexcel.Cells[14, 2].value = empeno.Cliente.Identificacion;
@@ -2111,7 +2081,7 @@ namespace Empeño.WindowsForms.Views
             cexcel.Cells[7, 1].value = "Cédula: " + configuracion.Identificacion;
 
             
-            cexcel.Cells[8, 2].value = pago.PagoId;
+            cexcel.Cells[8, 2].value = pago.Consecutivo;
             cexcel.Cells[9, 2].value = empleado.Nombre;
             cexcel.Cells[10, 2].value = empleado.Usuario;
             cexcel.Cells[14, 2].value = empeno.Cliente.Identificacion;
@@ -2431,6 +2401,11 @@ namespace Empeño.WindowsForms.Views
                     }
                 }
             }
+        }
+
+        private void btnVerPago_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

@@ -144,6 +144,7 @@ namespace Empeño.WindowsForms.Views
                 var pago = new Pago
                 {
                     EmpenoId = empeñoTemp.EmpenoId,
+                    Consecutivo = GetConsecutivo(),
                     Comentario = txtComentario.Text == "Comentario" ? string.Empty : txtComentario.Text,
                     EmpleadoId = Program.EmpleadoId,
                     Fecha = DateTime.Now,
@@ -193,6 +194,19 @@ namespace Empeño.WindowsForms.Views
             this.Close();
         }
 
+        private double? GetConsecutivo()
+        {
+            using (DataContext dataContext= new DataContext())
+            {
+                if (!dataContext.Pago.Any())
+                    return 1;
+
+                if (dataContext.Pago.Where(p => p.Consecutivo != null).Count() == 0)
+                    return 1;
+
+                return dataContext.Pago.Max(p => p.Consecutivo)+1;
+            }
+        }
 
         public async Task PagaInteres(double pagoIntereses, bool print=true)
         {
@@ -202,6 +216,7 @@ namespace Empeño.WindowsForms.Views
                 var pago = new Pago
                 {
                     EmpenoId = empeño.EmpenoId,
+                    Consecutivo = GetConsecutivo(),
                     Comentario = txtComentario.Text,
                     EmpleadoId = Program.EmpleadoId,
                     Fecha = DateTime.Now,
@@ -353,7 +368,7 @@ namespace Empeño.WindowsForms.Views
             cexcel.Cells[6, 1].value = configuracion.Nombre;
             cexcel.Cells[7, 1].value = "Cédula: " + configuracion.Identificacion;
 
-            cexcel.Cells[8, 2].value = pago.PagoId;
+            cexcel.Cells[8, 2].value = pago.Consecutivo;
             cexcel.Cells[9, 2].value = usuario.Nombre;
             cexcel.Cells[10, 2].value = usuario.Usuario;
             cexcel.Cells[14, 2].value = empeno.Cliente.Identificacion;
@@ -398,7 +413,7 @@ namespace Empeño.WindowsForms.Views
             cexcel.Cells[5, 1].value = "Tel. " + configuracion.Telefono;
             cexcel.Cells[6, 1].value = configuracion.Nombre;
             cexcel.Cells[7, 1].value = "Cédula: " + configuracion.Identificacion;
-            cexcel.Cells[8, 2].value = pago.PagoId;
+            cexcel.Cells[8, 2].value = pago.Consecutivo;
             cexcel.Cells[9, 2].value = usuario.Nombre;
             cexcel.Cells[10, 2].value = Program.Usuario.Usuario;
             cexcel.Cells[14, 2].value = empeno.Cliente.Identificacion;
@@ -441,7 +456,7 @@ namespace Empeño.WindowsForms.Views
             cexcel.Cells[7, 1].value = "Cédula: " + configuracion.Identificacion;
 
             var empleado = await _context.Empleados.FindAsync(Program.EmpleadoId);
-            cexcel.Cells[8, 2].value = pago.PagoId;
+            cexcel.Cells[8, 2].value = pago.Consecutivo;
             cexcel.Cells[9, 2].value = empleado.Nombre;
             cexcel.Cells[10, 2].value = empleado.Usuario;
             cexcel.Cells[14, 2].value = empeno.Cliente.Identificacion;
