@@ -97,6 +97,20 @@ namespace Empeño.WindowsForms.Views
 
         }
 
+        private double? GetConsecutivo()
+        {
+            using (DataContext dataContext = new DataContext())
+            {
+                if (!dataContext.Empenos.Any())
+                    return 1;
+
+                if (dataContext.Empenos.Count() == 0)
+                    return 1;
+
+                return dataContext.Empenos.Max(p => p.EmpenoId) + 1;
+            }
+        }
+
         public async Task Buscar()
         {
             if (txtBuscar.Text != " Buscar" && txtBuscar.Text != "")
@@ -435,6 +449,7 @@ namespace Empeño.WindowsForms.Views
 
                     var empeño = new Empeno
                     {
+                        EmpenoId=(int)GetConsecutivo(),
                         ClienteId = clienteId,
                         Descripcion = txtDescripcion.Text,
                         EmpleadoId = empleadoId == 0 ? 1 : empleadoId,
