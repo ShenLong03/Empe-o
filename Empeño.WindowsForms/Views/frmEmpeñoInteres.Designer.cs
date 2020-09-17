@@ -30,8 +30,6 @@
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmEmpeñoInteres));
             this.label1 = new System.Windows.Forms.Label();
-            this.txtInteres = new System.Windows.Forms.TextBox();
-            this.label2 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.btnCancelar = new System.Windows.Forms.Button();
             this.btnImprimir = new System.Windows.Forms.Button();
@@ -52,6 +50,8 @@
             this.label7 = new System.Windows.Forms.Label();
             this.dtFecha = new System.Windows.Forms.DateTimePicker();
             this.dtVence = new System.Windows.Forms.DateTimePicker();
+            this.cbInteres = new System.Windows.Forms.ComboBox();
+            this.label2 = new System.Windows.Forms.Label();
             this.panel7.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.btnClose)).BeginInit();
             this.SuspendLayout();
@@ -65,26 +65,6 @@
             this.label1.Size = new System.Drawing.Size(60, 19);
             this.label1.TabIndex = 0;
             this.label1.Text = "Fecha";
-            // 
-            // txtInteres
-            // 
-            this.txtInteres.BackColor = System.Drawing.Color.WhiteSmoke;
-            this.txtInteres.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.txtInteres.Font = new System.Drawing.Font("Century Gothic", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtInteres.Location = new System.Drawing.Point(35, 164);
-            this.txtInteres.Name = "txtInteres";
-            this.txtInteres.Size = new System.Drawing.Size(311, 29);
-            this.txtInteres.TabIndex = 3;
-            // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.Font = new System.Drawing.Font("Century Gothic", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label2.Location = new System.Drawing.Point(31, 141);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(82, 19);
-            this.label2.TabIndex = 2;
-            this.label2.Text = "Intereses";
             // 
             // label3
             // 
@@ -293,12 +273,40 @@
             this.dtVence.Size = new System.Drawing.Size(315, 36);
             this.dtVence.TabIndex = 19;
             // 
+            // cbInteres
+            // 
+            this.cbInteres.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.cbInteres.BackColor = System.Drawing.SystemColors.Control;
+            this.cbInteres.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.cbInteres.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F);
+            this.cbInteres.ForeColor = System.Drawing.Color.LightGray;
+            this.cbInteres.FormattingEnabled = true;
+            this.cbInteres.Location = new System.Drawing.Point(36, 154);
+            this.cbInteres.Margin = new System.Windows.Forms.Padding(2);
+            this.cbInteres.Name = "cbInteres";
+            this.cbInteres.Size = new System.Drawing.Size(309, 37);
+            this.cbInteres.TabIndex = 20;
+            this.cbInteres.Text = "Porcentaje";
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Font = new System.Drawing.Font("Century Gothic", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label2.Location = new System.Drawing.Point(31, 133);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(82, 19);
+            this.label2.TabIndex = 21;
+            this.label2.Text = "Intereses";
+            // 
             // frmEmpeñoInteres
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(120F, 120F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
             this.BackColor = System.Drawing.Color.White;
             this.ClientSize = new System.Drawing.Size(389, 568);
+            this.Controls.Add(this.label2);
+            this.Controls.Add(this.cbInteres);
             this.Controls.Add(this.dtVence);
             this.Controls.Add(this.dtFecha);
             this.Controls.Add(this.panel7);
@@ -317,8 +325,6 @@
             this.Controls.Add(this.btnCancelar);
             this.Controls.Add(this.btnImprimir);
             this.Controls.Add(this.label3);
-            this.Controls.Add(this.txtInteres);
-            this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
             this.Font = new System.Drawing.Font("Century Gothic", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
@@ -337,8 +343,6 @@
         #endregion
 
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.TextBox txtInteres;
-        private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Button btnCancelar;
         private System.Windows.Forms.Button btnImprimir;
@@ -359,5 +363,7 @@
         private FontAwesome.Sharp.IconPictureBox btnClose;
         private System.Windows.Forms.DateTimePicker dtFecha;
         private System.Windows.Forms.DateTimePicker dtVence;
+        private System.Windows.Forms.ComboBox cbInteres;
+        private System.Windows.Forms.Label label2;
     }
 }

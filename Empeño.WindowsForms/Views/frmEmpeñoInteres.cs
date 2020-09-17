@@ -32,10 +32,30 @@ namespace Empeño.WindowsForms.Views
 
         private async void btnImprimir_Click(object sender, EventArgs e)
         {
-            if (!funciones.ValidatePIN("Empeño"))
+            if (!funciones.ValidatePIN("Editar Empeño"))
                 return;
 
-            intereses.Monto = double.Parse(txtMonto.Text);
+
+            if (intereses.Empeno.InteresId != await funciones.GetInteresIdByNombre(cbInteres.Text) && Program.PerfilId != 4)
+            {
+                intereses.Empeno.InteresId = await funciones.GetInteresIdByNombre(cbInteres.Text);
+
+                if (intereses.Empeno.Intereses.Count() == 1)
+                {
+                    var interes = intereses.Empeno.Intereses.FirstOrDefault();
+                    if (interes.Pagado == 0)
+                    {
+                        var porcentaje = await _context.Interes.FindAsync(intereses.Empeno.InteresId);
+                        interes.Monto = intereses.Empeno.Monto * ((double)porcentaje.Porcentaje / (double)100);
+                        _context.Entry(interes).State = EntityState.Modified;
+                    }
+                }
+            }
+            else
+            {
+                intereses.Monto = double.Parse(txtMonto.Text);                
+            }
+
             intereses.Pagado = double.Parse(txtPagado.Text);
             intereses.FechaCreacion = dtFecha.Value;
             intereses.FechaVencimiento = dtVence.Value;
@@ -45,11 +65,16 @@ namespace Empeño.WindowsForms.Views
             this.Close();
         }
 
-        private void frmEmpeñoInteres_Load(object sender, EventArgs e)
+        private async void frmEmpeñoInteres_Load(object sender, EventArgs e)
         {
+            cbInteres.DataSource = await _context.Interes.Where(i => i.Activo).ToListAsync();
+            cbInteres.DisplayMember = "Nombre";
+            cbInteres.ValueMember = "InteresId";
+            cbInteres.Text = "Porcentaje";
+
             dtFecha.Value = intereses.FechaCreacion;
             dtVence.Value = intereses.FechaVencimiento;
-            txtInteres.Text = intereses.Empeno.Interes.Nombre;
+            cbInteres.Text = intereses.Empeno.Interes.Nombre;
             txtMonto.Text = intereses.Monto.ToString("N2");
             txtPagado.Text = intereses.Pagado.ToString("N2");
             txtTotal.Text = (intereses.Monto - intereses.Pagado).ToString("N2");

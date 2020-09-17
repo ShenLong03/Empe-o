@@ -356,7 +356,8 @@ namespace Empeño.WindowsForms.Views
                                 var interes = empeño.Intereses.FirstOrDefault();
                                 if (interes.Pagado == 0)
                                 {
-                                    interes.Monto = empeño.Monto * ((double)empeño.Interes.Porcentaje / (double)100);
+                                    var porcentaje = await _context.Interes.FindAsync(empeño.InteresId);
+                                    interes.Monto = empeño.Monto * ((double)porcentaje.Porcentaje / (double)100);
                                     _context.Entry(interes).State = EntityState.Modified;
                                 }
                             }
