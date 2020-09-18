@@ -1624,11 +1624,21 @@ namespace Empeño.WindowsForms.Views
         {
             if (dgvEmpeños.SelectedRows.Count>0)
             {
-                var empeñoId = dgvEmpeños.SelectedRows[0].Cells[0].Value;
+                using (DataContext _context= new DataContext())
+                {
+                    var empeñoId = dgvEmpeños.SelectedRows[0].Cells[0].Value;
 
-                var empeño = await _context.Empenos.FindAsync(empeñoId);
+                    var empeño = await _context.Empenos.FindAsync(empeñoId);
 
-                await Print(empeño);
+                    if (empeño.Estado == Estado.Cancelado)
+                    {
+                        await PrintRetiro(empeño);
+                    }
+                    else
+                    {
+                        await Print(empeño);
+                    }         
+                }        
             }
         }
 
@@ -1977,7 +1987,66 @@ namespace Empeño.WindowsForms.Views
             cexcel.Cells[5, 1].value = "Tel. " + configuracion.Telefono;
             cexcel.Cells[6, 1].value = configuracion.Nombre;
             cexcel.Cells[7, 1].value = "Cédula: " + configuracion.Identificacion;
-            cexcel.Cells[8, 2].value = pago.Consecutivo;
+            cexcel.Cells[8, 2].value = pago.Consecutivo + ", " + _context.Pago
+                .Where(p => p.TipoPago == TipoPago.Interes && p.EmpenoId == empeno.EmpenoId)
+                .OrderByDescending(p => p.Consecutivo)
+                .FirstOrDefault().Consecutivo;
+            cexcel.Cells[9, 2].value = usuario.Nombre;
+            cexcel.Cells[10, 2].value = Program.Usuario.Usuario;
+            cexcel.Cells[14, 2].value = empeno.Cliente.Identificacion;
+            cexcel.Cells[15, 1].value = empeno.Cliente.Nombre;
+            cexcel.Cells[16, 2].value = pago.Fecha.ToString("dd/MM/yyyy");
+            cexcel.Cells[17, 2].value = empeno.EmpenoId.ToString();
+
+            if (empeno.EsOro)
+            {
+                cexcel.Cells[19, 1].value = "ORO : " + empeno.Descripcion;
+            }
+            else
+            {
+                cexcel.Cells[19, 1].value = empeno.Descripcion;
+            }
+
+            cexcel.Cells[24, 3].value = _context.Intereses.Where(i => i.EmpenoId == empeno.EmpenoId).Sum(i => i.Monto).ToString("N2");
+            cexcel.Cells[25, 3].value = empeno.MontoPendiente.ToString("N2");
+            cexcel.Cells[26, 3].value = pago.Monto.ToString("N2");
+            cexcel.Cells[28, 3].value = "Retirado";
+            cexcel.ActiveWindow.SelectedSheets.PrintOut();
+            System.Threading.Thread.Sleep(300);
+            cexcel.ActiveWorkbook.Close(false);
+            cexcel.Quit();
+        }
+
+        public async Task PrintRetiro(Empeno empeno)
+        {
+            var configuracion = await _context.Configuraciones.FirstOrDefaultAsync();
+            Microsoft.Office.Interop.Excel.Application cexcel = new Microsoft.Office.Interop.Excel.Application();
+            string pathch = Path.GetDirectoryName(System.Windows.Forms.Application.ExecutablePath);
+            pathch = $"{pathch}\\Empeños\\Comprobantes\\ComprobanteCancelacion.xlsx";
+            cexcel.Workbooks.Open(pathch, true, true);
+
+            cexcel.Visible = false;
+            var usuario = await _context.Empleados.FindAsync(empeno.EmpleadoId);
+
+            var pago = _context.Pago
+                .Where(p => p.TipoPago == TipoPago.Principal && p.EmpenoId == empeno.EmpenoId)
+                .OrderByDescending(p => p.Consecutivo)
+                .FirstOrDefault();
+
+            var pagoInteres = _context.Pago
+                .Where(p => p.TipoPago == TipoPago.Interes && p.EmpenoId == empeno.EmpenoId)
+                .OrderByDescending(p => p.Consecutivo)
+                .FirstOrDefault();
+
+            var consecutivo = pago.Fecha.Date == pagoInteres.Fecha.Date ? $"{pago.Consecutivo}, {pagoInteres.Consecutivo}" : pago.Consecutivo.ToString();
+
+            cexcel.Visible = false;
+            cexcel.Cells[3, 1].value = configuracion.Compañia;
+            cexcel.Cells[4, 1].value = configuracion.Direccion;
+            cexcel.Cells[5, 1].value = "Tel. " + configuracion.Telefono;
+            cexcel.Cells[6, 1].value = configuracion.Nombre;
+            cexcel.Cells[7, 1].value = "Cédula: " + configuracion.Identificacion;
+            cexcel.Cells[8, 2].value = consecutivo;
             cexcel.Cells[9, 2].value = usuario.Nombre;
             cexcel.Cells[10, 2].value = Program.Usuario.Usuario;
             cexcel.Cells[14, 2].value = empeno.Cliente.Identificacion;

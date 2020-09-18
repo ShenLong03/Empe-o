@@ -166,14 +166,21 @@ namespace Empeño.WindowsForms.Views
                 
                 if (empeñoTemp.MontoPendiente < 1)
                 {
-                    await PagaInteres(pagoIntereses, false);
+                    var pagoInteres=await SetPagaInteres(pagoIntereses, false);
                     empeñoTemp.Estado = Estado.Cancelado;
                     empeñoTemp.Retirado = true;
                     empeñoTemp.FechaRetiro = DateTime.Today;
                     _context.Intereses.RemoveRange(_context.Intereses.Where(i => i.EmpenoId == empleadoId && i.Pagado == 0));
                     _context.Entry(empeñoTemp).State = EntityState.Modified;
                     await _context.SaveChangesAsync();
-                    await PrintRetiro(empeñoTemp, pago);
+                    if (pagoInteres==null)
+                    {
+                        await PrintRetiro(empeñoTemp, pago);
+                    }
+                    else
+                    {
+                        await PrintRetiro(empeñoTemp, pago, pagoInteres);
+                    }                    
                 }
                 else
                 {
@@ -284,6 +291,88 @@ namespace Empeño.WindowsForms.Views
                     } 
                 }
             }          
+        }
+
+        public async Task<Pago> SetPagaInteres(double pagoIntereses, bool print = true)
+        {
+            empeño = await _context.Empenos.FindAsync(empeñoId);
+            if (pagoIntereses > 0)
+            {
+                var pago = new Pago
+                {
+                    EmpenoId = empeño.EmpenoId,
+                    Consecutivo = GetConsecutivo(),
+                    Comentario = txtComentario.Text,
+                    EmpleadoId = Program.EmpleadoId,
+                    Fecha = DateTime.Now,
+                    Monto = pagoIntereses,
+                    TipoPago = TipoPago.Interes,
+                };
+
+                _context.Pago.Add(pago);
+                await _context.SaveChangesAsync();
+                await funciones.SaveBitacora(new ValorBitacora
+                {
+                    Valor = JsonConvert.SerializeObject(pago),
+                    Modulo = "Pagos",
+                    Accion = "Crear"
+                });
+                List<Intereses> intereses = new List<Intereses>();
+                var sobrante = pago.Monto;
+                var listInteres = await _context.Intereses.Where(i => i.EmpenoId == pago.EmpenoId && i.Pagado < i.Monto).ToListAsync();
+                foreach (var item in listInteres)
+                {
+                    if ((item.Monto - item.Pagado) > sobrante && sobrante > 0)
+                    {
+                        item.Pagado += sobrante;
+                        if (item.Pagado == item.Monto)
+                        {
+                            empeño.FechaVencimiento = empeño.FechaVencimiento.AddMonths(1);
+                        }
+
+                        intereses.Add(item);
+                        _context.Entry(item).State = EntityState.Modified;
+                        break;
+                    }
+                    else if (sobrante > 0)
+                    {
+                        double paga = (item.Monto - item.Pagado);
+                        item.Pagado += paga;
+                        if (item.Pagado == item.Monto)
+                        {
+                            empeño.FechaVencimiento = empeño.FechaVencimiento.AddMonths(1);
+                        }
+                        item.PagoId = pago.PagoId;
+                        sobrante -= paga;
+                        intereses.Add(item);
+                        _context.Entry(item).State = EntityState.Modified;
+                    }
+                }
+
+                await _context.SaveChangesAsync();
+                await funciones.SaveBitacora(new ValorBitacora
+                {
+                    Valor = JsonConvert.SerializeObject(intereses),
+                    Modulo = "Intereses",
+                    Accion = "Crear"
+                });
+
+                var id = empeño.EmpenoId;
+                await funciones.ReviewEmpeño(id);
+                empeño = null;
+                using (DataContext contextTemp = new DataContext())
+                {
+                    empeño = await contextTemp.Empenos.FindAsync(id);
+                    if (print)
+                    {
+                        await PrintInteres(empeño, intereses, pago);
+                    }
+                }
+
+                return pago;
+            }
+
+            return null;
         }
 
         private void txtPagaInteres_TextChanged_1(object sender, EventArgs e)
@@ -440,6 +529,50 @@ namespace Empeño.WindowsForms.Views
             cexcel.Quit();
         }
 
+        public async Task PrintRetiro(Empeno empeno, Pago pago, Pago pagoInteres)
+        {
+            var configuracion = await _context.Configuraciones.FirstOrDefaultAsync();
+            Microsoft.Office.Interop.Excel.Application cexcel = new Microsoft.Office.Interop.Excel.Application();
+            string pathch = Path.GetDirectoryName(System.Windows.Forms.Application.ExecutablePath);
+            pathch = $"{pathch}\\Empeños\\Comprobantes\\ComprobanteCancelacion.xlsx";
+            cexcel.Workbooks.Open(pathch, true, true);
+
+            cexcel.Visible = false;
+            var usuario = await _context.Empleados.FindAsync(Program.EmpleadoId);
+
+            cexcel.Visible = false;
+            cexcel.Cells[3, 1].value = configuracion.Compañia;
+            cexcel.Cells[4, 1].value = configuracion.Direccion;
+            cexcel.Cells[5, 1].value = "Tel. " + configuracion.Telefono;
+            cexcel.Cells[6, 1].value = configuracion.Nombre;
+            cexcel.Cells[7, 1].value = "Cédula: " + configuracion.Identificacion;
+            cexcel.Cells[8, 2].value = $"{pago.Consecutivo}, {pagoInteres.Consecutivo}";
+            cexcel.Cells[9, 2].value = usuario.Nombre;
+            cexcel.Cells[10, 2].value = Program.Usuario.Usuario;
+            cexcel.Cells[14, 2].value = empeno.Cliente.Identificacion;
+            cexcel.Cells[15, 1].value = empeno.Cliente.Nombre;
+            cexcel.Cells[16, 2].value = pago.Fecha.ToString("dd/MM/yyyy");
+            cexcel.Cells[17, 2].value = empeno.EmpenoId.ToString();
+
+            if (empeno.EsOro)
+            {
+                cexcel.Cells[19, 1].value = "ORO : " + empeno.Descripcion;
+            }
+            else
+            {
+                cexcel.Cells[19, 1].value = empeno.Descripcion;
+            }
+
+            cexcel.Cells[24, 3].value = txtPagaInteres.Text;
+            cexcel.Cells[25, 3].value = txtPagaMonto.Text;
+            cexcel.Cells[26, 3].value = txtTotalAPagar.Text;
+            cexcel.Cells[28, 3].value = "Cancelado";
+            cexcel.ActiveWindow.SelectedSheets.PrintOut();
+            System.Threading.Thread.Sleep(300);
+            cexcel.ActiveWorkbook.Close(false);
+            cexcel.Quit();
+        }
+
         public async Task PrintInteres(Empeno empeno, List<Intereses> intereses, Pago pago)
         {
             var configuracion = await _context.Configuraciones.FirstOrDefaultAsync();
@@ -498,7 +631,6 @@ namespace Empeño.WindowsForms.Views
             cexcel.ActiveWorkbook.Close(false);
             cexcel.Quit();
         }
-
         #endregion
 
         private void txtPagaMonto_Leave_1(object sender, EventArgs e)
