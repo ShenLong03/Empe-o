@@ -450,7 +450,7 @@
             bool listo = false;
             string maquina = Environment.MachineName;
             //SQLEXPRESS
-            maquina = ".";
+            //maquina = ".";
             listo = Create(maquina, "Empeno", "C:\\Backup\\empeno.bak");
             if (listo)
             {
@@ -500,7 +500,7 @@
             bool listo = false;
             string maquina = Environment.MachineName;
             //SQLEXPRESS
-            maquina = ".";
+            //maquina = ".";
             listo = Create(maquina, "Empeno", "C:\\Backup\\empeno.bak");
             if (listo)
             {
