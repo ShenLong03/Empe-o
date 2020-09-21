@@ -14,6 +14,7 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Windows.Forms.VisualStyles;
 
 namespace Empeño.WindowsForms.Funciones
 {
@@ -593,6 +594,24 @@ namespace Empeño.WindowsForms.Funciones
                             int cantidadMeses = ((int)(DateTime.Today - fechaCalculo).TotalDays / 30);
                             double sobrante = (DateTime.Today - fechaCalculo).TotalDays % 30;
                             cantidadMeses += sobrante > 1 ? 1 : 0;
+
+                            if (cantidadMeses>0 && !empeño.Intereses.Any())
+                            {
+                                var intereses = new Intereses
+                                {
+                                    EmpenoId = empeño.EmpenoId,
+                                    FechaCreacion = DateTime.Now,
+                                    Monto = (double)empeño.MontoPendiente * ((double)empeño.Interes.Porcentaje / (double)100),
+                                    FechaVencimiento = fechaCalculo.AddMonths(1)
+                                };
+                                using (DataContext tempFirst= new DataContext())
+                                {
+                                    tempFirst.Intereses.Add(intereses);
+                                    await tempFirst.SaveChangesAsync();
+                                    await ReviewEmpeño(id);
+                                    return;
+                                }
+                            }                         
 
                             var numeroIntereses = cantidadMeses;
                             for (int i = 0; i < numeroIntereses; i++)

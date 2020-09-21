@@ -275,6 +275,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.txtPagaInteres.BackColor = System.Drawing.Color.WhiteSmoke;
             this.txtPagaInteres.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.txtPagaInteres.Enabled = false;
             this.txtPagaInteres.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F);
             this.txtPagaInteres.ForeColor = System.Drawing.Color.Black;
             this.txtPagaInteres.Location = new System.Drawing.Point(9, 124);

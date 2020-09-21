@@ -130,6 +130,17 @@ namespace Empeño.WindowsForms.Views
             double pagoIntereses = double.Parse(txtPagaInteres.Text);
             double pagoMonto = double.Parse(txtPagaMonto.Text);
             double montoPendiente = double.Parse(txtMontoAPagar.Text);
+            if (pagoMonto>montoPendiente)
+            {
+                txtPagaMonto.Text = txtMontoAPagar.Text;
+                pagoMonto = double.Parse(txtPagaMonto.Text);
+            }
+            if (pagoIntereses > montoIntereses)
+            {
+                txtPagaInteres.Text = txtInteresAPagar.Text;
+                pagoIntereses = double.Parse(txtPagaInteres.Text);
+            }
+
             empeño = null;
             var empeñoTemp = _context.Empenos.Find(empeñoId);
 
