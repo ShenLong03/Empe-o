@@ -458,7 +458,7 @@
             }
             else
             {
-                MessageBox.Show("Hubo un problema a la hora de generar el BackUp. Por favor contactarse con SuFacturaFacil para soporte.");
+                MessageBox.Show("Hubo un problema a la hora de generar el BackUp. Por favor contactarse con Amaru Systems para soporte.");
             }
 
         }
