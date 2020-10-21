@@ -33,7 +33,7 @@
             this.panel1 = new System.Windows.Forms.Panel();
             this.btnClose = new System.Windows.Forms.PictureBox();
             this.label1 = new System.Windows.Forms.Label();
-            this.elipsePanelPrincipal = new Bunifu.Framework.UI.BunifuElipse(this.components);
+            this.elipsePanelPrincipal = new ns1.BunifuElipse(this.components);
             this.btnCancelar = new System.Windows.Forms.Button();
             this.btnGuardar = new System.Windows.Forms.Button();
             this.pictureBox2 = new System.Windows.Forms.PictureBox();
@@ -249,7 +249,7 @@
 
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.Label label1;
-        private Bunifu.Framework.UI.BunifuElipse elipsePanelPrincipal;
+        private ns1.BunifuElipse elipsePanelPrincipal;
         private System.Windows.Forms.Button btnCancelar;
         private System.Windows.Forms.Button btnGuardar;
         private System.Windows.Forms.PictureBox pictureBox2;

@@ -34,7 +34,7 @@
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
-            this.elipsePanelCierreInformacion = new Bunifu.Framework.UI.BunifuElipse(this.components);
+            this.elipsePanelCierreInformacion = new ns1.BunifuElipse(this.components);
             this.panelCierreInformacion = new System.Windows.Forms.Panel();
             this.txtFecha = new System.Windows.Forms.DateTimePicker();
             this.btnBuscar = new System.Windows.Forms.Button();
@@ -44,8 +44,8 @@
             this.btnCancelarCierreCaja = new System.Windows.Forms.Button();
             this.lblFecha = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
-            this.elipseDetalleCierre = new Bunifu.Framework.UI.BunifuElipse(this.components);
-            this.bunifuElipse1 = new Bunifu.Framework.UI.BunifuElipse(this.components);
+            this.elipseDetalleCierre = new ns1.BunifuElipse(this.components);
+            this.bunifuElipse1 = new ns1.BunifuElipse(this.components);
             this.printDocument1 = new System.Drawing.Printing.PrintDocument();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.panelDetalleCierre = new System.Windows.Forms.Panel();
@@ -797,7 +797,7 @@
         }
 
         #endregion
-        private Bunifu.Framework.UI.BunifuElipse elipsePanelCierreInformacion;
+        private ns1.BunifuElipse elipsePanelCierreInformacion;
         private System.Windows.Forms.Panel panelCierreInformacion;
         private System.Windows.Forms.TextBox txtEmpleado;
         private System.Windows.Forms.Label lblEmpleado;
@@ -805,8 +805,8 @@
         private System.Windows.Forms.Label lblFecha;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Button btnDeleteCierreCaja;
-        private Bunifu.Framework.UI.BunifuElipse elipseDetalleCierre;
-        private Bunifu.Framework.UI.BunifuElipse bunifuElipse1;
+        private ns1.BunifuElipse elipseDetalleCierre;
+        private ns1.BunifuElipse bunifuElipse1;
         private System.Drawing.Printing.PrintDocument printDocument1;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
         private System.Windows.Forms.Panel panelDetalleCierre;

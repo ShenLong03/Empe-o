@@ -58,8 +58,8 @@
             this.txtFecha = new System.Windows.Forms.TextBox();
             this.lblFecha = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
-            this.elipsePanelArqueo = new Bunifu.Framework.UI.BunifuElipse(this.components);
-            this.elipseDetalles = new Bunifu.Framework.UI.BunifuElipse(this.components);
+            this.elipsePanelArqueo = new ns1.BunifuElipse(this.components);
+            this.elipseDetalles = new ns1.BunifuElipse(this.components);
             this.printDocument1 = new System.Drawing.Printing.PrintDocument();
             this.dtDesde = new System.Windows.Forms.DateTimePicker();
             this.dtHasta = new System.Windows.Forms.DateTimePicker();
@@ -515,8 +515,9 @@
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.TextBox txtTotalVencido;
         private System.Windows.Forms.Label label3;
-        private Bunifu.Framework.UI.BunifuElipse elipsePanelArqueo;
-        private Bunifu.Framework.UI.BunifuElipse elipseDetalles;
+        private ns1.BunifuElipse elipsePanelArqueo;
+        private ns1.BunifuElipse elipseDetalles;
+
         private System.Drawing.Printing.PrintDocument printDocument1;
         private System.Windows.Forms.Label lblTotalProrroga;
         private System.Windows.Forms.Label lblTotalRetirados;

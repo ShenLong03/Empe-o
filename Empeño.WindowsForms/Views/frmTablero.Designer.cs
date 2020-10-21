@@ -36,31 +36,31 @@
             System.Windows.Forms.DataVisualization.Charting.Legend legend2 = new System.Windows.Forms.DataVisualization.Charting.Legend();
             System.Windows.Forms.DataVisualization.Charting.Series series2 = new System.Windows.Forms.DataVisualization.Charting.Series();
             System.Windows.Forms.DataVisualization.Charting.Series series3 = new System.Windows.Forms.DataVisualization.Charting.Series();
-            this.bunifuElipse1 = new Bunifu.Framework.UI.BunifuElipse(this.components);
+            this.bunifuElipse1 = new ns1.BunifuElipse(this.components);
             this.panel3 = new System.Windows.Forms.Panel();
             this.lblEmpeñosNuevos = new System.Windows.Forms.Label();
             this.pbEmpeños = new FontAwesome.Sharp.IconPictureBox();
             this.lblTotalEmpeños = new System.Windows.Forms.Label();
             this.label8 = new System.Windows.Forms.Label();
-            this.bunifuElipse2 = new Bunifu.Framework.UI.BunifuElipse(this.components);
+            this.bunifuElipse2 = new ns1.BunifuElipse(this.components);
             this.panel2 = new System.Windows.Forms.Panel();
             this.lblClientesNuevos = new System.Windows.Forms.Label();
             this.lblTotalClientes = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.pbClientes = new FontAwesome.Sharp.IconPictureBox();
-            this.bunifuElipse3 = new Bunifu.Framework.UI.BunifuElipse(this.components);
+            this.bunifuElipse3 = new ns1.BunifuElipse(this.components);
             this.panel6 = new System.Windows.Forms.Panel();
             this.lblMas30Dias = new System.Windows.Forms.Label();
             this.lblTotalVencidos = new System.Windows.Forms.Label();
             this.lbl1 = new System.Windows.Forms.Label();
             this.pbVencidos = new FontAwesome.Sharp.IconPictureBox();
-            this.bunifuElipse4 = new Bunifu.Framework.UI.BunifuElipse(this.components);
+            this.bunifuElipse4 = new ns1.BunifuElipse(this.components);
             this.panel4 = new System.Windows.Forms.Panel();
             this.lblPendientesHoy = new System.Windows.Forms.Label();
             this.lblTotalPendientes = new System.Windows.Forms.Label();
             this.label14 = new System.Windows.Forms.Label();
             this.pbPendientes = new FontAwesome.Sharp.IconPictureBox();
-            this.bunifuElipse5 = new Bunifu.Framework.UI.BunifuElipse(this.components);
+            this.bunifuElipse5 = new ns1.BunifuElipse(this.components);
             this.panel10 = new System.Windows.Forms.Panel();
             this.dgvTransacciones = new System.Windows.Forms.DataGridView();
             this.panel12 = new System.Windows.Forms.Panel();
@@ -74,10 +74,10 @@
             this.label4 = new System.Windows.Forms.Label();
             this.panel1 = new System.Windows.Forms.Panel();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
-            this.bunifuElipse6 = new Bunifu.Framework.UI.BunifuElipse(this.components);
+            this.bunifuElipse6 = new ns1.BunifuElipse(this.components);
             this.chartEmpeños = new System.Windows.Forms.DataVisualization.Charting.Chart();
             this.ingresosEgresosReporteBindingSource = new System.Windows.Forms.BindingSource(this.components);
-            this.bunifuElipse7 = new Bunifu.Framework.UI.BunifuElipse(this.components);
+            this.bunifuElipse7 = new ns1.BunifuElipse(this.components);
             this.panel5 = new System.Windows.Forms.Panel();
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
             this.panel7 = new System.Windows.Forms.Panel();
@@ -795,11 +795,11 @@
         }
 
         #endregion
-        private Bunifu.Framework.UI.BunifuElipse bunifuElipse1;
-        private Bunifu.Framework.UI.BunifuElipse bunifuElipse2;
-        private Bunifu.Framework.UI.BunifuElipse bunifuElipse3;
-        private Bunifu.Framework.UI.BunifuElipse bunifuElipse4;
-        private Bunifu.Framework.UI.BunifuElipse bunifuElipse5;
+        private ns1.BunifuElipse bunifuElipse1;
+        private ns1.BunifuElipse bunifuElipse2;
+        private ns1.BunifuElipse bunifuElipse3;
+        private ns1.BunifuElipse bunifuElipse4;
+        private ns1.BunifuElipse bunifuElipse5;
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
         private System.Windows.Forms.Panel panel6;
@@ -823,8 +823,8 @@
         private System.Windows.Forms.Label lblTotalPendientes;
         private System.Windows.Forms.Label label14;
         private FontAwesome.Sharp.IconPictureBox pbPendientes;
-        private Bunifu.Framework.UI.BunifuElipse bunifuElipse6;
-        private Bunifu.Framework.UI.BunifuElipse bunifuElipse7;
+        private ns1.BunifuElipse bunifuElipse6;
+        private ns1.BunifuElipse bunifuElipse7;
         private System.Windows.Forms.Panel panel5;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel2;
         private System.Windows.Forms.Panel panel7;

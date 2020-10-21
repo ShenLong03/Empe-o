@@ -64,8 +64,8 @@
             this.txtFecha = new System.Windows.Forms.TextBox();
             this.lblFecha = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
-            this.elipsePanelArqueo = new Bunifu.Framework.UI.BunifuElipse(this.components);
-            this.elipseDetalles = new Bunifu.Framework.UI.BunifuElipse(this.components);
+            this.elipsePanelArqueo = new ns1.BunifuElipse(this.components);
+            this.elipseDetalles = new ns1.BunifuElipse(this.components);
             this.printDocument1 = new System.Drawing.Printing.PrintDocument();
             this.btnDelete = new System.Windows.Forms.Button();
             this.btnCancelar = new System.Windows.Forms.Button();
@@ -628,8 +628,8 @@
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.TextBox txtTotalVencido;
         private System.Windows.Forms.Label label3;
-        private Bunifu.Framework.UI.BunifuElipse elipsePanelArqueo;
-        private Bunifu.Framework.UI.BunifuElipse elipseDetalles;
+        private ns1.BunifuElipse elipsePanelArqueo;
+        private ns1.BunifuElipse elipseDetalles;
         private System.Windows.Forms.TextBox txtTotalPrincipal;
         private System.Windows.Forms.Label label2;
         private System.Drawing.Printing.PrintDocument printDocument1;

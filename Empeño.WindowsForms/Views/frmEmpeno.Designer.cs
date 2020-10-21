@@ -145,7 +145,7 @@ namespace Empeño.WindowsForms.Views
             this.iconPictureBox1 = new FontAwesome.Sharp.IconPictureBox();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.txtBuscar = new System.Windows.Forms.TextBox();
-            this.elipseEstado = new Bunifu.Framework.UI.BunifuElipse(this.components);
+            this.elipseEstado = new ns1.BunifuElipse(this.components);
             this.tableLayoutPanel1.SuspendLayout();
             this.tableLayoutPrincipal.SuspendLayout();
             this.panel1.SuspendLayout();
@@ -2079,7 +2079,7 @@ namespace Empeño.WindowsForms.Views
         private FontAwesome.Sharp.IconButton btnEliminarPago;
         private DataGridView dgvPagos;
         private Label lblEstado;
-        private Bunifu.Framework.UI.BunifuElipse elipseEstado;
+        private ns1.BunifuElipse elipseEstado;
         private FontAwesome.Sharp.IconButton btnHoy;
         private FontAwesome.Sharp.IconButton btnPendientes;
         private FontAwesome.Sharp.IconButton btnReimprimir;
