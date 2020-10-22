@@ -36,7 +36,7 @@ namespace Empeño.WindowsForms.SeedDb
                     _context.User.Add(new User
                     {
                         Activo = true,
-                        Codigo = "7319",
+                        Codigo = "1973",
                         Password = "AdminAdmin2020",
                         PerfilId = 1,
                         Usuario = "Admin",

@@ -124,11 +124,18 @@ namespace Empeño.WindowsForms.Views
             if (!funciones.ValidatePIN("Empeño"))
                 return;
 
-
-            var empleadoId = await funciones.GetEmpleadoIdByUser(Program.Usuario.Usuario);
-            double montoIntereses = double.Parse(txtInteresAPagar.Text);
             double pagoIntereses = double.Parse(txtPagaInteres.Text);
             double pagoMonto = double.Parse(txtPagaMonto.Text);
+
+            if ((pagoMonto>0) && (empeño.Intereses.Sum(i=>i.Monto)>(empeño.Intereses.Sum(i=>i.Pagado)+ pagoIntereses)))
+            {
+                MessageBox.Show("Para abonar a la prenda debe pagar todos los intereses pendientes de " + montoMinimo.ToString("N2"), "Alerta", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+            var empleadoId = await funciones.GetEmpleadoIdByUser(Program.Usuario.Usuario);
+            double montoIntereses = double.Parse(txtInteresAPagar.Text);
+           
+            
             double montoPendiente = double.Parse(txtMontoAPagar.Text);
             if (pagoMonto>montoPendiente)
             {
@@ -452,195 +459,223 @@ namespace Empeño.WindowsForms.Views
         #region Funciones
         public async Task PrintAbono(Empeno empeno, Pago pago)
         {
-            var configuracion = await _context.Configuraciones.FirstOrDefaultAsync();
-            Microsoft.Office.Interop.Excel.Application cexcel = new Microsoft.Office.Interop.Excel.Application();
-            string pathch = Path.GetDirectoryName(System.Windows.Forms.Application.ExecutablePath);
-            pathch = $"{pathch}\\Empeños\\Comprobantes\\ComprobanteAbono.xlsx";
-            cexcel.Workbooks.Open(pathch, true, true);
-
-            cexcel.Visible = false;
-            var usuario = await _context.Empleados.FindAsync(Program.EmpleadoId);
-
-            cexcel.Visible = false;
-            cexcel.Cells[3, 1].value = configuracion.Compañia;
-            cexcel.Cells[4, 1].value = configuracion.Direccion;
-            cexcel.Cells[5, 1].value = "Tel. " + configuracion.Telefono;
-            cexcel.Cells[6, 1].value = configuracion.Nombre;
-            cexcel.Cells[7, 1].value = "Cédula: " + configuracion.Identificacion;
-
-            cexcel.Cells[8, 2].value = pago.Consecutivo;
-            cexcel.Cells[9, 2].value = usuario.Nombre;
-            cexcel.Cells[10, 2].value = usuario.Usuario;
-            cexcel.Cells[14, 2].value = empeno.Cliente.Identificacion;
-            cexcel.Cells[15, 1].value = empeno.Cliente.Nombre;
-            cexcel.Cells[16, 2].value = pago.Fecha.ToString("dd/MM/yyyy");
-            cexcel.Cells[17, 2].value = empeno.EmpenoId.ToString();
-
-            if (empeno.EsOro)
+            try
             {
-                cexcel.Cells[19, 1].value = "ORO : " + empeno.Descripcion;
+                var configuracion = await _context.Configuraciones.FirstOrDefaultAsync();
+                Microsoft.Office.Interop.Excel.Application cexcel = new Microsoft.Office.Interop.Excel.Application();
+                string pathch = Path.GetDirectoryName(System.Windows.Forms.Application.ExecutablePath);
+                pathch = $"{pathch}\\Empeños\\Comprobantes\\ComprobanteAbono.xlsx";
+                cexcel.Workbooks.Open(pathch, true, true);
+
+                cexcel.Visible = false;
+                var usuario = await _context.Empleados.FindAsync(Program.EmpleadoId);
+
+                cexcel.Visible = false;
+                cexcel.Cells[3, 1].value = configuracion.Compañia;
+                cexcel.Cells[4, 1].value = configuracion.Direccion;
+                cexcel.Cells[5, 1].value = "Tel. " + configuracion.Telefono;
+                cexcel.Cells[6, 1].value = configuracion.Nombre;
+                cexcel.Cells[7, 1].value = "Cédula: " + configuracion.Identificacion;
+
+                cexcel.Cells[8, 2].value = pago.Consecutivo;
+                cexcel.Cells[9, 2].value = usuario.Nombre;
+                cexcel.Cells[10, 2].value = usuario.Usuario;
+                cexcel.Cells[14, 2].value = empeno.Cliente.Identificacion;
+                cexcel.Cells[15, 1].value = empeno.Cliente.Nombre;
+                cexcel.Cells[16, 2].value = pago.Fecha.ToString("dd/MM/yyyy");
+                cexcel.Cells[17, 2].value = empeno.EmpenoId.ToString();
+
+                if (empeno.EsOro)
+                {
+                    cexcel.Cells[19, 1].value = "ORO : " + empeno.Descripcion;
+                }
+                else
+                {
+                    cexcel.Cells[19, 1].value = empeno.Descripcion;
+                }
+                cexcel.Cells[23, 3].value = txtMontoAPagar.Text;
+                cexcel.Cells[24, 3].value = txtPagaMonto.Text;
+                cexcel.Cells[25, 3].value = txtAdeudaMonto.Text;
+                cexcel.Cells[27, 3].value = txtPagaMonto.Text;
+                cexcel.Cells[29, 3].value = empeno.FechaVencimiento.ToString("dd/MM/yyyy");
+                cexcel.Cells[31, 3].value = empeno.Estado.ToString();
+                cexcel.ActiveWindow.SelectedSheets.PrintOut();
+                System.Threading.Thread.Sleep(300);
+                cexcel.ActiveWorkbook.Close(false);
+                cexcel.Quit();
             }
-            else
+            catch (Exception ex)
             {
-                cexcel.Cells[19, 1].value = empeno.Descripcion;
+                MessageBox.Show("Error al imprimir la factura, es probable que el Microsoft Excel Office esta desactivado, por favor contacte con Soporte Técnico", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
-            cexcel.Cells[23, 3].value =  txtMontoAPagar.Text;
-            cexcel.Cells[24, 3].value = txtPagaMonto.Text;
-            cexcel.Cells[25, 3].value = txtAdeudaMonto.Text;
-            cexcel.Cells[27, 3].value = txtPagaMonto.Text;
-            cexcel.Cells[29, 3].value = empeno.FechaVencimiento.ToString("dd/MM/yyyy");
-            cexcel.Cells[31, 3].value = empeno.Estado.ToString();
-            cexcel.ActiveWindow.SelectedSheets.PrintOut();
-            System.Threading.Thread.Sleep(300);
-            cexcel.ActiveWorkbook.Close(false);
-            cexcel.Quit();
         }
 
         public async Task PrintRetiro(Empeno empeno, Pago pago)
         {
-            var configuracion = await _context.Configuraciones.FirstOrDefaultAsync();
-            Microsoft.Office.Interop.Excel.Application cexcel = new Microsoft.Office.Interop.Excel.Application();
-            string pathch = Path.GetDirectoryName(System.Windows.Forms.Application.ExecutablePath);
-            pathch = $"{pathch}\\Empeños\\Comprobantes\\ComprobanteCancelacion.xlsx";
-            cexcel.Workbooks.Open(pathch, true, true);
-
-            cexcel.Visible = false;
-            var usuario = await _context.Empleados.FindAsync(Program.EmpleadoId);
-
-            cexcel.Visible = false;
-            cexcel.Cells[3, 1].value = configuracion.Compañia;
-            cexcel.Cells[4, 1].value = configuracion.Direccion;
-            cexcel.Cells[5, 1].value = "Tel. " + configuracion.Telefono;
-            cexcel.Cells[6, 1].value = configuracion.Nombre;
-            cexcel.Cells[7, 1].value = "Cédula: " + configuracion.Identificacion;
-            cexcel.Cells[8, 2].value = pago.Consecutivo;
-            cexcel.Cells[9, 2].value = usuario.Nombre;
-            cexcel.Cells[10, 2].value = Program.Usuario.Usuario;
-            cexcel.Cells[14, 2].value = empeno.Cliente.Identificacion;
-            cexcel.Cells[15, 1].value = empeno.Cliente.Nombre;
-            cexcel.Cells[16, 2].value = pago.Fecha.ToString("dd/MM/yyyy");
-            cexcel.Cells[17, 2].value = empeno.EmpenoId.ToString();
-
-            if (empeno.EsOro)
+            try
             {
-                cexcel.Cells[19, 1].value = "ORO : " + empeno.Descripcion;
-            }
-            else
-            {
-                cexcel.Cells[19, 1].value = empeno.Descripcion;
-            }
+                var configuracion = await _context.Configuraciones.FirstOrDefaultAsync();
+                Microsoft.Office.Interop.Excel.Application cexcel = new Microsoft.Office.Interop.Excel.Application();
+                string pathch = Path.GetDirectoryName(System.Windows.Forms.Application.ExecutablePath);
+                pathch = $"{pathch}\\Empeños\\Comprobantes\\ComprobanteCancelacion.xlsx";
+                cexcel.Workbooks.Open(pathch, true, true);
 
-            cexcel.Cells[24, 3].value = txtPagaInteres.Text;
-            cexcel.Cells[25, 3].value = txtPagaMonto.Text;
-            cexcel.Cells[26, 3].value = txtTotalAPagar.Text;
-            cexcel.Cells[28, 3].value = "Cancelado";
-            cexcel.ActiveWindow.SelectedSheets.PrintOut();
-            System.Threading.Thread.Sleep(300);
-            cexcel.ActiveWorkbook.Close(false);
-            cexcel.Quit();
+                cexcel.Visible = false;
+                var usuario = await _context.Empleados.FindAsync(Program.EmpleadoId);
+
+                cexcel.Visible = false;
+                cexcel.Cells[3, 1].value = configuracion.Compañia;
+                cexcel.Cells[4, 1].value = configuracion.Direccion;
+                cexcel.Cells[5, 1].value = "Tel. " + configuracion.Telefono;
+                cexcel.Cells[6, 1].value = configuracion.Nombre;
+                cexcel.Cells[7, 1].value = "Cédula: " + configuracion.Identificacion;
+                cexcel.Cells[8, 2].value = pago.Consecutivo;
+                cexcel.Cells[9, 2].value = usuario.Nombre;
+                cexcel.Cells[10, 2].value = Program.Usuario.Usuario;
+                cexcel.Cells[14, 2].value = empeno.Cliente.Identificacion;
+                cexcel.Cells[15, 1].value = empeno.Cliente.Nombre;
+                cexcel.Cells[16, 2].value = pago.Fecha.ToString("dd/MM/yyyy");
+                cexcel.Cells[17, 2].value = empeno.EmpenoId.ToString();
+
+                if (empeno.EsOro)
+                {
+                    cexcel.Cells[19, 1].value = "ORO : " + empeno.Descripcion;
+                }
+                else
+                {
+                    cexcel.Cells[19, 1].value = empeno.Descripcion;
+                }
+
+                cexcel.Cells[24, 3].value = txtPagaInteres.Text;
+                cexcel.Cells[25, 3].value = txtPagaMonto.Text;
+                cexcel.Cells[26, 3].value = txtTotalAPagar.Text;
+                cexcel.Cells[28, 3].value = "Cancelado";
+                cexcel.ActiveWindow.SelectedSheets.PrintOut();
+                System.Threading.Thread.Sleep(300);
+                cexcel.ActiveWorkbook.Close(false);
+                cexcel.Quit();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error al imprimir la factura, es probable que el Microsoft Excel Office esta desactivado, por favor contacte con Soporte Técnico", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
 
         public async Task PrintRetiro(Empeno empeno, Pago pago, Pago pagoInteres)
         {
-            var configuracion = await _context.Configuraciones.FirstOrDefaultAsync();
-            Microsoft.Office.Interop.Excel.Application cexcel = new Microsoft.Office.Interop.Excel.Application();
-            string pathch = Path.GetDirectoryName(System.Windows.Forms.Application.ExecutablePath);
-            pathch = $"{pathch}\\Empeños\\Comprobantes\\ComprobanteCancelacion.xlsx";
-            cexcel.Workbooks.Open(pathch, true, true);
-
-            cexcel.Visible = false;
-            var usuario = await _context.Empleados.FindAsync(Program.EmpleadoId);
-
-            cexcel.Visible = false;
-            cexcel.Cells[3, 1].value = configuracion.Compañia;
-            cexcel.Cells[4, 1].value = configuracion.Direccion;
-            cexcel.Cells[5, 1].value = "Tel. " + configuracion.Telefono;
-            cexcel.Cells[6, 1].value = configuracion.Nombre;
-            cexcel.Cells[7, 1].value = "Cédula: " + configuracion.Identificacion;
-            cexcel.Cells[8, 2].value = $"{pago.Consecutivo}, {pagoInteres.Consecutivo}";
-            cexcel.Cells[9, 2].value = usuario.Nombre;
-            cexcel.Cells[10, 2].value = Program.Usuario.Usuario;
-            cexcel.Cells[14, 2].value = empeno.Cliente.Identificacion;
-            cexcel.Cells[15, 1].value = empeno.Cliente.Nombre;
-            cexcel.Cells[16, 2].value = pago.Fecha.ToString("dd/MM/yyyy");
-            cexcel.Cells[17, 2].value = empeno.EmpenoId.ToString();
-
-            if (empeno.EsOro)
+            try
             {
-                cexcel.Cells[19, 1].value = "ORO : " + empeno.Descripcion;
-            }
-            else
-            {
-                cexcel.Cells[19, 1].value = empeno.Descripcion;
-            }
+                var configuracion = await _context.Configuraciones.FirstOrDefaultAsync();
+                Microsoft.Office.Interop.Excel.Application cexcel = new Microsoft.Office.Interop.Excel.Application();
+                string pathch = Path.GetDirectoryName(System.Windows.Forms.Application.ExecutablePath);
+                pathch = $"{pathch}\\Empeños\\Comprobantes\\ComprobanteCancelacion.xlsx";
+                cexcel.Workbooks.Open(pathch, true, true);
 
-            cexcel.Cells[24, 3].value = txtPagaInteres.Text;
-            cexcel.Cells[25, 3].value = txtPagaMonto.Text;
-            cexcel.Cells[26, 3].value = txtTotalAPagar.Text;
-            cexcel.Cells[28, 3].value = "Cancelado";
-            cexcel.ActiveWindow.SelectedSheets.PrintOut();
-            System.Threading.Thread.Sleep(300);
-            cexcel.ActiveWorkbook.Close(false);
-            cexcel.Quit();
+                cexcel.Visible = false;
+                var usuario = await _context.Empleados.FindAsync(Program.EmpleadoId);
+
+                cexcel.Visible = false;
+                cexcel.Cells[3, 1].value = configuracion.Compañia;
+                cexcel.Cells[4, 1].value = configuracion.Direccion;
+                cexcel.Cells[5, 1].value = "Tel. " + configuracion.Telefono;
+                cexcel.Cells[6, 1].value = configuracion.Nombre;
+                cexcel.Cells[7, 1].value = "Cédula: " + configuracion.Identificacion;
+                cexcel.Cells[8, 2].value = $"{pago.Consecutivo}, {pagoInteres.Consecutivo}";
+                cexcel.Cells[9, 2].value = usuario.Nombre;
+                cexcel.Cells[10, 2].value = Program.Usuario.Usuario;
+                cexcel.Cells[14, 2].value = empeno.Cliente.Identificacion;
+                cexcel.Cells[15, 1].value = empeno.Cliente.Nombre;
+                cexcel.Cells[16, 2].value = pago.Fecha.ToString("dd/MM/yyyy");
+                cexcel.Cells[17, 2].value = empeno.EmpenoId.ToString();
+
+                if (empeno.EsOro)
+                {
+                    cexcel.Cells[19, 1].value = "ORO : " + empeno.Descripcion;
+                }
+                else
+                {
+                    cexcel.Cells[19, 1].value = empeno.Descripcion;
+                }
+
+                cexcel.Cells[24, 3].value = txtPagaInteres.Text;
+                cexcel.Cells[25, 3].value = txtPagaMonto.Text;
+                cexcel.Cells[26, 3].value = txtTotalAPagar.Text;
+                cexcel.Cells[28, 3].value = "Cancelado";
+                cexcel.ActiveWindow.SelectedSheets.PrintOut();
+                System.Threading.Thread.Sleep(300);
+                cexcel.ActiveWorkbook.Close(false);
+                cexcel.Quit();
+            }
+            catch (Exception)
+            {
+                MessageBox.Show("Error al imprimir la factura, es probable que el Microsoft Excel Office esta desactivado, por favor contacte con Soporte Técnico", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
 
         public async Task PrintInteres(Empeno empeno, List<Intereses> intereses, Pago pago)
         {
-            var configuracion = await _context.Configuraciones.FirstOrDefaultAsync();
-            Microsoft.Office.Interop.Excel.Application cexcel = new Microsoft.Office.Interop.Excel.Application();
-            string pathch = Path.GetDirectoryName(System.Windows.Forms.Application.ExecutablePath);
-            pathch = $"{pathch}\\Empeños\\Comprobantes\\ComprobanteInteres.xlsx";
-            cexcel.Workbooks.Open(pathch, true, true);
-
-            cexcel.Visible = false;
-            cexcel.Cells[3, 1].value = configuracion.Compañia;
-            cexcel.Cells[4, 1].value = configuracion.Direccion;
-            cexcel.Cells[5, 1].value = "Tel. " + configuracion.Telefono;
-            cexcel.Cells[6, 1].value = configuracion.Nombre;
-            cexcel.Cells[7, 1].value = "Cédula: " + configuracion.Identificacion;
-
-            var empleado = await _context.Empleados.FindAsync(Program.EmpleadoId);
-            cexcel.Cells[8, 2].value = pago.Consecutivo;
-            cexcel.Cells[9, 2].value = empleado.Nombre;
-            cexcel.Cells[10, 2].value = empleado.Usuario;
-            cexcel.Cells[14, 2].value = empeno.Cliente.Identificacion;
-            cexcel.Cells[15, 1].value = empeno.Cliente.Nombre;
-            cexcel.Cells[16, 2].value = pago.Fecha.ToString("dd/MM/yyyy");
-            cexcel.Cells[17, 2].value = empeno.EmpenoId.ToString();
-
-            if (empeno.EsOro)
+            try
             {
-                cexcel.Cells[19, 1].value = "ORO : " + empeno.Descripcion;
+                var configuracion = await _context.Configuraciones.FirstOrDefaultAsync();
+                Microsoft.Office.Interop.Excel.Application cexcel = new Microsoft.Office.Interop.Excel.Application();
+                string pathch = Path.GetDirectoryName(System.Windows.Forms.Application.ExecutablePath);
+                pathch = $"{pathch}\\Empeños\\Comprobantes\\ComprobanteInteres.xlsx";
+                cexcel.Workbooks.Open(pathch, true, true);
+
+                cexcel.Visible = false;
+                cexcel.Cells[3, 1].value = configuracion.Compañia;
+                cexcel.Cells[4, 1].value = configuracion.Direccion;
+                cexcel.Cells[5, 1].value = "Tel. " + configuracion.Telefono;
+                cexcel.Cells[6, 1].value = configuracion.Nombre;
+                cexcel.Cells[7, 1].value = "Cédula: " + configuracion.Identificacion;
+
+                var empleado = await _context.Empleados.FindAsync(Program.EmpleadoId);
+                cexcel.Cells[8, 2].value = pago.Consecutivo;
+                cexcel.Cells[9, 2].value = empleado.Nombre;
+                cexcel.Cells[10, 2].value = empleado.Usuario;
+                cexcel.Cells[14, 2].value = empeno.Cliente.Identificacion;
+                cexcel.Cells[15, 1].value = empeno.Cliente.Nombre;
+                cexcel.Cells[16, 2].value = pago.Fecha.ToString("dd/MM/yyyy");
+                cexcel.Cells[17, 2].value = empeno.EmpenoId.ToString();
+
+                if (empeno.EsOro)
+                {
+                    cexcel.Cells[19, 1].value = "ORO : " + empeno.Descripcion;
+                }
+                else
+                {
+                    cexcel.Cells[19, 1].value = empeno.Descripcion;
+                }
+                cexcel.Cells[22, 4].value = empeno.MontoPendiente;
+                var index = 0;
+                foreach (var item in intereses)
+                {
+                    cexcel.Cells[26 + index, 1].value = Program.Meses(item.FechaVencimiento.Month);
+                    cexcel.Cells[26 + index, 3].value = item.Pagado.ToString("N2");
+
+                    Microsoft.Office.Interop.Excel.Worksheet ws = cexcel.ActiveSheet as Microsoft.Office.Interop.Excel.Worksheet;
+
+                    Range line = (Range)cexcel.Rows[27 + index];
+                    line.Insert();
+                    ++index;
+                    ws.get_Range("A" + (26 + index), "B" + (26 + index)).Merge();
+                    ws.get_Range("C" + (26 + index), "D" + (26 + index)).Merge();
+
+                }
+
+                cexcel.Cells[28 + index, 3].value = txtPagaInteres.Text;
+                cexcel.Cells[30 + index, 3].value = empeno.FechaVencimiento.ToString("dd/MM/yyyy");
+                cexcel.Cells[32 + index, 3].value = empeno.Estado.ToString();
+
+                cexcel.ActiveWindow.SelectedSheets.PrintOut();
+                System.Threading.Thread.Sleep(300);
+                cexcel.ActiveWorkbook.Close(false);
+                cexcel.Quit();
             }
-            else
+            catch (Exception ex)
             {
-                cexcel.Cells[19, 1].value = empeno.Descripcion;
+                MessageBox.Show("Error al imprimir la factura, es probable que el Microsoft Excel Office esta desactivado, por favor contacte con Soporte Técnico", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
-            cexcel.Cells[22, 4].value = empeno.MontoPendiente;
-            var index = 0;
-            foreach (var item in intereses)
-            {
-                cexcel.Cells[26+index, 1].value = Program.Meses(item.FechaVencimiento.Month);
-                cexcel.Cells[26+index, 3].value = item.Pagado.ToString("N2");
-
-                Microsoft.Office.Interop.Excel.Worksheet ws = cexcel.ActiveSheet as Microsoft.Office.Interop.Excel.Worksheet;
-
-                Range line = (Range)cexcel.Rows[27+ index];
-                line.Insert();
-                ++index;
-                ws.get_Range("A" + (26 + index), "B" + (26 + index)).Merge();
-                ws.get_Range("C" + (26 + index), "D" + (26 + index)).Merge();
-                
-            }
-
-            cexcel.Cells[28 + index, 3].value =txtPagaInteres.Text;
-            cexcel.Cells[30 + index, 3].value = empeno.FechaVencimiento.ToString("dd/MM/yyyy");
-            cexcel.Cells[32 + index, 3].value = empeno.Estado.ToString();
-           
-            cexcel.ActiveWindow.SelectedSheets.PrintOut();
-            System.Threading.Thread.Sleep(300);
-            cexcel.ActiveWorkbook.Close(false);
-            cexcel.Quit();
         }
         #endregion
 
@@ -747,6 +782,10 @@ namespace Empeño.WindowsForms.Views
                 txtPagaInteres.Focus();
             }
         }
-      
+
+        private void txtAdeudaIntereses_TextChanged(object sender, EventArgs e)
+        {
+
+        }
     }
 }
