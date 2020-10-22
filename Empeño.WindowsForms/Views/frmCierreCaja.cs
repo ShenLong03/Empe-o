@@ -112,9 +112,9 @@ namespace Empeño.WindowsForms.Views
                 _context.Pago.Where(p => p.Fecha >= fecha && p.TipoPago == TipoPago.Principal).Select(x => x.Monto).Sum()
                 : 0;
 
-            //double acumuladoInicial = (c1 - (vencidos == null?0: vencidos.Value)) + c2c3;
+            double acumuladoInicial = (c1 + (vencidos == null?0: vencidos.Value)) + c2c3;
 
-            double acumuladoInicial = c1 + c2c3;
+            //double acumuladoInicial = c1 + c2c3;
 
 
             txtAcumuladoInicial.Text = acumuladoInicial.ToString("N2");
