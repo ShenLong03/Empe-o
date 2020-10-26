@@ -9,6 +9,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Empeño.CommonEF", "Empeño
 EndProject
 Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "Empeño.Setup", "Empeño.Setup\Empeño.Setup.vdproj", "{857065EB-E9FE-4076-8A09-849222B3326D}"
 EndProject
+Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "Empeños.Setup2", "Empeños.Setup2\Empeños.Setup2.vdproj", "{A89E6F52-D544-4956-A191-5BC75933B9E1}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -25,6 +27,8 @@ Global
 		{83FA4EA5-0C62-43B3-AA1A-D4E0F43A2B3C}.Release|Any CPU.Build.0 = Release|Any CPU
 		{857065EB-E9FE-4076-8A09-849222B3326D}.Debug|Any CPU.ActiveCfg = Debug
 		{857065EB-E9FE-4076-8A09-849222B3326D}.Release|Any CPU.ActiveCfg = Release
+		{A89E6F52-D544-4956-A191-5BC75933B9E1}.Debug|Any CPU.ActiveCfg = Debug
+		{A89E6F52-D544-4956-A191-5BC75933B9E1}.Release|Any CPU.ActiveCfg = Release
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
