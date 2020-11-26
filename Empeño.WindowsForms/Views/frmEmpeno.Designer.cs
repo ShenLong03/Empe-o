@@ -199,12 +199,12 @@ namespace Empeño.WindowsForms.Views
             this.tableLayoutPanel1.Controls.Add(this.tableLayoutPrincipal, 0, 0);
             this.tableLayoutPanel1.Controls.Add(this.tableLayoutPanel4, 1, 0);
             this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 45);
+            this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 36);
             this.tableLayoutPanel1.Margin = new System.Windows.Forms.Padding(2);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
             this.tableLayoutPanel1.RowCount = 1;
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(1370, 704);
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(1096, 563);
             this.tableLayoutPanel1.TabIndex = 2;
             this.tableLayoutPanel1.Paint += new System.Windows.Forms.PaintEventHandler(this.tableLayoutPanel1_Paint);
             // 
@@ -216,12 +216,12 @@ namespace Empeño.WindowsForms.Views
             this.tableLayoutPrincipal.Controls.Add(this.panel2, 0, 1);
             this.tableLayoutPrincipal.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPrincipal.Location = new System.Drawing.Point(2, 2);
-            this.tableLayoutPrincipal.Margin = new System.Windows.Forms.Padding(2, 2, 10, 2);
+            this.tableLayoutPrincipal.Margin = new System.Windows.Forms.Padding(2, 2, 8, 2);
             this.tableLayoutPrincipal.Name = "tableLayoutPrincipal";
             this.tableLayoutPrincipal.RowCount = 2;
             this.tableLayoutPrincipal.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 45F));
             this.tableLayoutPrincipal.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 55F));
-            this.tableLayoutPrincipal.Size = new System.Drawing.Size(810, 700);
+            this.tableLayoutPrincipal.Size = new System.Drawing.Size(647, 559);
             this.tableLayoutPrincipal.TabIndex = 3;
             // 
             // panel1
@@ -233,7 +233,7 @@ namespace Empeño.WindowsForms.Views
             this.panel1.Location = new System.Drawing.Point(2, 2);
             this.panel1.Margin = new System.Windows.Forms.Padding(2);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(806, 311);
+            this.panel1.Size = new System.Drawing.Size(643, 247);
             this.panel1.TabIndex = 2;
             // 
             // tableLayoutPanel2
@@ -247,11 +247,11 @@ namespace Empeño.WindowsForms.Views
             this.tableLayoutPanel2.Location = new System.Drawing.Point(0, 0);
             this.tableLayoutPanel2.Margin = new System.Windows.Forms.Padding(2);
             this.tableLayoutPanel2.Name = "tableLayoutPanel2";
-            this.tableLayoutPanel2.Padding = new System.Windows.Forms.Padding(5, 5, 15, 15);
+            this.tableLayoutPanel2.Padding = new System.Windows.Forms.Padding(4, 4, 12, 12);
             this.tableLayoutPanel2.RowCount = 2;
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 50F));
-            this.tableLayoutPanel2.Size = new System.Drawing.Size(806, 311);
+            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 40F));
+            this.tableLayoutPanel2.Size = new System.Drawing.Size(643, 247);
             this.tableLayoutPanel2.TabIndex = 0;
             // 
             // panel16
@@ -259,10 +259,10 @@ namespace Empeño.WindowsForms.Views
             this.panel16.Controls.Add(this.panel5);
             this.panel16.Controls.Add(this.panel4);
             this.panel16.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel16.Location = new System.Drawing.Point(7, 7);
+            this.panel16.Location = new System.Drawing.Point(6, 6);
             this.panel16.Margin = new System.Windows.Forms.Padding(2);
             this.panel16.Name = "panel16";
-            this.panel16.Size = new System.Drawing.Size(782, 237);
+            this.panel16.Size = new System.Drawing.Size(623, 187);
             this.panel16.TabIndex = 1;
             // 
             // panel5
@@ -271,20 +271,20 @@ namespace Empeño.WindowsForms.Views
             this.panel5.Controls.Add(this.panel18);
             this.panel5.Controls.Add(this.panel17);
             this.panel5.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel5.Location = new System.Drawing.Point(0, 40);
+            this.panel5.Location = new System.Drawing.Point(0, 32);
             this.panel5.Margin = new System.Windows.Forms.Padding(2);
             this.panel5.Name = "panel5";
-            this.panel5.Size = new System.Drawing.Size(782, 197);
+            this.panel5.Size = new System.Drawing.Size(623, 155);
             this.panel5.TabIndex = 1;
             // 
             // panel18
             // 
             this.panel18.Controls.Add(this.dgvClientes);
             this.panel18.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel18.Location = new System.Drawing.Point(0, 50);
+            this.panel18.Location = new System.Drawing.Point(0, 40);
             this.panel18.Margin = new System.Windows.Forms.Padding(2);
             this.panel18.Name = "panel18";
-            this.panel18.Size = new System.Drawing.Size(782, 147);
+            this.panel18.Size = new System.Drawing.Size(623, 115);
             this.panel18.TabIndex = 37;
             // 
             // dgvClientes
@@ -316,7 +316,6 @@ namespace Empeño.WindowsForms.Views
             this.dgvClientes.EnableHeadersVisualStyles = false;
             this.dgvClientes.GridColor = System.Drawing.SystemColors.Control;
             this.dgvClientes.Location = new System.Drawing.Point(0, 0);
-            this.dgvClientes.Margin = new System.Windows.Forms.Padding(4);
             this.dgvClientes.Name = "dgvClientes";
             this.dgvClientes.RowHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.None;
             dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
@@ -337,7 +336,7 @@ namespace Empeño.WindowsForms.Views
             this.dgvClientes.RowTemplate.DividerHeight = 1;
             this.dgvClientes.RowTemplate.Height = 40;
             this.dgvClientes.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgvClientes.Size = new System.Drawing.Size(782, 147);
+            this.dgvClientes.Size = new System.Drawing.Size(623, 115);
             this.dgvClientes.TabIndex = 21;
             this.dgvClientes.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvClientes_CellContentClick);
             this.dgvClientes.DoubleClick += new System.EventHandler(this.dgvClientes_DoubleClick);
@@ -352,8 +351,8 @@ namespace Empeño.WindowsForms.Views
             this.panel17.Location = new System.Drawing.Point(0, 0);
             this.panel17.Margin = new System.Windows.Forms.Padding(2);
             this.panel17.Name = "panel17";
-            this.panel17.Padding = new System.Windows.Forms.Padding(0, 5, 0, 0);
-            this.panel17.Size = new System.Drawing.Size(782, 50);
+            this.panel17.Padding = new System.Windows.Forms.Padding(0, 4, 0, 0);
+            this.panel17.Size = new System.Drawing.Size(623, 40);
             this.panel17.TabIndex = 36;
             this.panel17.Paint += new System.Windows.Forms.PaintEventHandler(this.panel17_Paint);
             // 
@@ -371,11 +370,11 @@ namespace Empeño.WindowsForms.Views
             this.iconButton1.IconColor = System.Drawing.Color.White;
             this.iconButton1.IconSize = 16;
             this.iconButton1.ImageAlign = System.Drawing.ContentAlignment.TopCenter;
-            this.iconButton1.Location = new System.Drawing.Point(242, 5);
+            this.iconButton1.Location = new System.Drawing.Point(194, 4);
             this.iconButton1.Margin = new System.Windows.Forms.Padding(2);
             this.iconButton1.Name = "iconButton1";
             this.iconButton1.Rotation = 0D;
-            this.iconButton1.Size = new System.Drawing.Size(71, 42);
+            this.iconButton1.Size = new System.Drawing.Size(57, 34);
             this.iconButton1.TabIndex = 21;
             this.iconButton1.Text = "Nuevo";
             this.iconButton1.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
@@ -396,11 +395,11 @@ namespace Empeño.WindowsForms.Views
             this.btnEmpeñar.IconColor = System.Drawing.Color.White;
             this.btnEmpeñar.IconSize = 16;
             this.btnEmpeñar.ImageAlign = System.Drawing.ContentAlignment.TopCenter;
-            this.btnEmpeñar.Location = new System.Drawing.Point(1, 5);
+            this.btnEmpeñar.Location = new System.Drawing.Point(1, 4);
             this.btnEmpeñar.Margin = new System.Windows.Forms.Padding(2);
             this.btnEmpeñar.Name = "btnEmpeñar";
             this.btnEmpeñar.Rotation = 0D;
-            this.btnEmpeñar.Size = new System.Drawing.Size(86, 42);
+            this.btnEmpeñar.Size = new System.Drawing.Size(69, 34);
             this.btnEmpeñar.TabIndex = 17;
             this.btnEmpeñar.Text = "Empeñar";
             this.btnEmpeñar.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
@@ -421,11 +420,11 @@ namespace Empeño.WindowsForms.Views
             this.btnVerEmpleado.IconColor = System.Drawing.Color.White;
             this.btnVerEmpleado.IconSize = 16;
             this.btnVerEmpleado.ImageAlign = System.Drawing.ContentAlignment.TopCenter;
-            this.btnVerEmpleado.Location = new System.Drawing.Point(166, 5);
+            this.btnVerEmpleado.Location = new System.Drawing.Point(133, 4);
             this.btnVerEmpleado.Margin = new System.Windows.Forms.Padding(2);
             this.btnVerEmpleado.Name = "btnVerEmpleado";
             this.btnVerEmpleado.Rotation = 0D;
-            this.btnVerEmpleado.Size = new System.Drawing.Size(78, 42);
+            this.btnVerEmpleado.Size = new System.Drawing.Size(62, 34);
             this.btnVerEmpleado.TabIndex = 19;
             this.btnVerEmpleado.Text = "Ver";
             this.btnVerEmpleado.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
@@ -446,11 +445,11 @@ namespace Empeño.WindowsForms.Views
             this.btnEditar.IconColor = System.Drawing.Color.White;
             this.btnEditar.IconSize = 16;
             this.btnEditar.ImageAlign = System.Drawing.ContentAlignment.TopCenter;
-            this.btnEditar.Location = new System.Drawing.Point(86, 5);
+            this.btnEditar.Location = new System.Drawing.Point(69, 4);
             this.btnEditar.Margin = new System.Windows.Forms.Padding(2);
             this.btnEditar.Name = "btnEditar";
             this.btnEditar.Rotation = 0D;
-            this.btnEditar.Size = new System.Drawing.Size(80, 42);
+            this.btnEditar.Size = new System.Drawing.Size(64, 34);
             this.btnEditar.TabIndex = 18;
             this.btnEditar.Text = "Editar";
             this.btnEditar.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
@@ -465,7 +464,7 @@ namespace Empeño.WindowsForms.Views
             this.panel4.Location = new System.Drawing.Point(0, 0);
             this.panel4.Margin = new System.Windows.Forms.Padding(2);
             this.panel4.Name = "panel4";
-            this.panel4.Size = new System.Drawing.Size(782, 40);
+            this.panel4.Size = new System.Drawing.Size(623, 32);
             this.panel4.TabIndex = 0;
             // 
             // label5
@@ -475,10 +474,10 @@ namespace Empeño.WindowsForms.Views
             this.label5.AutoSize = true;
             this.label5.Font = new System.Drawing.Font("Century Gothic", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label5.ForeColor = System.Drawing.Color.White;
-            this.label5.Location = new System.Drawing.Point(2, 10);
+            this.label5.Location = new System.Drawing.Point(2, 8);
             this.label5.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(74, 19);
+            this.label5.Size = new System.Drawing.Size(63, 17);
             this.label5.TabIndex = 1;
             this.label5.Text = "Clientes";
             // 
@@ -487,20 +486,20 @@ namespace Empeño.WindowsForms.Views
             this.panel22.Controls.Add(this.lblCantidad);
             this.panel22.Controls.Add(this.label11);
             this.panel22.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel22.Location = new System.Drawing.Point(7, 248);
+            this.panel22.Location = new System.Drawing.Point(6, 197);
             this.panel22.Margin = new System.Windows.Forms.Padding(2);
             this.panel22.Name = "panel22";
-            this.panel22.Size = new System.Drawing.Size(782, 46);
+            this.panel22.Size = new System.Drawing.Size(623, 36);
             this.panel22.TabIndex = 2;
             // 
             // lblCantidad
             // 
             this.lblCantidad.AutoSize = true;
             this.lblCantidad.Font = new System.Drawing.Font("Century Gothic", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblCantidad.Location = new System.Drawing.Point(60, 9);
+            this.lblCantidad.Location = new System.Drawing.Point(48, 7);
             this.lblCantidad.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.lblCantidad.Name = "lblCantidad";
-            this.lblCantidad.Size = new System.Drawing.Size(28, 21);
+            this.lblCantidad.Size = new System.Drawing.Size(25, 19);
             this.lblCantidad.TabIndex = 4;
             this.lblCantidad.Text = "00";
             // 
@@ -508,10 +507,10 @@ namespace Empeño.WindowsForms.Views
             // 
             this.label11.AutoSize = true;
             this.label11.Font = new System.Drawing.Font("Century Gothic", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label11.Location = new System.Drawing.Point(2, 11);
+            this.label11.Location = new System.Drawing.Point(2, 9);
             this.label11.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label11.Name = "label11";
-            this.label11.Size = new System.Drawing.Size(61, 19);
+            this.label11.Size = new System.Drawing.Size(52, 17);
             this.label11.TabIndex = 3;
             this.label11.Text = "Total : ";
             // 
@@ -522,11 +521,11 @@ namespace Empeño.WindowsForms.Views
             this.panel2.Controls.Add(this.panel6);
             this.panel2.Controls.Add(this.panel3);
             this.panel2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel2.Location = new System.Drawing.Point(2, 317);
+            this.panel2.Location = new System.Drawing.Point(2, 253);
             this.panel2.Margin = new System.Windows.Forms.Padding(2);
             this.panel2.Name = "panel2";
-            this.panel2.Padding = new System.Windows.Forms.Padding(8, 8, 15, 15);
-            this.panel2.Size = new System.Drawing.Size(806, 381);
+            this.panel2.Padding = new System.Windows.Forms.Padding(6, 6, 12, 12);
+            this.panel2.Size = new System.Drawing.Size(643, 304);
             this.panel2.TabIndex = 3;
             // 
             // panel6
@@ -534,10 +533,10 @@ namespace Empeño.WindowsForms.Views
             this.panel6.BackColor = System.Drawing.Color.White;
             this.panel6.Controls.Add(this.tableLayoutPanel3);
             this.panel6.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel6.Location = new System.Drawing.Point(8, 48);
+            this.panel6.Location = new System.Drawing.Point(6, 38);
             this.panel6.Margin = new System.Windows.Forms.Padding(2);
             this.panel6.Name = "panel6";
-            this.panel6.Size = new System.Drawing.Size(783, 318);
+            this.panel6.Size = new System.Drawing.Size(625, 254);
             this.panel6.TabIndex = 1;
             // 
             // tableLayoutPanel3
@@ -552,9 +551,9 @@ namespace Empeño.WindowsForms.Views
             this.tableLayoutPanel3.Margin = new System.Windows.Forms.Padding(2);
             this.tableLayoutPanel3.Name = "tableLayoutPanel3";
             this.tableLayoutPanel3.RowCount = 2;
-            this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 50F));
+            this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 40F));
             this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel3.Size = new System.Drawing.Size(783, 318);
+            this.tableLayoutPanel3.Size = new System.Drawing.Size(625, 254);
             this.tableLayoutPanel3.TabIndex = 1;
             // 
             // panel7
@@ -565,7 +564,7 @@ namespace Empeño.WindowsForms.Views
             this.panel7.Location = new System.Drawing.Point(2, 2);
             this.panel7.Margin = new System.Windows.Forms.Padding(2);
             this.panel7.Name = "panel7";
-            this.panel7.Size = new System.Drawing.Size(779, 46);
+            this.panel7.Size = new System.Drawing.Size(621, 36);
             this.panel7.TabIndex = 0;
             // 
             // pictureBox2
@@ -573,10 +572,10 @@ namespace Empeño.WindowsForms.Views
             this.pictureBox2.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("pictureBox2.BackgroundImage")));
             this.pictureBox2.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.pictureBox2.Dock = System.Windows.Forms.DockStyle.Top;
-            this.pictureBox2.Location = new System.Drawing.Point(0, 41);
+            this.pictureBox2.Location = new System.Drawing.Point(0, 33);
             this.pictureBox2.Margin = new System.Windows.Forms.Padding(2);
             this.pictureBox2.Name = "pictureBox2";
-            this.pictureBox2.Size = new System.Drawing.Size(779, 1);
+            this.pictureBox2.Size = new System.Drawing.Size(621, 1);
             this.pictureBox2.TabIndex = 2;
             this.pictureBox2.TabStop = false;
             // 
@@ -597,7 +596,7 @@ namespace Empeño.WindowsForms.Views
             this.comboBox1.Location = new System.Drawing.Point(0, 0);
             this.comboBox1.Margin = new System.Windows.Forms.Padding(2);
             this.comboBox1.Name = "comboBox1";
-            this.comboBox1.Size = new System.Drawing.Size(779, 41);
+            this.comboBox1.Size = new System.Drawing.Size(621, 33);
             this.comboBox1.TabIndex = 22;
             this.comboBox1.Text = "Activos, Pendientes, Vencidos";
             this.comboBox1.SelectedIndexChanged += new System.EventHandler(this.comboBox1_SelectedIndexChanged);
@@ -608,10 +607,10 @@ namespace Empeño.WindowsForms.Views
             this.panel21.Controls.Add(this.panel20);
             this.panel21.Controls.Add(this.panel23);
             this.panel21.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel21.Location = new System.Drawing.Point(2, 52);
+            this.panel21.Location = new System.Drawing.Point(2, 42);
             this.panel21.Margin = new System.Windows.Forms.Padding(2);
             this.panel21.Name = "panel21";
-            this.panel21.Size = new System.Drawing.Size(779, 264);
+            this.panel21.Size = new System.Drawing.Size(621, 210);
             this.panel21.TabIndex = 2;
             // 
             // dgvEmpeños
@@ -642,8 +641,7 @@ namespace Empeño.WindowsForms.Views
             this.dgvEmpeños.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dgvEmpeños.EnableHeadersVisualStyles = false;
             this.dgvEmpeños.GridColor = System.Drawing.SystemColors.Control;
-            this.dgvEmpeños.Location = new System.Drawing.Point(0, 50);
-            this.dgvEmpeños.Margin = new System.Windows.Forms.Padding(4);
+            this.dgvEmpeños.Location = new System.Drawing.Point(0, 40);
             this.dgvEmpeños.Name = "dgvEmpeños";
             this.dgvEmpeños.RowHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.None;
             dataGridViewCellStyle7.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
@@ -664,7 +662,7 @@ namespace Empeño.WindowsForms.Views
             this.dgvEmpeños.RowTemplate.DividerHeight = 1;
             this.dgvEmpeños.RowTemplate.Height = 40;
             this.dgvEmpeños.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgvEmpeños.Size = new System.Drawing.Size(779, 164);
+            this.dgvEmpeños.Size = new System.Drawing.Size(621, 130);
             this.dgvEmpeños.TabIndex = 27;
             this.dgvEmpeños.CellFormatting += new System.Windows.Forms.DataGridViewCellFormattingEventHandler(this.dgvEmpeños_CellFormatting);
             this.dgvEmpeños.DoubleClick += new System.EventHandler(this.dgvEmpeños_DoubleClick);
@@ -674,20 +672,20 @@ namespace Empeño.WindowsForms.Views
             this.panel20.Controls.Add(this.lblCatidadEmpeños);
             this.panel20.Controls.Add(this.label14);
             this.panel20.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.panel20.Location = new System.Drawing.Point(0, 214);
+            this.panel20.Location = new System.Drawing.Point(0, 170);
             this.panel20.Margin = new System.Windows.Forms.Padding(2);
             this.panel20.Name = "panel20";
-            this.panel20.Size = new System.Drawing.Size(779, 50);
+            this.panel20.Size = new System.Drawing.Size(621, 40);
             this.panel20.TabIndex = 39;
             // 
             // lblCatidadEmpeños
             // 
             this.lblCatidadEmpeños.AutoSize = true;
             this.lblCatidadEmpeños.Font = new System.Drawing.Font("Century Gothic", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblCatidadEmpeños.Location = new System.Drawing.Point(62, 11);
+            this.lblCatidadEmpeños.Location = new System.Drawing.Point(50, 9);
             this.lblCatidadEmpeños.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.lblCatidadEmpeños.Name = "lblCatidadEmpeños";
-            this.lblCatidadEmpeños.Size = new System.Drawing.Size(28, 21);
+            this.lblCatidadEmpeños.Size = new System.Drawing.Size(25, 19);
             this.lblCatidadEmpeños.TabIndex = 6;
             this.lblCatidadEmpeños.Text = "00";
             // 
@@ -695,10 +693,10 @@ namespace Empeño.WindowsForms.Views
             // 
             this.label14.AutoSize = true;
             this.label14.Font = new System.Drawing.Font("Century Gothic", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label14.Location = new System.Drawing.Point(6, 12);
+            this.label14.Location = new System.Drawing.Point(5, 10);
             this.label14.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label14.Name = "label14";
-            this.label14.Size = new System.Drawing.Size(61, 19);
+            this.label14.Size = new System.Drawing.Size(52, 17);
             this.label14.TabIndex = 5;
             this.label14.Text = "Total : ";
             // 
@@ -714,8 +712,8 @@ namespace Empeño.WindowsForms.Views
             this.panel23.Location = new System.Drawing.Point(0, 0);
             this.panel23.Margin = new System.Windows.Forms.Padding(2);
             this.panel23.Name = "panel23";
-            this.panel23.Padding = new System.Windows.Forms.Padding(0, 5, 0, 0);
-            this.panel23.Size = new System.Drawing.Size(779, 50);
+            this.panel23.Padding = new System.Windows.Forms.Padding(0, 4, 0, 0);
+            this.panel23.Size = new System.Drawing.Size(621, 40);
             this.panel23.TabIndex = 37;
             // 
             // btnReimprimir
@@ -732,11 +730,11 @@ namespace Empeño.WindowsForms.Views
             this.btnReimprimir.IconColor = System.Drawing.Color.White;
             this.btnReimprimir.IconSize = 16;
             this.btnReimprimir.ImageAlign = System.Drawing.ContentAlignment.TopCenter;
-            this.btnReimprimir.Location = new System.Drawing.Point(390, 5);
+            this.btnReimprimir.Location = new System.Drawing.Point(312, 4);
             this.btnReimprimir.Margin = new System.Windows.Forms.Padding(2);
             this.btnReimprimir.Name = "btnReimprimir";
             this.btnReimprimir.Rotation = 0D;
-            this.btnReimprimir.Size = new System.Drawing.Size(98, 45);
+            this.btnReimprimir.Size = new System.Drawing.Size(78, 36);
             this.btnReimprimir.TabIndex = 28;
             this.btnReimprimir.Text = "Reimprimir";
             this.btnReimprimir.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
@@ -757,11 +755,11 @@ namespace Empeño.WindowsForms.Views
             this.btnHoy.IconColor = System.Drawing.Color.White;
             this.btnHoy.IconSize = 16;
             this.btnHoy.ImageAlign = System.Drawing.ContentAlignment.TopCenter;
-            this.btnHoy.Location = new System.Drawing.Point(225, 5);
+            this.btnHoy.Location = new System.Drawing.Point(180, 4);
             this.btnHoy.Margin = new System.Windows.Forms.Padding(2);
             this.btnHoy.Name = "btnHoy";
             this.btnHoy.Rotation = 0D;
-            this.btnHoy.Size = new System.Drawing.Size(69, 45);
+            this.btnHoy.Size = new System.Drawing.Size(55, 36);
             this.btnHoy.TabIndex = 26;
             this.btnHoy.Text = "Hoy";
             this.btnHoy.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
@@ -782,11 +780,11 @@ namespace Empeño.WindowsForms.Views
             this.btnPendientes.IconColor = System.Drawing.Color.White;
             this.btnPendientes.IconSize = 16;
             this.btnPendientes.ImageAlign = System.Drawing.ContentAlignment.TopCenter;
-            this.btnPendientes.Location = new System.Drawing.Point(291, 5);
+            this.btnPendientes.Location = new System.Drawing.Point(233, 4);
             this.btnPendientes.Margin = new System.Windows.Forms.Padding(2);
             this.btnPendientes.Name = "btnPendientes";
             this.btnPendientes.Rotation = 0D;
-            this.btnPendientes.Size = new System.Drawing.Size(101, 45);
+            this.btnPendientes.Size = new System.Drawing.Size(81, 36);
             this.btnPendientes.TabIndex = 27;
             this.btnPendientes.Text = "Pendientes";
             this.btnPendientes.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
@@ -807,11 +805,11 @@ namespace Empeño.WindowsForms.Views
             this.btnVer.IconColor = System.Drawing.Color.White;
             this.btnVer.IconSize = 16;
             this.btnVer.ImageAlign = System.Drawing.ContentAlignment.TopCenter;
-            this.btnVer.Location = new System.Drawing.Point(75, 5);
+            this.btnVer.Location = new System.Drawing.Point(60, 4);
             this.btnVer.Margin = new System.Windows.Forms.Padding(2);
             this.btnVer.Name = "btnVer";
             this.btnVer.Rotation = 0D;
-            this.btnVer.Size = new System.Drawing.Size(72, 45);
+            this.btnVer.Size = new System.Drawing.Size(58, 36);
             this.btnVer.TabIndex = 24;
             this.btnVer.Text = "Ver";
             this.btnVer.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
@@ -832,11 +830,11 @@ namespace Empeño.WindowsForms.Views
             this.btnEditarEmpeño.IconColor = System.Drawing.Color.White;
             this.btnEditarEmpeño.IconSize = 16;
             this.btnEditarEmpeño.ImageAlign = System.Drawing.ContentAlignment.TopCenter;
-            this.btnEditarEmpeño.Location = new System.Drawing.Point(0, 5);
+            this.btnEditarEmpeño.Location = new System.Drawing.Point(0, 4);
             this.btnEditarEmpeño.Margin = new System.Windows.Forms.Padding(2);
             this.btnEditarEmpeño.Name = "btnEditarEmpeño";
             this.btnEditarEmpeño.Rotation = 0D;
-            this.btnEditarEmpeño.Size = new System.Drawing.Size(76, 45);
+            this.btnEditarEmpeño.Size = new System.Drawing.Size(61, 36);
             this.btnEditarEmpeño.TabIndex = 23;
             this.btnEditarEmpeño.Text = "Editar";
             this.btnEditarEmpeño.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
@@ -857,11 +855,11 @@ namespace Empeño.WindowsForms.Views
             this.btnEliminar.IconColor = System.Drawing.Color.White;
             this.btnEliminar.IconSize = 16;
             this.btnEliminar.ImageAlign = System.Drawing.ContentAlignment.TopCenter;
-            this.btnEliminar.Location = new System.Drawing.Point(146, 5);
+            this.btnEliminar.Location = new System.Drawing.Point(117, 4);
             this.btnEliminar.Margin = new System.Windows.Forms.Padding(2);
             this.btnEliminar.Name = "btnEliminar";
             this.btnEliminar.Rotation = 0D;
-            this.btnEliminar.Size = new System.Drawing.Size(80, 45);
+            this.btnEliminar.Size = new System.Drawing.Size(64, 36);
             this.btnEliminar.TabIndex = 25;
             this.btnEliminar.Text = "Eliminar";
             this.btnEliminar.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
@@ -873,10 +871,10 @@ namespace Empeño.WindowsForms.Views
             this.panel3.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(17)))), ((int)(((byte)(2)))), ((int)(((byte)(115)))));
             this.panel3.Controls.Add(this.label10);
             this.panel3.Dock = System.Windows.Forms.DockStyle.Top;
-            this.panel3.Location = new System.Drawing.Point(8, 8);
+            this.panel3.Location = new System.Drawing.Point(6, 6);
             this.panel3.Margin = new System.Windows.Forms.Padding(2);
             this.panel3.Name = "panel3";
-            this.panel3.Size = new System.Drawing.Size(783, 40);
+            this.panel3.Size = new System.Drawing.Size(625, 32);
             this.panel3.TabIndex = 0;
             // 
             // label10
@@ -886,10 +884,10 @@ namespace Empeño.WindowsForms.Views
             this.label10.AutoSize = true;
             this.label10.Font = new System.Drawing.Font("Century Gothic", 10.2F, System.Drawing.FontStyle.Bold);
             this.label10.ForeColor = System.Drawing.Color.White;
-            this.label10.Location = new System.Drawing.Point(9, 9);
+            this.label10.Location = new System.Drawing.Point(7, 7);
             this.label10.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label10.Name = "label10";
-            this.label10.Size = new System.Drawing.Size(85, 19);
+            this.label10.Size = new System.Drawing.Size(70, 17);
             this.label10.TabIndex = 1;
             this.label10.Text = "Empeños";
             // 
@@ -899,12 +897,12 @@ namespace Empeño.WindowsForms.Views
             this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel4.Controls.Add(this.panel8, 0, 0);
             this.tableLayoutPanel4.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel4.Location = new System.Drawing.Point(824, 2);
-            this.tableLayoutPanel4.Margin = new System.Windows.Forms.Padding(2, 2, 10, 2);
+            this.tableLayoutPanel4.Location = new System.Drawing.Point(659, 2);
+            this.tableLayoutPanel4.Margin = new System.Windows.Forms.Padding(2, 2, 8, 2);
             this.tableLayoutPanel4.Name = "tableLayoutPanel4";
             this.tableLayoutPanel4.RowCount = 1;
             this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 68F));
-            this.tableLayoutPanel4.Size = new System.Drawing.Size(536, 700);
+            this.tableLayoutPanel4.Size = new System.Drawing.Size(429, 559);
             this.tableLayoutPanel4.TabIndex = 4;
             // 
             // panel8
@@ -917,7 +915,7 @@ namespace Empeño.WindowsForms.Views
             this.panel8.Location = new System.Drawing.Point(2, 2);
             this.panel8.Margin = new System.Windows.Forms.Padding(2);
             this.panel8.Name = "panel8";
-            this.panel8.Size = new System.Drawing.Size(532, 696);
+            this.panel8.Size = new System.Drawing.Size(425, 555);
             this.panel8.TabIndex = 0;
             // 
             // panel10
@@ -927,7 +925,7 @@ namespace Empeño.WindowsForms.Views
             this.panel10.Location = new System.Drawing.Point(0, 0);
             this.panel10.Margin = new System.Windows.Forms.Padding(2);
             this.panel10.Name = "panel10";
-            this.panel10.Size = new System.Drawing.Size(532, 696);
+            this.panel10.Size = new System.Drawing.Size(425, 555);
             this.panel10.TabIndex = 0;
             // 
             // tableLayoutPanel5
@@ -940,11 +938,11 @@ namespace Empeño.WindowsForms.Views
             this.tableLayoutPanel5.Location = new System.Drawing.Point(0, 0);
             this.tableLayoutPanel5.Margin = new System.Windows.Forms.Padding(2);
             this.tableLayoutPanel5.Name = "tableLayoutPanel5";
-            this.tableLayoutPanel5.Padding = new System.Windows.Forms.Padding(5, 5, 15, 5);
+            this.tableLayoutPanel5.Padding = new System.Windows.Forms.Padding(4, 4, 12, 4);
             this.tableLayoutPanel5.RowCount = 2;
-            this.tableLayoutPanel5.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 40F));
+            this.tableLayoutPanel5.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 32F));
             this.tableLayoutPanel5.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel5.Size = new System.Drawing.Size(532, 696);
+            this.tableLayoutPanel5.Size = new System.Drawing.Size(425, 555);
             this.tableLayoutPanel5.TabIndex = 1;
             // 
             // panel11
@@ -957,11 +955,11 @@ namespace Empeño.WindowsForms.Views
             this.panel11.Controls.Add(this.lblNumeroEmpeño);
             this.panel11.Controls.Add(this.label1);
             this.panel11.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel11.Location = new System.Drawing.Point(7, 7);
+            this.panel11.Location = new System.Drawing.Point(6, 6);
             this.panel11.Margin = new System.Windows.Forms.Padding(2);
             this.panel11.Name = "panel11";
-            this.panel11.Padding = new System.Windows.Forms.Padding(5, 5, 45, 5);
-            this.panel11.Size = new System.Drawing.Size(508, 36);
+            this.panel11.Padding = new System.Windows.Forms.Padding(4, 4, 36, 4);
+            this.panel11.Size = new System.Drawing.Size(405, 28);
             this.panel11.TabIndex = 0;
             // 
             // lblVence
@@ -972,10 +970,10 @@ namespace Empeño.WindowsForms.Views
             this.lblVence.Enabled = false;
             this.lblVence.Font = new System.Drawing.Font("Century Gothic", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblVence.ForeColor = System.Drawing.Color.White;
-            this.lblVence.Location = new System.Drawing.Point(402, 11);
+            this.lblVence.Location = new System.Drawing.Point(321, 9);
             this.lblVence.Margin = new System.Windows.Forms.Padding(2);
             this.lblVence.Name = "lblVence";
-            this.lblVence.Size = new System.Drawing.Size(100, 21);
+            this.lblVence.Size = new System.Drawing.Size(80, 17);
             this.lblVence.TabIndex = 18;
             this.lblVence.Text = "03/07/2020";
             // 
@@ -986,11 +984,11 @@ namespace Empeño.WindowsForms.Views
             this.lblEstado.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
             this.lblEstado.Font = new System.Drawing.Font("Century Gothic", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblEstado.ForeColor = System.Drawing.Color.LightSeaGreen;
-            this.lblEstado.Location = new System.Drawing.Point(215, 5);
+            this.lblEstado.Location = new System.Drawing.Point(171, 4);
             this.lblEstado.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.lblEstado.Name = "lblEstado";
-            this.lblEstado.Padding = new System.Windows.Forms.Padding(4);
-            this.lblEstado.Size = new System.Drawing.Size(70, 27);
+            this.lblEstado.Padding = new System.Windows.Forms.Padding(3, 3, 3, 3);
+            this.lblEstado.Size = new System.Drawing.Size(57, 23);
             this.lblEstado.TabIndex = 5;
             this.lblEstado.Text = "Activo";
             this.lblEstado.Visible = false;
@@ -1003,10 +1001,10 @@ namespace Empeño.WindowsForms.Views
             this.label7.AutoSize = true;
             this.label7.Font = new System.Drawing.Font("Century Gothic", 10.2F, System.Drawing.FontStyle.Bold);
             this.label7.ForeColor = System.Drawing.Color.White;
-            this.label7.Location = new System.Drawing.Point(328, 12);
+            this.label7.Location = new System.Drawing.Point(261, 10);
             this.label7.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(64, 19);
+            this.label7.Size = new System.Drawing.Size(53, 17);
             this.label7.TabIndex = 4;
             this.label7.Text = "Vence";
             // 
@@ -1017,11 +1015,11 @@ namespace Empeño.WindowsForms.Views
             this.iconPictureBox2.BackColor = System.Drawing.Color.Transparent;
             this.iconPictureBox2.IconChar = FontAwesome.Sharp.IconChar.Pager;
             this.iconPictureBox2.IconColor = System.Drawing.Color.White;
-            this.iconPictureBox2.IconSize = 22;
-            this.iconPictureBox2.Location = new System.Drawing.Point(9, 10);
+            this.iconPictureBox2.IconSize = 17;
+            this.iconPictureBox2.Location = new System.Drawing.Point(7, 8);
             this.iconPictureBox2.Margin = new System.Windows.Forms.Padding(2);
             this.iconPictureBox2.Name = "iconPictureBox2";
-            this.iconPictureBox2.Size = new System.Drawing.Size(34, 22);
+            this.iconPictureBox2.Size = new System.Drawing.Size(27, 17);
             this.iconPictureBox2.TabIndex = 2;
             this.iconPictureBox2.TabStop = false;
             // 
@@ -1032,10 +1030,10 @@ namespace Empeño.WindowsForms.Views
             this.lblNumeroEmpeño.AutoSize = true;
             this.lblNumeroEmpeño.Font = new System.Drawing.Font("Century Gothic", 10.2F, System.Drawing.FontStyle.Bold);
             this.lblNumeroEmpeño.ForeColor = System.Drawing.Color.White;
-            this.lblNumeroEmpeño.Location = new System.Drawing.Point(139, 10);
+            this.lblNumeroEmpeño.Location = new System.Drawing.Point(111, 8);
             this.lblNumeroEmpeño.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.lblNumeroEmpeño.Name = "lblNumeroEmpeño";
-            this.lblNumeroEmpeño.Size = new System.Drawing.Size(29, 19);
+            this.lblNumeroEmpeño.Size = new System.Drawing.Size(24, 17);
             this.lblNumeroEmpeño.TabIndex = 1;
             this.lblNumeroEmpeño.Text = "00";
             // 
@@ -1046,10 +1044,10 @@ namespace Empeño.WindowsForms.Views
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("Century Gothic", 10.2F, System.Drawing.FontStyle.Bold);
             this.label1.ForeColor = System.Drawing.Color.White;
-            this.label1.Location = new System.Drawing.Point(41, 10);
+            this.label1.Location = new System.Drawing.Point(33, 8);
             this.label1.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(92, 19);
+            this.label1.Size = new System.Drawing.Size(76, 17);
             this.label1.TabIndex = 0;
             this.label1.Text = "Empeño #";
             // 
@@ -1060,13 +1058,13 @@ namespace Empeño.WindowsForms.Views
             this.tableLayoutPanel6.Controls.Add(this.panel13, 0, 1);
             this.tableLayoutPanel6.Controls.Add(this.panelFormulario, 0, 0);
             this.tableLayoutPanel6.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel6.Location = new System.Drawing.Point(7, 47);
+            this.tableLayoutPanel6.Location = new System.Drawing.Point(6, 38);
             this.tableLayoutPanel6.Margin = new System.Windows.Forms.Padding(2);
             this.tableLayoutPanel6.Name = "tableLayoutPanel6";
             this.tableLayoutPanel6.RowCount = 2;
             this.tableLayoutPanel6.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel6.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 55F));
-            this.tableLayoutPanel6.Size = new System.Drawing.Size(508, 642);
+            this.tableLayoutPanel6.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 44F));
+            this.tableLayoutPanel6.Size = new System.Drawing.Size(405, 511);
             this.tableLayoutPanel6.TabIndex = 1;
             // 
             // panel13
@@ -1077,10 +1075,10 @@ namespace Empeño.WindowsForms.Views
             this.panel13.Controls.Add(this.btnPagar);
             this.panel13.Controls.Add(this.btnGuardarEmpeño);
             this.panel13.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel13.Location = new System.Drawing.Point(2, 589);
+            this.panel13.Location = new System.Drawing.Point(2, 469);
             this.panel13.Margin = new System.Windows.Forms.Padding(2);
             this.panel13.Name = "panel13";
-            this.panel13.Size = new System.Drawing.Size(504, 51);
+            this.panel13.Size = new System.Drawing.Size(401, 40);
             this.panel13.TabIndex = 3;
             // 
             // btnPagados
@@ -1096,11 +1094,11 @@ namespace Empeño.WindowsForms.Views
             this.btnPagados.IconColor = System.Drawing.Color.White;
             this.btnPagados.IconSize = 16;
             this.btnPagados.ImageAlign = System.Drawing.ContentAlignment.TopCenter;
-            this.btnPagados.Location = new System.Drawing.Point(421, 6);
+            this.btnPagados.Location = new System.Drawing.Point(335, 5);
             this.btnPagados.Margin = new System.Windows.Forms.Padding(2);
             this.btnPagados.Name = "btnPagados";
             this.btnPagados.Rotation = 0D;
-            this.btnPagados.Size = new System.Drawing.Size(79, 41);
+            this.btnPagados.Size = new System.Drawing.Size(63, 33);
             this.btnPagados.TabIndex = 51;
             this.btnPagados.Text = "Pagados";
             this.btnPagados.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
@@ -1120,11 +1118,11 @@ namespace Empeño.WindowsForms.Views
             this.btnCancelar.IconChar = FontAwesome.Sharp.IconChar.Eraser;
             this.btnCancelar.IconColor = System.Drawing.Color.White;
             this.btnCancelar.IconSize = 24;
-            this.btnCancelar.Location = new System.Drawing.Point(115, 6);
+            this.btnCancelar.Location = new System.Drawing.Point(92, 5);
             this.btnCancelar.Margin = new System.Windows.Forms.Padding(2);
             this.btnCancelar.Name = "btnCancelar";
             this.btnCancelar.Rotation = 0D;
-            this.btnCancelar.Size = new System.Drawing.Size(118, 42);
+            this.btnCancelar.Size = new System.Drawing.Size(94, 33);
             this.btnCancelar.TabIndex = 15;
             this.btnCancelar.Text = "Cancelar";
             this.btnCancelar.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
@@ -1144,11 +1142,11 @@ namespace Empeño.WindowsForms.Views
             this.btnPagar.IconChar = FontAwesome.Sharp.IconChar.Donate;
             this.btnPagar.IconColor = System.Drawing.Color.White;
             this.btnPagar.IconSize = 24;
-            this.btnPagar.Location = new System.Drawing.Point(236, 6);
+            this.btnPagar.Location = new System.Drawing.Point(189, 5);
             this.btnPagar.Margin = new System.Windows.Forms.Padding(2);
             this.btnPagar.Name = "btnPagar";
             this.btnPagar.Rotation = 0D;
-            this.btnPagar.Size = new System.Drawing.Size(109, 42);
+            this.btnPagar.Size = new System.Drawing.Size(87, 33);
             this.btnPagar.TabIndex = 16;
             this.btnPagar.Text = "Pagar";
             this.btnPagar.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
@@ -1168,11 +1166,11 @@ namespace Empeño.WindowsForms.Views
             this.btnGuardarEmpeño.IconChar = FontAwesome.Sharp.IconChar.Save;
             this.btnGuardarEmpeño.IconColor = System.Drawing.Color.White;
             this.btnGuardarEmpeño.IconSize = 24;
-            this.btnGuardarEmpeño.Location = new System.Drawing.Point(4, 5);
+            this.btnGuardarEmpeño.Location = new System.Drawing.Point(3, 4);
             this.btnGuardarEmpeño.Margin = new System.Windows.Forms.Padding(2);
             this.btnGuardarEmpeño.Name = "btnGuardarEmpeño";
             this.btnGuardarEmpeño.Rotation = 0D;
-            this.btnGuardarEmpeño.Size = new System.Drawing.Size(110, 42);
+            this.btnGuardarEmpeño.Size = new System.Drawing.Size(88, 33);
             this.btnGuardarEmpeño.TabIndex = 14;
             this.btnGuardarEmpeño.Text = "Guardar";
             this.btnGuardarEmpeño.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
@@ -1220,7 +1218,7 @@ namespace Empeño.WindowsForms.Views
             this.panelFormulario.Location = new System.Drawing.Point(2, 2);
             this.panelFormulario.Margin = new System.Windows.Forms.Padding(2);
             this.panelFormulario.Name = "panelFormulario";
-            this.panelFormulario.Size = new System.Drawing.Size(504, 583);
+            this.panelFormulario.Size = new System.Drawing.Size(401, 463);
             this.panelFormulario.TabIndex = 2;
             this.panelFormulario.Paint += new System.Windows.Forms.PaintEventHandler(this.panelFormulario_Paint);
             // 
@@ -1236,11 +1234,11 @@ namespace Empeño.WindowsForms.Views
             this.btnReimprimirPago.IconColor = System.Drawing.Color.White;
             this.btnReimprimirPago.IconSize = 16;
             this.btnReimprimirPago.ImageAlign = System.Drawing.ContentAlignment.TopCenter;
-            this.btnReimprimirPago.Location = new System.Drawing.Point(214, 522);
+            this.btnReimprimirPago.Location = new System.Drawing.Point(171, 418);
             this.btnReimprimirPago.Margin = new System.Windows.Forms.Padding(2);
             this.btnReimprimirPago.Name = "btnReimprimirPago";
             this.btnReimprimirPago.Rotation = 0D;
-            this.btnReimprimirPago.Size = new System.Drawing.Size(98, 45);
+            this.btnReimprimirPago.Size = new System.Drawing.Size(78, 36);
             this.btnReimprimirPago.TabIndex = 52;
             this.btnReimprimirPago.Text = "Reimprimir";
             this.btnReimprimirPago.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
@@ -1254,9 +1252,10 @@ namespace Empeño.WindowsForms.Views
             this.subMenuEstado.Controls.Add(this.btnEstadoCancelado);
             this.subMenuEstado.Controls.Add(this.btnEstadoVencido);
             this.subMenuEstado.Controls.Add(this.btnEstadoVigente);
-            this.subMenuEstado.Location = new System.Drawing.Point(157, 3);
+            this.subMenuEstado.Location = new System.Drawing.Point(125, 2);
+            this.subMenuEstado.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.subMenuEstado.Name = "subMenuEstado";
-            this.subMenuEstado.Size = new System.Drawing.Size(200, 170);
+            this.subMenuEstado.Size = new System.Drawing.Size(160, 136);
             this.subMenuEstado.TabIndex = 51;
             this.subMenuEstado.Visible = false;
             // 
@@ -1266,9 +1265,10 @@ namespace Empeño.WindowsForms.Views
             this.btnEstadoRetirado.Dock = System.Windows.Forms.DockStyle.Top;
             this.btnEstadoRetirado.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnEstadoRetirado.Font = new System.Drawing.Font("Century Gothic", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnEstadoRetirado.Location = new System.Drawing.Point(0, 126);
+            this.btnEstadoRetirado.Location = new System.Drawing.Point(0, 102);
+            this.btnEstadoRetirado.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.btnEstadoRetirado.Name = "btnEstadoRetirado";
-            this.btnEstadoRetirado.Size = new System.Drawing.Size(200, 42);
+            this.btnEstadoRetirado.Size = new System.Drawing.Size(160, 34);
             this.btnEstadoRetirado.TabIndex = 3;
             this.btnEstadoRetirado.Text = "Retirado";
             this.btnEstadoRetirado.UseVisualStyleBackColor = false;
@@ -1280,9 +1280,10 @@ namespace Empeño.WindowsForms.Views
             this.btnEstadoCancelado.Dock = System.Windows.Forms.DockStyle.Top;
             this.btnEstadoCancelado.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnEstadoCancelado.Font = new System.Drawing.Font("Century Gothic", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnEstadoCancelado.Location = new System.Drawing.Point(0, 84);
+            this.btnEstadoCancelado.Location = new System.Drawing.Point(0, 68);
+            this.btnEstadoCancelado.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.btnEstadoCancelado.Name = "btnEstadoCancelado";
-            this.btnEstadoCancelado.Size = new System.Drawing.Size(200, 42);
+            this.btnEstadoCancelado.Size = new System.Drawing.Size(160, 34);
             this.btnEstadoCancelado.TabIndex = 2;
             this.btnEstadoCancelado.Text = "Cancelado";
             this.btnEstadoCancelado.UseVisualStyleBackColor = false;
@@ -1294,9 +1295,10 @@ namespace Empeño.WindowsForms.Views
             this.btnEstadoVencido.Dock = System.Windows.Forms.DockStyle.Top;
             this.btnEstadoVencido.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnEstadoVencido.Font = new System.Drawing.Font("Century Gothic", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnEstadoVencido.Location = new System.Drawing.Point(0, 42);
+            this.btnEstadoVencido.Location = new System.Drawing.Point(0, 34);
+            this.btnEstadoVencido.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.btnEstadoVencido.Name = "btnEstadoVencido";
-            this.btnEstadoVencido.Size = new System.Drawing.Size(200, 42);
+            this.btnEstadoVencido.Size = new System.Drawing.Size(160, 34);
             this.btnEstadoVencido.TabIndex = 1;
             this.btnEstadoVencido.Text = "Vencido";
             this.btnEstadoVencido.UseVisualStyleBackColor = false;
@@ -1309,8 +1311,9 @@ namespace Empeño.WindowsForms.Views
             this.btnEstadoVigente.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnEstadoVigente.Font = new System.Drawing.Font("Century Gothic", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnEstadoVigente.Location = new System.Drawing.Point(0, 0);
+            this.btnEstadoVigente.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.btnEstadoVigente.Name = "btnEstadoVigente";
-            this.btnEstadoVigente.Size = new System.Drawing.Size(200, 42);
+            this.btnEstadoVigente.Size = new System.Drawing.Size(160, 34);
             this.btnEstadoVigente.TabIndex = 0;
             this.btnEstadoVigente.Text = "Vigente";
             this.btnEstadoVigente.UseVisualStyleBackColor = false;
@@ -1324,10 +1327,10 @@ namespace Empeño.WindowsForms.Views
             this.Fecha.Enabled = false;
             this.Fecha.Font = new System.Drawing.Font("Century Gothic", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Fecha.ForeColor = System.Drawing.Color.Black;
-            this.Fecha.Location = new System.Drawing.Point(321, 469);
+            this.Fecha.Location = new System.Drawing.Point(255, 375);
             this.Fecha.Margin = new System.Windows.Forms.Padding(2);
             this.Fecha.Name = "Fecha";
-            this.Fecha.Size = new System.Drawing.Size(129, 25);
+            this.Fecha.Size = new System.Drawing.Size(103, 20);
             this.Fecha.TabIndex = 17;
             this.Fecha.Text = "03/07/2020";
             this.Fecha.Leave += new System.EventHandler(this.Fecha_Leave);
@@ -1345,11 +1348,11 @@ namespace Empeño.WindowsForms.Views
             this.btnIntereses.IconColor = System.Drawing.Color.White;
             this.btnIntereses.IconSize = 16;
             this.btnIntereses.ImageAlign = System.Drawing.ContentAlignment.TopCenter;
-            this.btnIntereses.Location = new System.Drawing.Point(399, 522);
+            this.btnIntereses.Location = new System.Drawing.Point(317, 418);
             this.btnIntereses.Margin = new System.Windows.Forms.Padding(2);
             this.btnIntereses.Name = "btnIntereses";
             this.btnIntereses.Rotation = 0D;
-            this.btnIntereses.Size = new System.Drawing.Size(81, 46);
+            this.btnIntereses.Size = new System.Drawing.Size(65, 37);
             this.btnIntereses.TabIndex = 50;
             this.btnIntereses.Text = "Intereses";
             this.btnIntereses.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
@@ -1369,11 +1372,11 @@ namespace Empeño.WindowsForms.Views
             this.btnPagos.IconColor = System.Drawing.Color.White;
             this.btnPagos.IconSize = 16;
             this.btnPagos.ImageAlign = System.Drawing.ContentAlignment.TopCenter;
-            this.btnPagos.Location = new System.Drawing.Point(337, 522);
+            this.btnPagos.Location = new System.Drawing.Point(268, 418);
             this.btnPagos.Margin = new System.Windows.Forms.Padding(2);
             this.btnPagos.Name = "btnPagos";
             this.btnPagos.Rotation = 0D;
-            this.btnPagos.Size = new System.Drawing.Size(62, 46);
+            this.btnPagos.Size = new System.Drawing.Size(50, 37);
             this.btnPagos.TabIndex = 49;
             this.btnPagos.Text = "Pagos";
             this.btnPagos.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
@@ -1385,10 +1388,10 @@ namespace Empeño.WindowsForms.Views
             this.panel9.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.panel9.BackColor = System.Drawing.Color.DimGray;
-            this.panel9.Location = new System.Drawing.Point(8, 496);
+            this.panel9.Location = new System.Drawing.Point(6, 397);
             this.panel9.Margin = new System.Windows.Forms.Padding(2);
             this.panel9.Name = "panel9";
-            this.panel9.Size = new System.Drawing.Size(465, 1);
+            this.panel9.Size = new System.Drawing.Size(370, 1);
             this.panel9.TabIndex = 48;
             // 
             // btnVerPago
@@ -1403,11 +1406,11 @@ namespace Empeño.WindowsForms.Views
             this.btnVerPago.IconColor = System.Drawing.Color.White;
             this.btnVerPago.IconSize = 16;
             this.btnVerPago.ImageAlign = System.Drawing.ContentAlignment.TopCenter;
-            this.btnVerPago.Location = new System.Drawing.Point(76, 522);
+            this.btnVerPago.Location = new System.Drawing.Point(61, 418);
             this.btnVerPago.Margin = new System.Windows.Forms.Padding(2);
             this.btnVerPago.Name = "btnVerPago";
             this.btnVerPago.Rotation = 0D;
-            this.btnVerPago.Size = new System.Drawing.Size(74, 45);
+            this.btnVerPago.Size = new System.Drawing.Size(59, 36);
             this.btnVerPago.TabIndex = 46;
             this.btnVerPago.Text = "Ver";
             this.btnVerPago.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
@@ -1426,11 +1429,11 @@ namespace Empeño.WindowsForms.Views
             this.btnEditarPago.IconColor = System.Drawing.Color.White;
             this.btnEditarPago.IconSize = 16;
             this.btnEditarPago.ImageAlign = System.Drawing.ContentAlignment.TopCenter;
-            this.btnEditarPago.Location = new System.Drawing.Point(4, 522);
+            this.btnEditarPago.Location = new System.Drawing.Point(3, 418);
             this.btnEditarPago.Margin = new System.Windows.Forms.Padding(2);
             this.btnEditarPago.Name = "btnEditarPago";
             this.btnEditarPago.Rotation = 0D;
-            this.btnEditarPago.Size = new System.Drawing.Size(72, 45);
+            this.btnEditarPago.Size = new System.Drawing.Size(58, 36);
             this.btnEditarPago.TabIndex = 45;
             this.btnEditarPago.Text = "Editar";
             this.btnEditarPago.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
@@ -1450,11 +1453,11 @@ namespace Empeño.WindowsForms.Views
             this.btnEliminarPago.IconColor = System.Drawing.Color.White;
             this.btnEliminarPago.IconSize = 16;
             this.btnEliminarPago.ImageAlign = System.Drawing.ContentAlignment.TopCenter;
-            this.btnEliminarPago.Location = new System.Drawing.Point(146, 522);
+            this.btnEliminarPago.Location = new System.Drawing.Point(117, 418);
             this.btnEliminarPago.Margin = new System.Windows.Forms.Padding(2);
             this.btnEliminarPago.Name = "btnEliminarPago";
             this.btnEliminarPago.Rotation = 0D;
-            this.btnEliminarPago.Size = new System.Drawing.Size(72, 45);
+            this.btnEliminarPago.Size = new System.Drawing.Size(58, 36);
             this.btnEliminarPago.TabIndex = 47;
             this.btnEliminarPago.Text = "Eliminar";
             this.btnEliminarPago.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
@@ -1490,8 +1493,7 @@ namespace Empeño.WindowsForms.Views
             this.dgvPagos.DefaultCellStyle = dataGridViewCellStyle10;
             this.dgvPagos.EnableHeadersVisualStyles = false;
             this.dgvPagos.GridColor = System.Drawing.SystemColors.Control;
-            this.dgvPagos.Location = new System.Drawing.Point(2, 568);
-            this.dgvPagos.Margin = new System.Windows.Forms.Padding(4);
+            this.dgvPagos.Location = new System.Drawing.Point(2, 454);
             this.dgvPagos.Name = "dgvPagos";
             this.dgvPagos.RowHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.None;
             dataGridViewCellStyle11.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
@@ -1512,7 +1514,7 @@ namespace Empeño.WindowsForms.Views
             this.dgvPagos.RowTemplate.DividerHeight = 1;
             this.dgvPagos.RowTemplate.Height = 40;
             this.dgvPagos.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgvPagos.Size = new System.Drawing.Size(481, 222);
+            this.dgvPagos.Size = new System.Drawing.Size(383, 178);
             this.dgvPagos.TabIndex = 43;
             // 
             // pictureBox8
@@ -1521,10 +1523,10 @@ namespace Empeño.WindowsForms.Views
             | System.Windows.Forms.AnchorStyles.Right)));
             this.pictureBox8.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("pictureBox8.BackgroundImage")));
             this.pictureBox8.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.pictureBox8.Location = new System.Drawing.Point(8, 422);
+            this.pictureBox8.Location = new System.Drawing.Point(6, 338);
             this.pictureBox8.Margin = new System.Windows.Forms.Padding(2);
             this.pictureBox8.Name = "pictureBox8";
-            this.pictureBox8.Size = new System.Drawing.Size(462, 1);
+            this.pictureBox8.Size = new System.Drawing.Size(368, 1);
             this.pictureBox8.TabIndex = 34;
             this.pictureBox8.TabStop = false;
             // 
@@ -1538,10 +1540,10 @@ namespace Empeño.WindowsForms.Views
             this.cbInteres.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F);
             this.cbInteres.ForeColor = System.Drawing.Color.LightGray;
             this.cbInteres.FormattingEnabled = true;
-            this.cbInteres.Location = new System.Drawing.Point(8, 385);
+            this.cbInteres.Location = new System.Drawing.Point(6, 308);
             this.cbInteres.Margin = new System.Windows.Forms.Padding(2);
             this.cbInteres.Name = "cbInteres";
-            this.cbInteres.Size = new System.Drawing.Size(461, 37);
+            this.cbInteres.Size = new System.Drawing.Size(368, 32);
             this.cbInteres.TabIndex = 12;
             this.cbInteres.Text = "Porcentaje";
             this.cbInteres.SelectedIndexChanged += new System.EventHandler(this.cbInteres_SelectedIndexChanged_1);
@@ -1553,10 +1555,10 @@ namespace Empeño.WindowsForms.Views
             this.lblInteres.AutoSize = true;
             this.lblInteres.Font = new System.Drawing.Font("Century Gothic", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblInteres.ForeColor = System.Drawing.Color.DimGray;
-            this.lblInteres.Location = new System.Drawing.Point(2, 366);
+            this.lblInteres.Location = new System.Drawing.Point(2, 293);
             this.lblInteres.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.lblInteres.Name = "lblInteres";
-            this.lblInteres.Size = new System.Drawing.Size(97, 19);
+            this.lblInteres.Size = new System.Drawing.Size(81, 17);
             this.lblInteres.TabIndex = 11;
             this.lblInteres.Text = "Porcentaje";
             // 
@@ -1565,10 +1567,10 @@ namespace Empeño.WindowsForms.Views
             this.lblMonto.AutoSize = true;
             this.lblMonto.Font = new System.Drawing.Font("Century Gothic", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblMonto.ForeColor = System.Drawing.Color.DimGray;
-            this.lblMonto.Location = new System.Drawing.Point(2, 314);
+            this.lblMonto.Location = new System.Drawing.Point(2, 251);
             this.lblMonto.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.lblMonto.Name = "lblMonto";
-            this.lblMonto.Size = new System.Drawing.Size(60, 19);
+            this.lblMonto.Size = new System.Drawing.Size(51, 17);
             this.lblMonto.TabIndex = 9;
             this.lblMonto.Text = "Monto";
             // 
@@ -1577,10 +1579,10 @@ namespace Empeño.WindowsForms.Views
             this.lblComentario.AutoSize = true;
             this.lblComentario.Font = new System.Drawing.Font("Century Gothic", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblComentario.ForeColor = System.Drawing.Color.DimGray;
-            this.lblComentario.Location = new System.Drawing.Point(4, 208);
+            this.lblComentario.Location = new System.Drawing.Point(3, 166);
             this.lblComentario.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.lblComentario.Name = "lblComentario";
-            this.lblComentario.Size = new System.Drawing.Size(113, 19);
+            this.lblComentario.Size = new System.Drawing.Size(95, 17);
             this.lblComentario.TabIndex = 7;
             this.lblComentario.Text = "Comentarios";
             // 
@@ -1589,10 +1591,10 @@ namespace Empeño.WindowsForms.Views
             this.lblDescripcion.AutoSize = true;
             this.lblDescripcion.Font = new System.Drawing.Font("Century Gothic", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblDescripcion.ForeColor = System.Drawing.Color.DimGray;
-            this.lblDescripcion.Location = new System.Drawing.Point(4, 102);
+            this.lblDescripcion.Location = new System.Drawing.Point(3, 82);
             this.lblDescripcion.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.lblDescripcion.Name = "lblDescripcion";
-            this.lblDescripcion.Size = new System.Drawing.Size(107, 19);
+            this.lblDescripcion.Size = new System.Drawing.Size(89, 17);
             this.lblDescripcion.TabIndex = 5;
             this.lblDescripcion.Text = "Descripción";
             // 
@@ -1601,10 +1603,10 @@ namespace Empeño.WindowsForms.Views
             this.lblNombre.AutoSize = true;
             this.lblNombre.Font = new System.Drawing.Font("Century Gothic", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblNombre.ForeColor = System.Drawing.Color.DimGray;
-            this.lblNombre.Location = new System.Drawing.Point(4, 51);
+            this.lblNombre.Location = new System.Drawing.Point(3, 41);
             this.lblNombre.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.lblNombre.Name = "lblNombre";
-            this.lblNombre.Size = new System.Drawing.Size(76, 19);
+            this.lblNombre.Size = new System.Drawing.Size(63, 17);
             this.lblNombre.TabIndex = 3;
             this.lblNombre.Text = "Nombre";
             // 
@@ -1613,10 +1615,10 @@ namespace Empeño.WindowsForms.Views
             this.lblIdentificacion.AutoSize = true;
             this.lblIdentificacion.Font = new System.Drawing.Font("Century Gothic", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblIdentificacion.ForeColor = System.Drawing.Color.DimGray;
-            this.lblIdentificacion.Location = new System.Drawing.Point(4, -1);
+            this.lblIdentificacion.Location = new System.Drawing.Point(3, -1);
             this.lblIdentificacion.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.lblIdentificacion.Name = "lblIdentificacion";
-            this.lblIdentificacion.Size = new System.Drawing.Size(121, 19);
+            this.lblIdentificacion.Size = new System.Drawing.Size(102, 17);
             this.lblIdentificacion.TabIndex = 1;
             this.lblIdentificacion.Text = "Identificación";
             // 
@@ -1626,10 +1628,10 @@ namespace Empeño.WindowsForms.Views
             this.label9.AutoSize = true;
             this.label9.Font = new System.Drawing.Font("Century Gothic", 12F, System.Drawing.FontStyle.Bold);
             this.label9.ForeColor = System.Drawing.Color.DimGray;
-            this.label9.Location = new System.Drawing.Point(173, 471);
+            this.label9.Location = new System.Drawing.Point(136, 377);
             this.label9.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(89, 23);
+            this.label9.Size = new System.Drawing.Size(70, 19);
             this.label9.TabIndex = 22;
             this.label9.Text = "Fecha : ";
             // 
@@ -1639,10 +1641,10 @@ namespace Empeño.WindowsForms.Views
             | System.Windows.Forms.AnchorStyles.Right)));
             this.pictureBox7.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("pictureBox7.BackgroundImage")));
             this.pictureBox7.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.pictureBox7.Location = new System.Drawing.Point(8, 362);
+            this.pictureBox7.Location = new System.Drawing.Point(6, 290);
             this.pictureBox7.Margin = new System.Windows.Forms.Padding(2);
             this.pictureBox7.Name = "pictureBox7";
-            this.pictureBox7.Size = new System.Drawing.Size(462, 1);
+            this.pictureBox7.Size = new System.Drawing.Size(368, 1);
             this.pictureBox7.TabIndex = 19;
             this.pictureBox7.TabStop = false;
             // 
@@ -1654,10 +1656,10 @@ namespace Empeño.WindowsForms.Views
             this.txtMonto.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.txtMonto.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F);
             this.txtMonto.ForeColor = System.Drawing.Color.LightGray;
-            this.txtMonto.Location = new System.Drawing.Point(8, 334);
+            this.txtMonto.Location = new System.Drawing.Point(6, 267);
             this.txtMonto.Margin = new System.Windows.Forms.Padding(2);
             this.txtMonto.Name = "txtMonto";
-            this.txtMonto.Size = new System.Drawing.Size(461, 27);
+            this.txtMonto.Size = new System.Drawing.Size(367, 22);
             this.txtMonto.TabIndex = 10;
             this.txtMonto.Text = "Monto";
             this.txtMonto.TextChanged += new System.EventHandler(this.txtMonto_TextChanged);
@@ -1670,10 +1672,10 @@ namespace Empeño.WindowsForms.Views
             this.Realizado.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.Realizado.AutoSize = true;
             this.Realizado.Font = new System.Drawing.Font("Century Gothic", 12F);
-            this.Realizado.Location = new System.Drawing.Point(341, 436);
+            this.Realizado.Location = new System.Drawing.Point(271, 349);
             this.Realizado.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.Realizado.Name = "Realizado";
-            this.Realizado.Size = new System.Drawing.Size(79, 23);
+            this.Realizado.Size = new System.Drawing.Size(66, 21);
             this.Realizado.TabIndex = 17;
             this.Realizado.Text = "Usuario";
             // 
@@ -1683,10 +1685,10 @@ namespace Empeño.WindowsForms.Views
             this.label3.AutoSize = true;
             this.label3.Font = new System.Drawing.Font("Century Gothic", 12F, System.Drawing.FontStyle.Bold);
             this.label3.ForeColor = System.Drawing.Color.DimGray;
-            this.label3.Location = new System.Drawing.Point(173, 439);
+            this.label3.Location = new System.Drawing.Point(136, 351);
             this.label3.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(162, 23);
+            this.label3.Size = new System.Drawing.Size(128, 19);
             this.label3.TabIndex = 16;
             this.label3.Text = "Realizado por : ";
             // 
@@ -1697,11 +1699,11 @@ namespace Empeño.WindowsForms.Views
             this.btnIdentificacion.ForeColor = System.Drawing.Color.DimGray;
             this.btnIdentificacion.IconChar = FontAwesome.Sharp.IconChar.Search;
             this.btnIdentificacion.IconColor = System.Drawing.Color.DimGray;
-            this.btnIdentificacion.IconSize = 19;
-            this.btnIdentificacion.Location = new System.Drawing.Point(442, 22);
+            this.btnIdentificacion.IconSize = 15;
+            this.btnIdentificacion.Location = new System.Drawing.Point(352, 18);
             this.btnIdentificacion.Margin = new System.Windows.Forms.Padding(2);
             this.btnIdentificacion.Name = "btnIdentificacion";
-            this.btnIdentificacion.Size = new System.Drawing.Size(24, 19);
+            this.btnIdentificacion.Size = new System.Drawing.Size(19, 15);
             this.btnIdentificacion.TabIndex = 15;
             this.btnIdentificacion.TabStop = false;
             this.btnIdentificacion.Click += new System.EventHandler(this.btnIdentificacion_Click);
@@ -1713,11 +1715,11 @@ namespace Empeño.WindowsForms.Views
             this.btnNewCustomer.ForeColor = System.Drawing.Color.DimGray;
             this.btnNewCustomer.IconChar = FontAwesome.Sharp.IconChar.UserPlus;
             this.btnNewCustomer.IconColor = System.Drawing.Color.DimGray;
-            this.btnNewCustomer.IconSize = 19;
-            this.btnNewCustomer.Location = new System.Drawing.Point(421, 22);
+            this.btnNewCustomer.IconSize = 15;
+            this.btnNewCustomer.Location = new System.Drawing.Point(335, 18);
             this.btnNewCustomer.Margin = new System.Windows.Forms.Padding(2);
             this.btnNewCustomer.Name = "btnNewCustomer";
-            this.btnNewCustomer.Size = new System.Drawing.Size(20, 19);
+            this.btnNewCustomer.Size = new System.Drawing.Size(16, 15);
             this.btnNewCustomer.TabIndex = 14;
             this.btnNewCustomer.TabStop = false;
             this.btnNewCustomer.Click += new System.EventHandler(this.btnNewCustomer_Click);
@@ -1728,10 +1730,10 @@ namespace Empeño.WindowsForms.Views
             | System.Windows.Forms.AnchorStyles.Right)));
             this.pictureBox6.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("pictureBox6.BackgroundImage")));
             this.pictureBox6.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.pictureBox6.Location = new System.Drawing.Point(8, 308);
+            this.pictureBox6.Location = new System.Drawing.Point(6, 246);
             this.pictureBox6.Margin = new System.Windows.Forms.Padding(2);
             this.pictureBox6.Name = "pictureBox6";
-            this.pictureBox6.Size = new System.Drawing.Size(462, 1);
+            this.pictureBox6.Size = new System.Drawing.Size(368, 1);
             this.pictureBox6.TabIndex = 13;
             this.pictureBox6.TabStop = false;
             // 
@@ -1741,10 +1743,10 @@ namespace Empeño.WindowsForms.Views
             | System.Windows.Forms.AnchorStyles.Right)));
             this.pictureBox5.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("pictureBox5.BackgroundImage")));
             this.pictureBox5.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.pictureBox5.Location = new System.Drawing.Point(8, 202);
+            this.pictureBox5.Location = new System.Drawing.Point(6, 162);
             this.pictureBox5.Margin = new System.Windows.Forms.Padding(2);
             this.pictureBox5.Name = "pictureBox5";
-            this.pictureBox5.Size = new System.Drawing.Size(462, 1);
+            this.pictureBox5.Size = new System.Drawing.Size(368, 1);
             this.pictureBox5.TabIndex = 12;
             this.pictureBox5.TabStop = false;
             // 
@@ -1754,10 +1756,10 @@ namespace Empeño.WindowsForms.Views
             | System.Windows.Forms.AnchorStyles.Right)));
             this.pictureBox4.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("pictureBox4.BackgroundImage")));
             this.pictureBox4.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.pictureBox4.Location = new System.Drawing.Point(6, 96);
+            this.pictureBox4.Location = new System.Drawing.Point(5, 77);
             this.pictureBox4.Margin = new System.Windows.Forms.Padding(2);
             this.pictureBox4.Name = "pictureBox4";
-            this.pictureBox4.Size = new System.Drawing.Size(462, 1);
+            this.pictureBox4.Size = new System.Drawing.Size(368, 1);
             this.pictureBox4.TabIndex = 11;
             this.pictureBox4.TabStop = false;
             // 
@@ -1767,10 +1769,10 @@ namespace Empeño.WindowsForms.Views
             | System.Windows.Forms.AnchorStyles.Right)));
             this.pictureBox3.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("pictureBox3.BackgroundImage")));
             this.pictureBox3.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.pictureBox3.Location = new System.Drawing.Point(6, 45);
+            this.pictureBox3.Location = new System.Drawing.Point(5, 36);
             this.pictureBox3.Margin = new System.Windows.Forms.Padding(2);
             this.pictureBox3.Name = "pictureBox3";
-            this.pictureBox3.Size = new System.Drawing.Size(462, 1);
+            this.pictureBox3.Size = new System.Drawing.Size(368, 1);
             this.pictureBox3.TabIndex = 10;
             this.pictureBox3.TabStop = false;
             // 
@@ -1779,10 +1781,10 @@ namespace Empeño.WindowsForms.Views
             this.chbEsOro.AutoSize = true;
             this.chbEsOro.Font = new System.Drawing.Font("Century Gothic", 12F, System.Drawing.FontStyle.Bold);
             this.chbEsOro.ForeColor = System.Drawing.Color.DimGray;
-            this.chbEsOro.Location = new System.Drawing.Point(9, 435);
+            this.chbEsOro.Location = new System.Drawing.Point(7, 348);
             this.chbEsOro.Margin = new System.Windows.Forms.Padding(2);
             this.chbEsOro.Name = "chbEsOro";
-            this.chbEsOro.Size = new System.Drawing.Size(104, 27);
+            this.chbEsOro.Size = new System.Drawing.Size(83, 23);
             this.chbEsOro.TabIndex = 13;
             this.chbEsOro.Text = "Es Oro?";
             this.chbEsOro.UseVisualStyleBackColor = true;
@@ -1795,11 +1797,11 @@ namespace Empeño.WindowsForms.Views
             this.txtComentario.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.txtComentario.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F);
             this.txtComentario.ForeColor = System.Drawing.Color.LightGray;
-            this.txtComentario.Location = new System.Drawing.Point(6, 226);
+            this.txtComentario.Location = new System.Drawing.Point(5, 181);
             this.txtComentario.Margin = new System.Windows.Forms.Padding(2);
             this.txtComentario.Multiline = true;
             this.txtComentario.Name = "txtComentario";
-            this.txtComentario.Size = new System.Drawing.Size(462, 79);
+            this.txtComentario.Size = new System.Drawing.Size(368, 63);
             this.txtComentario.TabIndex = 8;
             this.txtComentario.Text = "Comentarios";
             this.txtComentario.TextChanged += new System.EventHandler(this.txtComentario_TextChanged);
@@ -1814,11 +1816,11 @@ namespace Empeño.WindowsForms.Views
             this.txtDescripcion.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.txtDescripcion.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F);
             this.txtDescripcion.ForeColor = System.Drawing.Color.LightGray;
-            this.txtDescripcion.Location = new System.Drawing.Point(6, 122);
+            this.txtDescripcion.Location = new System.Drawing.Point(5, 98);
             this.txtDescripcion.Margin = new System.Windows.Forms.Padding(2);
             this.txtDescripcion.Multiline = true;
             this.txtDescripcion.Name = "txtDescripcion";
-            this.txtDescripcion.Size = new System.Drawing.Size(462, 79);
+            this.txtDescripcion.Size = new System.Drawing.Size(368, 63);
             this.txtDescripcion.TabIndex = 6;
             this.txtDescripcion.Text = "Descripción";
             this.txtDescripcion.Enter += new System.EventHandler(this.txtDescripcion_Enter);
@@ -1832,10 +1834,10 @@ namespace Empeño.WindowsForms.Views
             this.txtNombre.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.txtNombre.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F);
             this.txtNombre.ForeColor = System.Drawing.Color.LightGray;
-            this.txtNombre.Location = new System.Drawing.Point(6, 72);
+            this.txtNombre.Location = new System.Drawing.Point(5, 58);
             this.txtNombre.Margin = new System.Windows.Forms.Padding(2);
             this.txtNombre.Name = "txtNombre";
-            this.txtNombre.Size = new System.Drawing.Size(462, 27);
+            this.txtNombre.Size = new System.Drawing.Size(368, 22);
             this.txtNombre.TabIndex = 4;
             this.txtNombre.Text = "Nombre";
             this.txtNombre.Enter += new System.EventHandler(this.txtNombre_Enter);
@@ -1849,10 +1851,10 @@ namespace Empeño.WindowsForms.Views
             this.txtIdentificacion.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.txtIdentificacion.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F);
             this.txtIdentificacion.ForeColor = System.Drawing.Color.LightGray;
-            this.txtIdentificacion.Location = new System.Drawing.Point(6, 21);
+            this.txtIdentificacion.Location = new System.Drawing.Point(5, 17);
             this.txtIdentificacion.Margin = new System.Windows.Forms.Padding(2);
             this.txtIdentificacion.Name = "txtIdentificacion";
-            this.txtIdentificacion.Size = new System.Drawing.Size(462, 27);
+            this.txtIdentificacion.Size = new System.Drawing.Size(368, 22);
             this.txtIdentificacion.TabIndex = 2;
             this.txtIdentificacion.Text = "Identificación";
             this.txtIdentificacion.Enter += new System.EventHandler(this.txtIdentificacion_Enter);
@@ -1869,10 +1871,9 @@ namespace Empeño.WindowsForms.Views
             this.panelBuscar.Controls.Add(this.txtBuscar);
             this.panelBuscar.Dock = System.Windows.Forms.DockStyle.Top;
             this.panelBuscar.Location = new System.Drawing.Point(0, 0);
-            this.panelBuscar.Margin = new System.Windows.Forms.Padding(4);
             this.panelBuscar.Name = "panelBuscar";
-            this.panelBuscar.Padding = new System.Windows.Forms.Padding(5, 5, 25, 5);
-            this.panelBuscar.Size = new System.Drawing.Size(1370, 45);
+            this.panelBuscar.Padding = new System.Windows.Forms.Padding(4, 4, 20, 4);
+            this.panelBuscar.Size = new System.Drawing.Size(1096, 36);
             this.panelBuscar.TabIndex = 1;
             // 
             // iconPictureBox1
@@ -1882,11 +1883,11 @@ namespace Empeño.WindowsForms.Views
             this.iconPictureBox1.ForeColor = System.Drawing.Color.LightGray;
             this.iconPictureBox1.IconChar = FontAwesome.Sharp.IconChar.Search;
             this.iconPictureBox1.IconColor = System.Drawing.Color.LightGray;
-            this.iconPictureBox1.IconSize = 28;
-            this.iconPictureBox1.Location = new System.Drawing.Point(1301, 8);
+            this.iconPictureBox1.IconSize = 22;
+            this.iconPictureBox1.Location = new System.Drawing.Point(1041, 6);
             this.iconPictureBox1.Margin = new System.Windows.Forms.Padding(2);
             this.iconPictureBox1.Name = "iconPictureBox1";
-            this.iconPictureBox1.Size = new System.Drawing.Size(32, 28);
+            this.iconPictureBox1.Size = new System.Drawing.Size(26, 22);
             this.iconPictureBox1.TabIndex = 2;
             this.iconPictureBox1.TabStop = false;
             // 
@@ -1895,10 +1896,10 @@ namespace Empeño.WindowsForms.Views
             this.pictureBox1.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("pictureBox1.BackgroundImage")));
             this.pictureBox1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.pictureBox1.Dock = System.Windows.Forms.DockStyle.Top;
-            this.pictureBox1.Location = new System.Drawing.Point(5, 42);
+            this.pictureBox1.Location = new System.Drawing.Point(4, 34);
             this.pictureBox1.Margin = new System.Windows.Forms.Padding(2);
             this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(1340, 1);
+            this.pictureBox1.Size = new System.Drawing.Size(1072, 1);
             this.pictureBox1.TabIndex = 1;
             this.pictureBox1.TabStop = false;
             // 
@@ -1909,10 +1910,10 @@ namespace Empeño.WindowsForms.Views
             this.txtBuscar.Dock = System.Windows.Forms.DockStyle.Top;
             this.txtBuscar.Font = new System.Drawing.Font("Century Gothic", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtBuscar.ForeColor = System.Drawing.Color.LightGray;
-            this.txtBuscar.Location = new System.Drawing.Point(5, 5);
-            this.txtBuscar.Margin = new System.Windows.Forms.Padding(10, 4, 4, 4);
+            this.txtBuscar.Location = new System.Drawing.Point(4, 4);
+            this.txtBuscar.Margin = new System.Windows.Forms.Padding(8, 3, 3, 3);
             this.txtBuscar.Name = "txtBuscar";
-            this.txtBuscar.Size = new System.Drawing.Size(1340, 37);
+            this.txtBuscar.Size = new System.Drawing.Size(1072, 30);
             this.txtBuscar.TabIndex = 0;
             this.txtBuscar.Text = " Buscar";
             this.txtBuscar.TextChanged += new System.EventHandler(this.txtBuscar_TextChanged);
@@ -1928,15 +1929,14 @@ namespace Empeño.WindowsForms.Views
             // 
             // frmEmpeno
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(120F, 120F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
             this.BackColor = System.Drawing.SystemColors.Control;
-            this.ClientSize = new System.Drawing.Size(1370, 749);
+            this.ClientSize = new System.Drawing.Size(1096, 599);
             this.Controls.Add(this.tableLayoutPanel1);
             this.Controls.Add(this.panelBuscar);
             this.Font = new System.Drawing.Font("Century Gothic", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
-            this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "frmEmpeno";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Empeño";

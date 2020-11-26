@@ -127,7 +127,7 @@ namespace Empeño.WindowsForms.Views
             double pagoIntereses = double.Parse(txtPagaInteres.Text);
             double pagoMonto = double.Parse(txtPagaMonto.Text);
 
-            if ((pagoMonto>0) && (empeño.Intereses.Sum(i=>i.Monto)>(empeño.Intereses.Sum(i=>i.Pagado)+ pagoIntereses)))
+            if ((pagoMonto>0) && (empeño.Intereses.Sum(i=>i.Monto)>(empeño.Intereses.Sum(i=>i.Pagado) + pagoIntereses)))
             {
                 MessageBox.Show("Para abonar a la prenda debe pagar todos los intereses pendientes de " + montoMinimo.ToString("N2"), "Alerta", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
@@ -269,27 +269,48 @@ namespace Empeño.WindowsForms.Views
                         {
                             empeño.FechaVencimiento = empeño.FechaVencimiento.AddMonths(1);
                         }
-
-                        intereses.Add(item);
+                        item.PagoId = pago.PagoId;
                         _context.Entry(item).State = EntityState.Modified;
+                        await _context.SaveChangesAsync();
+                        Intereses valorTemp = new Intereses
+                        {
+                            EmpenoId = item.EmpenoId,
+                            FechaCreacion = item.FechaCreacion,
+                            FechaVencimiento = item.FechaVencimiento,
+                            InteresesId = item.InteresesId,
+                            Monto = item.Monto,
+                            Pagado = sobrante,
+                            PagoId = item.PagoId
+                        };
+
+                        intereses.Add(valorTemp);
                         break;
                     }
                     else if (sobrante > 0)
                     {
                         double paga = (item.Monto - item.Pagado);
                         item.Pagado += paga;
-                        if (item.Pagado == item.Monto)
+                        if (item.Pagado >= item.Monto)
                         {
                             empeño.FechaVencimiento = empeño.FechaVencimiento.AddMonths(1);
                         }
                         item.PagoId = pago.PagoId;
-                        sobrante -= paga;
-                        intereses.Add(item);
+                        sobrante -= paga;                      
                         _context.Entry(item).State = EntityState.Modified;
+                        await _context.SaveChangesAsync();
+                        Intereses valorTemp=new Intereses { 
+                            EmpenoId=item.EmpenoId,
+                            FechaCreacion=item.FechaCreacion,
+                            FechaVencimiento=item.FechaVencimiento,
+                            InteresesId=item.InteresesId,
+                            Monto=item.Monto,
+                            Pagado= paga,
+                            PagoId=item.PagoId
+                        } ;
+                        intereses.Add(valorTemp);
                     }
                 }
 
-                await _context.SaveChangesAsync();
                 await funciones.SaveBitacora(new ValorBitacora
                 {
                     Valor = JsonConvert.SerializeObject(intereses),
@@ -743,9 +764,9 @@ namespace Empeño.WindowsForms.Views
             }
             else
             {
-                interes = empeño.Intereses.Sum(i => i.Monto - i.Pagado);
+                interes = empeño.Intereses.Where(i=>i.Monto>i.Pagado).Sum(i => i.Monto - i.Pagado);
             }
-            montoMinimo= empeño.Intereses.Sum(i => i.Monto - i.Pagado);
+            montoMinimo= empeño.Intereses.Where(i => i.Monto > i.Pagado).Sum(i => i.Monto - i.Pagado);
             var intereses = interes.ToString("N2");
             txtInteresAPagar.Text = intereses;
             txtPagaInteres.Text = txtInteresAPagar.Text;
