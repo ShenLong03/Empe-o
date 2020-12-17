@@ -87,12 +87,6 @@
         }
         "Entry"
         {
-        "MsmKey" = "8:_0311E5D075924A79809BEE0515E9E7E8"
-        "OwnerKey" = "8:_UNDEFINED"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
         "MsmKey" = "8:_041D98A959E1ACDA9B480E83A03CAE06"
         "OwnerKey" = "8:_943F0F86029D4B52931777C21D489C4B"
         "MsmSig" = "8:_UNDEFINED"
@@ -213,6 +207,12 @@
         }
         "Entry"
         {
+        "MsmKey" = "8:_14154C903C304CC99A2D338B0D0F004E"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
         "MsmKey" = "8:_153C4C609B42219DA0C8476B8A9B438F"
         "OwnerKey" = "8:_2610C7B935BC40CA8BC350C99A187AC9"
         "MsmSig" = "8:_UNDEFINED"
@@ -245,12 +245,6 @@
         {
         "MsmKey" = "8:_16044C825A02B3C7652E25D3B03525B1"
         "OwnerKey" = "8:_2610C7B935BC40CA8BC350C99A187AC9"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_175A7A454BD7492C9C383D8259DB0813"
-        "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -477,12 +471,6 @@
         }
         "Entry"
         {
-        "MsmKey" = "8:_28AD25078E3F46B9941B7C408CD98775"
-        "OwnerKey" = "8:_UNDEFINED"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
         "MsmKey" = "8:_2AB99EA26F3BA33F397E53DF0449ABF1"
         "OwnerKey" = "8:_2610C7B935BC40CA8BC350C99A187AC9"
         "MsmSig" = "8:_UNDEFINED"
@@ -515,12 +503,6 @@
         {
         "MsmKey" = "8:_2BAB07DA7AF75B3566EE3748B9EF8F7D"
         "OwnerKey" = "8:_943F0F86029D4B52931777C21D489C4B"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_2CEB14F9D64F4AB7949825C36641C53F"
-        "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -717,6 +699,12 @@
         }
         "Entry"
         {
+        "MsmKey" = "8:_4E4700A29094494889AFC4C80BF3D6B7"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
         "MsmKey" = "8:_4E67E40AA2177139A1D8DF712279DB15"
         "OwnerKey" = "8:_B07A0705D2A60C5A0AF936D814B3CCCF"
         "MsmSig" = "8:_UNDEFINED"
@@ -849,6 +837,12 @@
         }
         "Entry"
         {
+        "MsmKey" = "8:_5F99B02CD854442596CFFABE279E4D53"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
         "MsmKey" = "8:_6053DDF68DC770DD14D0BE98875A3E5B"
         "OwnerKey" = "8:_2610C7B935BC40CA8BC350C99A187AC9"
         "MsmSig" = "8:_UNDEFINED"
@@ -879,6 +873,12 @@
         }
         "Entry"
         {
+        "MsmKey" = "8:_62288943D0F04AB1A32FA0F3E4E565AF"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
         "MsmKey" = "8:_6453D0F8731CD992805238F5C51EA893"
         "OwnerKey" = "8:_2610C7B935BC40CA8BC350C99A187AC9"
         "MsmSig" = "8:_UNDEFINED"
@@ -905,12 +905,6 @@
         {
         "MsmKey" = "8:_660BC60A0AFBAA787DE76ECAF110F4D0"
         "OwnerKey" = "8:_2610C7B935BC40CA8BC350C99A187AC9"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_664B302FFFEE4AA88517902C531EB7FD"
-        "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -1269,12 +1263,6 @@
         }
         "Entry"
         {
-        "MsmKey" = "8:_7F0194DF20164020AAB9B4C0B014A4D6"
-        "OwnerKey" = "8:_UNDEFINED"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
         "MsmKey" = "8:_80E52929867D5E8CAFE892481D9D99A6"
         "OwnerKey" = "8:_943F0F86029D4B52931777C21D489C4B"
         "MsmSig" = "8:_UNDEFINED"
@@ -1545,12 +1533,6 @@
         }
         "Entry"
         {
-        "MsmKey" = "8:_9B2881FCE9B74E5D9858BDF55DC06C99"
-        "OwnerKey" = "8:_UNDEFINED"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
         "MsmKey" = "8:_9B9E98AC951C94E61799E78E402B913B"
         "OwnerKey" = "8:_2610C7B935BC40CA8BC350C99A187AC9"
         "MsmSig" = "8:_UNDEFINED"
@@ -1583,6 +1565,12 @@
         {
         "MsmKey" = "8:_9BBFD25AA57297857DBC542181A59B4A"
         "OwnerKey" = "8:_23C9D53942BD23374922A30C67928516"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_9CA9FBEBE5BB4C66924D697D7CDE36A2"
+        "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -1623,6 +1611,12 @@
         }
         "Entry"
         {
+        "MsmKey" = "8:_A05D93EBAE694D27B179BC170ABD3805"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
         "MsmKey" = "8:_A0A3B2DED0A3F7BBF981DDDC029E38AE"
         "OwnerKey" = "8:_2610C7B935BC40CA8BC350C99A187AC9"
         "MsmSig" = "8:_UNDEFINED"
@@ -1649,12 +1643,6 @@
         {
         "MsmKey" = "8:_A2DFEED978D036131F90C556E7911EBC"
         "OwnerKey" = "8:_943F0F86029D4B52931777C21D489C4B"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_A4B35971572C4D6F87B4780C5A44D83D"
-        "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -1845,12 +1833,6 @@
         }
         "Entry"
         {
-        "MsmKey" = "8:_B3B80E48410948D98DDAC87BA5F0DDA8"
-        "OwnerKey" = "8:_UNDEFINED"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
         "MsmKey" = "8:_B9270842C0A84B02BE3B2B7F1FE01199"
         "OwnerKey" = "8:_8CE627DBFEFCB6A4AE68551DAEB09717"
         "MsmSig" = "8:_UNDEFINED"
@@ -1877,6 +1859,12 @@
         {
         "MsmKey" = "8:_B954E80A04CCA75D0B0A88B6D3C8A967"
         "OwnerKey" = "8:_2610C7B935BC40CA8BC350C99A187AC9"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_B9D5FC05E11543DB8C8CA038AB085BA4"
+        "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -2021,6 +2009,12 @@
         {
         "MsmKey" = "8:_C05A1ED946AF5A476D6E155E555892E7"
         "OwnerKey" = "8:_8CE627DBFEFCB6A4AE68551DAEB09717"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_C15CA2AE04414C548998E878402B7B43"
+        "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -2193,6 +2187,12 @@
         }
         "Entry"
         {
+        "MsmKey" = "8:_D5C03C48A9F24651B6696F185CCFB90B"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
         "MsmKey" = "8:_D5CB81B0668381C826956A512F90877E"
         "OwnerKey" = "8:_2610C7B935BC40CA8BC350C99A187AC9"
         "MsmSig" = "8:_UNDEFINED"
@@ -2237,12 +2237,6 @@
         {
         "MsmKey" = "8:_D8602056F8567C41694388080541587E"
         "OwnerKey" = "8:_041D98A959E1ACDA9B480E83A03CAE06"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_D87DBB6CB5144517A5CAD69EC2DDB50A"
-        "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -2417,6 +2411,12 @@
         {
         "MsmKey" = "8:_E460C27BC62A79B55356D1904CBE5F3E"
         "OwnerKey" = "8:_2610C7B935BC40CA8BC350C99A187AC9"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_E7CCC358CAC7461E87C6720557397672"
+        "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -4146,26 +4146,6 @@
             "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_0311E5D075924A79809BEE0515E9E7E8"
-            {
-            "SourcePath" = "8:..\\Empeño.WindowsForms\\Empeños\\Comprobantes\\ComprobanteCancelacion.xlsx"
-            "TargetName" = "8:ComprobanteCancelacion.xlsx"
-            "Tag" = "8:"
-            "Folder" = "8:_C0F6A4A377B74FAFBFD3F2C0126A5CE9"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
-            "IsolateTo" = "8:"
-            }
             "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_041D98A959E1ACDA9B480E83A03CAE06"
             {
             "AssemblyRegister" = "3:1"
@@ -4527,6 +4507,26 @@
             "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_14154C903C304CC99A2D338B0D0F004E"
+            {
+            "SourcePath" = "8:..\\Empeño.WindowsForms\\Empeños\\Comprobantes\\ComprobanteInteres.xlsx"
+            "TargetName" = "8:ComprobanteInteres.xlsx"
+            "Tag" = "8:"
+            "Folder" = "8:_C0F6A4A377B74FAFBFD3F2C0126A5CE9"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
             "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_153C4C609B42219DA0C8476B8A9B438F"
             {
             "AssemblyRegister" = "3:1"
@@ -4618,26 +4618,6 @@
             "Register" = "3:1"
             "Exclude" = "11:FALSE"
             "IsDependency" = "11:TRUE"
-            "IsolateTo" = "8:"
-            }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_175A7A454BD7492C9C383D8259DB0813"
-            {
-            "SourcePath" = "8:..\\Empeño.WindowsForms\\Empeños\\Comprobantes\\Cierre.xlsx"
-            "TargetName" = "8:Cierre.xlsx"
-            "Tag" = "8:"
-            "Folder" = "8:_C0F6A4A377B74FAFBFD3F2C0126A5CE9"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
             "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_17F438B76581F4E231C3C84F5B2B9A0D"
@@ -5125,26 +5105,6 @@
             "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_28AD25078E3F46B9941B7C408CD98775"
-            {
-            "SourcePath" = "8:..\\Empeño.WindowsForms\\Empeños\\Comprobantes\\ComprobanteCierreCaja.xlsx"
-            "TargetName" = "8:ComprobanteCierreCaja.xlsx"
-            "Tag" = "8:"
-            "Folder" = "8:_C0F6A4A377B74FAFBFD3F2C0126A5CE9"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
-            "IsolateTo" = "8:"
-            }
             "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_2AB99EA26F3BA33F397E53DF0449ABF1"
             {
             "AssemblyRegister" = "3:1"
@@ -5267,26 +5227,6 @@
             "Register" = "3:1"
             "Exclude" = "11:FALSE"
             "IsDependency" = "11:TRUE"
-            "IsolateTo" = "8:"
-            }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_2CEB14F9D64F4AB7949825C36641C53F"
-            {
-            "SourcePath" = "8:..\\Empeño.WindowsForms\\Empeños\\Comprobantes\\ComprobanteAbono.xlsx"
-            "TargetName" = "8:ComprobanteAbono.xlsx"
-            "Tag" = "8:"
-            "Folder" = "8:_C0F6A4A377B74FAFBFD3F2C0126A5CE9"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
             "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_2D59DB26E33769564DDFC756A1C983A4"
@@ -5723,6 +5663,26 @@
             "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_4E4700A29094494889AFC4C80BF3D6B7"
+            {
+            "SourcePath" = "8:..\\Empeño.WindowsForms\\Empeños\\Comprobantes\\ComprobanteAnulacion.xlsx"
+            "TargetName" = "8:ComprobanteAnulacion.xlsx"
+            "Tag" = "8:"
+            "Folder" = "8:_C0F6A4A377B74FAFBFD3F2C0126A5CE9"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
             "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_4E67E40AA2177139A1D8DF712279DB15"
             {
             "AssemblyRegister" = "3:1"
@@ -6115,6 +6075,26 @@
             "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_5F99B02CD854442596CFFABE279E4D53"
+            {
+            "SourcePath" = "8:..\\Empeño.WindowsForms\\Empeños\\Comprobantes\\ComprobanteCierreCaja.xlsx"
+            "TargetName" = "8:ComprobanteCierreCaja.xlsx"
+            "Tag" = "8:"
+            "Folder" = "8:_C0F6A4A377B74FAFBFD3F2C0126A5CE9"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
             "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_6053DDF68DC770DD14D0BE98875A3E5B"
             {
             "AssemblyRegister" = "3:1"
@@ -6206,6 +6186,26 @@
             "Register" = "3:1"
             "Exclude" = "11:FALSE"
             "IsDependency" = "11:TRUE"
+            "IsolateTo" = "8:"
+            }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_62288943D0F04AB1A32FA0F3E4E565AF"
+            {
+            "SourcePath" = "8:..\\Empeño.WindowsForms\\Empeños\\Comprobantes\\ComprobanteAbono.xlsx"
+            "TargetName" = "8:ComprobanteAbono.xlsx"
+            "Tag" = "8:"
+            "Folder" = "8:_C0F6A4A377B74FAFBFD3F2C0126A5CE9"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
             "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_6453D0F8731CD992805238F5C51EA893"
@@ -6350,26 +6350,6 @@
             "Register" = "3:1"
             "Exclude" = "11:FALSE"
             "IsDependency" = "11:TRUE"
-            "IsolateTo" = "8:"
-            }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_664B302FFFEE4AA88517902C531EB7FD"
-            {
-            "SourcePath" = "8:..\\Empeño.WindowsForms\\Empeños\\Comprobantes\\ComprobanteVencimiento.xlsx"
-            "TargetName" = "8:ComprobanteVencimiento.xlsx"
-            "Tag" = "8:"
-            "Folder" = "8:_C0F6A4A377B74FAFBFD3F2C0126A5CE9"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
             "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_6749DB1A19FA55BF9CB46AE6B99F89EC"
@@ -6990,26 +6970,6 @@
             "Register" = "3:1"
             "Exclude" = "11:FALSE"
             "IsDependency" = "11:TRUE"
-            "IsolateTo" = "8:"
-            }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_7F0194DF20164020AAB9B4C0B014A4D6"
-            {
-            "SourcePath" = "8:..\\Empeño.WindowsForms\\Empeños\\Comprobantes\\ComprobanteVencidos.xlsx"
-            "TargetName" = "8:ComprobanteVencidos.xlsx"
-            "Tag" = "8:"
-            "Folder" = "8:_C0F6A4A377B74FAFBFD3F2C0126A5CE9"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
             "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_80E52929867D5E8CAFE892481D9D99A6"
@@ -7796,26 +7756,6 @@
             "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_9B2881FCE9B74E5D9858BDF55DC06C99"
-            {
-            "SourcePath" = "8:..\\Empeño.WindowsForms\\Empeños\\Comprobantes\\ComprobanteAnulacion.xlsx"
-            "TargetName" = "8:ComprobanteAnulacion.xlsx"
-            "Tag" = "8:"
-            "Folder" = "8:_C0F6A4A377B74FAFBFD3F2C0126A5CE9"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
-            "IsolateTo" = "8:"
-            }
             "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_9B9E98AC951C94E61799E78E402B913B"
             {
             "AssemblyRegister" = "3:1"
@@ -7876,6 +7816,26 @@
             "Register" = "3:1"
             "Exclude" = "11:FALSE"
             "IsDependency" = "11:TRUE"
+            "IsolateTo" = "8:"
+            }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_9CA9FBEBE5BB4C66924D697D7CDE36A2"
+            {
+            "SourcePath" = "8:..\\Empeño.WindowsForms\\Empeños\\Comprobantes\\ComprobanteArqueo.xlsx"
+            "TargetName" = "8:ComprobanteArqueo.xlsx"
+            "Tag" = "8:"
+            "Folder" = "8:_C0F6A4A377B74FAFBFD3F2C0126A5CE9"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
             "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_9D00718E124BC45C451FD7AC3F783372"
@@ -8033,6 +7993,26 @@
             "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_A05D93EBAE694D27B179BC170ABD3805"
+            {
+            "SourcePath" = "8:..\\Empeño.WindowsForms\\Empeños\\Comprobantes\\ComprobanteCancelacion.xlsx"
+            "TargetName" = "8:ComprobanteCancelacion.xlsx"
+            "Tag" = "8:"
+            "Folder" = "8:_C0F6A4A377B74FAFBFD3F2C0126A5CE9"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
             "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_A0A3B2DED0A3F7BBF981DDDC029E38AE"
             {
             "AssemblyRegister" = "3:1"
@@ -8124,26 +8104,6 @@
             "Register" = "3:1"
             "Exclude" = "11:FALSE"
             "IsDependency" = "11:TRUE"
-            "IsolateTo" = "8:"
-            }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_A4B35971572C4D6F87B4780C5A44D83D"
-            {
-            "SourcePath" = "8:..\\Empeño.WindowsForms\\Empeños\\Comprobantes\\ComprobanteEmpeño.xlsx"
-            "TargetName" = "8:ComprobanteEmpeño.xlsx"
-            "Tag" = "8:"
-            "Folder" = "8:_C0F6A4A377B74FAFBFD3F2C0126A5CE9"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
             "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_A66110ABDA98FD404E392ADBD96AB37D"
@@ -8518,26 +8478,6 @@
             "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_B3B80E48410948D98DDAC87BA5F0DDA8"
-            {
-            "SourcePath" = "8:..\\Empeño.WindowsForms\\Empeños\\Comprobantes\\ComprobanteArqueo.xlsx"
-            "TargetName" = "8:ComprobanteArqueo.xlsx"
-            "Tag" = "8:"
-            "Folder" = "8:_C0F6A4A377B74FAFBFD3F2C0126A5CE9"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
-            "IsolateTo" = "8:"
-            }
             "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_B9270842C0A84B02BE3B2B7F1FE01199"
             {
             "AssemblyRegister" = "3:1"
@@ -8629,6 +8569,26 @@
             "Register" = "3:1"
             "Exclude" = "11:FALSE"
             "IsDependency" = "11:TRUE"
+            "IsolateTo" = "8:"
+            }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_B9D5FC05E11543DB8C8CA038AB085BA4"
+            {
+            "SourcePath" = "8:..\\Empeño.WindowsForms\\Empeños\\Comprobantes\\ComprobanteVencidos.xlsx"
+            "TargetName" = "8:ComprobanteVencidos.xlsx"
+            "Tag" = "8:"
+            "Folder" = "8:_C0F6A4A377B74FAFBFD3F2C0126A5CE9"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
             "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_BBA8A13CF59C5502375C94D7109F6328"
@@ -8815,6 +8775,26 @@
             "Register" = "3:1"
             "Exclude" = "11:FALSE"
             "IsDependency" = "11:TRUE"
+            "IsolateTo" = "8:"
+            }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_C15CA2AE04414C548998E878402B7B43"
+            {
+            "SourcePath" = "8:..\\Empeño.WindowsForms\\Empeños\\Comprobantes\\ComprobanteEmpeño.xlsx"
+            "TargetName" = "8:ComprobanteEmpeño.xlsx"
+            "Tag" = "8:"
+            "Folder" = "8:_C0F6A4A377B74FAFBFD3F2C0126A5CE9"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
             "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_C217E6738427B2DAA8A29DE0DD927F15"
@@ -9384,6 +9364,26 @@
             "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_D5C03C48A9F24651B6696F185CCFB90B"
+            {
+            "SourcePath" = "8:..\\Empeño.WindowsForms\\Empeños\\Comprobantes\\Cierre.xlsx"
+            "TargetName" = "8:Cierre.xlsx"
+            "Tag" = "8:"
+            "Folder" = "8:_C0F6A4A377B74FAFBFD3F2C0126A5CE9"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
             "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_D5CB81B0668381C826956A512F90877E"
             {
             "AssemblyRegister" = "3:1"
@@ -9537,26 +9537,6 @@
             "Register" = "3:1"
             "Exclude" = "11:FALSE"
             "IsDependency" = "11:TRUE"
-            "IsolateTo" = "8:"
-            }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_D87DBB6CB5144517A5CAD69EC2DDB50A"
-            {
-            "SourcePath" = "8:..\\Empeño.WindowsForms\\Empeños\\Comprobantes\\ComprobanteInteres.xlsx"
-            "TargetName" = "8:ComprobanteInteres.xlsx"
-            "Tag" = "8:"
-            "Folder" = "8:_C0F6A4A377B74FAFBFD3F2C0126A5CE9"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
             "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_DADD112D6EFB52E8582D2085CD4984FF"
@@ -9929,6 +9909,26 @@
             "Register" = "3:1"
             "Exclude" = "11:FALSE"
             "IsDependency" = "11:TRUE"
+            "IsolateTo" = "8:"
+            }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_E7CCC358CAC7461E87C6720557397672"
+            {
+            "SourcePath" = "8:..\\Empeño.WindowsForms\\Empeños\\Comprobantes\\ComprobanteVencimiento.xlsx"
+            "TargetName" = "8:ComprobanteVencimiento.xlsx"
+            "Tag" = "8:"
+            "Folder" = "8:_C0F6A4A377B74FAFBFD3F2C0126A5CE9"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
             "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_EB2B95462FEF97DE83A5428F11D76902"
@@ -10640,15 +10640,15 @@
         {
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:Empeño"
-        "ProductCode" = "8:{FE4F8085-500B-4995-AB7D-9A15D8B1D99B}"
-        "PackageCode" = "8:{41F9D354-1631-4879-9F9F-A2796D168932}"
+        "ProductCode" = "8:{B017DC05-3AD9-4E26-8DBA-8D887428AEF8}"
+        "PackageCode" = "8:{8C839EEA-3B2B-4E2E-BBB2-7E0B561D6A85}"
         "UpgradeCode" = "8:{DCBBE32D-7BAD-440D-AB80-55BA2ED0D35D}"
         "AspNetVersion" = "8:4.0.30319.0"
         "RestartWWWService" = "11:FALSE"
         "RemovePreviousVersions" = "11:FALSE"
         "DetectNewerInstalledVersion" = "11:TRUE"
         "InstallAllUsers" = "11:FALSE"
-        "ProductVersion" = "8:1.4.12"
+        "ProductVersion" = "8:1.4.13"
         "Manufacturer" = "8:Amaru Systems"
         "ARPHELPTELEPHONE" = "8:"
         "ARPHELPLINK" = "8:http://amarusystems.com/"

@@ -2107,7 +2107,7 @@ namespace Empeño.WindowsForms.Views
             }
             cexcel.Cells[22, 4].value = empeno.MontoPendiente.ToString("N2");
             var index = 0;
-            foreach (var item in intereses)
+            foreach (var item in intereses.Where(i=>i.Pagado>=1))
             {
                 cexcel.Cells[26+index, 1].value = item.FechaVencimiento.ToString("dd/MM/yyyy");
                 cexcel.Cells[26+index, 3].value = item.Pagado.ToString("N2");
