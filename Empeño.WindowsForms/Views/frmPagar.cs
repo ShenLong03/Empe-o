@@ -126,17 +126,21 @@ namespace Empeño.WindowsForms.Views
 
             double pagoIntereses = double.Parse(txtPagaInteres.Text);
             double pagoMonto = double.Parse(txtPagaMonto.Text);
+            double montoPendiente = double.Parse(txtMontoAPagar.Text);
 
-            if ((pagoMonto>0) && (empeño.Intereses.Sum(i=>i.Monto)>(empeño.Intereses.Sum(i=>i.Pagado) + pagoIntereses)))
+            if (pagoMonto<montoPendiente)
             {
-                MessageBox.Show("Para abonar a la prenda debe pagar todos los intereses pendientes de " + montoMinimo.ToString("N2"), "Alerta", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                return;
+                if ((pagoMonto > 0) && (empeño.Intereses.Sum(i => i.Monto) > (empeño.Intereses.Sum(i => i.Pagado) + pagoIntereses)))
+                {
+                    MessageBox.Show("Para abonar a la prenda debe pagar todos los intereses pendientes de " + montoMinimo.ToString("N2"), "Alerta", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                } 
             }
             var empleadoId = await funciones.GetEmpleadoIdByUser(Program.Usuario.Usuario);
             double montoIntereses = double.Parse(txtInteresAPagar.Text);
            
             
-            double montoPendiente = double.Parse(txtMontoAPagar.Text);
+            
             if (pagoMonto>montoPendiente)
             {
                 txtPagaMonto.Text = txtMontoAPagar.Text;
