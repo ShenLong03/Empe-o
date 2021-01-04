@@ -139,6 +139,13 @@ namespace Empeño.WindowsForms.Views
             var empleado = await _context.Empleados.FindAsync(Program.EmpleadoId);
 
             cexcel.Visible = false;
+            cexcel.Visible = false;
+            cexcel.Cells[2, 1].value = configuracion.Compañia;
+            cexcel.Cells[3, 1].value = configuracion.Direccion;
+            cexcel.Cells[4, 1].value = "Tel. " + configuracion.Telefono;
+            cexcel.Cells[5, 1].value = configuracion.Nombre;
+            cexcel.Cells[6, 1].value = "Cédula: " + configuracion.Identificacion;
+
             cexcel.Cells[7, 2].value = vencimientos.Consecutivo;
             cexcel.Cells[8, 2].value = empleado.Nombre;
             cexcel.Cells[9, 2].value = empleado.Usuario;

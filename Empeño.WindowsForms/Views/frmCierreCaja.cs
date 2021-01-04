@@ -290,14 +290,22 @@ namespace Empeño.WindowsForms.Views
         #region Funciones
         public async void Print(CierreCaja cierreCaja)
         {
+
+            var configuracion = await _context.Configuraciones.FirstOrDefaultAsync();
+
             Microsoft.Office.Interop.Excel.Application cexcel = new Microsoft.Office.Interop.Excel.Application();
             string pathch = Path.GetDirectoryName(System.Windows.Forms.Application.ExecutablePath);
             pathch = $"{pathch}\\Empeños\\Comprobantes\\ComprobanteCierreCaja.xlsx";
             cexcel.Workbooks.Open(pathch, true, true);
 
             cexcel.Visible = false;
+            cexcel.Cells[3, 1].value = configuracion.Compañia;
+            cexcel.Cells[4, 1].value = configuracion.Direccion;
+            cexcel.Cells[5, 1].value = "Tel. " + configuracion.Telefono;
+            cexcel.Cells[6, 1].value = configuracion.Nombre;
+            cexcel.Cells[7, 1].value = "Cédula: " + configuracion.Identificacion;
 
-            var empleadoId= Program.EmpleadoId;
+            var empleadoId = Program.EmpleadoId;
             var empleado = _context.Empleados.Find(empleadoId);
             cexcel.Cells[9, 2].value = empleado.Nombre;
             cexcel.Cells[10, 2].value = empleado.Usuario;
