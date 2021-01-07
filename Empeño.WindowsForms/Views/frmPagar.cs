@@ -155,7 +155,7 @@ namespace Empeño.WindowsForms.Views
             empeño = null;
             var empeñoTemp = _context.Empenos.Find(empeñoId);
 
-            if ((pagoMonto > 0 && pagoMonto < montoPendiente) && (pagoIntereses < montoMinimo))
+            if ((pagoMonto > 0 && pagoMonto < montoPendiente) && (pagoIntereses < montoMinimo-1))
             {
                 MessageBox.Show("Para abonar a la prenda debe pagar todos los intereses pendientes de " + montoMinimo.ToString("N2"), "Alerta", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
@@ -269,9 +269,10 @@ namespace Empeño.WindowsForms.Views
                     if ((item.Monto - item.Pagado) > sobrante && sobrante > 0)
                     {
                         item.Pagado += sobrante;
-                        if (item.Pagado == item.Monto)
+                        if (item.Pagado >= Math.Truncate(item.Monto))
                         {
                             empeño.FechaVencimiento = empeño.FechaVencimiento.AddMonths(1);
+                            item.Monto = item.Pagado;
                         }
                         item.PagoId = pago.PagoId;
                         _context.Entry(item).State = EntityState.Modified;
@@ -294,9 +295,10 @@ namespace Empeño.WindowsForms.Views
                     {
                         double paga = (item.Monto - item.Pagado);
                         item.Pagado += paga;
-                        if (item.Pagado >= item.Monto)
+                        if (item.Pagado >= Math.Truncate(item.Monto))
                         {
                             empeño.FechaVencimiento = empeño.FechaVencimiento.AddMonths(1);
+                            item.Monto = item.Pagado;
                         }
                         item.PagoId = pago.PagoId;
                         sobrante -= paga;                      

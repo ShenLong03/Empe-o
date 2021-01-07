@@ -73,7 +73,7 @@ namespace Empeño.WindowsForms.Views
         }
 
         #region Funciones
-        public async void Print()
+        public async Task Print()
         {
             var configuracion = await _context.Configuraciones.FirstOrDefaultAsync();
             Microsoft.Office.Interop.Excel.Application cexcel = new Microsoft.Office.Interop.Excel.Application();
@@ -407,6 +407,11 @@ namespace Empeño.WindowsForms.Views
 
                 MessageBox.Show("Error");
             }
+        }
+
+        private async void btnPrint_Click(object sender, EventArgs e)
+        {
+           await Print();
         }
     }
 }

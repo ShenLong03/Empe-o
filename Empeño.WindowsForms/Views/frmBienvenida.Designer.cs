@@ -161,11 +161,11 @@
             this.lblVersion.AutoSize = true;
             this.lblVersion.Font = new System.Drawing.Font("Century Gothic", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblVersion.ForeColor = System.Drawing.Color.White;
-            this.lblVersion.Location = new System.Drawing.Point(541, 389);
+            this.lblVersion.Location = new System.Drawing.Point(569, 384);
             this.lblVersion.Name = "lblVersion";
-            this.lblVersion.Size = new System.Drawing.Size(103, 30);
+            this.lblVersion.Size = new System.Drawing.Size(70, 30);
             this.lblVersion.TabIndex = 5;
-            this.lblVersion.Text = "V 1.4.15";
+            this.lblVersion.Text = "V 1.5";
             // 
             // frmBienvenida
             // 

@@ -486,7 +486,7 @@ namespace Empeño.WindowsForms.Views
                             EmpenoId = empeño.EmpenoId,
                             FechaCreacion = DateTime.Now,
                             FechaVencimiento = fecha.AddMonths(1),
-                            Monto = (double)empeño.MontoPendiente * ((double)interes.Porcentaje / (double)100)
+                            Monto = Math.Truncate((double)empeño.MontoPendiente * ((double)interes.Porcentaje / (double)100))
                         };
 
                         _context.Intereses.Add(intereses);
@@ -1059,7 +1059,7 @@ namespace Empeño.WindowsForms.Views
                         var listOriging = _contextTemp.Intereses.Where(p => p.EmpenoId == empeñoId);
                         if (!pagados)
                         {
-                            listOriging = listOriging.Where(l => l.Pagado < l.Monto);
+                            listOriging = listOriging.Where(l => Math.Truncate(l.Pagado) < Math.Truncate(l.Monto));
                         }
                         var list = listOriging
                             .Select(x => new

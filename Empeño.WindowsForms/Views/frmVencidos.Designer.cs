@@ -38,6 +38,8 @@
             this.dgvDetalles = new System.Windows.Forms.DataGridView();
             this.label6 = new System.Windows.Forms.Label();
             this.panelArqueo = new System.Windows.Forms.Panel();
+            this.dtHasta = new System.Windows.Forms.DateTimePicker();
+            this.dtDesde = new System.Windows.Forms.DateTimePicker();
             this.btnBuscar = new System.Windows.Forms.Button();
             this.textBox1 = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
@@ -61,8 +63,7 @@
             this.elipsePanelArqueo = new ns1.BunifuElipse(this.components);
             this.elipseDetalles = new ns1.BunifuElipse(this.components);
             this.printDocument1 = new System.Drawing.Printing.PrintDocument();
-            this.dtDesde = new System.Windows.Forms.DateTimePicker();
-            this.dtHasta = new System.Windows.Forms.DateTimePicker();
+            this.btnPrint = new System.Windows.Forms.Button();
             this.panelDetalle.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvDetalles)).BeginInit();
             this.panelArqueo.SuspendLayout();
@@ -153,6 +154,7 @@
             this.panelArqueo.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.panelArqueo.BackColor = System.Drawing.Color.LightGray;
+            this.panelArqueo.Controls.Add(this.btnPrint);
             this.panelArqueo.Controls.Add(this.dtHasta);
             this.panelArqueo.Controls.Add(this.dtDesde);
             this.panelArqueo.Controls.Add(this.btnBuscar);
@@ -181,6 +183,26 @@
             this.panelArqueo.Size = new System.Drawing.Size(683, 250);
             this.panelArqueo.TabIndex = 9;
             this.panelArqueo.Paint += new System.Windows.Forms.PaintEventHandler(this.panelArqueo_Paint);
+            // 
+            // dtHasta
+            // 
+            this.dtHasta.CustomFormat = "dd/MM/yyyy";
+            this.dtHasta.Font = new System.Drawing.Font("Century Gothic", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.dtHasta.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
+            this.dtHasta.Location = new System.Drawing.Point(246, 71);
+            this.dtHasta.Name = "dtHasta";
+            this.dtHasta.Size = new System.Drawing.Size(164, 27);
+            this.dtHasta.TabIndex = 32;
+            // 
+            // dtDesde
+            // 
+            this.dtDesde.CustomFormat = "dd/MM/yyyy";
+            this.dtDesde.Font = new System.Drawing.Font("Century Gothic", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.dtDesde.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
+            this.dtDesde.Location = new System.Drawing.Point(19, 71);
+            this.dtDesde.Name = "dtDesde";
+            this.dtDesde.Size = new System.Drawing.Size(164, 27);
+            this.dtDesde.TabIndex = 31;
             // 
             // btnBuscar
             // 
@@ -453,25 +475,23 @@
             this.elipseDetalles.ElipseRadius = 20;
             this.elipseDetalles.TargetControl = this.panelDetalle;
             // 
-            // dtDesde
+            // btnPrint
             // 
-            this.dtDesde.CustomFormat = "dd/MM/yyyy";
-            this.dtDesde.Font = new System.Drawing.Font("Century Gothic", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.dtDesde.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
-            this.dtDesde.Location = new System.Drawing.Point(19, 71);
-            this.dtDesde.Name = "dtDesde";
-            this.dtDesde.Size = new System.Drawing.Size(164, 27);
-            this.dtDesde.TabIndex = 31;
-            // 
-            // dtHasta
-            // 
-            this.dtHasta.CustomFormat = "dd/MM/yyyy";
-            this.dtHasta.Font = new System.Drawing.Font("Century Gothic", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.dtHasta.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
-            this.dtHasta.Location = new System.Drawing.Point(246, 71);
-            this.dtHasta.Name = "dtHasta";
-            this.dtHasta.Size = new System.Drawing.Size(164, 27);
-            this.dtHasta.TabIndex = 32;
+            this.btnPrint.BackColor = System.Drawing.Color.DarkViolet;
+            this.btnPrint.FlatAppearance.BorderSize = 0;
+            this.btnPrint.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnPrint.Font = new System.Drawing.Font("Century Gothic", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnPrint.ForeColor = System.Drawing.Color.White;
+            this.btnPrint.Image = ((System.Drawing.Image)(resources.GetObject("btnPrint.Image")));
+            this.btnPrint.Location = new System.Drawing.Point(414, 189);
+            this.btnPrint.Margin = new System.Windows.Forms.Padding(2);
+            this.btnPrint.Name = "btnPrint";
+            this.btnPrint.Size = new System.Drawing.Size(92, 36);
+            this.btnPrint.TabIndex = 60;
+            this.btnPrint.Text = " Imprimir";
+            this.btnPrint.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
+            this.btnPrint.UseVisualStyleBackColor = false;
+            this.btnPrint.Click += new System.EventHandler(this.btnPrint_Click);
             // 
             // frmVencidos
             // 
@@ -528,5 +548,6 @@
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.DateTimePicker dtHasta;
         private System.Windows.Forms.DateTimePicker dtDesde;
+        private System.Windows.Forms.Button btnPrint;
     }
 }
