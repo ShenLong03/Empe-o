@@ -664,6 +664,7 @@ namespace Empeño.WindowsForms.Views
             this.dgvEmpeños.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dgvEmpeños.Size = new System.Drawing.Size(621, 130);
             this.dgvEmpeños.TabIndex = 27;
+            this.dgvEmpeños.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvEmpeños_CellContentClick);
             this.dgvEmpeños.CellFormatting += new System.Windows.Forms.DataGridViewCellFormattingEventHandler(this.dgvEmpeños_CellFormatting);
             this.dgvEmpeños.DoubleClick += new System.EventHandler(this.dgvEmpeños_DoubleClick);
             // 
@@ -987,7 +988,7 @@ namespace Empeño.WindowsForms.Views
             this.lblEstado.Location = new System.Drawing.Point(171, 4);
             this.lblEstado.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.lblEstado.Name = "lblEstado";
-            this.lblEstado.Padding = new System.Windows.Forms.Padding(3, 3, 3, 3);
+            this.lblEstado.Padding = new System.Windows.Forms.Padding(3);
             this.lblEstado.Size = new System.Drawing.Size(57, 23);
             this.lblEstado.TabIndex = 5;
             this.lblEstado.Text = "Activo";
@@ -1253,7 +1254,7 @@ namespace Empeño.WindowsForms.Views
             this.subMenuEstado.Controls.Add(this.btnEstadoVencido);
             this.subMenuEstado.Controls.Add(this.btnEstadoVigente);
             this.subMenuEstado.Location = new System.Drawing.Point(125, 2);
-            this.subMenuEstado.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.subMenuEstado.Margin = new System.Windows.Forms.Padding(2);
             this.subMenuEstado.Name = "subMenuEstado";
             this.subMenuEstado.Size = new System.Drawing.Size(160, 136);
             this.subMenuEstado.TabIndex = 51;
@@ -1266,7 +1267,7 @@ namespace Empeño.WindowsForms.Views
             this.btnEstadoRetirado.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnEstadoRetirado.Font = new System.Drawing.Font("Century Gothic", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnEstadoRetirado.Location = new System.Drawing.Point(0, 102);
-            this.btnEstadoRetirado.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.btnEstadoRetirado.Margin = new System.Windows.Forms.Padding(2);
             this.btnEstadoRetirado.Name = "btnEstadoRetirado";
             this.btnEstadoRetirado.Size = new System.Drawing.Size(160, 34);
             this.btnEstadoRetirado.TabIndex = 3;
@@ -1281,7 +1282,7 @@ namespace Empeño.WindowsForms.Views
             this.btnEstadoCancelado.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnEstadoCancelado.Font = new System.Drawing.Font("Century Gothic", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnEstadoCancelado.Location = new System.Drawing.Point(0, 68);
-            this.btnEstadoCancelado.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.btnEstadoCancelado.Margin = new System.Windows.Forms.Padding(2);
             this.btnEstadoCancelado.Name = "btnEstadoCancelado";
             this.btnEstadoCancelado.Size = new System.Drawing.Size(160, 34);
             this.btnEstadoCancelado.TabIndex = 2;
@@ -1296,7 +1297,7 @@ namespace Empeño.WindowsForms.Views
             this.btnEstadoVencido.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnEstadoVencido.Font = new System.Drawing.Font("Century Gothic", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnEstadoVencido.Location = new System.Drawing.Point(0, 34);
-            this.btnEstadoVencido.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.btnEstadoVencido.Margin = new System.Windows.Forms.Padding(2);
             this.btnEstadoVencido.Name = "btnEstadoVencido";
             this.btnEstadoVencido.Size = new System.Drawing.Size(160, 34);
             this.btnEstadoVencido.TabIndex = 1;
@@ -1311,7 +1312,7 @@ namespace Empeño.WindowsForms.Views
             this.btnEstadoVigente.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnEstadoVigente.Font = new System.Drawing.Font("Century Gothic", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnEstadoVigente.Location = new System.Drawing.Point(0, 0);
-            this.btnEstadoVigente.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.btnEstadoVigente.Margin = new System.Windows.Forms.Padding(2);
             this.btnEstadoVigente.Name = "btnEstadoVigente";
             this.btnEstadoVigente.Size = new System.Drawing.Size(160, 34);
             this.btnEstadoVigente.TabIndex = 0;

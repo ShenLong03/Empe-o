@@ -675,16 +675,20 @@ namespace Empeño.WindowsForms.Views
                 var index = 0;
                 foreach (var item in intereses)
                 {
-                    cexcel.Cells[26 + index, 1].value = Program.Meses(item.FechaVencimiento.Month);
-                    cexcel.Cells[26 + index, 3].value = item.Pagado.ToString("N2");
+                    if (item.Pagado>=1)
+                    {
+                        cexcel.Cells[26 + index, 1].value = Program.Meses(item.FechaVencimiento.Month);
+                        cexcel.Cells[26 + index, 3].value = item.Pagado.ToString("N2");
 
-                    Microsoft.Office.Interop.Excel.Worksheet ws = cexcel.ActiveSheet as Microsoft.Office.Interop.Excel.Worksheet;
+                        Microsoft.Office.Interop.Excel.Worksheet ws = cexcel.ActiveSheet as Microsoft.Office.Interop.Excel.Worksheet;
 
-                    Range line = (Range)cexcel.Rows[27 + index];
-                    line.Insert();
-                    ++index;
-                    ws.get_Range("A" + (26 + index), "B" + (26 + index)).Merge();
-                    ws.get_Range("C" + (26 + index), "D" + (26 + index)).Merge();
+                        Range line = (Range)cexcel.Rows[27 + index];
+                        line.Insert();
+                        ++index;
+                        ws.get_Range("A" + (26 + index), "B" + (26 + index)).Merge();
+                        ws.get_Range("C" + (26 + index), "D" + (26 + index)).Merge();
+                    }
+                    
 
                 }
 

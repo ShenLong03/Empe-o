@@ -892,7 +892,7 @@ namespace Empeño.WindowsForms.Views
                 using (DataContext _context = new DataContext())
                 {
                     var empeño = await _context.Empenos.FindAsync(empeñoId);
-
+                    
                     if (empeño != null)
                     {
                         CleanForm();
@@ -1112,6 +1112,22 @@ namespace Empeño.WindowsForms.Views
                 else
                 {
                     CargarPagos();
+                }
+
+                int empeñoId = (dgvEmpeños.SelectedRows.Count > 0)
+                   ? int.Parse(dgvEmpeños.SelectedRows[0].Cells[0].Value.ToString())
+                   : 0;
+                var empeño = await _context.Empenos.FindAsync(empeñoId);
+                if (empeño.Estado == Estado.Cancelado)
+                {
+                    MessageBox.Show("El empeño fue Retirado por el Cliente el  " + empeño.FechaRetiro.Value.ToString("dd/MM/yyyy"),
+                        "Información", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                }
+                else if (empeño.Estado == Estado.Retirado)
+                {
+                    MessageBox.Show("El empeño fue sacado como Vencido por el Administrador el " + empeño.FechaRetiroAdministrador.Value.ToString("dd/MM/yyyy"),
+                       "Información", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
             }
             catch (Exception ex)
@@ -2109,17 +2125,19 @@ namespace Empeño.WindowsForms.Views
             var index = 0;
             foreach (var item in intereses.Where(i=>i.Pagado>=1))
             {
-                cexcel.Cells[26+index, 1].value = item.FechaVencimiento.ToString("dd/MM/yyyy");
-                cexcel.Cells[26+index, 3].value = item.Pagado.ToString("N2");
+                if (item.Pagado >= 1)
+                {
+                    cexcel.Cells[26 + index, 1].value = Program.Meses(item.FechaVencimiento.Month);
+                    cexcel.Cells[26 + index, 3].value = item.Pagado.ToString("N2");
 
-                Microsoft.Office.Interop.Excel.Worksheet ws = cexcel.ActiveSheet as Microsoft.Office.Interop.Excel.Worksheet;
+                    Microsoft.Office.Interop.Excel.Worksheet ws = cexcel.ActiveSheet as Microsoft.Office.Interop.Excel.Worksheet;
 
-                Range line = (Range)cexcel.Rows[27+ index];
-                line.Insert();
-                ++index;
-                ws.get_Range("A" + (26 + index), "B" + (26 + index)).Merge();
-                ws.get_Range("C" + (26 + index), "D" + (26 + index)).Merge();
-                
+                    Range line = (Range)cexcel.Rows[27 + index];
+                    line.Insert();
+                    ++index;
+                    ws.get_Range("A" + (26 + index), "B" + (26 + index)).Merge();
+                    ws.get_Range("C" + (26 + index), "D" + (26 + index)).Merge();
+                }
             }
 
             cexcel.Cells[28 + index, 3].value = intereses.Sum(i => i.Pagado).ToString("N2");
@@ -2492,6 +2510,11 @@ namespace Empeño.WindowsForms.Views
         }
 
         private void btnVerPago_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void dgvEmpeños_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
 
         }
