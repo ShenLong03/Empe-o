@@ -8,7 +8,7 @@
     <ProjectGuid>{44A17081-2D55-489F-A987-164876CAFB70}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <RootNamespace>Empeño.WindowsForms</RootNamespace>
-    <AssemblyName>Empeño.WindowsForms</AssemblyName>
+    <AssemblyName>Empeño Presta Ya</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>

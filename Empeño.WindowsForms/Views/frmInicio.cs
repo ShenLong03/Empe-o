@@ -451,7 +451,7 @@
             string maquina = Environment.MachineName;
             //SQLEXPRESS
             maquina = ".";
-            listo = Create(maquina, "Empeno", "C:\\Backup\\empeno.bak");
+            listo = Create(maquina, "Empeno2", "C:\\Backup\\empeno2.bak");
             if (listo)
             {
                 MessageBox.Show("El BackUp se realizo de forma exitosa. Por favor revisar la carpeta C:\\Backup");
@@ -501,7 +501,7 @@
             string maquina = Environment.MachineName;
             //SQLEXPRESS
             maquina = ".";
-            listo = Create(maquina, "Empeno", "C:\\Backup\\empeno.bak");
+            listo = Create(maquina, "Empeno2", "C:\\Backup\\empeno2.bak");
             if (listo)
             {
                 MessageBox.Show("El BackUp se realizo de forma exitosa. Por favor revisar la carpeta C:\\Backup");
@@ -512,7 +512,7 @@
             }
         }
 
-      
+
         protected override void WndProc(ref Message m)
         {
             switch (m.Msg)

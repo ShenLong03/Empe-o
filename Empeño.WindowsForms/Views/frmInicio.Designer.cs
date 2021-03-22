@@ -50,6 +50,7 @@ namespace Empeño.WindowsForms.Views
             this.mnuTablero = new FontAwesome.Sharp.IconButton();
             this.mnuInicio = new FontAwesome.Sharp.IconButton();
             this.panel2 = new System.Windows.Forms.Panel();
+            this.label1 = new System.Windows.Forms.Label();
             this.btnMenu = new FontAwesome.Sharp.IconPictureBox();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.shapeContainer1 = new Microsoft.VisualBasic.PowerPacks.ShapeContainer();
@@ -94,7 +95,7 @@ namespace Empeño.WindowsForms.Views
             // panel1
             // 
             this.panel1.AutoScroll = true;
-            this.panel1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(17)))), ((int)(((byte)(2)))), ((int)(((byte)(115)))));
+            this.panel1.BackColor = System.Drawing.Color.Black;
             this.panel1.Controls.Add(this.mnuCaja);
             this.panel1.Controls.Add(this.panelSubMenuReportes);
             this.panel1.Controls.Add(this.mnuReporte);
@@ -114,6 +115,7 @@ namespace Empeño.WindowsForms.Views
             // 
             // mnuCaja
             // 
+            this.mnuCaja.BackColor = System.Drawing.Color.Black;
             this.mnuCaja.Dock = System.Windows.Forms.DockStyle.Top;
             this.mnuCaja.FlatAppearance.BorderSize = 0;
             this.mnuCaja.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
@@ -132,7 +134,7 @@ namespace Empeño.WindowsForms.Views
             this.mnuCaja.Text = "Caja";
             this.mnuCaja.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.mnuCaja.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
-            this.mnuCaja.UseVisualStyleBackColor = true;
+            this.mnuCaja.UseVisualStyleBackColor = false;
             this.mnuCaja.Click += new System.EventHandler(this.mnuCaja_Click);
             // 
             // panelSubMenuReportes
@@ -151,6 +153,7 @@ namespace Empeño.WindowsForms.Views
             // 
             // mnuReporteVencidos
             // 
+            this.mnuReporteVencidos.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(65)))), ((int)(((byte)(116)))));
             this.mnuReporteVencidos.Dock = System.Windows.Forms.DockStyle.Top;
             this.mnuReporteVencidos.FlatAppearance.BorderSize = 0;
             this.mnuReporteVencidos.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
@@ -168,11 +171,12 @@ namespace Empeño.WindowsForms.Views
             this.mnuReporteVencidos.TabIndex = 12;
             this.mnuReporteVencidos.Text = "Reporte Vencidos";
             this.mnuReporteVencidos.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.mnuReporteVencidos.UseVisualStyleBackColor = true;
+            this.mnuReporteVencidos.UseVisualStyleBackColor = false;
             this.mnuReporteVencidos.Click += new System.EventHandler(this.mnuReporteVencidos_Click);
             // 
             // mnuArqueo
             // 
+            this.mnuArqueo.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(65)))), ((int)(((byte)(116)))));
             this.mnuArqueo.Dock = System.Windows.Forms.DockStyle.Top;
             this.mnuArqueo.FlatAppearance.BorderSize = 0;
             this.mnuArqueo.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
@@ -190,11 +194,12 @@ namespace Empeño.WindowsForms.Views
             this.mnuArqueo.TabIndex = 11;
             this.mnuArqueo.Text = "Reporte Arqueo";
             this.mnuArqueo.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.mnuArqueo.UseVisualStyleBackColor = true;
+            this.mnuArqueo.UseVisualStyleBackColor = false;
             this.mnuArqueo.Click += new System.EventHandler(this.mnuArqueo_Click);
             // 
             // mnuReporteEmpeños
             // 
+            this.mnuReporteEmpeños.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(65)))), ((int)(((byte)(116)))));
             this.mnuReporteEmpeños.Dock = System.Windows.Forms.DockStyle.Top;
             this.mnuReporteEmpeños.FlatAppearance.BorderSize = 0;
             this.mnuReporteEmpeños.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
@@ -212,11 +217,12 @@ namespace Empeño.WindowsForms.Views
             this.mnuReporteEmpeños.TabIndex = 10;
             this.mnuReporteEmpeños.Text = "Reporte Empeños";
             this.mnuReporteEmpeños.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.mnuReporteEmpeños.UseVisualStyleBackColor = true;
+            this.mnuReporteEmpeños.UseVisualStyleBackColor = false;
             this.mnuReporteEmpeños.Click += new System.EventHandler(this.iconButton1_Click);
             // 
             // mnuReporteIngresos
             // 
+            this.mnuReporteIngresos.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(65)))), ((int)(((byte)(116)))));
             this.mnuReporteIngresos.Dock = System.Windows.Forms.DockStyle.Top;
             this.mnuReporteIngresos.FlatAppearance.BorderSize = 0;
             this.mnuReporteIngresos.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
@@ -234,11 +240,12 @@ namespace Empeño.WindowsForms.Views
             this.mnuReporteIngresos.TabIndex = 9;
             this.mnuReporteIngresos.Text = "Reporte Ingresos";
             this.mnuReporteIngresos.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.mnuReporteIngresos.UseVisualStyleBackColor = true;
+            this.mnuReporteIngresos.UseVisualStyleBackColor = false;
             this.mnuReporteIngresos.Click += new System.EventHandler(this.mnuReporteIngresos_Click);
             // 
             // mnuReporte
             // 
+            this.mnuReporte.BackColor = System.Drawing.Color.Black;
             this.mnuReporte.Dock = System.Windows.Forms.DockStyle.Top;
             this.mnuReporte.FlatAppearance.BorderSize = 0;
             this.mnuReporte.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
@@ -257,7 +264,7 @@ namespace Empeño.WindowsForms.Views
             this.mnuReporte.Text = "Reportes";
             this.mnuReporte.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.mnuReporte.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
-            this.mnuReporte.UseVisualStyleBackColor = true;
+            this.mnuReporte.UseVisualStyleBackColor = false;
             this.mnuReporte.Click += new System.EventHandler(this.mnuReporte_Click);
             // 
             // panelSubMenuConfiguracion
@@ -341,6 +348,7 @@ namespace Empeño.WindowsForms.Views
             // 
             // mnuConfiguracion
             // 
+            this.mnuConfiguracion.BackColor = System.Drawing.Color.Black;
             this.mnuConfiguracion.Dock = System.Windows.Forms.DockStyle.Top;
             this.mnuConfiguracion.FlatAppearance.BorderSize = 0;
             this.mnuConfiguracion.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
@@ -359,11 +367,12 @@ namespace Empeño.WindowsForms.Views
             this.mnuConfiguracion.Text = " Configuración";
             this.mnuConfiguracion.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.mnuConfiguracion.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
-            this.mnuConfiguracion.UseVisualStyleBackColor = true;
+            this.mnuConfiguracion.UseVisualStyleBackColor = false;
             this.mnuConfiguracion.Click += new System.EventHandler(this.mnuConfiguracion_Click);
             // 
             // mnuClientes
             // 
+            this.mnuClientes.BackColor = System.Drawing.Color.Black;
             this.mnuClientes.Dock = System.Windows.Forms.DockStyle.Top;
             this.mnuClientes.FlatAppearance.BorderSize = 0;
             this.mnuClientes.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
@@ -382,12 +391,12 @@ namespace Empeño.WindowsForms.Views
             this.mnuClientes.Text = " Clientes";
             this.mnuClientes.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.mnuClientes.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
-            this.mnuClientes.UseVisualStyleBackColor = true;
+            this.mnuClientes.UseVisualStyleBackColor = false;
             this.mnuClientes.Click += new System.EventHandler(this.mnuEmpleados_Click);
             // 
             // mnuLogout
             // 
-            this.mnuLogout.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(16)))), ((int)(((byte)(19)))), ((int)(((byte)(100)))));
+            this.mnuLogout.BackColor = System.Drawing.Color.Black;
             this.mnuLogout.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.mnuLogout.FlatAppearance.BorderSize = 0;
             this.mnuLogout.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
@@ -409,6 +418,7 @@ namespace Empeño.WindowsForms.Views
             // 
             // mnuEmpeños
             // 
+            this.mnuEmpeños.BackColor = System.Drawing.Color.Black;
             this.mnuEmpeños.Dock = System.Windows.Forms.DockStyle.Top;
             this.mnuEmpeños.FlatAppearance.BorderSize = 0;
             this.mnuEmpeños.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
@@ -427,11 +437,12 @@ namespace Empeño.WindowsForms.Views
             this.mnuEmpeños.Text = " Empeños";
             this.mnuEmpeños.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.mnuEmpeños.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
-            this.mnuEmpeños.UseVisualStyleBackColor = true;
+            this.mnuEmpeños.UseVisualStyleBackColor = false;
             this.mnuEmpeños.Click += new System.EventHandler(this.mnuEmpeños_Click);
             // 
             // mnuTablero
             // 
+            this.mnuTablero.BackColor = System.Drawing.Color.Black;
             this.mnuTablero.Dock = System.Windows.Forms.DockStyle.Top;
             this.mnuTablero.FlatAppearance.BorderSize = 0;
             this.mnuTablero.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
@@ -450,11 +461,12 @@ namespace Empeño.WindowsForms.Views
             this.mnuTablero.Text = " Tablero";
             this.mnuTablero.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.mnuTablero.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
-            this.mnuTablero.UseVisualStyleBackColor = true;
+            this.mnuTablero.UseVisualStyleBackColor = false;
             this.mnuTablero.Click += new System.EventHandler(this.iconButton2_Click);
             // 
             // mnuInicio
             // 
+            this.mnuInicio.BackColor = System.Drawing.Color.Black;
             this.mnuInicio.Dock = System.Windows.Forms.DockStyle.Top;
             this.mnuInicio.FlatAppearance.BorderSize = 0;
             this.mnuInicio.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
@@ -473,11 +485,13 @@ namespace Empeño.WindowsForms.Views
             this.mnuInicio.Text = "Inicio";
             this.mnuInicio.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.mnuInicio.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
-            this.mnuInicio.UseVisualStyleBackColor = true;
+            this.mnuInicio.UseVisualStyleBackColor = false;
             this.mnuInicio.Click += new System.EventHandler(this.mnuInicio_Click);
             // 
             // panel2
             // 
+            this.panel2.BackColor = System.Drawing.Color.Black;
+            this.panel2.Controls.Add(this.label1);
             this.panel2.Controls.Add(this.btnMenu);
             this.panel2.Controls.Add(this.pictureBox1);
             this.panel2.Controls.Add(this.shapeContainer1);
@@ -486,6 +500,17 @@ namespace Empeño.WindowsForms.Views
             this.panel2.Name = "panel2";
             this.panel2.Size = new System.Drawing.Size(207, 147);
             this.panel2.TabIndex = 0;
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Font = new System.Drawing.Font("Century Gothic", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label1.ForeColor = System.Drawing.SystemColors.ControlLight;
+            this.label1.Location = new System.Drawing.Point(60, 101);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(88, 19);
+            this.label1.TabIndex = 3;
+            this.label1.Text = "PRESTA YA";
             // 
             // btnMenu
             // 
@@ -536,7 +561,7 @@ namespace Empeño.WindowsForms.Views
             // 
             // panel3
             // 
-            this.panel3.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(16)))), ((int)(((byte)(19)))), ((int)(((byte)(100)))));
+            this.panel3.BackColor = System.Drawing.Color.Black;
             this.panel3.Controls.Add(this.btnBackup);
             this.panel3.Controls.Add(this.lblSesionUsuario);
             this.panel3.Controls.Add(this.label2);
@@ -767,6 +792,7 @@ namespace Empeño.WindowsForms.Views
             this.panelSubMenuReportes.ResumeLayout(false);
             this.panelSubMenuConfiguracion.ResumeLayout(false);
             this.panel2.ResumeLayout(false);
+            this.panel2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.btnMenu)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.panel3.ResumeLayout(false);
@@ -829,5 +855,6 @@ namespace Empeño.WindowsForms.Views
         private Label lblSesionUsuario;
         private Label label2;
         private FontAwesome.Sharp.IconPictureBox btnBackup;
+        private Label label1;
     }
 }
