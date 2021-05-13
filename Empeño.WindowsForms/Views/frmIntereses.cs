@@ -37,6 +37,7 @@ namespace Empeño.WindowsForms.Views
                 interes.Menor = txtMenor.Text == "Menor que" ? 0 : int.Parse(txtMenor.Text);
                 interes.Nombre = txtNombre.Text;
                 interes.Porcentaje = txtValor.Text == "Porcentaje" ? 0 : double.Parse(txtValor.Text);
+                interes.Bodega = txtBodega.Text == "Bodega" ? 0 : double.Parse(txtBodega.Text);
                 interes.Activo = chbActivo.Checked;
                 _context.Entry(interes).State=EntityState.Modified;
             }
@@ -53,6 +54,7 @@ namespace Empeño.WindowsForms.Views
                     Igual = txtIgual.Text == "Igual que" ? 0 : int.Parse(txtIgual.Text),
                     Mayor = txtMayor.Text == "Mayor que" ? 0 : int.Parse(txtMayor.Text),
                     Menor = txtMenor.Text == "Menor que" ? 0 : int.Parse(txtMenor.Text),
+                    Bodega = txtBodega.Text == "Bodega" ? 0 : double.Parse(txtBodega.Text),
                     Nombre = txtNombre.Text,
                     Activo = chbActivo.Checked,
                     Porcentaje = txtValor.Text == "Porcentaje" ? 0 : double.Parse(txtValor.Text),
@@ -82,6 +84,7 @@ namespace Empeño.WindowsForms.Views
                 Id=x.InteresId,
                 x.Nombre,
                 Porcentaje=x.Porcentaje + "%",
+                Bodega=x.Bodega + "%",
                 Mayor_que="> " + x.Mayor,
                 Menor_que =x.Menor + " >",
                 Igual_que="= " + x.Igual,
@@ -105,6 +108,8 @@ namespace Empeño.WindowsForms.Views
             funciones.PlaceHolder(txtMenor, lblMenor,PlaceHolderType.Leave, "Menor que");
             txtIgual.Text = string.Empty;
             funciones.PlaceHolder(txtIgual, lblIgual,PlaceHolderType.Leave, "Igual que");
+            txtBodega.Text = string.Empty;
+            funciones.PlaceHolder(txtBodega, lblBodega, PlaceHolderType.Leave, "Bodega");
             interesId = 0;
         }
 
@@ -241,6 +246,16 @@ namespace Empeño.WindowsForms.Views
         {
             await Editar();
             funciones.BlockTextBox(panelFormulario,false);
+        }
+
+        private void txtBodega_Leave(object sender, EventArgs e)
+        {
+            funciones.PlaceHolder(txtBodega, lblBodega, PlaceHolderType.Leave, "Bodega");
+        }
+
+        private void txtBodega_Enter(object sender, EventArgs e)
+        {
+            funciones.PlaceHolder(txtBodega, lblBodega, PlaceHolderType.Enter, "Bodega");
         }
     }
 }

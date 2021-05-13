@@ -41,6 +41,8 @@ namespace Empeño.CommonEF.Entities
 
         public bool SSL { get; set; }
 
+        public double Bodega { get; set; }
+
         public Configuracion()
         {
             Meses = 3;

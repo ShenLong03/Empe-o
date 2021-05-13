@@ -12,6 +12,8 @@
 
         public double Porcentaje { get; set; } = 1;
 
+        public double Bodega { get; set; } = 1;
+
         public int Mayor { get; set; }
 
         public int Menor { get; set; }
