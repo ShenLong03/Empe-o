@@ -99,8 +99,9 @@ namespace Empeño.WindowsForms.Views
             txtEmpleado.Enabled = false;
             textBox1.Text = "0.00";
 
-            var empeñosActivos = _context.Empenos.Where(x => !x.IsDelete && (x.Estado == Estado.Vigente
-                       || x.Estado == Estado.Pendiente || x.Estado == Estado.Vencido));
+            var empeñosActivos = _context.Empenos.Where(x => !x.IsDelete 
+            && ((x.Estado == Estado.Vigente || x.Estado == Estado.Pendiente || x.Estado == Estado.Vencido)  
+            || (x.Estado==Estado.Cancelado && x.FechaRetiro>tomorrow)));
            
 
             double? vencidos = _context.Empenos.Where(x => !x.IsDelete && x.FechaRetiroAdministrador >= fecha && x.FechaRetiroAdministrador < tomorrow).ToList().Sum(x => x.MontoPendiente);
@@ -108,8 +109,8 @@ namespace Empeño.WindowsForms.Views
             double c1 = empeñosActivos.Where(x => x.Fecha < fecha
                      && (!x.Retirado || (x.FechaRetiroAdministrador >= fecha && x.FechaRetiroAdministrador<tomorrow))).Sum(x => x.MontoPendiente);
 
-            double c2c3 = _context.Pago.Where(p => p.Fecha >= fecha && p.TipoPago == TipoPago.Principal).Any() ?
-                _context.Pago.Where(p => p.Fecha >= fecha && p.TipoPago == TipoPago.Principal).Select(x => x.Monto).Sum()
+            double c2c3 = _context.Pago.Where(p => p.Fecha >= fecha && p.Fecha < tomorrow && p.TipoPago == TipoPago.Principal).Any() ?
+                _context.Pago.Where(p => p.Fecha >= fecha && p.Fecha < tomorrow && p.TipoPago == TipoPago.Principal).Select(x => x.Monto).Sum()
                 : 0;
 
             double acumuladoInicial = (c1 + (vencidos == null?0: vencidos.Value)) + c2c3;
