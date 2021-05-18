@@ -34,6 +34,7 @@ namespace Empeño.CommonEF.Entities
         [JsonIgnore]
         public virtual Empeno Empeno { get; set; }
 
+        [JsonIgnore]
         public virtual Interes Interes { get; set; }
     }
 }

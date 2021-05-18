@@ -1,5 +1,6 @@
 ﻿namespace Empeño.CommonEF.Entities
 {
+    using Newtonsoft.Json;
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
 
@@ -23,6 +24,7 @@
 
         public bool Activo { get; set; } = true;
 
+        [JsonIgnore]
         public virtual ICollection<Intereses> Intereses { get; set; }
 
         public Interes()

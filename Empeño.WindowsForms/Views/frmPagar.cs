@@ -344,7 +344,7 @@ namespace Empeño.WindowsForms.Views
             }          
         }
 
-        public async Task<Pago> SetPagaInteres(double pagoIntereses, bool print = true)
+        public async Task<ResposeCancelar> SetPagaInteres(double pagoIntereses, bool print = true)
         {
             empeño = await _context.Empenos.FindAsync(empeñoId);
             if (pagoIntereses > 0)
@@ -422,7 +422,11 @@ namespace Empeño.WindowsForms.Views
                     }
                 }
 
-                return pago;
+                return new ResposeCancelar() 
+                {
+                    Pago=pago,
+                    Intereses=intereses
+                };
             }
 
             return null;
@@ -596,7 +600,7 @@ namespace Empeño.WindowsForms.Views
             }
         }
 
-        public async Task PrintRetiro(Empeno empeno, Pago pago, Pago pagoInteres)
+        public async Task PrintRetiro(Empeno empeno, Pago pago, ResposeCancelar pagoInteres)
         {
             try
             {
@@ -615,7 +619,7 @@ namespace Empeño.WindowsForms.Views
                 cexcel.Cells[5, 1].value = "Tel. " + configuracion.Telefono;
                 cexcel.Cells[6, 1].value = configuracion.Nombre;
                 cexcel.Cells[7, 1].value = "Cédula: " + configuracion.Identificacion;
-                cexcel.Cells[8, 2].value = $"{pago.Consecutivo}, {pagoInteres.Consecutivo}";
+                cexcel.Cells[8, 2].value = $"{pago.Consecutivo}, {pagoInteres.Pago.Consecutivo}";
                 cexcel.Cells[9, 2].value = usuario.Nombre;
                 cexcel.Cells[10, 2].value = Program.Usuario.Usuario;
                 cexcel.Cells[14, 2].value = empeno.Cliente.Identificacion;
@@ -632,10 +636,11 @@ namespace Empeño.WindowsForms.Views
                     cexcel.Cells[19, 1].value = empeno.Descripcion;
                 }
 
-                cexcel.Cells[24, 3].value = txtPagaInteres.Text;
-                cexcel.Cells[25, 3].value = txtPagaMonto.Text;
-                cexcel.Cells[26, 3].value = txtTotalAPagar.Text;
-                cexcel.Cells[28, 3].value = "Cancelado";
+                cexcel.Cells[24, 3].value = pagoInteres.Intereses.Sum(i=>i.MontoBodega).ToString("N2");
+                cexcel.Cells[25, 3].value = pagoInteres.Intereses.Sum(i => i.MontoInteres).ToString("N2");
+                cexcel.Cells[26, 3].value = txtPagaMonto.Text;
+                cexcel.Cells[27, 3].value = txtTotalAPagar.Text;
+                cexcel.Cells[29, 3].value = "Cancelado";
                 cexcel.ActiveWindow.SelectedSheets.PrintOut();
                 System.Threading.Thread.Sleep(300);
                 cexcel.ActiveWorkbook.Close(false);
@@ -845,4 +850,11 @@ namespace Empeño.WindowsForms.Views
 
         }
     }
+}
+
+public class ResposeCancelar
+{
+    public List<Intereses> Intereses { get; set; }
+
+    public Pago Pago { get; set; }
 }
