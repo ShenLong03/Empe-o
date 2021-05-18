@@ -249,7 +249,7 @@ namespace Empeño.WindowsForms.Views
                     Comentario = txtComentario.Text,
                     EmpleadoId = Program.EmpleadoId,
                     Fecha = DateTime.Now,
-                    Monto = pagoIntereses,
+                    Monto = pagoIntereses,                    
                     TipoPago = TipoPago.Interes,
                 };
 
@@ -273,6 +273,7 @@ namespace Empeño.WindowsForms.Views
                         {
                             empeño.FechaVencimiento = empeño.FechaVencimiento.AddMonths(1);
                             item.Monto = item.Pagado;
+                            item.FechaPago = DateTime.Now;
                         }
                         item.PagoId = pago.PagoId;
                         _context.Entry(item).State = EntityState.Modified;
@@ -282,6 +283,7 @@ namespace Empeño.WindowsForms.Views
                             EmpenoId = item.EmpenoId,
                             FechaCreacion = item.FechaCreacion,
                             FechaVencimiento = item.FechaVencimiento,
+                            FechaPago=item.FechaPago,
                             InteresesId = item.InteresesId,
                             Monto = item.Monto,
                             Pagado = sobrante,
@@ -299,6 +301,7 @@ namespace Empeño.WindowsForms.Views
                         {
                             empeño.FechaVencimiento = empeño.FechaVencimiento.AddMonths(1);
                             item.Monto = item.Pagado;
+                            item.FechaPago = DateTime.Now;
                         }
                         item.PagoId = pago.PagoId;
                         sobrante -= paga;                      
@@ -308,8 +311,11 @@ namespace Empeño.WindowsForms.Views
                             EmpenoId=item.EmpenoId,
                             FechaCreacion=item.FechaCreacion,
                             FechaVencimiento=item.FechaVencimiento,
+                            FechaPago=item.FechaPago,
                             InteresesId=item.InteresesId,
                             Monto=item.Monto,
+                            MontoBodega=item.MontoBodega,
+                            MontoInteres=item.MontoInteres,
                             Pagado= paga,
                             PagoId=item.PagoId
                         } ;
@@ -373,6 +379,7 @@ namespace Empeño.WindowsForms.Views
                         if (item.Pagado == item.Monto)
                         {
                             empeño.FechaVencimiento = empeño.FechaVencimiento.AddMonths(1);
+                            item.FechaPago = DateTime.Now;
                         }
 
                         intereses.Add(item);
@@ -386,6 +393,7 @@ namespace Empeño.WindowsForms.Views
                         if (item.Pagado == item.Monto)
                         {
                             empeño.FechaVencimiento = empeño.FechaVencimiento.AddMonths(1);
+                            item.FechaPago = DateTime.Now;
                         }
                         item.PagoId = pago.PagoId;
                         sobrante -= paga;
@@ -679,19 +687,37 @@ namespace Empeño.WindowsForms.Views
                 {
                     if (item.Pagado>=1)
                     {
-                        cexcel.Cells[26 + index, 1].value = Program.Meses(item.FechaVencimiento.Month);
-                        cexcel.Cells[26 + index, 3].value = item.Pagado.ToString("N2");
+                        var pagado = item.Pagado;
 
-                        Microsoft.Office.Interop.Excel.Worksheet ws = cexcel.ActiveSheet as Microsoft.Office.Interop.Excel.Worksheet;
+                        if (pagado>item.MontoBodega)
+                        {
+                            cexcel.Cells[26 + index, 1].value = "Bodega " + Program.Meses(item.FechaVencimiento.Month);
+                            cexcel.Cells[26 + index, 3].value = item.MontoBodega.ToString("N2");
 
-                        Range line = (Range)cexcel.Rows[27 + index];
-                        line.Insert();
-                        ++index;
-                        ws.get_Range("A" + (26 + index), "B" + (26 + index)).Merge();
-                        ws.get_Range("C" + (26 + index), "D" + (26 + index)).Merge();
+                            Microsoft.Office.Interop.Excel.Worksheet ws = cexcel.ActiveSheet as Microsoft.Office.Interop.Excel.Worksheet;
+
+                            Range line = (Range)cexcel.Rows[27 + index];
+                            line.Insert();
+                            ++index;
+                            ws.get_Range("A" + (26 + index), "B" + (26 + index)).Merge();
+                            ws.get_Range("C" + (26 + index), "D" + (26 + index)).Merge();
+                            pagado -= item.MontoBodega;
+                        }
+
+                        if (pagado>1)
+                        {
+                            cexcel.Cells[26 + index, 1].value = Program.Meses(item.FechaVencimiento.Month);
+                            cexcel.Cells[26 + index, 3].value = pagado.ToString("N2");
+
+                            Microsoft.Office.Interop.Excel.Worksheet ws = cexcel.ActiveSheet as Microsoft.Office.Interop.Excel.Worksheet;
+
+                            Range line = (Range)cexcel.Rows[27 + index];
+                            line.Insert();
+                            ++index;
+                            ws.get_Range("A" + (26 + index), "B" + (26 + index)).Merge();
+                            ws.get_Range("C" + (26 + index), "D" + (26 + index)).Merge();
+                        }
                     }
-                    
-
                 }
 
                 cexcel.Cells[28 + index, 3].value = txtPagaInteres.Text;

@@ -13,11 +13,19 @@ namespace Empeño.CommonEF.Entities
 
         public int EmpenoId { get; set; }
 
+        public int? InteresId { get; set; } = null;
+
         public DateTime FechaCreacion { get; set; }
 
         public DateTime FechaVencimiento { get; set; }
 
+        public DateTime? FechaPago { get; set; } = null;
+
         public double Monto { get; set; }
+
+        public double MontoInteres { get; set; } = 0;
+
+        public double MontoBodega { get; set; } = 0;
 
         public double Pagado { get; set; }
 
@@ -25,5 +33,7 @@ namespace Empeño.CommonEF.Entities
 
         [JsonIgnore]
         public virtual Empeno Empeno { get; set; }
+
+        public virtual Interes Interes { get; set; }
     }
 }

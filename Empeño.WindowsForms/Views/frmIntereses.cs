@@ -180,6 +180,7 @@ namespace Empeño.WindowsForms.Views
                     interesId = interes.InteresId;
                     txtNombre.Text = interes.Nombre;
                     txtValor.Text = interes.Porcentaje.ToString();
+                    txtBodega.Text = interes.Bodega.ToString();
                     txtMayor.Text = interes.Mayor.ToString();
                     txtMenor.Text = interes.Menor.ToString();
                     txtIgual.Text = interes.Igual.ToString();

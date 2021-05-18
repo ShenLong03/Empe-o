@@ -491,8 +491,12 @@ namespace Empeño.WindowsForms.Funciones
                                     var intereses = new Intereses
                                     {
                                         EmpenoId = empeño.EmpenoId,
+                                        InteresId=empeño.InteresId,
                                         FechaCreacion = DateTime.Now,
                                         Monto = Math.Truncate((double)empeño.MontoPendiente * ((double)empeño.Interes.Porcentaje / (double)100))
+                                        + Math.Truncate((double)empeño.MontoPendiente * ((double)empeño.Interes.Bodega / (double)100)),
+                                        MontoInteres = empeño.Monto * ((double)empeño.Interes.Porcentaje / (double)100),
+                                        MontoBodega = empeño.Monto * ((double)empeño.Interes.Bodega / (double)100),
                                     };
 
                                     if (_context.Intereses.Where(x => x.EmpenoId == empeño.EmpenoId).Count() > 0)
@@ -600,8 +604,12 @@ namespace Empeño.WindowsForms.Funciones
                                 var intereses = new Intereses
                                 {
                                     EmpenoId = empeño.EmpenoId,
+                                    InteresId = empeño.InteresId,
                                     FechaCreacion = DateTime.Now,
-                                    Monto = Math.Truncate((double)empeño.MontoPendiente * ((double)empeño.Interes.Porcentaje / (double)100)),
+                                    Monto = Math.Truncate((double)empeño.MontoPendiente * ((double)empeño.Interes.Porcentaje / (double)100))
+                                    + Math.Truncate((double)empeño.MontoPendiente * ((double)empeño.Interes.Bodega / (double)100)),
+                                    MontoInteres = empeño.Monto * ((double)empeño.Interes.Porcentaje / (double)100),
+                                    MontoBodega = empeño.Monto * ((double)empeño.Interes.Bodega / (double)100),
                                     FechaVencimiento = fechaCalculo.AddMonths(1)
                                 };
                                 using (DataContext tempFirst= new DataContext())
@@ -619,8 +627,12 @@ namespace Empeño.WindowsForms.Funciones
                                 var intereses = new Intereses
                                 {
                                     EmpenoId = empeño.EmpenoId,
+                                    InteresId = empeño.InteresId,
                                     FechaCreacion = DateTime.Now,
                                     Monto = Math.Truncate((double)empeño.MontoPendiente * ((double)empeño.Interes.Porcentaje / (double)100))
+                                    + Math.Truncate((double)empeño.MontoPendiente * ((double)empeño.Interes.Bodega / (double)100)),
+                                    MontoInteres = empeño.Monto * ((double)empeño.Interes.Porcentaje / (double)100),
+                                    MontoBodega = empeño.Monto * ((double)empeño.Interes.Bodega / (double)100),
                                 };
 
                                 if (_context.Intereses.Where(x => x.EmpenoId == empeño.EmpenoId).Count() > 0)

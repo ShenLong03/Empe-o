@@ -1,5 +1,6 @@
 ﻿namespace Empeño.CommonEF.Entities
 {
+    using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
 
     public class Interes
@@ -22,9 +23,12 @@
 
         public bool Activo { get; set; } = true;
 
+        public virtual ICollection<Intereses> Intereses { get; set; }
+
         public Interes()
         {
             Porcentaje = 1;
+            Bodega = 1;
         }
     }
 }

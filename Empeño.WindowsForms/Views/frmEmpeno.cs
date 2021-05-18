@@ -179,12 +179,12 @@ namespace Empeño.WindowsForms.Views
             if (dgvEmpeños.ColumnCount > 0)
             {
                 DataGridViewColumn column = dgvEmpeños.Columns[0];
-                column.Width = 40;
+                column.Width = 50;
             }
             if (dgvClientes.ColumnCount > 0)
             {
                 DataGridViewColumn column = dgvClientes.Columns[0];
-                column.Width = 40;
+                column.Visible = false;
             }
         }
 
@@ -325,6 +325,9 @@ namespace Empeño.WindowsForms.Views
 
                         if (empeño.Monto != double.Parse(txtMonto.Text))
                         {
+                            if(empeño.Monto==empeño.MontoPendiente)
+                                empeño.MontoPendiente = double.Parse(txtMonto.Text);
+
                             empeño.Monto = double.Parse(txtMonto.Text);
 
                             if (empeño.Monto < double.Parse(txtMonto.Text))
@@ -341,7 +344,11 @@ namespace Empeño.WindowsForms.Views
                                 var interes = empeño.Intereses.FirstOrDefault();
                                 if (interes.Pagado == 0)
                                 {
-                                    interes.Monto = empeño.Monto * ((double)empeño.Interes.Porcentaje / (double)100);
+                                    interes.InteresId = empeño.InteresId;
+                                    interes.Monto = empeño.Monto * ((double)empeño.Interes.Porcentaje / (double)100)
+                                        + empeño.Monto * ((double)empeño.Interes.Bodega / (double)100);
+                                    interes.MontoInteres= empeño.Monto * ((double)empeño.Interes.Porcentaje / (double)100);
+                                    interes.MontoBodega=empeño.Monto * ((double)empeño.Interes.Bodega / (double)100);
                                     _context.Entry(interes).State = EntityState.Modified;
                                 }
                             }
@@ -357,7 +364,9 @@ namespace Empeño.WindowsForms.Views
                                 if (interes.Pagado == 0)
                                 {
                                     var porcentaje = await _context.Interes.FindAsync(empeño.InteresId);
-                                    interes.Monto = empeño.Monto * ((double)porcentaje.Porcentaje / (double)100);
+                                    interes.InteresId = empeño.InteresId;
+                                    interes.Monto = Math.Round(empeño.Monto * ((double)porcentaje.Porcentaje / (double)100))
+                                        + Math.Round(empeño.Monto * ((double)porcentaje.Bodega / (double)100));
                                     _context.Entry(interes).State = EntityState.Modified;
                                 }
                             }
@@ -386,7 +395,8 @@ namespace Empeño.WindowsForms.Views
                         dgvPagos.DataSource = _context.Intereses.Where(i => i.EmpenoId == empeño.EmpenoId).Select(x => new
                         {
                             Id = x.InteresesId,
-                            Interes = x.Empeno.Interes.Porcentaje + "%",
+                            Interes = x.Interes.Porcentaje + "%",
+                            Bodega = x.Interes.Bodega + "%",
                             Vence = SqlFunctions.DateName("day", x.FechaVencimiento) + "/" + SqlFunctions.DateName("month", x.FechaVencimiento) + "/" + SqlFunctions.DateName("year", x.FechaVencimiento),
                             x.Monto,
                             x.Pagado,
@@ -396,13 +406,18 @@ namespace Empeño.WindowsForms.Views
                             .Select(x => new
                             {
                                 x.Id,
-                                x.Interes,
                                 x.Vence,
+                                x.Interes,
+                                x.Bodega,
                                 Monto = x.Monto.ToString("N2"),
                                 Pagado = x.Pagado.ToString("N2"),
                                 Faltan = x.Vencimiento
                             }).ToList();
-
+                        if (dgvPagos.ColumnCount > 0)
+                        {
+                            DataGridViewColumn column = dgvPagos.Columns[0];
+                            column.Visible = false;
+                        }
                         dgvPagos.ClearSelection();//If you want                  
                     }
                     else
@@ -484,9 +499,13 @@ namespace Empeño.WindowsForms.Views
                         var intereses = new Intereses
                         {
                             EmpenoId = empeño.EmpenoId,
+                            InteresId = empeño.InteresId,
                             FechaCreacion = DateTime.Now,
                             FechaVencimiento = fecha.AddMonths(1),
                             Monto = Math.Truncate((double)empeño.MontoPendiente * ((double)interes.Porcentaje / (double)100))
+                            + Math.Truncate((double)empeño.MontoPendiente * ((double)interes.Bodega / (double)100)),
+                            MontoInteres = empeño.Monto * ((double)empeño.Interes.Porcentaje / (double)100),
+                            MontoBodega = empeño.Monto * ((double)empeño.Interes.Bodega / (double)100),
                         };
 
                         _context.Intereses.Add(intereses);
@@ -502,7 +521,8 @@ namespace Empeño.WindowsForms.Views
                         dgvPagos.DataSource = _context.Intereses.Where(i => i.EmpenoId == intereses.EmpenoId).Select(x => new
                         {
                             Id = x.InteresesId,
-                            Interes = x.Empeno.Interes.Porcentaje + "%",
+                            Interes = x.Interes.Porcentaje + "%",
+                            Bodega = x.Interes.Bodega + "%",
                             Vence = SqlFunctions.DateName("day", x.FechaVencimiento) + "/" + SqlFunctions.DateName("month", x.FechaVencimiento) + "/" + SqlFunctions.DateName("year", x.FechaVencimiento),
                             x.Monto,
                             x.Pagado,
@@ -512,13 +532,18 @@ namespace Empeño.WindowsForms.Views
                             .Select(x => new
                             {
                                 x.Id,
-                                x.Interes,
                                 x.Vence,
+                                x.Interes,
+                                x.Bodega,
                                 Monto = x.Monto.ToString("N2"),
                                 Pagado = x.Pagado.ToString("N2"),
                                 Faltan = x.Vencimiento
                             }).ToList();
-
+                        if (dgvPagos.ColumnCount > 0)
+                        {
+                            DataGridViewColumn column = dgvPagos.Columns[0];
+                            column.Visible = false;
+                        }
                         dgvPagos.ClearSelection();//If you want
 
                         await Print(empeño);
@@ -671,7 +696,7 @@ namespace Empeño.WindowsForms.Views
                     {
                         Id = x.EmpenoId,
                         x.Descripcion,
-                        Empleado = x.Empleado.Nombre,
+                        Empleado=x.Empleado.Nombre,
                         Es_Oro = x.EsOro,
                         x.Estado,
                         Fecha = SqlFunctions.DateName("day", x.Fecha) + "/" + SqlFunctions.DateName("month", x.Fecha) + "/" + SqlFunctions.DateName("year", x.Fecha),
@@ -684,8 +709,8 @@ namespace Empeño.WindowsForms.Views
                     dgvEmpeños.DataSource = listEmpeños.AsEnumerable().Select(x => new
                     {
                         x.Id,
-                        x.Descripcion,
                         x.Empleado,
+                        x.Descripcion,
                         x.Es_Oro,
                         x.Estado,
                         x.Fecha,
@@ -696,7 +721,7 @@ namespace Empeño.WindowsForms.Views
                     }).ToList();
 
                     DataGridViewColumn column = dgvEmpeños.Columns[0];
-                    column.Width = 40;
+                    column.Width = 50;
                     lblCatidadEmpeños.Text = dgvEmpeños.Rows.Count.ToString();
                 }
             }
@@ -902,9 +927,9 @@ namespace Empeño.WindowsForms.Views
                         txtNombre.Text = empeño.Cliente.Nombre;
                         txtDescripcion.Text = empeño.Descripcion;
                         txtComentario.Text = empeño.Comentario;
+                        txtMonto.Text = empeño.Monto.ToString("N2");
                         cbInteres.DataSource = await _context.Interes.Where(i => i.Activo || i.InteresId == empeño.InteresId).ToListAsync();
                         cbInteres.Text = empeño.Interes.Nombre;
-                        txtMonto.Text = empeño.Monto.ToString("N2");
                         Realizado.Text = empeño.Empleado.Usuario;
                         chbEsOro.Checked = empeño.EsOro;
                         Realizado.Text = empeño.Empleado.Usuario;
@@ -1056,7 +1081,10 @@ namespace Empeño.WindowsForms.Views
                     empeñoId = int.Parse(dgvEmpeños.SelectedRows[0].Cells[0].Value.ToString());
                     using (DataContext _contextTemp = new DataContext())
                     {
-                        var listOriging = _contextTemp.Intereses.Where(p => p.EmpenoId == empeñoId);
+                        var listOriging = _contextTemp.Intereses.Where(p => p.EmpenoId == empeñoId)
+                            .Include(i=>i.Interes)
+                            .Include(i=>i.Empeno);
+
                         if (!pagados)
                         {
                             listOriging = listOriging.Where(l => Math.Truncate(l.Pagado) < Math.Truncate(l.Monto));
@@ -1065,7 +1093,8 @@ namespace Empeño.WindowsForms.Views
                             .Select(x => new
                             {
                                 Id = x.InteresesId,
-                                Interes = x.Empeno.Interes.Porcentaje + "%",
+                                Interes = x.Interes.Porcentaje + "%",
+                                Bodega = x.Interes.Bodega + "%",
                                 Vence = x.FechaVencimiento,
                                 x.Monto,
                                 x.Pagado,
@@ -1075,13 +1104,19 @@ namespace Empeño.WindowsForms.Views
                             .Select(x => new
                             {
                                 x.Id,
-                                x.Interes,
                                 Vence = Program.Meses(x.Vence.Month),
+                                x.Interes,
+                                x.Bodega,
                                 Monto = x.Monto.ToString("N2"),
                                 Pagado = x.Pagado.ToString("N2"),
                                 Faltan = x.Vencimiento
                             }).ToList();
                         dgvPagos.DataSource = list;
+                        if (dgvPagos.ColumnCount > 0)
+                        {
+                            DataGridViewColumn column = dgvPagos.Columns[0];
+                            column.Visible = false;
+                        }
                         dgvPagos.ClearSelection();//If you want                        
                     }
                 }
@@ -1333,7 +1368,7 @@ namespace Empeño.WindowsForms.Views
                         {
                             foreach (DataGridViewRow item in dgvPagos.SelectedRows)
                             {
-                                valorInteres += double.Parse(item.Cells[3].Value.ToString());
+                                valorInteres += double.Parse(item.Cells[4].Value.ToString());
                             }
                         }
                         var oscuro = new frmOscuro();
@@ -1373,6 +1408,7 @@ namespace Empeño.WindowsForms.Views
                         cbInteres.Text = interes.Nombre;
                         cbInteres.ForeColor = Color.Black;
                         lblInteres.Visible = true;
+                        cbInteres_SelectedIndexChanged_1(cbInteres, e);
                     }
                 }
             }
@@ -1585,7 +1621,10 @@ namespace Empeño.WindowsForms.Views
             cexcel.Cells[24, 3].value = empeno.FechaVencimiento.ToString("dd/MM/yyyy");
             string FechaVence = lblVence.Text;           
             cexcel.Cells[26, 3].value = ((double)empeno.Monto *((double)empeno.Interes.Porcentaje/(double)100)).ToString("N2");
-            cexcel.Cells[28, 3].value = "Pendiente";
+            cexcel.Cells[27, 3].value = ((double)empeno.Monto * ((double)empeno.Interes.Bodega / (double)100)).ToString("N2");
+            cexcel.Cells[28, 3].value = (((double)empeno.Monto * ((double)empeno.Interes.Porcentaje / (double)100))
+                + ((double)empeno.Monto * ((double)empeno.Interes.Bodega / (double)100))).ToString("N2");
+            cexcel.Cells[29, 3].value = "Pendiente";
             cexcel.ActiveWindow.SelectedSheets.PrintOut();
             System.Threading.Thread.Sleep(300);
             cexcel.ActiveWorkbook.Close(false);
@@ -1740,12 +1779,28 @@ namespace Empeño.WindowsForms.Views
             }
         }
 
-        private void cbInteres_SelectedIndexChanged_1(object sender, EventArgs e)
+        private async void cbInteres_SelectedIndexChanged_1(object sender, EventArgs e)
         {
             if (cbInteres.Text != "Porcentaje")
             {
                 funciones.ShowLabelName((ComboBox)sender, lblInteres);
-            }
+
+                int interesId = await funciones.GetInteresIdByNombre(cbInteres.Text);
+
+                using (DataContext dataContext=new DataContext())
+                {
+                    var interes = await dataContext.Interes.FindAsync(interesId);
+                    if (interes != null)
+                    {
+                        funciones.ShowLabelName(txtBodega, lblBodega);
+                        lblBodega.Show();
+                        txtBodega.Text = interes.Bodega + "%";
+                        funciones.PlaceHolder(txtBodega, PlaceHolderType.Leave, "Bodega");
+                        txtBodega.ForeColor = Color.DimGray;
+                        txtBodega.Enabled = false;
+                    }
+                }
+            }          
         }       
 
         private void txtComentario_TextChanged(object sender, EventArgs e)
@@ -1918,7 +1973,11 @@ namespace Empeño.WindowsForms.Views
                     x.TipoPago,
                     Monto=x.Monto.ToString("N2")
                 }).ToList();
-
+                if (dgvPagos.ColumnCount > 0)
+                {
+                    DataGridViewColumn column = dgvPagos.Columns[0];
+                    column.Visible = false;
+                }
                 dgvPagos.ClearSelection();//If you want               
             }           
         }
@@ -2517,6 +2576,16 @@ namespace Empeño.WindowsForms.Views
         private void dgvEmpeños_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
 
+        }
+
+        private void txtBodega_Leave(object sender, EventArgs e)
+        {
+            funciones.PlaceHolder(txtNombre, lblNombre, PlaceHolderType.Leave, "Bodega");
+        }
+
+        private void txtBodega_Enter(object sender, EventArgs e)
+        {
+            funciones.PlaceHolder(txtNombre, lblNombre, PlaceHolderType.Enter, "Bodega");
         }
     }
 }

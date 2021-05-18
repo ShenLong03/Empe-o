@@ -129,8 +129,12 @@ namespace Empeño.WindowsForms.Views
                        || x.Estado == Estado.Pendiente || x.Estado == Estado.Vencido || x.Estado==Estado.Cancelado))
                   .SelectMany(x => x.Pagos).Where(x => x.TipoPago == TipoPago.Interes && x.Fecha >= fecha && x.Fecha < tomorrow).ToList().Sum(x => x.Monto);
 
-            txtInteres.Text = montoInteresDia != null ? montoInteresDia.Value.ToString("N2") : "0.00";
+            double? montoInteresDia2 = _context.Intereses.Where(x => x.FechaPago >= fecha && x.FechaPago < tomorrow).ToList().Sum(x => x.MontoInteres);
 
+            double? montoBodegaDia = _context.Intereses.Where(x => x.FechaPago >= fecha && x.FechaPago < tomorrow).ToList().Sum(x => x.MontoBodega);
+
+            txtInteres.Text = montoInteresDia2 != null ? montoInteresDia2.Value.ToString("N2") : "0.00";
+            txtBodega.Text= montoBodegaDia != null ? montoBodegaDia.Value.ToString("N2") : "0.00";
             double? abonoDia = empeñosActivos
                 .SelectMany(x => x.Pagos).Where(x => x.TipoPago == TipoPago.Principal && x.Fecha >=fecha && x.Fecha < tomorrow).ToList().Sum(x => x.Monto);
 
@@ -164,9 +168,16 @@ namespace Empeño.WindowsForms.Views
             detalles.Add(
                new DetalleCierreCaja
                {
-                   Concepto = "Intereses",
-                   Valor = montoInteresDia != null ? montoInteresDia.Value : 0
+                   //Concepto = "Intereses",
+                   Valor = montoInteresDia2 != null ? montoInteresDia2.Value : 0
                });
+
+            detalles.Add(
+              new DetalleCierreCaja
+              {
+                  Concepto = "Bodega",
+                  Valor = montoBodegaDia != null ? montoBodegaDia.Value : 0
+              });
 
             detalles.Add(
                new DetalleCierreCaja
