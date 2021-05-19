@@ -72,6 +72,7 @@ namespace Empeño.WindowsForms.Views
             this.timerOcultar = new System.Windows.Forms.Timer(this.components);
             this.timerMostrar = new System.Windows.Forms.Timer(this.components);
             this.pictureBox2 = new System.Windows.Forms.PictureBox();
+            this.mnuReporteBodega = new FontAwesome.Sharp.IconButton();
             this.panel1.SuspendLayout();
             this.panelSubMenuReportes.SuspendLayout();
             this.panelSubMenuConfiguracion.SuspendLayout();
@@ -123,7 +124,7 @@ namespace Empeño.WindowsForms.Views
             this.mnuCaja.IconColor = System.Drawing.Color.White;
             this.mnuCaja.IconSize = 32;
             this.mnuCaja.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.mnuCaja.Location = new System.Drawing.Point(0, 984);
+            this.mnuCaja.Location = new System.Drawing.Point(0, 1048);
             this.mnuCaja.Name = "mnuCaja";
             this.mnuCaja.Padding = new System.Windows.Forms.Padding(2, 0, 0, 0);
             this.mnuCaja.Rotation = 0D;
@@ -138,6 +139,7 @@ namespace Empeño.WindowsForms.Views
             // panelSubMenuReportes
             // 
             this.panelSubMenuReportes.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(65)))), ((int)(((byte)(116)))));
+            this.panelSubMenuReportes.Controls.Add(this.mnuReporteBodega);
             this.panelSubMenuReportes.Controls.Add(this.mnuReporteVencidos);
             this.panelSubMenuReportes.Controls.Add(this.mnuArqueo);
             this.panelSubMenuReportes.Controls.Add(this.mnuReporteEmpeños);
@@ -146,7 +148,7 @@ namespace Empeño.WindowsForms.Views
             this.panelSubMenuReportes.Location = new System.Drawing.Point(0, 723);
             this.panelSubMenuReportes.Margin = new System.Windows.Forms.Padding(2);
             this.panelSubMenuReportes.Name = "panelSubMenuReportes";
-            this.panelSubMenuReportes.Size = new System.Drawing.Size(207, 261);
+            this.panelSubMenuReportes.Size = new System.Drawing.Size(207, 325);
             this.panelSubMenuReportes.TabIndex = 11;
             // 
             // mnuReporteVencidos
@@ -396,7 +398,7 @@ namespace Empeño.WindowsForms.Views
             this.mnuLogout.IconChar = FontAwesome.Sharp.IconChar.PowerOff;
             this.mnuLogout.IconColor = System.Drawing.Color.White;
             this.mnuLogout.IconSize = 32;
-            this.mnuLogout.Location = new System.Drawing.Point(0, 1048);
+            this.mnuLogout.Location = new System.Drawing.Point(0, 1112);
             this.mnuLogout.Name = "mnuLogout";
             this.mnuLogout.Padding = new System.Windows.Forms.Padding(2, 0, 0, 0);
             this.mnuLogout.Rotation = 0D;
@@ -746,6 +748,28 @@ namespace Empeño.WindowsForms.Views
             this.pictureBox2.TabIndex = 2;
             this.pictureBox2.TabStop = false;
             // 
+            // mnuReporteBodega
+            // 
+            this.mnuReporteBodega.Dock = System.Windows.Forms.DockStyle.Top;
+            this.mnuReporteBodega.FlatAppearance.BorderSize = 0;
+            this.mnuReporteBodega.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.mnuReporteBodega.Flip = FontAwesome.Sharp.FlipOrientation.Normal;
+            this.mnuReporteBodega.ForeColor = System.Drawing.Color.White;
+            this.mnuReporteBodega.IconChar = FontAwesome.Sharp.IconChar.ChartPie;
+            this.mnuReporteBodega.IconColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(65)))), ((int)(((byte)(116)))));
+            this.mnuReporteBodega.IconSize = 1;
+            this.mnuReporteBodega.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.mnuReporteBodega.Location = new System.Drawing.Point(0, 256);
+            this.mnuReporteBodega.Name = "mnuReporteBodega";
+            this.mnuReporteBodega.Padding = new System.Windows.Forms.Padding(60, 0, 0, 0);
+            this.mnuReporteBodega.Rotation = 0D;
+            this.mnuReporteBodega.Size = new System.Drawing.Size(207, 64);
+            this.mnuReporteBodega.TabIndex = 13;
+            this.mnuReporteBodega.Text = "Reporte Bodegaje";
+            this.mnuReporteBodega.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.mnuReporteBodega.UseVisualStyleBackColor = true;
+            this.mnuReporteBodega.Click += new System.EventHandler(this.mnuReporteBodega_Click);
+            // 
             // frmInicio
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
@@ -829,5 +853,6 @@ namespace Empeño.WindowsForms.Views
         private Label lblSesionUsuario;
         private Label label2;
         private FontAwesome.Sharp.IconPictureBox btnBackup;
+        private FontAwesome.Sharp.IconButton mnuReporteBodega;
     }
 }

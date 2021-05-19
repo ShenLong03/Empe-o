@@ -168,7 +168,7 @@ namespace Empeño.WindowsForms.Views
             detalles.Add(
                new DetalleCierreCaja
                {
-                   //Concepto = "Intereses",
+                   Concepto = "Intereses",
                    Valor = montoInteresDia2 != null ? montoInteresDia2.Value : 0
                });
 
