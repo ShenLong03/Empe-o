@@ -102,9 +102,19 @@ namespace Empeño.WindowsForms.Views
             var empeñosActivos = _context.Empenos.Where(x => !x.IsDelete 
             && ((x.Estado == Estado.Vigente || x.Estado == Estado.Pendiente || x.Estado == Estado.Vencido)  
             || (x.Estado==Estado.Cancelado && x.FechaRetiro>tomorrow)));
-           
+
+            var prueba2 = _context.Empenos.Sum(x => x.MontoPendiente);
+            var prueba3 = _context.Empenos.Where(x => !x.IsDelete).Sum(x => x.MontoPendiente);
+            var prueba4 = _context.Empenos.Where(x => !x.IsDelete
+            && ((x.Estado == Estado.Vigente || x.Estado == Estado.Pendiente || x.Estado == Estado.Vencido))).Sum(x => x.MontoPendiente);
+            var prueba5 = _context.Empenos.Where(x => !x.IsDelete
+             && ((x.Estado == Estado.Vigente || x.Estado == Estado.Pendiente || x.Estado == Estado.Vencido)
+             || (x.Estado == Estado.Cancelado && x.FechaRetiro > tomorrow))).Sum(x => x.MontoPendiente);
+
 
             double? vencidos = _context.Empenos.Where(x => !x.IsDelete && x.FechaRetiroAdministrador >= fecha && x.FechaRetiroAdministrador < tomorrow).ToList().Sum(x => x.MontoPendiente);
+
+            double prueba = empeñosActivos.Sum(x => x.MontoPendiente);
 
             double c1 = empeñosActivos.Where(x => x.Fecha < fecha
                      && (!x.Retirado || (x.FechaRetiroAdministrador >= fecha && x.FechaRetiroAdministrador<tomorrow))).Sum(x => x.MontoPendiente);
@@ -133,7 +143,7 @@ namespace Empeño.WindowsForms.Views
 
             double? montoBodegaDia = _context.Intereses.Where(x => x.FechaPago >= fecha && x.FechaPago < tomorrow).ToList().Sum(x => x.MontoBodega);
 
-            txtInteres.Text = montoInteresDia2 != null ? montoInteresDia2.Value.ToString("N2") : "0.00";
+            txtInteres.Text = montoInteresDia != null ? montoInteresDia.Value.ToString("N2") : "0.00";
             txtBodega.Text= montoBodegaDia != null ? montoBodegaDia.Value.ToString("N2") : "0.00";
             double? abonoDia = empeñosActivos
                 .SelectMany(x => x.Pagos).Where(x => x.TipoPago == TipoPago.Principal && x.Fecha >=fecha && x.Fecha < tomorrow).ToList().Sum(x => x.Monto);
@@ -149,7 +159,7 @@ namespace Empeño.WindowsForms.Views
             txtCancelados.Text = cancelados != null ? cancelados.Value.ToString("N2") : "0.00";
             txtAcumulado.Text = ((acumuladoInicial + montoEmpeñoDia) - (abonoDia + vencidos + cancelados)).Value.ToString("N2");
 
-
+            detalles.Clear();
 
             detalles.Add(
               new DetalleCierreCaja
