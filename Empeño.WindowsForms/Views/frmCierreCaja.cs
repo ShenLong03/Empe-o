@@ -109,7 +109,7 @@ namespace Empeño.WindowsForms.Views
                      && (!x.Retirado || (x.FechaRetiroAdministrador >= fecha && x.FechaRetiroAdministrador<tomorrow))).Sum(x => x.MontoPendiente);
 
             double c2c3 = _context.Pago.Where(p => p.Fecha >= fecha && p.TipoPago == TipoPago.Principal).Any() ?
-                _context.Pago.Where(p => p.Fecha >= fecha && p.TipoPago == TipoPago.Principal).Select(x => x.Monto).Sum()
+                _context.Pago.Where(p => p.Fecha >= fecha && p.TipoPago == TipoPago.Principal).Sum(x=>x.Monto)
                 : 0;
 
             double acumuladoInicial = (c1 + (vencidos == null?0: vencidos.Value)) + c2c3;
