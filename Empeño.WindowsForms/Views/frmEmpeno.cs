@@ -369,6 +369,12 @@ namespace Empeño.WindowsForms.Views
                         {
                             empeño.FechaVencimiento = vence;
                         }
+
+                        empeño.AvaluoPagado = false;
+                        empeño.MontoAvaluo = (txtAvaluo.Text != "Avalúo")
+                            ? empeño.MontoAvaluo = double.Parse(txtAvaluo.Text)
+                            : 0;
+
                         _context.Entry(empeño).State = EntityState.Modified;
                         await _context.SaveChangesAsync();
                         MessageBox.Show("Datos guardados correctamente");
@@ -845,6 +851,26 @@ namespace Empeño.WindowsForms.Views
         private void txtMonto_Enter(object sender, EventArgs e)
         {
             funciones.PlaceHolder(txtMonto, lblMonto, PlaceHolderType.Enter, "Monto");
+        }
+
+        private void txtAvaluo_Leave(object sender, EventArgs e)
+        {
+            funciones.PlaceHolder(txtAvaluo, lblAvaluo, PlaceHolderType.Leave, "Avalúo");
+        }
+
+        private void txtAvaluo_Enter(object sender, EventArgs e)
+        {
+            funciones.PlaceHolder(txtAvaluo, lblAvaluo, PlaceHolderType.Enter, "Avalúo");
+        }
+
+        private void txtBodegaje_Leave(object sender, EventArgs e)
+        {
+            funciones.PlaceHolder(txtBodegaje, lblBodegaje, PlaceHolderType.Leave, "Bodegaje");
+        }
+
+        private void txtBodegaje_Enter(object sender, EventArgs e)
+        {
+            funciones.PlaceHolder(txtBodegaje, lblBodegaje, PlaceHolderType.Enter, "Bodegaje");
         }
 
         private void cbInteres_SelectedIndexChanged(object sender, EventArgs e)
@@ -1373,10 +1399,27 @@ namespace Empeño.WindowsForms.Views
                         cbInteres.Text = interes.Nombre;
                         cbInteres.ForeColor = Color.Black;
                         lblInteres.Visible = true;
+
+                        if (interes.Avaluo != null || interes.Bodegaje != null)
+                        {
+                            if (interes.Avaluo.Value > 0 || interes.Bodegaje.Value > 0)
+                                SetupInteres(interes);
+                        }
+                        else
+                        {
+                            txtAvaluo.Text = string.Empty;
+                            txtBodegaje.Text = string.Empty;
+
+                            funciones.PlaceHolder(txtAvaluo, lblAvaluo, PlaceHolderType.Leave, "Avalúo");
+                            funciones.PlaceHolder(txtBodegaje, lblBodegaje, PlaceHolderType.Leave, "Bodegaje");
+
+                            lblVence.Text = DateTime.Today.AddMonths(mesesVencimiento).ToString("dd/MM/yyyy");
+                        }
+                            
                     }
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
 
             }
@@ -1740,13 +1783,64 @@ namespace Empeño.WindowsForms.Views
             }
         }
 
-        private void cbInteres_SelectedIndexChanged_1(object sender, EventArgs e)
+        private async void cbInteres_SelectedIndexChanged_1(object sender, EventArgs e)
         {
             if (cbInteres.Text != "Porcentaje")
             {
                 funciones.ShowLabelName((ComboBox)sender, lblInteres);
+                await InteresChanged();
             }
-        }       
+        }
+
+        private async Task InteresChanged()
+        {
+            if (!string.IsNullOrEmpty(txtMonto.Text) && txtMonto.Text != "Monto")
+            {
+                double monto;
+                double.TryParse(txtMonto.Text, out monto);
+                var interes = await _context.Interes.Where(i => i.Nombre==cbInteres.Text).SingleAsync();
+                
+                if (interes != null)
+                {
+                    if (interes.Avaluo != null || interes.Bodegaje != null)
+                    {
+                        if (interes.Avaluo.Value > 0 || interes.Bodegaje.Value > 0)
+                            SetupInteres(interes);
+                    }
+                    else
+                    {
+                        txtAvaluo.Text = string.Empty;
+                        txtBodegaje.Text = string.Empty;
+
+                        funciones.PlaceHolder(txtAvaluo, lblAvaluo, PlaceHolderType.Leave, "Avalúo");
+                        funciones.PlaceHolder(txtBodegaje, lblBodegaje, PlaceHolderType.Leave, "Bodegaje");
+
+                        lblVence.Text = DateTime.Today.AddMonths(mesesVencimiento).ToString("dd/MM/yyyy");
+                    }
+
+                }
+            }
+        }
+
+        private void SetupInteres(Interes interes) 
+        {
+            if (interes.Avaluo.Value>0)
+            {
+                txtAvaluo.Text = (double.Parse(txtMonto.Text) * interes.PorcentajeAvaluo).ToString("N2");
+                txtAvaluo.ForeColor = Color.Black;
+                lblAvaluo.Visible = true;
+            }
+            if (interes.Bodegaje.Value > 0)
+            {
+                txtBodegaje.Text = (double.Parse(txtMonto.Text) * interes.PorcentajeBodegaje).ToString("N2");
+                txtBodegaje.ForeColor = Color.Black;
+                lblBodegaje.Visible = true;
+            }
+            if (interes.Meses>0)
+            {
+                lblVence.Text = DateTime.Today.AddMonths(interes.Meses).ToString("dd/MM/yyyy");
+            }
+        }
 
         private void txtComentario_TextChanged(object sender, EventArgs e)
         {

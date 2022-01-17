@@ -35,7 +35,7 @@ namespace Empeño.WindowsForms.Views
                 interes.Igual = txtIgual.Text == "Igual que" ? 0 : int.Parse(txtIgual.Text);
                 interes.Mayor = txtMayor.Text == "Mayor que" ? 0 : int.Parse(txtMayor.Text);
                 interes.Menor = txtMenor.Text == "Menor que" ? 0 : int.Parse(txtMenor.Text);
-                interes.Avalauo = txtAvaluo.Text == "Avalúo" ? 0 : double.Parse(txtAvaluo.Text);
+                interes.Avaluo = txtAvaluo.Text == "Avalúo" ? 0 : double.Parse(txtAvaluo.Text);
                 interes.Bodegaje = txtBodegaje.Text == "Bodegaje" ? 0 : double.Parse(txtBodegaje.Text);
                 interes.Nombre = txtNombre.Text;
                 interes.Porcentaje = txtValor.Text == "Porcentaje" ? 0 : double.Parse(txtValor.Text);
@@ -55,7 +55,7 @@ namespace Empeño.WindowsForms.Views
                     Igual = txtIgual.Text == "Igual que" ? 0 : int.Parse(txtIgual.Text),
                     Mayor = txtMayor.Text == "Mayor que" ? 0 : int.Parse(txtMayor.Text),
                     Menor = txtMenor.Text == "Menor que" ? 0 : int.Parse(txtMenor.Text),
-                    Avalauo = txtAvaluo.Text == "Avalúo" ? 0 : double.Parse(txtAvaluo.Text),
+                    Avaluo = txtAvaluo.Text == "Avalúo" ? 0 : double.Parse(txtAvaluo.Text),
                     Bodegaje = txtBodegaje.Text == "Bodegaje" ? 0 : double.Parse(txtBodegaje.Text),
                     Nombre = txtNombre.Text,
                     Activo = chbActivo.Checked,
@@ -89,7 +89,7 @@ namespace Empeño.WindowsForms.Views
                 Mayor_que="> " + x.Mayor,
                 Menor_que =x.Menor + " >",
                 Igual_que="= " + x.Igual,
-                Avaluo=x.Avalauo + "%",
+                Avaluo=x.Avaluo + "%",
                 Bodegaje=x.Bodegaje + "%",
                 x.Activo
             }).ToListAsync();
@@ -209,7 +209,7 @@ namespace Empeño.WindowsForms.Views
                     txtMayor.Text = interes.Mayor.ToString();
                     txtMenor.Text = interes.Menor.ToString();
                     txtIgual.Text = interes.Igual.ToString();
-                    txtAvaluo.Text = interes.Avalauo.ToString();
+                    txtAvaluo.Text = interes.Avaluo.ToString();
                     txtBodegaje.Text = interes.Bodegaje.ToString();
                     chbActivo.Checked = interes.Activo;
                     funciones.ShowLabels(panelFormulario);

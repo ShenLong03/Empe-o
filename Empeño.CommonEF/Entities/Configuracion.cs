@@ -27,7 +27,7 @@ namespace Empeño.CommonEF.Entities
 
         public int Meses { get; set; } = 3;
 
-        public int? IVA { get; set; } = 0;
+        public double? IVA { get; set; } = 0;
 
         public double PorcentajeIVA 
         {

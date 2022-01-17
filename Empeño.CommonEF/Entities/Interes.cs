@@ -20,9 +20,25 @@
 
         public int Meses { get; set; }
 
-        public double? Avalauo { get; set; } = 0;
+        public double? Avaluo { get; set; } = 0;
+
+        public double PorcentajeAvaluo
+        {
+            get
+            {
+                return Avaluo!=null?(double)Avaluo.Value / 100:0;
+            }
+        }
 
         public double? Bodegaje { get; set; } = 0;
+
+        public double PorcentajeBodegaje
+        {
+            get
+            {
+                return Bodegaje!=null? (double)Bodegaje.Value / 100:0;
+            }
+        }
 
         public bool Activo { get; set; } = true;
 
