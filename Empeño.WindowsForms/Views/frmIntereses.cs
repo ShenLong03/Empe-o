@@ -35,6 +35,8 @@ namespace Empeño.WindowsForms.Views
                 interes.Igual = txtIgual.Text == "Igual que" ? 0 : int.Parse(txtIgual.Text);
                 interes.Mayor = txtMayor.Text == "Mayor que" ? 0 : int.Parse(txtMayor.Text);
                 interes.Menor = txtMenor.Text == "Menor que" ? 0 : int.Parse(txtMenor.Text);
+                interes.Avalauo = txtAvaluo.Text == "Avalúo" ? 0 : double.Parse(txtAvaluo.Text);
+                interes.Bodegaje = txtBodegaje.Text == "Bodegaje" ? 0 : double.Parse(txtBodegaje.Text);
                 interes.Nombre = txtNombre.Text;
                 interes.Porcentaje = txtValor.Text == "Porcentaje" ? 0 : double.Parse(txtValor.Text);
                 interes.Activo = chbActivo.Checked;
@@ -53,6 +55,8 @@ namespace Empeño.WindowsForms.Views
                     Igual = txtIgual.Text == "Igual que" ? 0 : int.Parse(txtIgual.Text),
                     Mayor = txtMayor.Text == "Mayor que" ? 0 : int.Parse(txtMayor.Text),
                     Menor = txtMenor.Text == "Menor que" ? 0 : int.Parse(txtMenor.Text),
+                    Avalauo = txtAvaluo.Text == "Avalúo" ? 0 : double.Parse(txtAvaluo.Text),
+                    Bodegaje = txtBodegaje.Text == "Bodegaje" ? 0 : double.Parse(txtBodegaje.Text),
                     Nombre = txtNombre.Text,
                     Activo = chbActivo.Checked,
                     Porcentaje = txtValor.Text == "Porcentaje" ? 0 : double.Parse(txtValor.Text),
@@ -85,6 +89,8 @@ namespace Empeño.WindowsForms.Views
                 Mayor_que="> " + x.Mayor,
                 Menor_que =x.Menor + " >",
                 Igual_que="= " + x.Igual,
+                Avaluo=x.Avalauo + "%",
+                Bodegaje=x.Bodegaje + "%",
                 x.Activo
             }).ToListAsync();
             lblCantidad.Text = dgvLista.Rows.Count.ToString();
@@ -105,6 +111,11 @@ namespace Empeño.WindowsForms.Views
             funciones.PlaceHolder(txtMenor, lblMenor,PlaceHolderType.Leave, "Menor que");
             txtIgual.Text = string.Empty;
             funciones.PlaceHolder(txtIgual, lblIgual,PlaceHolderType.Leave, "Igual que");
+            txtAvaluo.Text = string.Empty;
+            funciones.PlaceHolder(txtAvaluo, lblAvaluo, PlaceHolderType.Leave, "Avalúo");
+            txtBodegaje.Text = string.Empty;
+            funciones.PlaceHolder(txtBodegaje, lblBodegaje, PlaceHolderType.Leave, "Bodegaje");
+
             interesId = 0;
         }
 
@@ -158,6 +169,26 @@ namespace Empeño.WindowsForms.Views
             funciones.PlaceHolder(txtIgual, lblIgual,PlaceHolderType.Enter, "Igual que");
         }
 
+        private void txtAvaluo_Leave(object sender, EventArgs e)
+        {
+            funciones.PlaceHolder(txtAvaluo, lblAvaluo, PlaceHolderType.Leave, "Avalúo");
+        }
+
+        private void txtAvaluo_Enter(object sender, EventArgs e)
+        {
+            funciones.PlaceHolder(txtAvaluo, lblAvaluo, PlaceHolderType.Enter, "Avalúo");
+        }
+
+        private void txtBodegaje_Leave(object sender, EventArgs e)
+        {
+            funciones.PlaceHolder(txtBodegaje, lblBodegaje, PlaceHolderType.Leave, "Bodegaje");
+        }
+
+        private void txtBodegaje_Enter(object sender, EventArgs e)
+        {
+            funciones.PlaceHolder(txtBodegaje, lblBodegaje, PlaceHolderType.Enter, "Bodegaje");
+        }
+
         private void btnCancelar_Click(object sender, EventArgs e)
         {
             interesId = 0;
@@ -178,6 +209,8 @@ namespace Empeño.WindowsForms.Views
                     txtMayor.Text = interes.Mayor.ToString();
                     txtMenor.Text = interes.Menor.ToString();
                     txtIgual.Text = interes.Igual.ToString();
+                    txtAvaluo.Text = interes.Avalauo.ToString();
+                    txtBodegaje.Text = interes.Bodegaje.ToString();
                     chbActivo.Checked = interes.Activo;
                     funciones.ShowLabels(panelFormulario);
                     funciones.BlockTextBox(panelFormulario, true);

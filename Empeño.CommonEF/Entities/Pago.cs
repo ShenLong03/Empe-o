@@ -20,6 +20,14 @@
 
         public double Monto { get; set; } = 0;
 
+        public double? MontoAvaluo { get; set; } = 0;
+
+        public double MontoTotal { get
+            {
+                return Monto + MontoAvaluo.Value;
+            }
+        }
+
         public int EmpleadoId { get; set; }
 
         public string Comentario { get; set; }

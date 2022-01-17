@@ -10,6 +10,7 @@
         public Configuration()
         {
             AutomaticMigrationsEnabled = true;
+            AutomaticMigrationDataLossAllowed = true;
             ContextKey = "Empeño.WindowsForms.Data.DataContext";
         }
 

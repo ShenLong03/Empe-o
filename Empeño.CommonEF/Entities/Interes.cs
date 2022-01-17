@@ -18,6 +18,12 @@
 
         public int Igual { get; set; }
 
+        public int Meses { get; set; }
+
+        public double? Avalauo { get; set; } = 0;
+
+        public double? Bodegaje { get; set; } = 0;
+
         public bool Activo { get; set; } = true;
 
         public Interes()

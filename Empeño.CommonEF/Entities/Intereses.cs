@@ -19,6 +19,14 @@ namespace Empeño.CommonEF.Entities
 
         public double Monto { get; set; }
 
+        public double? MontoBodega { get; set; } = 0;
+
+        public double? MontoTotal { get 
+            {
+                return Monto + MontoBodega;
+            } 
+        }
+
         public double Pagado { get; set; }
 
         public int? PagoId { get; set; }

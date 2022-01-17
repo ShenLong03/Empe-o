@@ -42,6 +42,7 @@ namespace Empeño.WindowsForms.Views
                 chkSSL.Checked = configuracion.SSL;
                 txtDirección.Text = configuracion.Direccion;
                 txtEmailAdmin.Text = configuracion.EmailNotification;
+                txtIVA.Text = configuracion.IVA.ToString();
             }
             else
             {
@@ -75,7 +76,8 @@ namespace Empeño.WindowsForms.Views
                         SMTP = txtSMTP.Text,
                         SSL = chkSSL.Checked,
                         Direccion = txtDirección.Text,
-                        EmailNotification = txtEmailAdmin.Text
+                        EmailNotification = txtEmailAdmin.Text,
+                        IVA= int.Parse(!string.IsNullOrEmpty(txtIVA.Text) ? txtIVA.Text : "0")
                     };
 
                     _context.Configuraciones.Add(configuracion);
@@ -96,6 +98,7 @@ namespace Empeño.WindowsForms.Views
                     configuracion.SSL = chkSSL.Checked;
                     configuracion.Direccion = txtDirección.Text;
                     configuracion.EmailNotification = txtEmailAdmin.Text;
+                    configuracion.IVA = int.Parse(txtIVA.Text);
 
                     _context.Entry(configuracion).State = EntityState.Modified;
                 }
@@ -107,6 +110,21 @@ namespace Empeño.WindowsForms.Views
             {
                 MessageBox.Show(ex.Message.ToString(), "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
+        }
+
+        private void label15_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void textBox1_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label14_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

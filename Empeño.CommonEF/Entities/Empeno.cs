@@ -25,6 +25,8 @@
 
         public double Monto { get; set; } = 0;
 
+        public double? MontoAvaluo { get; set; } = 0;
+
         public double MontoPendiente { get; set; } = 0;
 
         public int InteresId { get; set; }
