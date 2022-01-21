@@ -130,7 +130,7 @@ namespace Empeño.WindowsForms.Views
 
             if (pagoMonto<montoPendiente)
             {
-                if ((pagoMonto > 0) && (empeño.Intereses.Sum(i => i.Monto) > (empeño.Intereses.Sum(i => i.Pagado) + pagoIntereses)))
+                if ((pagoMonto > 0) && (empeño.Intereses.Sum(i => i.MontoTotal) > (empeño.Intereses.Sum(i => i.Pagado) + pagoIntereses)))
                 {
                     MessageBox.Show("Para abonar a la prenda debe pagar todos los intereses pendientes de " + montoMinimo.ToString("N2"), "Alerta", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     return;
@@ -242,6 +242,7 @@ namespace Empeño.WindowsForms.Views
             empeño = await _context.Empenos.FindAsync(empeñoId);
             if (pagoIntereses > 0)
             {
+                var monto = pagoIntereses - (empeño.Monto * empeño.Interes.PorcentajeAvaluo) - (empeño.Monto * empeño.Interes.PorcentajeBodegaje);
                 var pago = new Pago
                 {
                     EmpenoId = empeño.EmpenoId,
@@ -249,7 +250,9 @@ namespace Empeño.WindowsForms.Views
                     Comentario = txtComentario.Text,
                     EmpleadoId = Program.EmpleadoId,
                     Fecha = DateTime.Now,
-                    Monto = pagoIntereses,
+                    Monto = monto,
+                    MontoAvaluo =  pagoIntereses- monto - (empeño.Monto * empeño.Interes.PorcentajeBodegaje),
+                    MontoBodega= pagoIntereses-monto - (empeño.Monto * empeño.Interes.PorcentajeAvaluo),
                     TipoPago = TipoPago.Interes,
                 };
 
@@ -262,17 +265,17 @@ namespace Empeño.WindowsForms.Views
                     Accion = "Crear"
                 });
                 List<Intereses> intereses = new List<Intereses>();
-                var sobrante = pago.Monto;
+                var sobrante = pago.MontoTotal;
                 var listInteres = await _context.Intereses.Where(i => i.EmpenoId == pago.EmpenoId && i.Pagado < i.Monto).ToListAsync();
                 foreach (var item in listInteres)
                 {
-                    if ((item.Monto - item.Pagado) > sobrante && sobrante > 0)
+                    if ((item.MontoTotal - item.Pagado) > sobrante && sobrante > 0)
                     {
                         item.Pagado += sobrante;
-                        if (item.Pagado >= Math.Truncate(item.Monto))
+                        if (item.Pagado >= Math.Truncate(item.MontoTotal))
                         {
                             empeño.FechaVencimiento = empeño.FechaVencimiento.AddMonths(1);
-                            item.Monto = item.Pagado;
+                            item.Monto = item.Pagado - (empeño.Monto * empeño.Interes.PorcentajeAvaluo) - (empeño.Monto * empeño.Interes.PorcentajeBodegaje);
                         }
                         item.PagoId = pago.PagoId;
                         _context.Entry(item).State = EntityState.Modified;
@@ -284,6 +287,8 @@ namespace Empeño.WindowsForms.Views
                             FechaVencimiento = item.FechaVencimiento,
                             InteresesId = item.InteresesId,
                             Monto = item.Monto,
+                            MontoAvaluo=item.MontoAvaluo,
+                            MontoBodega=item.MontoBodega,
                             Pagado = sobrante,
                             PagoId = item.PagoId
                         };
@@ -293,12 +298,12 @@ namespace Empeño.WindowsForms.Views
                     }
                     else if (sobrante > 0)
                     {
-                        double paga = (item.Monto - item.Pagado);
+                        double paga = (item.MontoTotal - item.Pagado);
                         item.Pagado += paga;
-                        if (item.Pagado >= Math.Truncate(item.Monto))
+                        if (item.Pagado >= Math.Truncate(item.MontoTotal))
                         {
                             empeño.FechaVencimiento = empeño.FechaVencimiento.AddMonths(1);
-                            item.Monto = item.Pagado;
+                            item.Monto = item.Pagado - (empeño.Monto * empeño.Interes.PorcentajeAvaluo) - (empeño.Monto * empeño.Interes.PorcentajeBodegaje);
                         }
                         item.PagoId = pago.PagoId;
                         sobrante -= paga;                      
@@ -310,6 +315,8 @@ namespace Empeño.WindowsForms.Views
                             FechaVencimiento=item.FechaVencimiento,
                             InteresesId=item.InteresesId,
                             Monto=item.Monto,
+                            MontoAvaluo=item.Monto,
+                            MontoBodega=item.MontoBodega,
                             Pagado= paga,
                             PagoId=item.PagoId
                         } ;
@@ -343,6 +350,7 @@ namespace Empeño.WindowsForms.Views
             empeño = await _context.Empenos.FindAsync(empeñoId);
             if (pagoIntereses > 0)
             {
+                var monto = pagoIntereses - (empeño.Monto * empeño.Interes.PorcentajeAvaluo) - (empeño.Monto * empeño.Interes.PorcentajeBodegaje);
                 var pago = new Pago
                 {
                     EmpenoId = empeño.EmpenoId,
@@ -350,7 +358,9 @@ namespace Empeño.WindowsForms.Views
                     Comentario = txtComentario.Text,
                     EmpleadoId = Program.EmpleadoId,
                     Fecha = DateTime.Now,
-                    Monto = pagoIntereses,
+                    Monto = monto,
+                    MontoAvaluo = pagoIntereses - monto - (empeño.Monto * empeño.Interes.PorcentajeBodegaje),
+                    MontoBodega = pagoIntereses - monto - (empeño.Monto * empeño.Interes.PorcentajeAvaluo),
                     TipoPago = TipoPago.Interes,
                 };
 
@@ -363,14 +373,14 @@ namespace Empeño.WindowsForms.Views
                     Accion = "Crear"
                 });
                 List<Intereses> intereses = new List<Intereses>();
-                var sobrante = pago.Monto;
+                var sobrante = pago.MontoTotal;
                 var listInteres = await _context.Intereses.Where(i => i.EmpenoId == pago.EmpenoId && i.Pagado < i.Monto).ToListAsync();
                 foreach (var item in listInteres)
                 {
-                    if ((item.Monto - item.Pagado) > sobrante && sobrante > 0)
+                    if ((item.MontoTotal - item.Pagado) > sobrante && sobrante > 0)
                     {
                         item.Pagado += sobrante;
-                        if (item.Pagado == item.Monto)
+                        if (item.Pagado == item.MontoTotal)
                         {
                             empeño.FechaVencimiento = empeño.FechaVencimiento.AddMonths(1);
                         }
@@ -381,9 +391,9 @@ namespace Empeño.WindowsForms.Views
                     }
                     else if (sobrante > 0)
                     {
-                        double paga = (item.Monto - item.Pagado);
+                        double paga = (item.MontoTotal - item.Pagado);
                         item.Pagado += paga;
-                        if (item.Pagado == item.Monto)
+                        if (item.Pagado == item.MontoTotal)
                         {
                             empeño.FechaVencimiento = empeño.FechaVencimiento.AddMonths(1);
                         }
@@ -774,9 +784,9 @@ namespace Empeño.WindowsForms.Views
             }
             else
             {
-                interes = empeño.Intereses.Where(i=>i.Monto>i.Pagado).Sum(i => i.Monto - i.Pagado);
+                interes = empeño.Intereses.Where(i=>i.MontoTotal>i.Pagado).Sum(i => i.MontoTotal - i.Pagado);
             }
-            montoMinimo= empeño.Intereses.Where(i => i.Monto > i.Pagado).Sum(i => i.Monto - i.Pagado);
+            montoMinimo= empeño.Intereses.Where(i => i.MontoTotal > i.Pagado).Sum(i => i.MontoTotal - i.Pagado);
             var intereses = interes.ToString("N2");
             txtInteresAPagar.Text = intereses;
             txtPagaInteres.Text = txtInteresAPagar.Text;

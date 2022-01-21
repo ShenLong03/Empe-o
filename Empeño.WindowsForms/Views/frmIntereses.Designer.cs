@@ -29,10 +29,10 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmIntereses));
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle13 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle14 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle15 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle16 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle7 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle8 = new System.Windows.Forms.DataGridViewCellStyle();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.panel1 = new System.Windows.Forms.Panel();
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
@@ -81,6 +81,9 @@
             this.panel9 = new System.Windows.Forms.Panel();
             this.btnCancelar = new FontAwesome.Sharp.IconButton();
             this.btnGuardar = new FontAwesome.Sharp.IconButton();
+            this.lblMeses = new System.Windows.Forms.Label();
+            this.pictureBox8 = new System.Windows.Forms.PictureBox();
+            this.txtMeses = new System.Windows.Forms.TextBox();
             this.tableLayoutPanel1.SuspendLayout();
             this.panel1.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
@@ -105,6 +108,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.panel7.SuspendLayout();
             this.panel9.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox8)).BeginInit();
             this.SuspendLayout();
             // 
             // tableLayoutPanel1
@@ -234,24 +238,24 @@
             this.dgvLista.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.dgvLista.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.RaisedHorizontal;
             this.dgvLista.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.None;
-            dataGridViewCellStyle13.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle13.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(17)))), ((int)(((byte)(2)))), ((int)(((byte)(115)))));
-            dataGridViewCellStyle13.Font = new System.Drawing.Font("Century Gothic", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle13.ForeColor = System.Drawing.Color.White;
-            dataGridViewCellStyle13.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(17)))), ((int)(((byte)(2)))), ((int)(((byte)(115)))));
-            dataGridViewCellStyle13.SelectionForeColor = System.Drawing.Color.White;
-            dataGridViewCellStyle13.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dgvLista.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle13;
+            dataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle5.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(17)))), ((int)(((byte)(2)))), ((int)(((byte)(115)))));
+            dataGridViewCellStyle5.Font = new System.Drawing.Font("Century Gothic", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle5.ForeColor = System.Drawing.Color.White;
+            dataGridViewCellStyle5.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(17)))), ((int)(((byte)(2)))), ((int)(((byte)(115)))));
+            dataGridViewCellStyle5.SelectionForeColor = System.Drawing.Color.White;
+            dataGridViewCellStyle5.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgvLista.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle5;
             this.dgvLista.ColumnHeadersHeight = 60;
             this.dgvLista.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
-            dataGridViewCellStyle14.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle14.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle14.Font = new System.Drawing.Font("Century Gothic", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle14.ForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle14.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(196)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
-            dataGridViewCellStyle14.SelectionForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle14.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dgvLista.DefaultCellStyle = dataGridViewCellStyle14;
+            dataGridViewCellStyle6.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle6.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle6.Font = new System.Drawing.Font("Century Gothic", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle6.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle6.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(196)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
+            dataGridViewCellStyle6.SelectionForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle6.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgvLista.DefaultCellStyle = dataGridViewCellStyle6;
             this.dgvLista.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dgvLista.EnableHeadersVisualStyles = false;
             this.dgvLista.GridColor = System.Drawing.SystemColors.Control;
@@ -259,22 +263,22 @@
             this.dgvLista.Margin = new System.Windows.Forms.Padding(4);
             this.dgvLista.Name = "dgvLista";
             this.dgvLista.RowHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.None;
-            dataGridViewCellStyle15.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle15.BackColor = System.Drawing.Color.White;
-            dataGridViewCellStyle15.Font = new System.Drawing.Font("Century Gothic", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle15.ForeColor = System.Drawing.Color.Black;
-            dataGridViewCellStyle15.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(196)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
-            dataGridViewCellStyle15.SelectionForeColor = System.Drawing.Color.Black;
-            dataGridViewCellStyle15.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dgvLista.RowHeadersDefaultCellStyle = dataGridViewCellStyle15;
+            dataGridViewCellStyle7.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle7.BackColor = System.Drawing.Color.White;
+            dataGridViewCellStyle7.Font = new System.Drawing.Font("Century Gothic", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle7.ForeColor = System.Drawing.Color.Black;
+            dataGridViewCellStyle7.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(196)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
+            dataGridViewCellStyle7.SelectionForeColor = System.Drawing.Color.Black;
+            dataGridViewCellStyle7.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgvLista.RowHeadersDefaultCellStyle = dataGridViewCellStyle7;
             this.dgvLista.RowHeadersVisible = false;
             this.dgvLista.RowHeadersWidth = 51;
-            dataGridViewCellStyle16.BackColor = System.Drawing.Color.White;
-            dataGridViewCellStyle16.Font = new System.Drawing.Font("Century Gothic", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle16.ForeColor = System.Drawing.Color.Black;
-            dataGridViewCellStyle16.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(196)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
-            dataGridViewCellStyle16.SelectionForeColor = System.Drawing.Color.Black;
-            this.dgvLista.RowsDefaultCellStyle = dataGridViewCellStyle16;
+            dataGridViewCellStyle8.BackColor = System.Drawing.Color.White;
+            dataGridViewCellStyle8.Font = new System.Drawing.Font("Century Gothic", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle8.ForeColor = System.Drawing.Color.Black;
+            dataGridViewCellStyle8.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(196)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
+            dataGridViewCellStyle8.SelectionForeColor = System.Drawing.Color.Black;
+            this.dgvLista.RowsDefaultCellStyle = dataGridViewCellStyle8;
             this.dgvLista.RowTemplate.DefaultCellStyle.BackColor = System.Drawing.Color.White;
             this.dgvLista.RowTemplate.DividerHeight = 1;
             this.dgvLista.RowTemplate.Height = 45;
@@ -402,8 +406,8 @@
             this.tableLayoutPanel4.Location = new System.Drawing.Point(844, 3);
             this.tableLayoutPanel4.Name = "tableLayoutPanel4";
             this.tableLayoutPanel4.RowCount = 2;
-            this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 70F));
-            this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 30F));
+            this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 80F));
+            this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 20F));
             this.tableLayoutPanel4.Size = new System.Drawing.Size(555, 1078);
             this.tableLayoutPanel4.TabIndex = 1;
             // 
@@ -415,7 +419,7 @@
             this.panel6.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel6.Location = new System.Drawing.Point(3, 3);
             this.panel6.Name = "panel6";
-            this.panel6.Size = new System.Drawing.Size(549, 748);
+            this.panel6.Size = new System.Drawing.Size(549, 856);
             this.panel6.TabIndex = 0;
             // 
             // tableLayoutPanel5
@@ -433,12 +437,15 @@
             this.tableLayoutPanel5.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 48F));
             this.tableLayoutPanel5.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel5.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 60F));
-            this.tableLayoutPanel5.Size = new System.Drawing.Size(549, 748);
+            this.tableLayoutPanel5.Size = new System.Drawing.Size(549, 856);
             this.tableLayoutPanel5.TabIndex = 1;
             // 
             // panelFormulario
             // 
             this.panelFormulario.AutoScroll = true;
+            this.panelFormulario.Controls.Add(this.lblMeses);
+            this.panelFormulario.Controls.Add(this.pictureBox8);
+            this.panelFormulario.Controls.Add(this.txtMeses);
             this.panelFormulario.Controls.Add(this.lblBodegaje);
             this.panelFormulario.Controls.Add(this.lblAvaluo);
             this.panelFormulario.Controls.Add(this.pictureBox3);
@@ -471,7 +478,7 @@
             // 
             this.lblBodegaje.AutoSize = true;
             this.lblBodegaje.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblBodegaje.Location = new System.Drawing.Point(14, 403);
+            this.lblBodegaje.Location = new System.Drawing.Point(14, 404);
             this.lblBodegaje.Name = "lblBodegaje";
             this.lblBodegaje.Size = new System.Drawing.Size(85, 20);
             this.lblBodegaje.TabIndex = 34;
@@ -482,7 +489,7 @@
             // 
             this.lblAvaluo.AutoSize = true;
             this.lblAvaluo.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblAvaluo.Location = new System.Drawing.Point(14, 337);
+            this.lblAvaluo.Location = new System.Drawing.Point(14, 338);
             this.lblAvaluo.Name = "lblAvaluo";
             this.lblAvaluo.Size = new System.Drawing.Size(63, 20);
             this.lblAvaluo.TabIndex = 33;
@@ -495,7 +502,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.pictureBox3.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("pictureBox3.BackgroundImage")));
             this.pictureBox3.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.pictureBox3.Location = new System.Drawing.Point(14, 460);
+            this.pictureBox3.Location = new System.Drawing.Point(14, 461);
             this.pictureBox3.Name = "pictureBox3";
             this.pictureBox3.Size = new System.Drawing.Size(498, 3);
             this.pictureBox3.TabIndex = 32;
@@ -509,7 +516,7 @@
             this.txtBodegaje.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.txtBodegaje.Font = new System.Drawing.Font("Century Gothic", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtBodegaje.ForeColor = System.Drawing.Color.DimGray;
-            this.txtBodegaje.Location = new System.Drawing.Point(14, 420);
+            this.txtBodegaje.Location = new System.Drawing.Point(14, 421);
             this.txtBodegaje.Name = "txtBodegaje";
             this.txtBodegaje.Size = new System.Drawing.Size(494, 45);
             this.txtBodegaje.TabIndex = 31;
@@ -523,7 +530,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.pictureBox6.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("pictureBox6.BackgroundImage")));
             this.pictureBox6.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.pictureBox6.Location = new System.Drawing.Point(14, 396);
+            this.pictureBox6.Location = new System.Drawing.Point(14, 397);
             this.pictureBox6.Name = "pictureBox6";
             this.pictureBox6.Size = new System.Drawing.Size(498, 3);
             this.pictureBox6.TabIndex = 30;
@@ -537,7 +544,7 @@
             this.txtAvaluo.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.txtAvaluo.Font = new System.Drawing.Font("Century Gothic", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtAvaluo.ForeColor = System.Drawing.Color.DimGray;
-            this.txtAvaluo.Location = new System.Drawing.Point(14, 355);
+            this.txtAvaluo.Location = new System.Drawing.Point(14, 356);
             this.txtAvaluo.Name = "txtAvaluo";
             this.txtAvaluo.Size = new System.Drawing.Size(494, 45);
             this.txtAvaluo.TabIndex = 29;
@@ -550,7 +557,7 @@
             this.chbActivo.AutoSize = true;
             this.chbActivo.Font = new System.Drawing.Font("Century Gothic", 18F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.chbActivo.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.chbActivo.Location = new System.Drawing.Point(12, 483);
+            this.chbActivo.Location = new System.Drawing.Point(13, 548);
             this.chbActivo.Name = "chbActivo";
             this.chbActivo.Size = new System.Drawing.Size(158, 47);
             this.chbActivo.TabIndex = 28;
@@ -561,7 +568,7 @@
             // 
             this.lblIgual.AutoSize = true;
             this.lblIgual.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblIgual.Location = new System.Drawing.Point(14, 267);
+            this.lblIgual.Location = new System.Drawing.Point(14, 268);
             this.lblIgual.Name = "lblIgual";
             this.lblIgual.Size = new System.Drawing.Size(84, 20);
             this.lblIgual.TabIndex = 27;
@@ -572,7 +579,7 @@
             // 
             this.lblMenor.AutoSize = true;
             this.lblMenor.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblMenor.Location = new System.Drawing.Point(14, 201);
+            this.lblMenor.Location = new System.Drawing.Point(14, 202);
             this.lblMenor.Name = "lblMenor";
             this.lblMenor.Size = new System.Drawing.Size(94, 20);
             this.lblMenor.TabIndex = 26;
@@ -583,7 +590,7 @@
             // 
             this.lblMayor.AutoSize = true;
             this.lblMayor.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblMayor.Location = new System.Drawing.Point(14, 135);
+            this.lblMayor.Location = new System.Drawing.Point(14, 136);
             this.lblMayor.Name = "lblMayor";
             this.lblMayor.Size = new System.Drawing.Size(92, 20);
             this.lblMayor.TabIndex = 25;
@@ -594,7 +601,7 @@
             // 
             this.lblValor.AutoSize = true;
             this.lblValor.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblValor.Location = new System.Drawing.Point(14, 70);
+            this.lblValor.Location = new System.Drawing.Point(14, 71);
             this.lblValor.Name = "lblValor";
             this.lblValor.Size = new System.Drawing.Size(95, 20);
             this.lblValor.TabIndex = 24;
@@ -605,7 +612,7 @@
             // 
             this.lblNombre.AutoSize = true;
             this.lblNombre.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblNombre.Location = new System.Drawing.Point(14, 0);
+            this.lblNombre.Location = new System.Drawing.Point(14, 1);
             this.lblNombre.Name = "lblNombre";
             this.lblNombre.Size = new System.Drawing.Size(71, 20);
             this.lblNombre.TabIndex = 23;
@@ -618,7 +625,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.pictureBox7.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("pictureBox7.BackgroundImage")));
             this.pictureBox7.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.pictureBox7.Location = new System.Drawing.Point(14, 324);
+            this.pictureBox7.Location = new System.Drawing.Point(14, 325);
             this.pictureBox7.Name = "pictureBox7";
             this.pictureBox7.Size = new System.Drawing.Size(498, 3);
             this.pictureBox7.TabIndex = 22;
@@ -632,7 +639,7 @@
             this.txtIgual.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.txtIgual.Font = new System.Drawing.Font("Century Gothic", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtIgual.ForeColor = System.Drawing.Color.DimGray;
-            this.txtIgual.Location = new System.Drawing.Point(14, 284);
+            this.txtIgual.Location = new System.Drawing.Point(14, 285);
             this.txtIgual.Name = "txtIgual";
             this.txtIgual.Size = new System.Drawing.Size(494, 45);
             this.txtIgual.TabIndex = 21;
@@ -647,7 +654,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.pictureBox5.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("pictureBox5.BackgroundImage")));
             this.pictureBox5.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.pictureBox5.Location = new System.Drawing.Point(14, 260);
+            this.pictureBox5.Location = new System.Drawing.Point(14, 261);
             this.pictureBox5.Name = "pictureBox5";
             this.pictureBox5.Size = new System.Drawing.Size(498, 3);
             this.pictureBox5.TabIndex = 20;
@@ -661,7 +668,7 @@
             this.txtMenor.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.txtMenor.Font = new System.Drawing.Font("Century Gothic", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtMenor.ForeColor = System.Drawing.Color.DimGray;
-            this.txtMenor.Location = new System.Drawing.Point(14, 219);
+            this.txtMenor.Location = new System.Drawing.Point(14, 220);
             this.txtMenor.Name = "txtMenor";
             this.txtMenor.Size = new System.Drawing.Size(494, 45);
             this.txtMenor.TabIndex = 18;
@@ -676,7 +683,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.pictureBox2.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("pictureBox2.BackgroundImage")));
             this.pictureBox2.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.pictureBox2.Location = new System.Drawing.Point(14, 194);
+            this.pictureBox2.Location = new System.Drawing.Point(14, 195);
             this.pictureBox2.Name = "pictureBox2";
             this.pictureBox2.Size = new System.Drawing.Size(498, 3);
             this.pictureBox2.TabIndex = 16;
@@ -688,7 +695,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.pictureBox4.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("pictureBox4.BackgroundImage")));
             this.pictureBox4.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.pictureBox4.Location = new System.Drawing.Point(14, 129);
+            this.pictureBox4.Location = new System.Drawing.Point(14, 130);
             this.pictureBox4.Name = "pictureBox4";
             this.pictureBox4.Size = new System.Drawing.Size(498, 3);
             this.pictureBox4.TabIndex = 15;
@@ -702,7 +709,7 @@
             this.txtMayor.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.txtMayor.Font = new System.Drawing.Font("Century Gothic", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtMayor.ForeColor = System.Drawing.Color.DimGray;
-            this.txtMayor.Location = new System.Drawing.Point(14, 153);
+            this.txtMayor.Location = new System.Drawing.Point(14, 154);
             this.txtMayor.Name = "txtMayor";
             this.txtMayor.Size = new System.Drawing.Size(494, 45);
             this.txtMayor.TabIndex = 14;
@@ -719,7 +726,7 @@
             this.txtValor.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.txtValor.Font = new System.Drawing.Font("Century Gothic", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtValor.ForeColor = System.Drawing.Color.DimGray;
-            this.txtValor.Location = new System.Drawing.Point(14, 87);
+            this.txtValor.Location = new System.Drawing.Point(14, 88);
             this.txtValor.Name = "txtValor";
             this.txtValor.Size = new System.Drawing.Size(494, 45);
             this.txtValor.TabIndex = 13;
@@ -734,7 +741,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.pictureBox1.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("pictureBox1.BackgroundImage")));
             this.pictureBox1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.pictureBox1.Location = new System.Drawing.Point(14, 63);
+            this.pictureBox1.Location = new System.Drawing.Point(14, 64);
             this.pictureBox1.Name = "pictureBox1";
             this.pictureBox1.Size = new System.Drawing.Size(498, 3);
             this.pictureBox1.TabIndex = 12;
@@ -748,7 +755,7 @@
             this.txtNombre.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.txtNombre.Font = new System.Drawing.Font("Century Gothic", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtNombre.ForeColor = System.Drawing.Color.DimGray;
-            this.txtNombre.Location = new System.Drawing.Point(14, 22);
+            this.txtNombre.Location = new System.Drawing.Point(14, 23);
             this.txtNombre.Name = "txtNombre";
             this.txtNombre.Size = new System.Drawing.Size(494, 45);
             this.txtNombre.TabIndex = 5;
@@ -836,6 +843,45 @@
             this.btnGuardar.UseVisualStyleBackColor = false;
             this.btnGuardar.Click += new System.EventHandler(this.btnGuardar_Click);
             // 
+            // lblMeses
+            // 
+            this.lblMeses.AutoSize = true;
+            this.lblMeses.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblMeses.Location = new System.Drawing.Point(13, 471);
+            this.lblMeses.Name = "lblMeses";
+            this.lblMeses.Size = new System.Drawing.Size(61, 20);
+            this.lblMeses.TabIndex = 37;
+            this.lblMeses.Text = "Meses";
+            this.lblMeses.Visible = false;
+            // 
+            // pictureBox8
+            // 
+            this.pictureBox8.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.pictureBox8.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("pictureBox8.BackgroundImage")));
+            this.pictureBox8.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.pictureBox8.Location = new System.Drawing.Point(13, 528);
+            this.pictureBox8.Name = "pictureBox8";
+            this.pictureBox8.Size = new System.Drawing.Size(498, 3);
+            this.pictureBox8.TabIndex = 36;
+            this.pictureBox8.TabStop = false;
+            // 
+            // txtMeses
+            // 
+            this.txtMeses.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.txtMeses.BackColor = System.Drawing.SystemColors.Control;
+            this.txtMeses.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.txtMeses.Font = new System.Drawing.Font("Century Gothic", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtMeses.ForeColor = System.Drawing.Color.DimGray;
+            this.txtMeses.Location = new System.Drawing.Point(13, 488);
+            this.txtMeses.Name = "txtMeses";
+            this.txtMeses.Size = new System.Drawing.Size(494, 45);
+            this.txtMeses.TabIndex = 35;
+            this.txtMeses.Text = "Meses";
+            this.txtMeses.Enter += new System.EventHandler(this.txtMeses_Enter);
+            this.txtMeses.Leave += new System.EventHandler(this.txtMeses_Leave);
+            // 
             // frmIntereses
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(144F, 144F);
@@ -876,6 +922,7 @@
             this.panel7.ResumeLayout(false);
             this.panel7.PerformLayout();
             this.panel9.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox8)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -930,5 +977,8 @@
         private System.Windows.Forms.TextBox txtBodegaje;
         private System.Windows.Forms.PictureBox pictureBox6;
         private System.Windows.Forms.TextBox txtAvaluo;
+        private System.Windows.Forms.Label lblMeses;
+        private System.Windows.Forms.PictureBox pictureBox8;
+        private System.Windows.Forms.TextBox txtMeses;
     }
 }

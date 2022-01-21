@@ -62,6 +62,7 @@ namespace Empeño.WindowsForms.Views
             switchPago = false;
             chbEsOro.Checked = true;
             Fecha.Text = DateTime.Today.ToString("dd/MM/yyyy");
+
             lblVence.Text = DateTime.Today.AddMonths(mesesVencimiento).ToString("dd/MM/yyyy");
             if (!_context.Empenos.Any())
             {
@@ -319,8 +320,10 @@ namespace Empeño.WindowsForms.Views
                         if (empeño.Fecha != fecha && Program.PerfilId != 4)
                         {
                             empeño.Fecha = fecha;
+                            var interes = await _context.Interes.Where(i => i.Nombre == cbInteres.Text).SingleAsync();
+
                             if (empeño.Pagos.Count() == 0)
-                                empeño.FechaVencimiento = DateTime.Today.AddMonths(mesesVencimiento);
+                                empeño.FechaVencimiento = DateTime.Today.AddMonths(interes.Meses > 0 ? interes.Meses : mesesVencimiento);
                         }
 
                         if (empeño.Monto != double.Parse(txtMonto.Text))
@@ -369,8 +372,7 @@ namespace Empeño.WindowsForms.Views
                         {
                             empeño.FechaVencimiento = vence;
                         }
-
-                        empeño.AvaluoPagado = false;
+                        
                         empeño.MontoAvaluo = (txtAvaluo.Text != "Avalúo")
                             ? empeño.MontoAvaluo = double.Parse(txtAvaluo.Text)
                             : 0;
@@ -395,6 +397,8 @@ namespace Empeño.WindowsForms.Views
                             Interes = x.Empeno.Interes.Porcentaje + "%",
                             Vence = SqlFunctions.DateName("day", x.FechaVencimiento) + "/" + SqlFunctions.DateName("month", x.FechaVencimiento) + "/" + SqlFunctions.DateName("year", x.FechaVencimiento),
                             x.Monto,
+                            x.MontoAvaluo,
+                            x.MontoBodega,
                             x.Pagado,
                             Vencimiento = x.Monto == x.Pagado ? 0 : DbFunctions.DiffDays(DateTime.Today, x.FechaVencimiento),
                         }).OrderByDescending(i => i.Id)
@@ -404,7 +408,7 @@ namespace Empeño.WindowsForms.Views
                                 x.Id,
                                 x.Interes,
                                 x.Vence,
-                                Monto = x.Monto.ToString("N2"),
+                                Monto = (x.Monto + x.MontoAvaluo + x.MontoBodega).Value.ToString("N2"),
                                 Pagado = x.Pagado.ToString("N2"),
                                 Faltan = x.Vencimiento
                             }).ToList();
@@ -421,7 +425,9 @@ namespace Empeño.WindowsForms.Views
                         var strFecha = Fecha.Text + " " + DateTime.Now.ToString("HH:mm");
                         var fecha = DateTime.ParseExact(strFecha, "dd/MM/yyyy HH:mm", CultureInfo.InvariantCulture);
                         var fechaVencimiento = DateTime.ParseExact(lblVence.Text, "dd/MM/yyyy", CultureInfo.InvariantCulture);
-                        var vence = fecha.Date.AddMonths(mesesVencimiento);
+                        var interes = await _context.Interes.Where(i => i.Nombre == cbInteres.Text).SingleAsync();
+
+                        var vence = fecha.Date.AddMonths(interes.Meses > 0 ? interes.Meses : mesesVencimiento);
 
                         if (fecha.Date != DateTime.Today)
                         {
@@ -470,7 +476,9 @@ namespace Empeño.WindowsForms.Views
                             InteresId = await funciones.GetInteresIdByNombre(cbInteres.Text),
                             Monto = double.Parse(txtMonto.Text),
                             MontoPendiente = double.Parse(txtMonto.Text),
-                            Comentario = txtComentario.Text != lblComentario.Text ? txtComentario.Text : string.Empty
+                            Comentario = txtComentario.Text != lblComentario.Text ? txtComentario.Text : string.Empty,
+                            MontoAvaluo = (txtAvaluo.Text != "Avalúo")
+                            ? double.Parse(txtAvaluo.Text): 0
                         };
 
                         _context.Empenos.Add(empeño);
@@ -482,7 +490,7 @@ namespace Empeño.WindowsForms.Views
                             Accion = "Crear"
                         });
 
-                        var interes = await _context.Interes.FindAsync(empeño.InteresId);
+                        interes = await _context.Interes.FindAsync(empeño.InteresId);
 
                         lblNumeroEmpeño.Text = empeño.EmpenoId.ToString();
                         ChangeState(lblEstado, Estado.Vigente, empeño);
@@ -492,7 +500,11 @@ namespace Empeño.WindowsForms.Views
                             EmpenoId = empeño.EmpenoId,
                             FechaCreacion = DateTime.Now,
                             FechaVencimiento = fecha.AddMonths(1),
-                            Monto = Math.Truncate((double)empeño.MontoPendiente * ((double)interes.Porcentaje / (double)100))
+                            Monto = Math.Truncate((double)empeño.MontoPendiente * ((double)interes.Porcentaje / (double)100)),
+                            MontoAvaluo = (txtAvaluo.Text != "Avalúo")
+                            ? double.Parse(txtAvaluo.Text) : 0,
+                            MontoBodega = (txtBodegaje.Text != "Bodegaje")
+                            ? double.Parse(txtBodegaje.Text) : 0
                         };
 
                         _context.Intereses.Add(intereses);
@@ -505,12 +517,15 @@ namespace Empeño.WindowsForms.Views
                             Accion = "Crear"
                         });
 
-                        dgvPagos.DataSource = _context.Intereses.Where(i => i.EmpenoId == intereses.EmpenoId).Select(x => new
+                        dgvPagos.DataSource = _context.Intereses.Where(i => i.EmpenoId == intereses.EmpenoId)
+                        .Select(x => new
                         {
                             Id = x.InteresesId,
                             Interes = x.Empeno.Interes.Porcentaje + "%",
                             Vence = SqlFunctions.DateName("day", x.FechaVencimiento) + "/" + SqlFunctions.DateName("month", x.FechaVencimiento) + "/" + SqlFunctions.DateName("year", x.FechaVencimiento),
                             x.Monto,
+                            x.MontoAvaluo,
+                            x.MontoBodega,
                             x.Pagado,
                             Vencimiento = x.Monto == x.Pagado ? 0 : DbFunctions.DiffDays(DateTime.Today, x.FechaVencimiento),
                         }).OrderByDescending(i => i.Id)
@@ -520,7 +535,7 @@ namespace Empeño.WindowsForms.Views
                                 x.Id,
                                 x.Interes,
                                 x.Vence,
-                                Monto = x.Monto.ToString("N2"),
+                                Monto = (x.Monto + x.MontoAvaluo + x.MontoBodega).Value.ToString("N2"),
                                 Pagado = x.Pagado.ToString("N2"),
                                 Faltan = x.Vencimiento
                             }).ToList();
@@ -928,9 +943,9 @@ namespace Empeño.WindowsForms.Views
                         txtNombre.Text = empeño.Cliente.Nombre;
                         txtDescripcion.Text = empeño.Descripcion;
                         txtComentario.Text = empeño.Comentario;
+                        txtMonto.Text = empeño.Monto.ToString("N2");
                         cbInteres.DataSource = await _context.Interes.Where(i => i.Activo || i.InteresId == empeño.InteresId).ToListAsync();
                         cbInteres.Text = empeño.Interes.Nombre;
-                        txtMonto.Text = empeño.Monto.ToString("N2");
                         Realizado.Text = empeño.Empleado.Usuario;
                         chbEsOro.Checked = empeño.EsOro;
                         Realizado.Text = empeño.Empleado.Usuario;
@@ -960,7 +975,7 @@ namespace Empeño.WindowsForms.Views
                         }
                         else
                         {
-                            CargarPagos();
+                            CargarPagos(empeñoId);
                         }
                     }            
                 }
@@ -1085,7 +1100,8 @@ namespace Empeño.WindowsForms.Views
                         var listOriging = _contextTemp.Intereses.Where(p => p.EmpenoId == empeñoId);
                         if (!pagados)
                         {
-                            listOriging = listOriging.Where(l => Math.Truncate(l.Pagado) < Math.Truncate(l.Monto));
+                            listOriging = listOriging.Where(l => Math.Truncate(l.Pagado) < Math.Truncate((l.Monto 
+                                + l.MontoAvaluo!=null? l.MontoAvaluo.Value:0 + l.MontoBodega!=null? l.MontoBodega.Value:0)));
                         }
                         var list = listOriging
                             .Select(x => new
@@ -1094,6 +1110,8 @@ namespace Empeño.WindowsForms.Views
                                 Interes = x.Empeno.Interes.Porcentaje + "%",
                                 Vence = x.FechaVencimiento,
                                 x.Monto,
+                                x.MontoAvaluo,
+                                x.MontoBodega,
                                 x.Pagado,
                                 Vencimiento = x.Monto == x.Pagado ? 0 : DbFunctions.DiffDays(DateTime.Today, x.FechaVencimiento),
                             }).OrderByDescending(i => i.Id)
@@ -1103,13 +1121,61 @@ namespace Empeño.WindowsForms.Views
                                 x.Id,
                                 x.Interes,
                                 Vence = Program.Meses(x.Vence.Month),
-                                Monto = x.Monto.ToString("N2"),
+                                x.Monto,
+                                x.MontoAvaluo,
+                                x.MontoBodega,
+                                Montos = (x.Monto + x.MontoBodega + x.MontoAvaluo).Value.ToString("N2"),
                                 Pagado = x.Pagado.ToString("N2"),
                                 Faltan = x.Vencimiento
                             }).ToList();
                         dgvPagos.DataSource = list;
                         dgvPagos.ClearSelection();//If you want                        
                     }
+                }
+            }
+            catch (Exception ex)
+            {
+
+            }
+        }
+
+        public void CargarPagos(int empeñoId)
+        {
+            try
+            {
+               
+                using (DataContext _contextTemp = new DataContext())
+                {
+                    var listOriging = _contextTemp.Intereses.Where(p => p.EmpenoId == empeñoId);
+                    if (!pagados)
+                    {
+                        listOriging = listOriging.Where(l => Math.Truncate(l.Pagado) < Math.Truncate((l.Monto + l.MontoAvaluo.Value + l.MontoBodega.Value)));
+
+                    }
+                    var list = listOriging
+                        .Select(x => new
+                        {
+                            Id = x.InteresesId,
+                            Interes = x.Empeno.Interes.Porcentaje + "%",
+                            Vence = x.FechaVencimiento,
+                            x.Monto,
+                            x.MontoAvaluo,
+                            x.MontoBodega,
+                            x.Pagado,
+                            Vencimiento = x.Monto == x.Pagado ? 0 : DbFunctions.DiffDays(DateTime.Today, x.FechaVencimiento),
+                        }).OrderByDescending(i => i.Id)
+                        .AsEnumerable()
+                        .Select(x => new
+                        {
+                            x.Id,
+                            x.Interes,
+                            Vence = Program.Meses(x.Vence.Month),
+                            Monto = (x.Monto + x.MontoBodega + x.MontoAvaluo).Value.ToString("N2"),
+                            Pagado = x.Pagado.ToString("N2"),
+                            Faltan = x.Vencimiento
+                        }).ToList();
+                    dgvPagos.DataSource = list;
+                    dgvPagos.ClearSelection();//If you want                        
                 }
             }
             catch (Exception ex)
@@ -1385,7 +1451,7 @@ namespace Empeño.WindowsForms.Views
                 {
                     double monto;
                     double.TryParse(txtMonto.Text, out monto);
-                    var intereses = await _context.Interes.Where(i=>i.Activo).OrderBy(i => i.Mayor).ToListAsync();
+                    var intereses = await _context.Interes.Where(i=>i.Activo).OrderBy(i => i.InteresId).ToListAsync();
                     var interes = new Interes();
                     foreach (var item in intereses)
                     {
@@ -2331,10 +2397,12 @@ namespace Empeño.WindowsForms.Views
            
         }
 
-        private void Fecha_Leave(object sender, EventArgs e)
+        private async void Fecha_Leave(object sender, EventArgs e)
         {
             var fecha = DateTime.ParseExact(Fecha.Text, "dd/MM/yyyy", CultureInfo.InvariantCulture);
-            var vence = fecha.Date.AddMonths(mesesVencimiento);
+            var interes = await _context.Interes.Where(i => i.Nombre == cbInteres.Text).SingleAsync();
+         
+            var vence = fecha.Date.AddMonths(interes.Meses > 0 ? interes.Meses : mesesVencimiento);
             lblVence.Text = vence.ToString("dd/MM/yyyy");
         }
 

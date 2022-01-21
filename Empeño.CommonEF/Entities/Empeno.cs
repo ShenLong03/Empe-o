@@ -27,8 +27,6 @@
 
         public double? MontoAvaluo { get; set; } = 0;
 
-        public bool AvaluoPagado { get; set; } = false;
-
         public double MontoPendiente { get; set; } = 0;
 
         public int InteresId { get; set; }

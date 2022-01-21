@@ -22,9 +22,13 @@
 
         public double? MontoAvaluo { get; set; } = 0;
 
-        public double MontoTotal { get
+        public double? MontoBodega { get; set; } = 0;
+
+        public double MontoTotal
+        {
+            get
             {
-                return Monto + MontoAvaluo.Value;
+                return Monto + (MontoBodega == null ? 0 : MontoBodega.Value) + (MontoAvaluo == null ? 0 : MontoAvaluo.Value);
             }
         }
 
