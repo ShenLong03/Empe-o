@@ -5,6 +5,8 @@ using Empeño.WindowsForms.Data;
 using Empeño.WindowsForms.Funciones;
 using Microsoft.Office.Interop.Excel;
 using Newtonsoft.Json;
+using Syncfusion.DocIO;
+using Syncfusion.DocIO.DLS;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -543,6 +545,7 @@ namespace Empeño.WindowsForms.Views
                         dgvPagos.ClearSelection();//If you want
 
                         await Print(empeño);
+                        await PrintContrato(empeño);
                         var cliente = _context.Clientes.Find(empeño.ClienteId);
 
                         if (!string.IsNullOrEmpty(cliente.Correo))
@@ -562,6 +565,20 @@ namespace Empeño.WindowsForms.Views
                     MessageBoxButtons.OK,
                     MessageBoxIcon.Error);
             }
+        }
+
+        private async Task PrintContrato(Empeno empeño)
+        {
+            var configuracion = await _context.Configuraciones.FirstOrDefaultAsync();
+            Microsoft.Office.Interop.Excel.Application cexcel = new Microsoft.Office.Interop.Excel.Application();
+            string pathch = Path.GetDirectoryName(System.Windows.Forms.Application.ExecutablePath);
+            pathch = $"{pathch}\\Empeños\\Comprobantes\\CONTRATO EMPEÑOS.docx";
+            //Loads a template document
+            WordDocument document = new WordDocument(pathch, FormatType.Docx);
+            document.Replace("{LOCAL}", configuracion.Compañia, true, true);
+            //Saves and closes the document
+            document.Save($"{pathch}\\Empeños\\Comprobantes\\Remplace.docx", FormatType.Docx);
+            document.Close();
         }
 
         private async void btnEditarEmpeño_Click(object sender, EventArgs e)
