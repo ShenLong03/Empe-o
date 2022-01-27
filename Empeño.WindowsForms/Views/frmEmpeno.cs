@@ -1694,7 +1694,9 @@ namespace Empeño.WindowsForms.Views
             cexcel.Cells[24, 3].value = empeno.FechaVencimiento.ToString("dd/MM/yyyy");
             string FechaVence = lblVence.Text;           
             cexcel.Cells[26, 3].value = ((double)empeno.Monto *((double)empeno.Interes.Porcentaje/(double)100)).ToString("N2");
-            cexcel.Cells[28, 3].value = "Pendiente";
+            cexcel.Cells[27, 3].value = ((double)empeno.Monto *(double)empeno.Interes.PorcentajeBodegaje).ToString("N2");
+            cexcel.Cells[28, 3].value = ((double)empeno.Monto *(double)empeno.Interes.PorcentajeAvaluo).ToString("N2");
+            cexcel.Cells[30, 3].value = "Pendiente";
             cexcel.ActiveWindow.SelectedSheets.PrintOut();
             System.Threading.Thread.Sleep(300);
             cexcel.ActiveWorkbook.Close(false);
@@ -1737,7 +1739,9 @@ namespace Empeño.WindowsForms.Views
             cexcel.Cells[24, 3].value = empeno.FechaVencimiento.ToString("dd/MM/yyyy");
             string FechaVence = lblVence.Text;
             cexcel.Cells[26, 3].value = ((double)empeno.Monto * ((double)empeno.Interes.Porcentaje / (double)100)).ToString("N2");
-            cexcel.Cells[28, 3].value = "Anulada";
+            cexcel.Cells[27, 3].value = ((double)empeno.Monto * (double)empeno.Interes.PorcentajeBodegaje).ToString("N2");
+            cexcel.Cells[28, 3].value = ((double)empeno.Monto * (double)empeno.Interes.PorcentajeAvaluo).ToString("N2");
+            cexcel.Cells[30, 3].value = "Anulada";
             cexcel.ActiveWindow.SelectedSheets.PrintOut();
             System.Threading.Thread.Sleep(300);
             cexcel.ActiveWorkbook.Close(false);
@@ -1860,31 +1864,38 @@ namespace Empeño.WindowsForms.Views
 
         private async Task InteresChanged()
         {
-            if (!string.IsNullOrEmpty(txtMonto.Text) && txtMonto.Text != "Monto")
+            try
             {
-                double monto;
-                double.TryParse(txtMonto.Text, out monto);
-                var interes = await _context.Interes.Where(i => i.Nombre==cbInteres.Text).SingleAsync();
-                
-                if (interes != null)
+                if (!string.IsNullOrEmpty(txtMonto.Text) && txtMonto.Text != "Monto")
                 {
-                    if (interes.Avaluo != null || interes.Bodegaje != null)
+                    double monto;
+                    double.TryParse(txtMonto.Text, out monto);
+                    var interes = await _context.Interes.Where(i => i.Nombre == cbInteres.Text).SingleAsync();
+
+                    if (interes != null)
                     {
-                        if (interes.Avaluo.Value > 0 || interes.Bodegaje.Value > 0)
-                            SetupInteres(interes);
+                        if (interes.Avaluo != null || interes.Bodegaje != null)
+                        {
+                            if (interes.Avaluo.Value > 0 || interes.Bodegaje.Value > 0)
+                                SetupInteres(interes);
+                        }
+                        else
+                        {
+                            txtAvaluo.Text = string.Empty;
+                            txtBodegaje.Text = string.Empty;
+
+                            funciones.PlaceHolder(txtAvaluo, lblAvaluo, PlaceHolderType.Leave, "Avalúo");
+                            funciones.PlaceHolder(txtBodegaje, lblBodegaje, PlaceHolderType.Leave, "Bodegaje");
+
+                            lblVence.Text = DateTime.Today.AddMonths(mesesVencimiento).ToString("dd/MM/yyyy");
+                        }
+
                     }
-                    else
-                    {
-                        txtAvaluo.Text = string.Empty;
-                        txtBodegaje.Text = string.Empty;
-
-                        funciones.PlaceHolder(txtAvaluo, lblAvaluo, PlaceHolderType.Leave, "Avalúo");
-                        funciones.PlaceHolder(txtBodegaje, lblBodegaje, PlaceHolderType.Leave, "Bodegaje");
-
-                        lblVence.Text = DateTime.Today.AddMonths(mesesVencimiento).ToString("dd/MM/yyyy");
-                    }
-
                 }
+            }
+            catch (Exception ex)
+            {
+
             }
         }
 
@@ -2137,7 +2148,7 @@ namespace Empeño.WindowsForms.Views
             cexcel.Cells[23, 3].value = (empeno.MontoPendiente + pago.Monto).ToString("N");
             cexcel.Cells[24, 3].value = pago.Monto.ToString("N2");
             cexcel.Cells[25, 3].value = empeno.MontoPendiente.ToString("N2");
-            cexcel.Cells[27, 3].value = pago.Monto.ToString("N2");
+            cexcel.Cells[27, 3].value = pago.MontoTotal.ToString("N2");
             cexcel.Cells[29, 3].value = empeno.FechaVencimiento.ToString("dd/MM/yyyy");
             cexcel.Cells[31, 3].value = empeno.Estado.ToString();
             cexcel.ActiveWindow.SelectedSheets.PrintOut();
@@ -2185,7 +2196,7 @@ namespace Empeño.WindowsForms.Views
 
             cexcel.Cells[24, 3].value = _context.Intereses.Where(i => i.EmpenoId == empeno.EmpenoId).Sum(i => i.Monto).ToString("N2");
             cexcel.Cells[25, 3].value = empeno.MontoPendiente.ToString("N2");
-            cexcel.Cells[26, 3].value = pago.Monto.ToString("N2");
+            cexcel.Cells[26, 3].value = pago.MontoTotal.ToString("N2");
             cexcel.Cells[28, 3].value = "Retirado";
             cexcel.ActiveWindow.SelectedSheets.PrintOut();
             System.Threading.Thread.Sleep(300);
@@ -2241,7 +2252,7 @@ namespace Empeño.WindowsForms.Views
 
             cexcel.Cells[24, 3].value = _context.Intereses.Where(i => i.EmpenoId == empeno.EmpenoId).Sum(i => i.Monto).ToString("N2");
             cexcel.Cells[25, 3].value = empeno.MontoPendiente.ToString("N2");
-            cexcel.Cells[26, 3].value = pago.Monto.ToString("N2");
+            cexcel.Cells[26, 3].value = pago.MontoTotal.ToString("N2");
             cexcel.Cells[28, 3].value = "Retirado";
             cexcel.ActiveWindow.SelectedSheets.PrintOut();
             System.Threading.Thread.Sleep(300);

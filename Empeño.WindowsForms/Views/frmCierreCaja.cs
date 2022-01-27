@@ -144,7 +144,23 @@ namespace Empeño.WindowsForms.Views
             txtCancelados.Text = cancelados != null ? cancelados.Value.ToString("N2") : "0.00";
             txtAcumulado.Text = ((acumuladoInicial + montoEmpeñoDia) - (abonoDia + vencidos + cancelados)).Value.ToString("N2");
 
+            double? montoAvaluoDia = _context.Empenos.Where(x => !x.IsDelete && (x.Estado == Estado.Vigente
+                      || x.Estado == Estado.Pendiente || x.Estado == Estado.Vencido || x.Estado == Estado.Cancelado))
+                 .SelectMany(x => x.Pagos).Where(x => x.TipoPago == TipoPago.Interes && x.Fecha >= fecha && x.Fecha < tomorrow).ToList().Sum(x => x.MontoAvaluo);
 
+            txtAvaluo.Text = montoAvaluoDia != null ? montoAvaluoDia.Value.ToString("N2") : "0.00";
+
+            double? montoBodegajeDia = _context.Empenos.Where(x => !x.IsDelete && (x.Estado == Estado.Vigente
+                     || x.Estado == Estado.Pendiente || x.Estado == Estado.Vencido || x.Estado == Estado.Cancelado))
+                .SelectMany(x => x.Pagos).Where(x => x.TipoPago == TipoPago.Interes && x.Fecha >= fecha && x.Fecha < tomorrow).ToList().Sum(x => x.MontoBodega);
+
+            txtBodegaje.Text = montoBodegajeDia != null ? montoBodegajeDia.Value.ToString("N2") : "0.00";
+
+            var configuracion = await _context.Configuraciones.FirstOrDefaultAsync();
+
+            double? IVA= ((double)(montoAvaluoDia + montoBodegajeDia) * (double)(configuracion.IVA / 100));
+
+            txtIVA.Text = IVA.Value.ToString("N2");
 
             detalles.Add(
               new DetalleCierreCaja
@@ -168,6 +184,20 @@ namespace Empeño.WindowsForms.Views
                });
 
             detalles.Add(
+              new DetalleCierreCaja
+              {
+                  Concepto = "Avalúos",
+                  Valor = montoAvaluoDia != null ? montoAvaluoDia.Value : 0
+              });
+
+            detalles.Add(
+              new DetalleCierreCaja
+              {
+                  Concepto = "Bodegajes",
+                  Valor = montoBodegajeDia != null ? montoBodegajeDia.Value : 0
+              });
+
+            detalles.Add(
                new DetalleCierreCaja
                {
                    Concepto = "Retiros",
@@ -186,6 +216,13 @@ namespace Empeño.WindowsForms.Views
                {
                    Concepto = "Acumulado",
                    Valor = ((acumuladoInicial + montoEmpeñoDia) - (abonoDia + vencidos + cancelados)).Value
+               });
+
+            detalles.Add(
+               new DetalleCierreCaja
+               {
+                   Concepto = "IVA",
+                   Valor = IVA.Value
                });
 
             LoadList();
@@ -431,11 +468,14 @@ namespace Empeño.WindowsForms.Views
             cexcel.Cells[3, 3].value = txtFecha.Value.ToShortDateString();
             cexcel.Cells[5, 3].value = txtAcumuladoInicial.Text;
             cexcel.Cells[6, 3].value = txtMonto.Text;
-            cexcel.Cells[8, 3].value = txtInteres.Text;
-            cexcel.Cells[10, 3].value = txtAbonos.Text;
-            cexcel.Cells[12, 3].value = txtVencimientos.Text;
-            cexcel.Cells[14, 3].value = txtCancelados.Text;
-            cexcel.Cells[16, 3].value = txtAcumulado.Text;
+            cexcel.Cells[8, 3].value = txtAvaluo.Text;
+            cexcel.Cells[10, 3].value = txtBodegaje.Text;
+            cexcel.Cells[12, 3].value = txtInteres.Text;
+            cexcel.Cells[14, 3].value = txtAbonos.Text;
+            cexcel.Cells[16, 3].value = txtVencimientos.Text;
+            cexcel.Cells[18, 3].value = txtCancelados.Text;
+            cexcel.Cells[20, 3].value = txtAcumulado.Text;
+            cexcel.Cells[22, 3].value = txtIVA.Text;
             cexcel.ActiveWindow.SelectedSheets.PrintOut();
             System.Threading.Thread.Sleep(300);
             cexcel.ActiveWorkbook.Close(false);
