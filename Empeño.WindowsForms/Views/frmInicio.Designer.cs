@@ -108,8 +108,9 @@ namespace Empeño.WindowsForms.Views
             this.panel1.Controls.Add(this.panel2);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Left;
             this.panel1.Location = new System.Drawing.Point(0, 0);
+            this.panel1.Margin = new System.Windows.Forms.Padding(4);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(224, 723);
+            this.panel1.Size = new System.Drawing.Size(336, 1084);
             this.panel1.TabIndex = 0;
             // 
             // mnuCaja
@@ -123,11 +124,12 @@ namespace Empeño.WindowsForms.Views
             this.mnuCaja.IconColor = System.Drawing.Color.White;
             this.mnuCaja.IconSize = 32;
             this.mnuCaja.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.mnuCaja.Location = new System.Drawing.Point(0, 984);
+            this.mnuCaja.Location = new System.Drawing.Point(0, 1452);
+            this.mnuCaja.Margin = new System.Windows.Forms.Padding(4);
             this.mnuCaja.Name = "mnuCaja";
-            this.mnuCaja.Padding = new System.Windows.Forms.Padding(2, 0, 0, 0);
+            this.mnuCaja.Padding = new System.Windows.Forms.Padding(3, 0, 0, 0);
             this.mnuCaja.Rotation = 0D;
-            this.mnuCaja.Size = new System.Drawing.Size(207, 64);
+            this.mnuCaja.Size = new System.Drawing.Size(310, 89);
             this.mnuCaja.TabIndex = 12;
             this.mnuCaja.Text = "Caja";
             this.mnuCaja.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -143,10 +145,9 @@ namespace Empeño.WindowsForms.Views
             this.panelSubMenuReportes.Controls.Add(this.mnuReporteEmpeños);
             this.panelSubMenuReportes.Controls.Add(this.mnuReporteIngresos);
             this.panelSubMenuReportes.Dock = System.Windows.Forms.DockStyle.Top;
-            this.panelSubMenuReportes.Location = new System.Drawing.Point(0, 723);
-            this.panelSubMenuReportes.Margin = new System.Windows.Forms.Padding(2);
+            this.panelSubMenuReportes.Location = new System.Drawing.Point(0, 1063);
             this.panelSubMenuReportes.Name = "panelSubMenuReportes";
-            this.panelSubMenuReportes.Size = new System.Drawing.Size(207, 261);
+            this.panelSubMenuReportes.Size = new System.Drawing.Size(310, 389);
             this.panelSubMenuReportes.TabIndex = 11;
             // 
             // mnuReporteVencidos
@@ -160,11 +161,12 @@ namespace Empeño.WindowsForms.Views
             this.mnuReporteVencidos.IconColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(65)))), ((int)(((byte)(116)))));
             this.mnuReporteVencidos.IconSize = 1;
             this.mnuReporteVencidos.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.mnuReporteVencidos.Location = new System.Drawing.Point(0, 192);
+            this.mnuReporteVencidos.Location = new System.Drawing.Point(0, 288);
+            this.mnuReporteVencidos.Margin = new System.Windows.Forms.Padding(4);
             this.mnuReporteVencidos.Name = "mnuReporteVencidos";
-            this.mnuReporteVencidos.Padding = new System.Windows.Forms.Padding(60, 0, 0, 0);
+            this.mnuReporteVencidos.Padding = new System.Windows.Forms.Padding(90, 0, 0, 0);
             this.mnuReporteVencidos.Rotation = 0D;
-            this.mnuReporteVencidos.Size = new System.Drawing.Size(207, 64);
+            this.mnuReporteVencidos.Size = new System.Drawing.Size(310, 96);
             this.mnuReporteVencidos.TabIndex = 12;
             this.mnuReporteVencidos.Text = "Reporte Vencidos";
             this.mnuReporteVencidos.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -182,11 +184,12 @@ namespace Empeño.WindowsForms.Views
             this.mnuArqueo.IconColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(65)))), ((int)(((byte)(116)))));
             this.mnuArqueo.IconSize = 1;
             this.mnuArqueo.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.mnuArqueo.Location = new System.Drawing.Point(0, 128);
+            this.mnuArqueo.Location = new System.Drawing.Point(0, 192);
+            this.mnuArqueo.Margin = new System.Windows.Forms.Padding(4);
             this.mnuArqueo.Name = "mnuArqueo";
-            this.mnuArqueo.Padding = new System.Windows.Forms.Padding(60, 0, 0, 0);
+            this.mnuArqueo.Padding = new System.Windows.Forms.Padding(90, 0, 0, 0);
             this.mnuArqueo.Rotation = 0D;
-            this.mnuArqueo.Size = new System.Drawing.Size(207, 64);
+            this.mnuArqueo.Size = new System.Drawing.Size(310, 96);
             this.mnuArqueo.TabIndex = 11;
             this.mnuArqueo.Text = "Reporte Arqueo";
             this.mnuArqueo.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -204,11 +207,12 @@ namespace Empeño.WindowsForms.Views
             this.mnuReporteEmpeños.IconColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(65)))), ((int)(((byte)(116)))));
             this.mnuReporteEmpeños.IconSize = 1;
             this.mnuReporteEmpeños.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.mnuReporteEmpeños.Location = new System.Drawing.Point(0, 64);
+            this.mnuReporteEmpeños.Location = new System.Drawing.Point(0, 96);
+            this.mnuReporteEmpeños.Margin = new System.Windows.Forms.Padding(4);
             this.mnuReporteEmpeños.Name = "mnuReporteEmpeños";
-            this.mnuReporteEmpeños.Padding = new System.Windows.Forms.Padding(60, 0, 0, 0);
+            this.mnuReporteEmpeños.Padding = new System.Windows.Forms.Padding(90, 0, 0, 0);
             this.mnuReporteEmpeños.Rotation = 0D;
-            this.mnuReporteEmpeños.Size = new System.Drawing.Size(207, 64);
+            this.mnuReporteEmpeños.Size = new System.Drawing.Size(310, 96);
             this.mnuReporteEmpeños.TabIndex = 10;
             this.mnuReporteEmpeños.Text = "Reporte Empeños";
             this.mnuReporteEmpeños.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -227,10 +231,11 @@ namespace Empeño.WindowsForms.Views
             this.mnuReporteIngresos.IconSize = 1;
             this.mnuReporteIngresos.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.mnuReporteIngresos.Location = new System.Drawing.Point(0, 0);
+            this.mnuReporteIngresos.Margin = new System.Windows.Forms.Padding(4);
             this.mnuReporteIngresos.Name = "mnuReporteIngresos";
-            this.mnuReporteIngresos.Padding = new System.Windows.Forms.Padding(60, 0, 0, 0);
+            this.mnuReporteIngresos.Padding = new System.Windows.Forms.Padding(90, 0, 0, 0);
             this.mnuReporteIngresos.Rotation = 0D;
-            this.mnuReporteIngresos.Size = new System.Drawing.Size(207, 64);
+            this.mnuReporteIngresos.Size = new System.Drawing.Size(310, 96);
             this.mnuReporteIngresos.TabIndex = 9;
             this.mnuReporteIngresos.Text = "Reporte Ingresos";
             this.mnuReporteIngresos.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -248,11 +253,12 @@ namespace Empeño.WindowsForms.Views
             this.mnuReporte.IconColor = System.Drawing.Color.White;
             this.mnuReporte.IconSize = 32;
             this.mnuReporte.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.mnuReporte.Location = new System.Drawing.Point(0, 659);
+            this.mnuReporte.Location = new System.Drawing.Point(0, 969);
+            this.mnuReporte.Margin = new System.Windows.Forms.Padding(4);
             this.mnuReporte.Name = "mnuReporte";
-            this.mnuReporte.Padding = new System.Windows.Forms.Padding(2, 0, 0, 0);
+            this.mnuReporte.Padding = new System.Windows.Forms.Padding(3, 0, 0, 0);
             this.mnuReporte.Rotation = 0D;
-            this.mnuReporte.Size = new System.Drawing.Size(207, 64);
+            this.mnuReporte.Size = new System.Drawing.Size(310, 94);
             this.mnuReporte.TabIndex = 10;
             this.mnuReporte.Text = "Reportes";
             this.mnuReporte.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -267,10 +273,9 @@ namespace Empeño.WindowsForms.Views
             this.panelSubMenuConfiguracion.Controls.Add(this.mnuSubIntereses);
             this.panelSubMenuConfiguracion.Controls.Add(this.mnuSubConfiguracion);
             this.panelSubMenuConfiguracion.Dock = System.Windows.Forms.DockStyle.Top;
-            this.panelSubMenuConfiguracion.Location = new System.Drawing.Point(0, 467);
-            this.panelSubMenuConfiguracion.Margin = new System.Windows.Forms.Padding(2);
+            this.panelSubMenuConfiguracion.Location = new System.Drawing.Point(0, 679);
             this.panelSubMenuConfiguracion.Name = "panelSubMenuConfiguracion";
-            this.panelSubMenuConfiguracion.Size = new System.Drawing.Size(207, 192);
+            this.panelSubMenuConfiguracion.Size = new System.Drawing.Size(310, 290);
             this.panelSubMenuConfiguracion.TabIndex = 9;
             // 
             // mnuEmpleados
@@ -284,11 +289,12 @@ namespace Empeño.WindowsForms.Views
             this.mnuEmpleados.IconColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(65)))), ((int)(((byte)(116)))));
             this.mnuEmpleados.IconSize = 1;
             this.mnuEmpleados.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.mnuEmpleados.Location = new System.Drawing.Point(0, 128);
+            this.mnuEmpleados.Location = new System.Drawing.Point(0, 189);
+            this.mnuEmpleados.Margin = new System.Windows.Forms.Padding(4);
             this.mnuEmpleados.Name = "mnuEmpleados";
-            this.mnuEmpleados.Padding = new System.Windows.Forms.Padding(60, 0, 0, 0);
+            this.mnuEmpleados.Padding = new System.Windows.Forms.Padding(90, 0, 0, 0);
             this.mnuEmpleados.Rotation = 0D;
-            this.mnuEmpleados.Size = new System.Drawing.Size(207, 64);
+            this.mnuEmpleados.Size = new System.Drawing.Size(310, 96);
             this.mnuEmpleados.TabIndex = 11;
             this.mnuEmpleados.Text = "Empleados";
             this.mnuEmpleados.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -306,11 +312,12 @@ namespace Empeño.WindowsForms.Views
             this.mnuSubIntereses.IconColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(65)))), ((int)(((byte)(116)))));
             this.mnuSubIntereses.IconSize = 1;
             this.mnuSubIntereses.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.mnuSubIntereses.Location = new System.Drawing.Point(0, 64);
+            this.mnuSubIntereses.Location = new System.Drawing.Point(0, 93);
+            this.mnuSubIntereses.Margin = new System.Windows.Forms.Padding(4);
             this.mnuSubIntereses.Name = "mnuSubIntereses";
-            this.mnuSubIntereses.Padding = new System.Windows.Forms.Padding(60, 0, 0, 0);
+            this.mnuSubIntereses.Padding = new System.Windows.Forms.Padding(90, 0, 0, 0);
             this.mnuSubIntereses.Rotation = 0D;
-            this.mnuSubIntereses.Size = new System.Drawing.Size(207, 64);
+            this.mnuSubIntereses.Size = new System.Drawing.Size(310, 96);
             this.mnuSubIntereses.TabIndex = 10;
             this.mnuSubIntereses.Text = "Intereses";
             this.mnuSubIntereses.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -329,10 +336,11 @@ namespace Empeño.WindowsForms.Views
             this.mnuSubConfiguracion.IconSize = 1;
             this.mnuSubConfiguracion.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.mnuSubConfiguracion.Location = new System.Drawing.Point(0, 0);
+            this.mnuSubConfiguracion.Margin = new System.Windows.Forms.Padding(4);
             this.mnuSubConfiguracion.Name = "mnuSubConfiguracion";
-            this.mnuSubConfiguracion.Padding = new System.Windows.Forms.Padding(60, 0, 0, 0);
+            this.mnuSubConfiguracion.Padding = new System.Windows.Forms.Padding(90, 0, 0, 0);
             this.mnuSubConfiguracion.Rotation = 0D;
-            this.mnuSubConfiguracion.Size = new System.Drawing.Size(207, 64);
+            this.mnuSubConfiguracion.Size = new System.Drawing.Size(310, 93);
             this.mnuSubConfiguracion.TabIndex = 9;
             this.mnuSubConfiguracion.Text = "Configuración General";
             this.mnuSubConfiguracion.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -350,11 +358,12 @@ namespace Empeño.WindowsForms.Views
             this.mnuConfiguracion.IconColor = System.Drawing.Color.White;
             this.mnuConfiguracion.IconSize = 32;
             this.mnuConfiguracion.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.mnuConfiguracion.Location = new System.Drawing.Point(0, 403);
+            this.mnuConfiguracion.Location = new System.Drawing.Point(0, 573);
+            this.mnuConfiguracion.Margin = new System.Windows.Forms.Padding(4);
             this.mnuConfiguracion.Name = "mnuConfiguracion";
-            this.mnuConfiguracion.Padding = new System.Windows.Forms.Padding(2, 0, 0, 0);
+            this.mnuConfiguracion.Padding = new System.Windows.Forms.Padding(3, 0, 0, 0);
             this.mnuConfiguracion.Rotation = 0D;
-            this.mnuConfiguracion.Size = new System.Drawing.Size(207, 64);
+            this.mnuConfiguracion.Size = new System.Drawing.Size(310, 106);
             this.mnuConfiguracion.TabIndex = 8;
             this.mnuConfiguracion.Text = " Configuración";
             this.mnuConfiguracion.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -373,11 +382,12 @@ namespace Empeño.WindowsForms.Views
             this.mnuClientes.IconColor = System.Drawing.Color.White;
             this.mnuClientes.IconSize = 32;
             this.mnuClientes.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.mnuClientes.Location = new System.Drawing.Point(0, 339);
+            this.mnuClientes.Location = new System.Drawing.Point(0, 476);
+            this.mnuClientes.Margin = new System.Windows.Forms.Padding(4);
             this.mnuClientes.Name = "mnuClientes";
-            this.mnuClientes.Padding = new System.Windows.Forms.Padding(2, 0, 0, 0);
+            this.mnuClientes.Padding = new System.Windows.Forms.Padding(3, 0, 0, 0);
             this.mnuClientes.Rotation = 0D;
-            this.mnuClientes.Size = new System.Drawing.Size(207, 64);
+            this.mnuClientes.Size = new System.Drawing.Size(310, 97);
             this.mnuClientes.TabIndex = 7;
             this.mnuClientes.Text = " Clientes";
             this.mnuClientes.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -396,11 +406,12 @@ namespace Empeño.WindowsForms.Views
             this.mnuLogout.IconChar = FontAwesome.Sharp.IconChar.PowerOff;
             this.mnuLogout.IconColor = System.Drawing.Color.White;
             this.mnuLogout.IconSize = 32;
-            this.mnuLogout.Location = new System.Drawing.Point(0, 1048);
+            this.mnuLogout.Location = new System.Drawing.Point(0, 1541);
+            this.mnuLogout.Margin = new System.Windows.Forms.Padding(4);
             this.mnuLogout.Name = "mnuLogout";
-            this.mnuLogout.Padding = new System.Windows.Forms.Padding(2, 0, 0, 0);
+            this.mnuLogout.Padding = new System.Windows.Forms.Padding(3, 0, 0, 0);
             this.mnuLogout.Rotation = 0D;
-            this.mnuLogout.Size = new System.Drawing.Size(207, 32);
+            this.mnuLogout.Size = new System.Drawing.Size(310, 84);
             this.mnuLogout.TabIndex = 6;
             this.mnuLogout.Text = "Cerrar";
             this.mnuLogout.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
@@ -418,11 +429,12 @@ namespace Empeño.WindowsForms.Views
             this.mnuEmpeños.IconColor = System.Drawing.Color.White;
             this.mnuEmpeños.IconSize = 32;
             this.mnuEmpeños.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.mnuEmpeños.Location = new System.Drawing.Point(0, 275);
+            this.mnuEmpeños.Location = new System.Drawing.Point(0, 374);
+            this.mnuEmpeños.Margin = new System.Windows.Forms.Padding(4);
             this.mnuEmpeños.Name = "mnuEmpeños";
-            this.mnuEmpeños.Padding = new System.Windows.Forms.Padding(2, 0, 0, 0);
+            this.mnuEmpeños.Padding = new System.Windows.Forms.Padding(3, 0, 0, 0);
             this.mnuEmpeños.Rotation = 0D;
-            this.mnuEmpeños.Size = new System.Drawing.Size(207, 64);
+            this.mnuEmpeños.Size = new System.Drawing.Size(310, 102);
             this.mnuEmpeños.TabIndex = 3;
             this.mnuEmpeños.Text = " Empeños";
             this.mnuEmpeños.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -441,11 +453,12 @@ namespace Empeño.WindowsForms.Views
             this.mnuTablero.IconColor = System.Drawing.Color.White;
             this.mnuTablero.IconSize = 32;
             this.mnuTablero.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.mnuTablero.Location = new System.Drawing.Point(0, 211);
+            this.mnuTablero.Location = new System.Drawing.Point(0, 266);
+            this.mnuTablero.Margin = new System.Windows.Forms.Padding(4);
             this.mnuTablero.Name = "mnuTablero";
-            this.mnuTablero.Padding = new System.Windows.Forms.Padding(2, 0, 0, 0);
+            this.mnuTablero.Padding = new System.Windows.Forms.Padding(3, 0, 0, 0);
             this.mnuTablero.Rotation = 0D;
-            this.mnuTablero.Size = new System.Drawing.Size(207, 64);
+            this.mnuTablero.Size = new System.Drawing.Size(310, 108);
             this.mnuTablero.TabIndex = 2;
             this.mnuTablero.Text = " Tablero";
             this.mnuTablero.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -464,11 +477,12 @@ namespace Empeño.WindowsForms.Views
             this.mnuInicio.IconColor = System.Drawing.Color.White;
             this.mnuInicio.IconSize = 32;
             this.mnuInicio.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.mnuInicio.Location = new System.Drawing.Point(0, 147);
+            this.mnuInicio.Location = new System.Drawing.Point(0, 177);
+            this.mnuInicio.Margin = new System.Windows.Forms.Padding(4);
             this.mnuInicio.Name = "mnuInicio";
-            this.mnuInicio.Padding = new System.Windows.Forms.Padding(2, 0, 0, 0);
+            this.mnuInicio.Padding = new System.Windows.Forms.Padding(3, 0, 0, 0);
             this.mnuInicio.Rotation = 0D;
-            this.mnuInicio.Size = new System.Drawing.Size(207, 64);
+            this.mnuInicio.Size = new System.Drawing.Size(310, 89);
             this.mnuInicio.TabIndex = 1;
             this.mnuInicio.Text = "Inicio";
             this.mnuInicio.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -483,8 +497,9 @@ namespace Empeño.WindowsForms.Views
             this.panel2.Controls.Add(this.shapeContainer1);
             this.panel2.Dock = System.Windows.Forms.DockStyle.Top;
             this.panel2.Location = new System.Drawing.Point(0, 0);
+            this.panel2.Margin = new System.Windows.Forms.Padding(4);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(207, 147);
+            this.panel2.Size = new System.Drawing.Size(310, 177);
             this.panel2.TabIndex = 0;
             // 
             // btnMenu
@@ -493,11 +508,10 @@ namespace Empeño.WindowsForms.Views
             this.btnMenu.BackColor = System.Drawing.Color.Transparent;
             this.btnMenu.IconChar = FontAwesome.Sharp.IconChar.AlignJustify;
             this.btnMenu.IconColor = System.Drawing.Color.White;
-            this.btnMenu.IconSize = 26;
-            this.btnMenu.Location = new System.Drawing.Point(177, 6);
-            this.btnMenu.Margin = new System.Windows.Forms.Padding(2);
+            this.btnMenu.IconSize = 39;
+            this.btnMenu.Location = new System.Drawing.Point(255, 6);
             this.btnMenu.Name = "btnMenu";
-            this.btnMenu.Size = new System.Drawing.Size(26, 26);
+            this.btnMenu.Size = new System.Drawing.Size(39, 39);
             this.btnMenu.TabIndex = 2;
             this.btnMenu.TabStop = false;
             this.btnMenu.Click += new System.EventHandler(this.btnMenu_Click);
@@ -507,10 +521,9 @@ namespace Empeño.WindowsForms.Views
             this.pictureBox1.BackColor = System.Drawing.Color.Transparent;
             this.pictureBox1.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("pictureBox1.BackgroundImage")));
             this.pictureBox1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.pictureBox1.Location = new System.Drawing.Point(-14, 15);
-            this.pictureBox1.Margin = new System.Windows.Forms.Padding(2);
+            this.pictureBox1.Location = new System.Drawing.Point(-12, 19);
             this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(215, 114);
+            this.pictureBox1.Size = new System.Drawing.Size(269, 143);
             this.pictureBox1.TabIndex = 0;
             this.pictureBox1.TabStop = false;
             // 
@@ -521,7 +534,7 @@ namespace Empeño.WindowsForms.Views
             this.shapeContainer1.Name = "shapeContainer1";
             this.shapeContainer1.Shapes.AddRange(new Microsoft.VisualBasic.PowerPacks.Shape[] {
             this.lineShape1});
-            this.shapeContainer1.Size = new System.Drawing.Size(207, 147);
+            this.shapeContainer1.Size = new System.Drawing.Size(310, 177);
             this.shapeContainer1.TabIndex = 1;
             this.shapeContainer1.TabStop = false;
             // 
@@ -547,10 +560,9 @@ namespace Empeño.WindowsForms.Views
             this.panel3.Controls.Add(this.lblModulo);
             this.panel3.Controls.Add(this.iconModulo);
             this.panel3.Dock = System.Windows.Forms.DockStyle.Top;
-            this.panel3.Location = new System.Drawing.Point(224, 0);
-            this.panel3.Margin = new System.Windows.Forms.Padding(2);
+            this.panel3.Location = new System.Drawing.Point(336, 0);
             this.panel3.Name = "panel3";
-            this.panel3.Size = new System.Drawing.Size(937, 48);
+            this.panel3.Size = new System.Drawing.Size(1406, 72);
             this.panel3.TabIndex = 1;
             this.panel3.MouseMove += new System.Windows.Forms.MouseEventHandler(this.panel3_MouseMove);
             // 
@@ -561,11 +573,10 @@ namespace Empeño.WindowsForms.Views
             this.btnBackup.ForeColor = System.Drawing.Color.Magenta;
             this.btnBackup.IconChar = FontAwesome.Sharp.IconChar.Database;
             this.btnBackup.IconColor = System.Drawing.Color.Magenta;
-            this.btnBackup.IconSize = 26;
-            this.btnBackup.Location = new System.Drawing.Point(805, 2);
-            this.btnBackup.Margin = new System.Windows.Forms.Padding(2);
+            this.btnBackup.IconSize = 39;
+            this.btnBackup.Location = new System.Drawing.Point(1208, 3);
             this.btnBackup.Name = "btnBackup";
-            this.btnBackup.Size = new System.Drawing.Size(26, 26);
+            this.btnBackup.Size = new System.Drawing.Size(39, 39);
             this.btnBackup.TabIndex = 8;
             this.btnBackup.TabStop = false;
             this.btnBackup.Click += new System.EventHandler(this.btnBackup_Click_1);
@@ -576,10 +587,9 @@ namespace Empeño.WindowsForms.Views
             this.lblSesionUsuario.AutoSize = true;
             this.lblSesionUsuario.Font = new System.Drawing.Font("Century Gothic", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblSesionUsuario.ForeColor = System.Drawing.Color.White;
-            this.lblSesionUsuario.Location = new System.Drawing.Point(774, 29);
-            this.lblSesionUsuario.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.lblSesionUsuario.Location = new System.Drawing.Point(1161, 44);
             this.lblSesionUsuario.Name = "lblSesionUsuario";
-            this.lblSesionUsuario.Size = new System.Drawing.Size(57, 17);
+            this.lblSesionUsuario.Size = new System.Drawing.Size(87, 25);
             this.lblSesionUsuario.TabIndex = 7;
             this.lblSesionUsuario.Text = "Usuario";
             // 
@@ -589,10 +599,9 @@ namespace Empeño.WindowsForms.Views
             this.label2.AutoSize = true;
             this.label2.Font = new System.Drawing.Font("Century Gothic", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label2.ForeColor = System.Drawing.Color.Gainsboro;
-            this.label2.Location = new System.Drawing.Point(687, 31);
-            this.label2.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label2.Location = new System.Drawing.Point(1030, 46);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(83, 17);
+            this.label2.Size = new System.Drawing.Size(125, 25);
             this.label2.TabIndex = 6;
             this.label2.Text = "Bienvenido";
             // 
@@ -602,11 +611,10 @@ namespace Empeño.WindowsForms.Views
             this.btnRestore.BackColor = System.Drawing.Color.Transparent;
             this.btnRestore.IconChar = FontAwesome.Sharp.IconChar.WindowRestore;
             this.btnRestore.IconColor = System.Drawing.Color.White;
-            this.btnRestore.IconSize = 26;
-            this.btnRestore.Location = new System.Drawing.Point(871, 2);
-            this.btnRestore.Margin = new System.Windows.Forms.Padding(2);
+            this.btnRestore.IconSize = 39;
+            this.btnRestore.Location = new System.Drawing.Point(1306, 3);
             this.btnRestore.Name = "btnRestore";
-            this.btnRestore.Size = new System.Drawing.Size(26, 26);
+            this.btnRestore.Size = new System.Drawing.Size(39, 39);
             this.btnRestore.TabIndex = 5;
             this.btnRestore.TabStop = false;
             this.btnRestore.Click += new System.EventHandler(this.btnRestore_Click);
@@ -617,11 +625,10 @@ namespace Empeño.WindowsForms.Views
             this.btnMaximize.BackColor = System.Drawing.Color.Transparent;
             this.btnMaximize.IconChar = FontAwesome.Sharp.IconChar.WindowMaximize;
             this.btnMaximize.IconColor = System.Drawing.Color.White;
-            this.btnMaximize.IconSize = 26;
-            this.btnMaximize.Location = new System.Drawing.Point(871, 2);
-            this.btnMaximize.Margin = new System.Windows.Forms.Padding(2);
+            this.btnMaximize.IconSize = 39;
+            this.btnMaximize.Location = new System.Drawing.Point(1306, 3);
             this.btnMaximize.Name = "btnMaximize";
-            this.btnMaximize.Size = new System.Drawing.Size(26, 26);
+            this.btnMaximize.Size = new System.Drawing.Size(39, 39);
             this.btnMaximize.TabIndex = 4;
             this.btnMaximize.TabStop = false;
             this.btnMaximize.Click += new System.EventHandler(this.btnMaximize_Click);
@@ -632,11 +639,10 @@ namespace Empeño.WindowsForms.Views
             this.btnMinimize.BackColor = System.Drawing.Color.Transparent;
             this.btnMinimize.IconChar = FontAwesome.Sharp.IconChar.Minus;
             this.btnMinimize.IconColor = System.Drawing.Color.White;
-            this.btnMinimize.IconSize = 26;
-            this.btnMinimize.Location = new System.Drawing.Point(841, 2);
-            this.btnMinimize.Margin = new System.Windows.Forms.Padding(2);
+            this.btnMinimize.IconSize = 39;
+            this.btnMinimize.Location = new System.Drawing.Point(1262, 3);
             this.btnMinimize.Name = "btnMinimize";
-            this.btnMinimize.Size = new System.Drawing.Size(26, 26);
+            this.btnMinimize.Size = new System.Drawing.Size(39, 39);
             this.btnMinimize.TabIndex = 3;
             this.btnMinimize.TabStop = false;
             this.btnMinimize.Click += new System.EventHandler(this.btnMinimize_Click);
@@ -647,11 +653,10 @@ namespace Empeño.WindowsForms.Views
             this.btnClose.BackColor = System.Drawing.Color.Transparent;
             this.btnClose.IconChar = FontAwesome.Sharp.IconChar.Times;
             this.btnClose.IconColor = System.Drawing.Color.White;
-            this.btnClose.IconSize = 26;
-            this.btnClose.Location = new System.Drawing.Point(902, 2);
-            this.btnClose.Margin = new System.Windows.Forms.Padding(2);
+            this.btnClose.IconSize = 39;
+            this.btnClose.Location = new System.Drawing.Point(1353, 3);
             this.btnClose.Name = "btnClose";
-            this.btnClose.Size = new System.Drawing.Size(26, 26);
+            this.btnClose.Size = new System.Drawing.Size(39, 39);
             this.btnClose.TabIndex = 2;
             this.btnClose.TabStop = false;
             this.btnClose.Click += new System.EventHandler(this.btnClose_Click);
@@ -661,10 +666,9 @@ namespace Empeño.WindowsForms.Views
             this.lblModulo.AutoSize = true;
             this.lblModulo.Font = new System.Drawing.Font("Century Gothic", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblModulo.ForeColor = System.Drawing.Color.Gainsboro;
-            this.lblModulo.Location = new System.Drawing.Point(44, 12);
-            this.lblModulo.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.lblModulo.Location = new System.Drawing.Point(66, 18);
             this.lblModulo.Name = "lblModulo";
-            this.lblModulo.Size = new System.Drawing.Size(46, 17);
+            this.lblModulo.Size = new System.Drawing.Size(67, 25);
             this.lblModulo.TabIndex = 1;
             this.lblModulo.Text = "Inicio";
             // 
@@ -674,11 +678,10 @@ namespace Empeño.WindowsForms.Views
             this.iconModulo.ForeColor = System.Drawing.Color.MediumPurple;
             this.iconModulo.IconChar = FontAwesome.Sharp.IconChar.Home;
             this.iconModulo.IconColor = System.Drawing.Color.MediumPurple;
-            this.iconModulo.IconSize = 26;
-            this.iconModulo.Location = new System.Drawing.Point(14, 6);
-            this.iconModulo.Margin = new System.Windows.Forms.Padding(2);
+            this.iconModulo.IconSize = 39;
+            this.iconModulo.Location = new System.Drawing.Point(21, 9);
             this.iconModulo.Name = "iconModulo";
-            this.iconModulo.Size = new System.Drawing.Size(26, 26);
+            this.iconModulo.Size = new System.Drawing.Size(39, 39);
             this.iconModulo.TabIndex = 0;
             this.iconModulo.TabStop = false;
             // 
@@ -693,19 +696,17 @@ namespace Empeño.WindowsForms.Views
             this.panelContenedor.Controls.Add(this.panel1);
             this.panelContenedor.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panelContenedor.Location = new System.Drawing.Point(0, 0);
-            this.panelContenedor.Margin = new System.Windows.Forms.Padding(2);
             this.panelContenedor.Name = "panelContenedor";
-            this.panelContenedor.Size = new System.Drawing.Size(1161, 723);
+            this.panelContenedor.Size = new System.Drawing.Size(1742, 1084);
             this.panelContenedor.TabIndex = 3;
             // 
             // mnuReporteArqueo
             // 
             this.mnuReporteArqueo.Controls.Add(this.pictureBox3);
             this.mnuReporteArqueo.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.mnuReporteArqueo.Location = new System.Drawing.Point(224, 48);
-            this.mnuReporteArqueo.Margin = new System.Windows.Forms.Padding(2);
+            this.mnuReporteArqueo.Location = new System.Drawing.Point(336, 72);
             this.mnuReporteArqueo.Name = "mnuReporteArqueo";
-            this.mnuReporteArqueo.Size = new System.Drawing.Size(937, 675);
+            this.mnuReporteArqueo.Size = new System.Drawing.Size(1406, 1012);
             this.mnuReporteArqueo.TabIndex = 2;
             this.mnuReporteArqueo.Paint += new System.Windows.Forms.PaintEventHandler(this.mnuReporteArqueo_Paint);
             this.mnuReporteArqueo.MouseMove += new System.Windows.Forms.MouseEventHandler(this.panel_MouseMove);
@@ -716,8 +717,7 @@ namespace Empeño.WindowsForms.Views
             this.pictureBox3.BackColor = System.Drawing.Color.Transparent;
             this.pictureBox3.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("pictureBox3.BackgroundImage")));
             this.pictureBox3.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.pictureBox3.Location = new System.Drawing.Point(256, 220);
-            this.pictureBox3.Margin = new System.Windows.Forms.Padding(2);
+            this.pictureBox3.Location = new System.Drawing.Point(384, 330);
             this.pictureBox3.MaximumSize = new System.Drawing.Size(450, 250);
             this.pictureBox3.MinimumSize = new System.Drawing.Size(400, 200);
             this.pictureBox3.Name = "pictureBox3";
@@ -739,25 +739,25 @@ namespace Empeño.WindowsForms.Views
             this.pictureBox2.BackColor = System.Drawing.Color.Transparent;
             this.pictureBox2.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("pictureBox2.BackgroundImage")));
             this.pictureBox2.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.pictureBox2.Location = new System.Drawing.Point(602, 283);
-            this.pictureBox2.Margin = new System.Windows.Forms.Padding(2);
+            this.pictureBox2.Location = new System.Drawing.Point(903, 424);
             this.pictureBox2.Name = "pictureBox2";
-            this.pictureBox2.Size = new System.Drawing.Size(344, 184);
+            this.pictureBox2.Size = new System.Drawing.Size(516, 276);
             this.pictureBox2.TabIndex = 2;
             this.pictureBox2.TabStop = false;
             // 
             // frmInicio
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(144F, 144F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
             this.BackColor = System.Drawing.Color.White;
-            this.ClientSize = new System.Drawing.Size(1161, 723);
+            this.ClientSize = new System.Drawing.Size(1742, 1084);
             this.Controls.Add(this.panelContenedor);
             this.Controls.Add(this.pictureBox2);
             this.Font = new System.Drawing.Font("Century Gothic", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.MinimumSize = new System.Drawing.Size(560, 480);
+            this.Margin = new System.Windows.Forms.Padding(4);
+            this.MinimumSize = new System.Drawing.Size(840, 720);
             this.Name = "frmInicio";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Sistema de Empeños";
@@ -800,7 +800,6 @@ namespace Empeño.WindowsForms.Views
         private System.Windows.Forms.Label lblModulo;
         private FontAwesome.Sharp.IconPictureBox iconModulo;
         private System.Windows.Forms.PictureBox pictureBox2;
-        private Microsoft.VisualBasic.PowerPacks.ShapeContainer shapeContainer1;
         private Microsoft.VisualBasic.PowerPacks.LineShape lineShape1;
         private FontAwesome.Sharp.IconButton mnuLogout;
         private System.Windows.Forms.Timer timer1;
@@ -829,5 +828,6 @@ namespace Empeño.WindowsForms.Views
         private Label lblSesionUsuario;
         private Label label2;
         private FontAwesome.Sharp.IconPictureBox btnBackup;
+        private Microsoft.VisualBasic.PowerPacks.ShapeContainer shapeContainer1;
     }
 }

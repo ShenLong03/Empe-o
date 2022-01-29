@@ -544,8 +544,14 @@ namespace Empeño.WindowsForms.Views
 
                         dgvPagos.ClearSelection();//If you want
 
+                        if (interes.Avaluo > 0 || interes.Bodegaje>0)
+                        {
+                            DialogResult respMsg = MessageBox.Show("¿Deseas imprimir el contrato?", "Confirmación", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                            if (respMsg== DialogResult.Yes)
+                                await PrintContrato(empeño);
+                        }
+                        
                         await Print(empeño);
-                        await PrintContrato(empeño);
                         var cliente = _context.Clientes.Find(empeño.ClienteId);
 
                         if (!string.IsNullOrEmpty(cliente.Correo))
@@ -567,18 +573,50 @@ namespace Empeño.WindowsForms.Views
             }
         }
 
-        private async Task PrintContrato(Empeno empeño)
+        private async Task PrintContrato(Empeno empeno)
         {
-            var configuracion = await _context.Configuraciones.FirstOrDefaultAsync();
-            Microsoft.Office.Interop.Excel.Application cexcel = new Microsoft.Office.Interop.Excel.Application();
-            string pathch = Path.GetDirectoryName(System.Windows.Forms.Application.ExecutablePath);
-            pathch = $"{pathch}\\Empeños\\Comprobantes\\CONTRATO EMPEÑOS.docx";
-            //Loads a template document
-            WordDocument document = new WordDocument(pathch, FormatType.Docx);
-            document.Replace("{LOCAL}", configuracion.Compañia, true, true);
-            //Saves and closes the document
-            document.Save($"{pathch}\\Empeños\\Comprobantes\\Remplace.docx", FormatType.Docx);
-            document.Close();
+            try
+            {
+                var configuracion = await _context.Configuraciones.FirstOrDefaultAsync();
+                Microsoft.Office.Interop.Excel.Application cexcel = new Microsoft.Office.Interop.Excel.Application();
+                string pathch = Path.GetDirectoryName(System.Windows.Forms.Application.ExecutablePath);
+                pathch = $"{pathch}\\Empeños\\Comprobantes\\ContratoEmpeños.xlsx";
+                cexcel.Workbooks.Open(pathch, true, true);
+                cexcel.Visible = false;
+                cexcel.Cells[3, 1].value = configuracion.Compañia;
+                cexcel.Cells[4, 1].value = configuracion.Direccion;
+                cexcel.Cells[5, 1].value = "Tel. " + configuracion.Telefono;
+                cexcel.Cells[6, 1].value = configuracion.Nombre;
+                cexcel.Cells[7, 1].value = "Identificación: " + configuracion.Identificacion;
+                var empleadoId = empeno.EmpleadoId;
+                var empleado = await _context.Empleados.FindAsync(empleadoId);
+                
+                cexcel.Cells[88, 1].value = empeno.Fecha.ToString("dd/MM/yyyy");
+               
+                var cliente = await _context.Clientes.FindAsync(empeno.ClienteId);
+                cexcel.Cells[91, 1].value = cliente.Identificacion;
+                cexcel.Cells[92, 1].value = cliente.Nombre;
+
+                cexcel.Cells[95, 1].value = empleado.Nombre;
+                cexcel.Cells[96, 1].value = empeno.EmpenoId.ToString();
+
+                if (chbEsOro.Checked)
+                {
+                    cexcel.Cells[98, 1].value = "ORO : " + txtDescripcion.Text;
+                }
+                else
+                {
+                    cexcel.Cells[98, 1].value = txtDescripcion.Text;
+                }
+                cexcel.Cells[101, 3].value = empeno.Monto.ToString("N2");
+                cexcel.ActiveWindow.SelectedSheets.PrintOut();
+                System.Threading.Thread.Sleep(300);
+                cexcel.ActiveWorkbook.Close(false);
+                cexcel.Quit();
+            }
+            catch (Exception ex)
+            {
+            }
         }
 
         private async void btnEditarEmpeño_Click(object sender, EventArgs e)
