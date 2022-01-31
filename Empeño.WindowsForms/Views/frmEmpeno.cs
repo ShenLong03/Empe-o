@@ -1156,7 +1156,7 @@ namespace Empeño.WindowsForms.Views
                         if (!pagados)
                         {
                             listOriging = listOriging.Where(l => Math.Truncate(l.Pagado) < Math.Truncate((l.Monto 
-                                + l.MontoAvaluo!=null? l.MontoAvaluo.Value:0 + l.MontoBodega!=null? l.MontoBodega.Value:0)));
+                                + (l.MontoAvaluo!=null? l.MontoAvaluo.Value:0) + (l.MontoBodega!=null? l.MontoBodega.Value:0))));
                         }
                         var list = listOriging
                             .Select(x => new
@@ -1176,10 +1176,7 @@ namespace Empeño.WindowsForms.Views
                                 x.Id,
                                 x.Interes,
                                 Vence = Program.Meses(x.Vence.Month),
-                                x.Monto,
-                                x.MontoAvaluo,
-                                x.MontoBodega,
-                                Montos = (x.Monto + x.MontoBodega + x.MontoAvaluo).Value.ToString("N2"),
+                                Monto = (x.Monto + (x.MontoAvaluo != null ? x.MontoAvaluo.Value : 0) + (x.MontoBodega != null ? x.MontoBodega.Value : 0)).ToString("N2"),
                                 Pagado = x.Pagado.ToString("N2"),
                                 Faltan = x.Vencimiento
                             }).ToList();
@@ -1204,7 +1201,7 @@ namespace Empeño.WindowsForms.Views
                     var listOriging = _contextTemp.Intereses.Where(p => p.EmpenoId == empeñoId);
                     if (!pagados)
                     {
-                        listOriging = listOriging.Where(l => Math.Truncate(l.Pagado) < Math.Truncate((l.Monto + l.MontoAvaluo.Value + l.MontoBodega.Value)));
+                        listOriging = listOriging.Where(l => Math.Truncate(l.Pagado) < Math.Truncate((l.Monto + (l.MontoAvaluo!=null ? l.MontoAvaluo.Value:0) + (l.MontoBodega!=null?l.MontoBodega.Value:0))));
 
                     }
                     var list = listOriging
@@ -1225,7 +1222,7 @@ namespace Empeño.WindowsForms.Views
                             x.Id,
                             x.Interes,
                             Vence = Program.Meses(x.Vence.Month),
-                            Monto = (x.Monto + x.MontoBodega + x.MontoAvaluo).Value.ToString("N2"),
+                            Monto = (x.Monto + (x.MontoAvaluo != null ? x.MontoAvaluo.Value : 0) + (x.MontoBodega != null ? x.MontoBodega.Value : 0)).ToString("N2"),
                             Pagado = x.Pagado.ToString("N2"),
                             Faltan = x.Vencimiento
                         }).ToList();

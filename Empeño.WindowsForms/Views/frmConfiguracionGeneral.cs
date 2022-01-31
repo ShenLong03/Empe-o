@@ -77,7 +77,7 @@ namespace Empeño.WindowsForms.Views
                         SSL = chkSSL.Checked,
                         Direccion = txtDirección.Text,
                         EmailNotification = txtEmailAdmin.Text,
-                        IVA= int.Parse(!string.IsNullOrEmpty(txtIVA.Text) ? txtIVA.Text : "0")
+                        IVA= double.Parse(!string.IsNullOrEmpty(txtIVA.Text) ? txtIVA.Text : "0")
                     };
 
                     _context.Configuraciones.Add(configuracion);
@@ -98,7 +98,7 @@ namespace Empeño.WindowsForms.Views
                     configuracion.SSL = chkSSL.Checked;
                     configuracion.Direccion = txtDirección.Text;
                     configuracion.EmailNotification = txtEmailAdmin.Text;
-                    configuracion.IVA = int.Parse(txtIVA.Text);
+                    configuracion.IVA = double.Parse(txtIVA.Text);
 
                     _context.Entry(configuracion).State = EntityState.Modified;
                 }
