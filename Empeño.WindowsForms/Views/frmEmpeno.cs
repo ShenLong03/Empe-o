@@ -591,24 +591,24 @@ namespace Empeño.WindowsForms.Views
                 var empleadoId = empeno.EmpleadoId;
                 var empleado = await _context.Empleados.FindAsync(empleadoId);
                 
-                cexcel.Cells[88, 1].value = empeno.Fecha.ToString("dd/MM/yyyy");
+                cexcel.Cells[87, 1].value = empeno.Fecha.ToString("dd/MM/yyyy");
                
                 var cliente = await _context.Clientes.FindAsync(empeno.ClienteId);
-                cexcel.Cells[91, 1].value = cliente.Identificacion;
-                cexcel.Cells[92, 1].value = cliente.Nombre;
+                cexcel.Cells[92, 1].value = cliente.Identificacion;
+                cexcel.Cells[93, 1].value = cliente.Nombre;
 
-                cexcel.Cells[95, 1].value = empleado.Nombre;
-                cexcel.Cells[96, 1].value = empeno.EmpenoId.ToString();
+                //cexcel.Cells[95, 1].value = empleado.Nombre;
+                //cexcel.Cells[96, 1].value = empeno.EmpenoId.ToString();
 
-                if (chbEsOro.Checked)
-                {
-                    cexcel.Cells[98, 1].value = "ORO : " + txtDescripcion.Text;
-                }
-                else
-                {
-                    cexcel.Cells[98, 1].value = txtDescripcion.Text;
-                }
-                cexcel.Cells[101, 3].value = empeno.Monto.ToString("N2");
+                //if (chbEsOro.Checked)
+                //{
+                //    cexcel.Cells[98, 1].value = "ORO : " + txtDescripcion.Text;
+                //}
+                //else
+                //{
+                //    cexcel.Cells[98, 1].value = txtDescripcion.Text;
+                //}
+                //cexcel.Cells[101, 3].value = empeno.Monto.ToString("N2");
                 cexcel.ActiveWindow.SelectedSheets.PrintOut();
                 System.Threading.Thread.Sleep(300);
                 cexcel.ActiveWorkbook.Close(false);
