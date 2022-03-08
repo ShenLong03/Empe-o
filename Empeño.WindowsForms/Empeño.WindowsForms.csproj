@@ -357,13 +357,6 @@
     <EmbeddedResource Include="Views\frmTablero.resx">
       <DependentUpon>frmTablero.cs</DependentUpon>
     </EmbeddedResource>
-    <None Include="bin\Empeños\Comprobantes\ComprobanteAbono.xlsx" />
-    <None Include="bin\Empeños\Comprobantes\ComprobanteAnulacion.xlsx" />
-    <None Include="bin\Empeños\Comprobantes\ComprobanteArqueo.xlsx" />
-    <None Include="bin\Empeños\Comprobantes\ComprobanteCancelacion.xlsx" />
-    <None Include="bin\Empeños\Comprobantes\ComprobanteCierreCaja.xlsx" />
-    <None Include="bin\Empeños\Comprobantes\ComprobanteEmpeño.xlsx" />
-    <None Include="bin\Empeños\Comprobantes\ComprobanteInteres.xlsx" />
     <None Include="packages.config" />
     <None Include="Properties\DataSources\Empeño.WindowsForms.ViewReports.EmpeñoReporte.datasource" />
     <None Include="Properties\DataSources\Empeño.WindowsForms.ViewReports.IngresosEgresosReporte.datasource" />

@@ -1004,16 +1004,16 @@ namespace Empeño.WindowsForms.Views
                         Realizado.Text = empeño.Empleado.Usuario;
                         chbEsOro.Checked = empeño.EsOro;
                         Realizado.Text = empeño.Empleado.Usuario;
-                        lblVence.Text = empeño.FechaVencimiento.ToString("dd/MM/yyyy");
                         ChangeState(lblEstado, empeño.Estado, empeño);
                         Fecha.Text = empeño.Fecha.ToString("dd/MM/yyyy");
+                        lblVence.Text = empeño.FechaVencimiento.ToString("dd/MM/yyyy");
                     }
 
                     funciones.ShowLabels(panelFormulario);
 
-                    if (empeño.FechaRetiro != null || empeño.Retirado 
-                        || empeño.FechaRetiroAdministrador != null || empeño.RetiradoAdministrador 
-                        || empeño.Estado == Estado.Anulado || empeño.Estado==Estado.Cancelado || empeño.Estado==Estado.Retirado)
+                    if (empeño.FechaRetiro != null || empeño.Retirado
+                        || empeño.FechaRetiroAdministrador != null || empeño.RetiradoAdministrador
+                        || empeño.Estado == Estado.Anulado || empeño.Estado == Estado.Cancelado || empeño.Estado == Estado.Retirado)
                     {
                         funciones.BlockTextBox(panelFormulario, false);
                         lblVence.Enabled = false;
@@ -1032,7 +1032,7 @@ namespace Empeño.WindowsForms.Views
                         {
                             CargarPagos(empeñoId);
                         }
-                    }            
+                    }
                 }
             }
             catch (Exception ex) { }
@@ -1249,30 +1249,30 @@ namespace Empeño.WindowsForms.Views
                     funciones.BlockTextBox(panelFormulario, true);
                 }
                 await BuscarEmpeño();              
-                if (switchPago)
-                {
-                    await LoadPays();
-                }
-                else
-                {
-                    CargarPagos();
-                }
+                //if (switchPago)
+                //{
+                //    await LoadPays();
+                //}
+                //else
+                //{
+                //    CargarPagos();
+                //}
 
-                int empeñoId = (dgvEmpeños.SelectedRows.Count > 0)
-                   ? int.Parse(dgvEmpeños.SelectedRows[0].Cells[0].Value.ToString())
-                   : 0;
-                var empeño = await _context.Empenos.FindAsync(empeñoId);
-                if (empeño.Estado == Estado.Cancelado)
-                {
-                    MessageBox.Show("El empeño fue Retirado por el Cliente el  " + empeño.FechaRetiro.Value.ToString("dd/MM/yyyy"),
-                        "Información", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                //int empeñoId = (dgvEmpeños.SelectedRows.Count > 0)
+                //   ? int.Parse(dgvEmpeños.SelectedRows[0].Cells[0].Value.ToString())
+                //   : 0;
+                //var empeño = await _context.Empenos.FindAsync(empeñoId);
+                //if (empeño.Estado == Estado.Cancelado)
+                //{
+                //    MessageBox.Show("El empeño fue Retirado por el Cliente el  " + empeño.FechaRetiro.Value.ToString("dd/MM/yyyy"),
+                //        "Información", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
-                }
-                else if (empeño.Estado == Estado.Retirado)
-                {
-                    MessageBox.Show("El empeño fue sacado como Vencido por el Administrador el " + empeño.FechaRetiroAdministrador.Value.ToString("dd/MM/yyyy"),
-                       "Información", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                }
+                //}
+                //else if (empeño.Estado == Estado.Retirado)
+                //{
+                //    MessageBox.Show("El empeño fue sacado como Vencido por el Administrador el " + empeño.FechaRetiroAdministrador.Value.ToString("dd/MM/yyyy"),
+                //       "Información", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                //}
             }
             catch (Exception ex)
             {
@@ -1939,7 +1939,7 @@ namespace Empeño.WindowsForms.Views
                             funciones.PlaceHolder(txtAvaluo, lblAvaluo, PlaceHolderType.Leave, "Avalúo");
                             funciones.PlaceHolder(txtBodegaje, lblBodegaje, PlaceHolderType.Leave, "Bodegaje");
 
-                            lblVence.Text = DateTime.Today.AddMonths(mesesVencimiento).ToString("dd/MM/yyyy");
+                            lblVence.Text = this.empeñoId==0 ? DateTime.Today.AddMonths(mesesVencimiento).ToString("dd/MM/yyyy") : lblVence.Text;
                         }
 
                     }
@@ -1967,7 +1967,7 @@ namespace Empeño.WindowsForms.Views
             }
             if (interes.Meses>0)
             {
-                lblVence.Text = DateTime.Today.AddMonths(interes.Meses).ToString("dd/MM/yyyy");
+                lblVence.Text = this.empeñoId==0 ? DateTime.Today.AddMonths(interes.Meses).ToString("dd/MM/yyyy"): lblVence.Text;
             }
         }
 
