@@ -62,5 +62,10 @@ namespace Empeño.WindowsForms.Views
         {
 
         }
+
+        private void lblVersion_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }
