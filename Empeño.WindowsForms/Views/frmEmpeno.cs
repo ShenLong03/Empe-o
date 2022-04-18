@@ -1033,6 +1033,18 @@ namespace Empeño.WindowsForms.Views
                             CargarPagos(empeñoId);
                         }
                     }
+
+                    if (empeño.Estado == Estado.Cancelado)
+                    {
+                        MessageBox.Show("El empeño fue Retirado por el Cliente el  " + (empeño.FechaRetiro!=null ? empeño.FechaRetiro.Value.ToString("dd/MM/yyyy"): " --sin fecha--"),
+                            "Información", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                    }
+                    else if (empeño.Estado == Estado.Retirado)
+                    {
+                        MessageBox.Show("El empeño fue sacado como Vencido por el Administrador el " + (empeño.FechaRetiroAdministrador != null ? empeño.FechaRetiroAdministrador.Value.ToString("dd/MM/yyyy") : " --sin fecha--"),
+                           "Información", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    }
                 }
             }
             catch (Exception ex) { }
