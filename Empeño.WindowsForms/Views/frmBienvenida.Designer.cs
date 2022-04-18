@@ -165,7 +165,7 @@
             this.lblVersion.Name = "lblVersion";
             this.lblVersion.Size = new System.Drawing.Size(90, 30);
             this.lblVersion.TabIndex = 5;
-            this.lblVersion.Text = "V 1.6.2";
+            this.lblVersion.Text = "V 1.6.5";
             this.lblVersion.Click += new System.EventHandler(this.lblVersion_Click);
             // 
             // frmBienvenida
