@@ -1032,19 +1032,7 @@ namespace Empeño.WindowsForms.Views
                         {
                             CargarPagos(empeñoId);
                         }
-                    }
-
-                    if (empeño.Estado == Estado.Cancelado)
-                    {
-                        MessageBox.Show("El empeño fue Retirado por el Cliente el  " + (empeño.FechaRetiro!=null ? empeño.FechaRetiro.Value.ToString("dd/MM/yyyy"): " --sin fecha--"),
-                            "Información", MessageBoxButtons.OK, MessageBoxIcon.Information);
-
-                    }
-                    else if (empeño.Estado == Estado.Retirado)
-                    {
-                        MessageBox.Show("El empeño fue sacado como Vencido por el Administrador el " + (empeño.FechaRetiroAdministrador != null ? empeño.FechaRetiroAdministrador.Value.ToString("dd/MM/yyyy") : " --sin fecha--"),
-                           "Información", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                    }
+                    }                    
                 }
             }
             catch (Exception ex) { }
@@ -1260,31 +1248,27 @@ namespace Empeño.WindowsForms.Views
                 {
                     funciones.BlockTextBox(panelFormulario, true);
                 }
-                await BuscarEmpeño();              
-                //if (switchPago)
-                //{
-                //    await LoadPays();
-                //}
-                //else
-                //{
-                //    CargarPagos();
-                //}
+                await BuscarEmpeño();
 
-                //int empeñoId = (dgvEmpeños.SelectedRows.Count > 0)
-                //   ? int.Parse(dgvEmpeños.SelectedRows[0].Cells[0].Value.ToString())
-                //   : 0;
-                //var empeño = await _context.Empenos.FindAsync(empeñoId);
-                //if (empeño.Estado == Estado.Cancelado)
-                //{
-                //    MessageBox.Show("El empeño fue Retirado por el Cliente el  " + empeño.FechaRetiro.Value.ToString("dd/MM/yyyy"),
-                //        "Información", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
-                //}
-                //else if (empeño.Estado == Estado.Retirado)
-                //{
-                //    MessageBox.Show("El empeño fue sacado como Vencido por el Administrador el " + empeño.FechaRetiroAdministrador.Value.ToString("dd/MM/yyyy"),
-                //       "Información", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                //}
+                using (DataContext context= new DataContext())
+                {
+                    int empeñoId = (dgvEmpeños.SelectedRows.Count > 0)
+                               ? int.Parse(dgvEmpeños.SelectedRows[0].Cells[0].Value.ToString())
+                               : 0;
+                    var empeño = await context.Empenos.FindAsync(empeñoId);
+                    if (empeño.Estado == Estado.Cancelado)
+                    {
+                        MessageBox.Show("El empeño fue Retirado por el Cliente el  " + (empeño.FechaRetiro != null ? empeño.FechaRetiro.Value.ToString("dd/MM/yyyy") : " --sin fecha--"),
+                            "Información", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                    }
+                    else if (empeño.Estado == Estado.Retirado)
+                    {
+                        MessageBox.Show("El empeño fue sacado como Vencido por el Administrador el " + (empeño.FechaRetiroAdministrador != null ? empeño.FechaRetiroAdministrador.Value.ToString("dd/MM/yyyy") : " --sin fecha--"),
+                           "Información", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    }
+                }
             }
             catch (Exception ex)
             {
