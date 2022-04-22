@@ -555,11 +555,7 @@
         "DisplayName" = "8:Debug"
         "IsDebugOnly" = "11:TRUE"
         "IsReleaseOnly" = "11:FALSE"
-<<<<<<< HEAD
-        "OutputFilename" = "8:Debug\\Empeños Jordi V1.6.2.msi"
-=======
         "OutputFilename" = "8:Debug\\Empeños V1.6.5.msi"
->>>>>>> Change_IVA
         "PackageFilesAs" = "3:2"
         "PackageFileSize" = "3:-2147483648"
         "CabType" = "3:1"
