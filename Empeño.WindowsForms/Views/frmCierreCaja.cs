@@ -154,7 +154,7 @@ namespace Empeño.WindowsForms.Views
                      || x.Estado == Estado.Pendiente || x.Estado == Estado.Vencido || x.Estado == Estado.Cancelado))
                 .SelectMany(x => x.Pagos).Where(x => x.TipoPago == TipoPago.Interes && x.Fecha >= fecha && x.Fecha < tomorrow).ToList().Sum(x => x.MontoBodega);
 
-            txtBodegaje.Text = montoBodegajeDia != null ? montoBodegajeDia.Value.ToString("N2") : "0.00";
+            //txtBodegaje.Text = montoBodegajeDia != null ? montoBodegajeDia.Value.ToString("N2") : "0.00";
 
             var configuracion = await _context.Configuraciones.FirstOrDefaultAsync();
 
@@ -190,12 +190,12 @@ namespace Empeño.WindowsForms.Views
                   Valor = montoAvaluoDia != null ? montoAvaluoDia.Value : 0
               });
 
-            detalles.Add(
-              new DetalleCierreCaja
-              {
-                  Concepto = "Bodegajes",
-                  Valor = montoBodegajeDia != null ? montoBodegajeDia.Value : 0
-              });
+            //detalles.Add(
+            //  new DetalleCierreCaja
+            //  {
+            //      Concepto = "Bodegajes",
+            //      Valor = montoBodegajeDia != null ? montoBodegajeDia.Value : 0
+            //  });
 
             detalles.Add(
                new DetalleCierreCaja
@@ -469,7 +469,7 @@ namespace Empeño.WindowsForms.Views
             cexcel.Cells[5, 3].value = txtAcumuladoInicial.Text;
             cexcel.Cells[6, 3].value = txtMonto.Text;
             cexcel.Cells[8, 3].value = txtAvaluo.Text;
-            cexcel.Cells[10, 3].value = txtBodegaje.Text;
+            //cexcel.Cells[10, 3].value = txtBodegaje.Text;
             cexcel.Cells[12, 3].value = txtInteres.Text;
             cexcel.Cells[14, 3].value = txtAbonos.Text;
             cexcel.Cells[16, 3].value = txtVencimientos.Text;
