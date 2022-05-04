@@ -935,12 +935,12 @@ namespace Empeño.WindowsForms.Views
 
         private void txtBodegaje_Leave(object sender, EventArgs e)
         {
-            funciones.PlaceHolder(txtBodegaje, lblBodegaje, PlaceHolderType.Leave, "Bodegaje");
+            //funciones.PlaceHolder(txtBodegaje, lblBodegaje, PlaceHolderType.Leave, "Bodegaje");
         }
 
         private void txtBodegaje_Enter(object sender, EventArgs e)
         {
-            funciones.PlaceHolder(txtBodegaje, lblBodegaje, PlaceHolderType.Enter, "Bodegaje");
+            //funciones.PlaceHolder(txtBodegaje, lblBodegaje, PlaceHolderType.Enter, "Bodegaje");
         }
 
         private void cbInteres_SelectedIndexChanged(object sender, EventArgs e)
@@ -1525,7 +1525,7 @@ namespace Empeño.WindowsForms.Views
                             txtBodegaje.Text = string.Empty;
 
                             funciones.PlaceHolder(txtAvaluo, lblAvaluo, PlaceHolderType.Leave, "Avalúo");
-                            funciones.PlaceHolder(txtBodegaje, lblBodegaje, PlaceHolderType.Leave, "Bodegaje");
+                            //funciones.PlaceHolder(txtBodegaje, lblBodegaje, PlaceHolderType.Leave, "Bodegaje");
 
                             lblVence.Text = DateTime.Today.AddMonths(mesesVencimiento).ToString("dd/MM/yyyy");
                         }
@@ -1933,7 +1933,7 @@ namespace Empeño.WindowsForms.Views
                             txtBodegaje.Text = string.Empty;
 
                             funciones.PlaceHolder(txtAvaluo, lblAvaluo, PlaceHolderType.Leave, "Avalúo");
-                            funciones.PlaceHolder(txtBodegaje, lblBodegaje, PlaceHolderType.Leave, "Bodegaje");
+                            //funciones.PlaceHolder(txtBodegaje, lblBodegaje, PlaceHolderType.Leave, "Bodegaje");
 
                             lblVence.Text = this.empeñoId==0 ? DateTime.Today.AddMonths(mesesVencimiento).ToString("dd/MM/yyyy") : lblVence.Text;
                         }
@@ -1959,7 +1959,7 @@ namespace Empeño.WindowsForms.Views
             {
                 txtBodegaje.Text = (double.Parse(txtMonto.Text) * interes.PorcentajeBodegaje).ToString("N2");
                 txtBodegaje.ForeColor = Color.Black;
-                lblBodegaje.Visible = true;
+                //lblBodegaje.Visible = true;
             }
             if (interes.Meses>0)
             {
