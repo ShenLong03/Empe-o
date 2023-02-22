@@ -272,10 +272,10 @@ namespace Empeño.WindowsForms.Views
                     if ((item.MontoTotal - item.Pagado) > sobrante && sobrante > 0)
                     {
                         item.Pagado += sobrante;
-                        if (item.Pagado >= Math.Truncate(item.MontoTotal))
+                        if (Math.Truncate(Math.Round(item.Pagado)) >= Math.Truncate(item.MontoTotal))
                         {
                             empeño.FechaVencimiento = empeño.FechaVencimiento.AddMonths(1);
-                            item.Monto = item.Pagado - (empeño.Monto * empeño.Interes.PorcentajeAvaluo) - (empeño.Monto * empeño.Interes.PorcentajeBodegaje);
+                            item.Pagado = item.MontoTotal;
                         }
                         item.PagoId = pago.PagoId;
                         _context.Entry(item).State = EntityState.Modified;
@@ -300,10 +300,10 @@ namespace Empeño.WindowsForms.Views
                     {
                         double paga = (item.MontoTotal - item.Pagado);
                         item.Pagado += paga;
-                        if (item.Pagado >= Math.Truncate(item.MontoTotal))
+                        if (Math.Truncate(Math.Round(item.Pagado)) >= Math.Truncate(item.MontoTotal))
                         {
                             empeño.FechaVencimiento = empeño.FechaVencimiento.AddMonths(1);
-                            item.Monto = item.Pagado - (empeño.Monto * empeño.Interes.PorcentajeAvaluo) - (empeño.Monto * empeño.Interes.PorcentajeBodegaje);
+                            item.Pagado = item.MontoTotal;
                         }
                         item.PagoId = pago.PagoId;
                         sobrante -= paga;                      
