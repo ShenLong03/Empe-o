@@ -1155,7 +1155,7 @@ namespace Empeño.WindowsForms.Views
                         var listOriging = _contextTemp.Intereses.Where(p => p.EmpenoId == empeñoId);
                         if (!pagados)
                         {
-                            listOriging = listOriging.Where(l => Math.Truncate(l.Pagado) < Math.Truncate((l.Monto 
+                            listOriging = listOriging.Where(l => Math.Truncate(l.Pagado)+1 < Math.Truncate((l.Monto 
                                 + (l.MontoAvaluo!=null? l.MontoAvaluo.Value:0) + (l.MontoBodega!=null? l.MontoBodega.Value:0))));
                         }
                         var list = listOriging
@@ -1201,7 +1201,7 @@ namespace Empeño.WindowsForms.Views
                     var listOriging = _contextTemp.Intereses.Where(p => p.EmpenoId == empeñoId);
                     if (!pagados)
                     {
-                        listOriging = listOriging.Where(l => Math.Truncate(l.Pagado) < Math.Truncate((l.Monto + (l.MontoAvaluo!=null ? l.MontoAvaluo.Value:0) + (l.MontoBodega!=null?l.MontoBodega.Value:0))));
+                        listOriging = listOriging.Where(l => Math.Truncate(l.Pagado)+1 < Math.Truncate((l.Monto + (l.MontoAvaluo!=null ? l.MontoAvaluo.Value:0) + (l.MontoBodega!=null?l.MontoBodega.Value:0))));
 
                     }
                     var list = listOriging
@@ -1214,7 +1214,10 @@ namespace Empeño.WindowsForms.Views
                             x.MontoAvaluo,
                             x.MontoBodega,
                             x.Pagado,
-                            Vencimiento = x.Monto == x.Pagado ? 0 : DbFunctions.DiffDays(DateTime.Today, x.FechaVencimiento),
+                            Vencimiento = Math.Truncate(Math.Round(x.Monto + x.MontoAvaluo 
+                            + x.MontoAvaluo!=null ? x.MontoAvaluo.Value : 0
+                            + x.MontoBodega != null ? x.MontoBodega.Value : 0))
+                            == Math.Truncate(Math.Round(x.Pagado)) ? 0 : DbFunctions.DiffDays(DateTime.Today, x.FechaVencimiento),
                         }).OrderByDescending(i => i.Id)
                         .AsEnumerable()
                         .Select(x => new
@@ -2135,7 +2138,7 @@ namespace Empeño.WindowsForms.Views
                     Id = x.PagoId,
                     x.Fecha,
                     x.TipoPago,
-                    Monto=x.Monto.ToString("N2")
+                    Monto=(x.MontoTotal).ToString("N2")
                 }).ToList();
 
                 dgvPagos.ClearSelection();//If you want               
