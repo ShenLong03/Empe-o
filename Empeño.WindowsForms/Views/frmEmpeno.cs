@@ -2409,7 +2409,7 @@ namespace Empeño.WindowsForms.Views
             cexcel.Cells[7, 1].value = "Cédula: " + configuracion.Identificacion;
 
             
-            cexcel.Cells[8, 2].value = pago.Consecutivo;
+            cexcel.Cells[8, 2].value = pago.Consecutivo !=null ? pago.Consecutivo.Value.ToString() : string.Empty;
             cexcel.Cells[9, 2].value = empleado.Nombre;
             cexcel.Cells[10, 2].value = empleado.Usuario;
             cexcel.Cells[14, 2].value = empeno.Cliente.Identificacion;
