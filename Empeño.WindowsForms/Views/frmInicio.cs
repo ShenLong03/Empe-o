@@ -58,7 +58,41 @@
             hideSubMenu();
             btnRestore.Visible = false;
             btnMaximize.Visible = true;
-            timer1.Start();            
+            AgregarBotonVersionNueva();
+            timer1.Start();
+        }
+
+        // Acceso sutil a la VERSIÓN NUEVA (WebView2) desde la clásica, en el menú lateral.
+        // No toca el Designer ni la lógica: solo agrega un botón que abre frmShell.
+        private void AgregarBotonVersionNueva()
+        {
+            var btn = new IconButton
+            {
+                Text = "  Versión nueva",
+                IconChar = IconChar.Star,
+                IconColor = Color.FromArgb(172, 126, 241),
+                ForeColor = Color.FromArgb(172, 126, 241),
+                IconSize = 22,
+                TextAlign = ContentAlignment.MiddleLeft,
+                TextImageRelation = TextImageRelation.ImageBeforeText,
+                ImageAlign = ContentAlignment.MiddleLeft,
+                FlatStyle = FlatStyle.Flat,
+                BackColor = Color.Transparent,
+                Dock = DockStyle.Bottom,
+                Height = 45,
+                Cursor = Cursors.Hand,
+                Font = new Font("Segoe UI", 10F, FontStyle.Bold),
+                Padding = new Padding(8, 0, 0, 0)
+            };
+            btn.FlatAppearance.BorderSize = 0;
+            btn.Click += (s, e) =>
+            {
+                var shell = new frmShell();
+                shell.Show();
+                this.Close();
+            };
+            panel1.Controls.Add(btn);
+            btn.BringToFront();
         }
 
         #region Menu

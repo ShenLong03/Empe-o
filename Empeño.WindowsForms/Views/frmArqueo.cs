@@ -189,6 +189,12 @@ namespace Empeño.WindowsForms.Views
                     var proroga = _context.Prorrogas.Where(p => p.EmpenoId == empeñoId).FirstOrDefault();
                     temporal.Prorroga = true;
                     empeño.Prorroga = true;
+
+                    // La prórroga movió FechaVencimiento en la BD (frmProroga usa otro contexto). Refrescamos el
+                    // valor para que el SaveChanges de más abajo NO lo pise con la copia vieja que hay en memoria.
+                    using (var ctxFv = new DataContext())
+                        empeño.FechaVencimiento = ctxFv.Empenos.Where(x => x.EmpenoId == empeñoId).Select(x => x.FechaVencimiento).First();
+
                     if (!string.IsNullOrEmpty(empeño.Cliente.Correo))
                     {
                         EmailFuncion emailFuncion = new EmailFuncion();
@@ -259,7 +265,7 @@ namespace Empeño.WindowsForms.Views
                 x.FechaRetiroAdministrador,
                 x.Prorrogas,
                 x.Monto,
-                MontoPendiente = (x.MontoPendiente + (x.Intereses != null ? x.Intereses.Sum(i => i.Monto - i.Pagado) : 0)).ToString("N2"),
+                MontoPendiente = (x.MontoPendiente + (x.Intereses != null ? x.Intereses.Sum(i => i.MontoTotal - i.Pagado) : 0)).ToString("N2"),
                 x.Intereses
             }).ToList();
 

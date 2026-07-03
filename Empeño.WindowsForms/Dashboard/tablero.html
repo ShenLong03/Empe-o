@@ -1,0 +1,294 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Tablero Empeño</title>
+<style>
+  :root{
+    --bg:#131230; --sidebar:#181640; --surface:#1e1c48; --surface-2:#262159; --raise:#2c2668;
+    --ink:#ECEBFF; --muted:#9b98cc; --faint:#726ea6;
+    --violet:#ac7ef1; --pink:#f9769b; --orange:#fd8a72; --blue:#46abf5;
+    --green:#2ed3a7; --red:#ff5d73; --amber:#ffb44d;
+    --line:rgba(172,126,241,.15); --line-2:rgba(172,126,241,.28);
+    --font:"Segoe UI",system-ui,-apple-system,"Helvetica Neue",Arial,sans-serif;
+    --shadow:0 2px 6px rgba(0,0,0,.25), 0 16px 40px rgba(9,7,30,.5);
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;background:var(--bg)}
+  .page{
+    background:
+      radial-gradient(1100px 500px at 88% -8%, rgba(172,126,241,.13), transparent 60%),
+      radial-gradient(900px 500px at 0% 110%, rgba(70,171,245,.10), transparent 55%),
+      var(--bg);
+    color:var(--ink); font-family:var(--font); min-height:100vh; padding:20px 24px 40px; -webkit-font-smoothing:antialiased;
+  }
+  .num{font-variant-numeric:tabular-nums}
+  .topbar{display:flex;align-items:center;gap:16px;flex-wrap:wrap;margin-bottom:20px}
+  .topbar h1{font-size:1.5rem;font-weight:800;letter-spacing:-.02em;margin:0}
+  .topbar .sub{color:var(--muted);font-size:.86rem;margin-top:2px}
+  .topbar .spacer{flex:1}
+  .chip-user{display:flex;align-items:center;gap:9px;background:var(--surface);border:1px solid var(--line);padding:7px 12px 7px 8px;border-radius:30px;font-size:.85rem}
+  .chip-user .av{width:26px;height:26px;border-radius:50%;background:linear-gradient(135deg,var(--blue),var(--violet));display:grid;place-items:center;font-weight:800;font-size:.75rem;color:#12102e}
+
+  .kpis{display:grid;grid-template-columns:repeat(6,1fr);gap:14px;margin-bottom:16px}
+  @media(max-width:1180px){.kpis{grid-template-columns:repeat(3,1fr)}}
+  @media(max-width:640px){.kpis{grid-template-columns:repeat(2,1fr)}}
+  .kpi{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:15px 15px 12px;position:relative;overflow:hidden}
+  .kpi::before{content:"";position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--accent,var(--violet))}
+  .kpi.hero{grid-column:span 2;background:linear-gradient(135deg,rgba(172,126,241,.16),var(--surface) 60%);border-color:var(--line-2)}
+  .kpi .lab{display:flex;align-items:center;gap:7px;color:var(--muted);font-size:.7rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase}
+  .kpi .lab .dot{width:7px;height:7px;border-radius:50%;background:var(--accent,var(--violet))}
+  .kpi .val{font-size:1.75rem;font-weight:800;letter-spacing:-.02em;margin:8px 0 2px;line-height:1}
+  .kpi.hero .val{font-size:2.3rem}
+  .kpi .val .cur{font-size:.9rem;color:var(--muted);font-weight:700;margin-right:2px}
+  .kpi .meta{font-size:.78rem;color:var(--faint)}
+  .kpi .meta b{color:var(--accent,var(--violet));font-weight:700}
+  .kpi .spark{margin-top:10px;height:30px;width:100%;display:block}
+
+  .grid{display:grid;grid-template-columns:1.7fr 1fr;gap:16px;margin-bottom:16px}
+  @media(max-width:980px){.grid{grid-template-columns:1fr}}
+  .panel{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:16px 18px}
+  .panel h2{font-size:1rem;font-weight:800;margin:0;letter-spacing:-.01em}
+  .panel .phead{display:flex;align-items:center;gap:12px;margin-bottom:14px;flex-wrap:wrap}
+  .panel .phead .spacer{flex:1}
+  .eyebrow{color:var(--faint);font-size:.7rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase}
+  .ranges{display:flex;gap:4px;background:var(--bg);padding:3px;border-radius:10px;border:1px solid var(--line)}
+  .ranges button{border:0;background:transparent;color:var(--muted);font-family:inherit;font-weight:700;font-size:.76rem;padding:5px 9px;border-radius:7px;cursor:pointer}
+  .ranges button.on{background:var(--surface-2);color:var(--ink);box-shadow:0 1px 3px rgba(0,0,0,.3)}
+  .legend{display:flex;gap:14px;font-size:.76rem;color:var(--muted);margin-top:6px}
+  .legend span{display:inline-flex;align-items:center;gap:6px}
+  .legend i{width:10px;height:10px;border-radius:3px;display:inline-block}
+
+  .donut-wrap{display:flex;align-items:center;gap:16px}
+  .donut{position:relative;width:150px;height:150px;flex:none}
+  .donut .center{position:absolute;inset:0;display:grid;place-content:center;text-align:center}
+  .donut .center .n{font-size:1.5rem;font-weight:800}
+  .donut .center .l{font-size:.66rem;color:var(--muted);text-transform:uppercase;letter-spacing:.06em}
+  .dleg{display:flex;flex-direction:column;gap:8px;flex:1;min-width:0}
+  .dleg .row{display:flex;align-items:center;gap:8px;font-size:.82rem}
+  .dleg .row i{width:9px;height:9px;border-radius:3px;flex:none}
+  .dleg .row .nm{color:var(--muted);flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .dleg .row .ct{font-weight:800}
+  .aging{display:flex;flex-direction:column;gap:12px;margin-top:4px}
+  .aging .bar{display:grid;grid-template-columns:74px 1fr auto;align-items:center;gap:10px}
+  .aging .bar .t{font-size:.78rem;color:var(--muted);font-weight:700}
+  .aging .track{height:11px;border-radius:8px;background:var(--bg);overflow:hidden}
+  .aging .fill{height:100%;border-radius:8px}
+  .aging .amt{font-size:.8rem;font-weight:800;white-space:nowrap}
+  .aging .amt small{color:var(--faint);font-weight:600}
+
+  .follow{background:linear-gradient(180deg,rgba(46,211,167,.06),var(--surface) 22%);border:1px solid var(--line-2);border-radius:16px;padding:16px 18px}
+  .tabs{display:flex;gap:6px;flex-wrap:wrap}
+  .tabs button{border:1px solid var(--line);background:var(--bg);color:var(--muted);font-family:inherit;font-weight:700;font-size:.8rem;padding:7px 12px;border-radius:9px;cursor:pointer;display:flex;align-items:center;gap:7px}
+  .tabs button .badge{font-size:.72rem;font-weight:800;padding:1px 7px;border-radius:20px;background:var(--surface-2)}
+  .tabs button.on{color:var(--ink);border-color:var(--line-2);background:var(--surface-2)}
+  .list{margin-top:14px;display:flex;flex-direction:column;gap:8px;max-height:430px;overflow-y:auto;padding-right:4px}
+  .item{display:grid;grid-template-columns:auto 1fr auto auto auto;align-items:center;gap:14px;background:var(--bg);border:1px solid var(--line);border-radius:12px;padding:11px 13px}
+  @media(max-width:560px){.item{grid-template-columns:auto 1fr auto;row-gap:6px}.item .acts{grid-column:1/-1;justify-content:flex-end}}
+  .item .av{width:40px;height:40px;border-radius:11px;display:grid;place-items:center;font-weight:800;font-size:.9rem;flex:none;color:#12102e}
+  .item .who{min-width:0}
+  .item .who .nm{font-weight:700;font-size:.9rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .item .who .pr{font-size:.78rem;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .item .who .pr .gold{color:var(--amber);font-weight:700}
+  .item .money{text-align:right;white-space:nowrap}
+  .item .money .m{font-weight:800;font-size:.92rem}
+  .item .money .c{font-size:.72rem;color:var(--faint)}
+  .item .due{text-align:center;white-space:nowrap}
+  .item .due .d{font-weight:800;font-size:1.05rem;line-height:1}
+  .item .due .lbl{font-size:.64rem;text-transform:uppercase;letter-spacing:.04em;color:var(--faint)}
+  .item.overdue .due .d{color:var(--red)} .item.soon .due .d{color:var(--amber)}
+  .item .acts{display:flex;gap:7px}
+  .wa{display:inline-flex;align-items:center;gap:7px;background:rgba(46,211,167,.14);color:var(--green);border:1px solid rgba(46,211,167,.35);border-radius:9px;padding:7px 11px;font-weight:700;font-size:.8rem;cursor:pointer;font-family:inherit}
+  .wa:hover{background:rgba(46,211,167,.24)} .wa svg{width:15px;height:15px}
+  .done{border:1px solid var(--line);background:var(--surface-2);color:var(--muted);border-radius:9px;width:36px;height:34px;display:grid;place-items:center;cursor:pointer}
+  .done:hover{color:var(--green);border-color:rgba(46,211,167,.4)}
+  .item.contacted{opacity:.7} .item.contacted .stamp{font-size:.72rem;color:var(--green);font-weight:700;display:flex;align-items:center;gap:5px}
+  .empty{text-align:center;color:var(--faint);padding:34px 10px;font-size:.9rem}
+</style>
+</head>
+<body>
+<div class="page">
+  <div class="topbar">
+    <div><h1>Tablero</h1><div class="sub" id="fecha">Resumen del negocio</div></div>
+    <div class="spacer"></div>
+    <div class="chip-user"><span class="av" id="uav">EM</span> <span id="uname">Empleado</span></div>
+  </div>
+
+  <section class="kpis" id="kpis"></section>
+
+  <section class="grid">
+    <div class="panel">
+      <div class="phead">
+        <div><div class="eyebrow">Flujo del negocio</div><h2>Ingresos vs. Egresos</h2></div>
+        <div class="spacer"></div>
+        <div class="ranges" id="ranges">
+          <button data-r="0">8 d</button><button data-r="1" class="on">15 d</button>
+          <button data-r="2">1 M</button><button data-r="3">3 M</button>
+          <button data-r="4">6 M</button><button data-r="5">1 A</button>
+        </div>
+      </div>
+      <svg id="area" viewBox="0 0 760 250" preserveAspectRatio="none" style="width:100%;height:auto;display:block"></svg>
+      <div class="legend"><span><i style="background:var(--green)"></i>Ingresos</span><span><i style="background:var(--violet)"></i>Egresos (préstamos)</span></div>
+    </div>
+    <div class="panel">
+      <div class="eyebrow">Composición</div>
+      <h2 style="margin-bottom:14px">Empeños por estado</h2>
+      <div class="donut-wrap"><div class="donut"><svg viewBox="0 0 42 42" id="donut" style="width:100%;height:100%;transform:rotate(-90deg)"></svg>
+        <div class="center"><div class="n num" id="dtot">0</div><div class="l">total</div></div></div>
+        <div class="dleg" id="dleg"></div></div>
+      <div style="border-top:1px solid var(--line);margin:16px 0 12px"></div>
+      <div class="eyebrow" style="margin-bottom:12px">Morosidad por antigüedad</div>
+      <div class="aging" id="aging"></div>
+    </div>
+  </section>
+
+  <section class="follow">
+    <div class="phead">
+      <div><div class="eyebrow" style="color:var(--green)">Acción del día · cobro proactivo</div><h2>Seguimiento de vencimientos</h2></div>
+      <div class="spacer"></div>
+      <div class="tabs" id="tabs">
+        <button data-tab="porvencer" class="on">Por vencer <span class="badge" id="c-porvencer">0</span></button>
+        <button data-tab="vencidos">Vencidos <span class="badge" id="c-vencidos">0</span></button>
+        <button data-tab="contactados">Contactados hoy <span class="badge" id="c-contactados">0</span></button>
+      </div>
+    </div>
+    <div class="list" id="list"></div>
+  </section>
+</div>
+
+<script>
+(function(){
+  var HOST = !!(window.chrome && window.chrome.webview);
+  var fmt=function(n){return Math.round(n).toLocaleString('es-CR')};
+  var COLORS=['#ac7ef1','#f9769b','#fd8a72','#46abf5','#2ed3a7','#ffb44d'];
+  var ESTCOL={Vigente:'#2ed3a7',Pendiente:'#ffb44d',Vencido:'#ff5d73',Cancelado:'#46abf5',Retirado:'#ac7ef1'};
+  var T=null, current='porvencer';
+
+  function post(msg){ try{ window.chrome.webview.postMessage(JSON.stringify(msg)); }catch(e){} }
+
+  function kpi(accent,lab,val,meta,cur,hero){
+    return '<div class="kpi'+(hero?' hero':'')+'" style="--accent:'+accent+'">'
+      +'<div class="lab"><span class="dot"></span>'+lab+'</div>'
+      +'<div class="val">'+(cur?'<span class="cur">₡</span>':'')+'<span class="num">'+val+'</span></div>'
+      +(meta?'<div class="meta">'+meta+'</div>':'')
+      +(hero?'<svg class="spark" viewBox="0 0 200 30" preserveAspectRatio="none" id="spark"></svg>':'')+'</div>';
+  }
+  function renderKpis(k){
+    document.getElementById('kpis').innerHTML=
+      kpi('var(--violet)','Cartera colocada',fmt(k.cartera),'capital vivo en la calle · <b>'+fmt(k.empenosActivos)+' empeños</b>',true,true)
+      +kpi('var(--blue)','Empeños activos',fmt(k.empenosActivos),'<b>+'+fmt(k.nuevosMes)+'</b> este mes')
+      +kpi('var(--amber)','Por vencer · 7 días',fmt(k.porVencer),'requieren contacto')
+      +kpi('var(--red)','Vencidos',fmt(k.vencidos),'<b style="color:var(--red)">₡'+fmt(k.montoRiesgo)+'</b> en riesgo')
+      +kpi('var(--green)','Recaudo interés · mes',fmt(k.recaudoMes),'',true);
+    var sp=document.getElementById('spark');
+    if(sp&&T.serie){var v=T.serie.ingresos,max=Math.max.apply(null,v)||1,n=v.length,d='';
+      for(var i=0;i<n;i++){var x=200*i/(n-1||1),y=30-(v[i]/max)*26-2;d+=(i?'L':'M')+x.toFixed(1)+' '+y.toFixed(1)+' ';}
+      sp.innerHTML='<path d="'+d+'" fill="none" stroke="#ac7ef1" stroke-width="2" opacity=".8"/><path d="'+d+'L200 30 L0 30 Z" fill="rgba(172,126,241,.14)"/>';}
+  }
+
+  var W=760,H=250,PADL=6,PADR=6,PADT=14,PADB=22;
+  function path(vals,max,close){var n=vals.length,iw=W-PADL-PADR,ih=H-PADT-PADB,d='';
+    for(var i=0;i<n;i++){var x=PADL+(n<=1?iw/2:iw*i/(n-1)),y=PADT+ih-(vals[i]/max)*ih;d+=(i?'L':'M')+x.toFixed(1)+' '+y.toFixed(1)+' ';}
+    if(close){d+='L'+(PADL+iw)+' '+(PADT+ih)+' L'+PADL+' '+(PADT+ih)+' Z';}return d;}
+  function drawArea(serie){
+    var ing=serie.ingresos,egr=serie.egresos,max=(Math.max.apply(null,ing.concat(egr))||1)*1.15,ih=H-PADT-PADB,g='';
+    for(var t=0;t<=3;t++){var y=PADT+ih*t/3;g+='<line x1="0" y1="'+y.toFixed(0)+'" x2="'+W+'" y2="'+y.toFixed(0)+'" stroke="rgba(172,126,241,.10)"/>';
+      g+='<text x="4" y="'+(y-4).toFixed(0)+'" fill="#726ea6" font-size="10">₡'+fmt(max*(1-t/3)/1000)+'k</text>';}
+    var n=ing.length,iw=W-PADL-PADR,ex=PADL+iw,eyI=PADT+ih-(ing[n-1]/max)*ih,eyE=PADT+ih-(egr[n-1]/max)*ih;
+    document.getElementById('area').innerHTML=
+      '<defs><linearGradient id="ig" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="rgba(46,211,167,.42)"/><stop offset="1" stop-color="rgba(46,211,167,0)"/></linearGradient></defs>'
+      +g+'<path d="'+path(ing,max,true)+'" fill="url(#ig)"/>'
+      +'<path d="'+path(ing,max,false)+'" fill="none" stroke="#2ed3a7" stroke-width="2.4" stroke-linejoin="round"/>'
+      +'<path d="'+path(egr,max,false)+'" fill="none" stroke="#ac7ef1" stroke-width="2.4" stroke-linejoin="round"/>'
+      +'<circle cx="'+ex+'" cy="'+eyI.toFixed(1)+'" r="4" fill="#2ed3a7" stroke="#131230" stroke-width="2"/>'
+      +'<circle cx="'+ex+'" cy="'+eyE.toFixed(1)+'" r="4" fill="#ac7ef1" stroke="#131230" stroke-width="2"/>';
+  }
+  window.updateSerie=function(serie){ T.serie=serie; drawArea(serie); };
+
+  function drawDonut(est){
+    var tot=est.reduce(function(a,b){return a+b.v},0)||1,off=0,svg='',leg='';
+    est.forEach(function(s){var pct=s.v/tot*100,c=ESTCOL[s.n]||'#ac7ef1';
+      svg+='<circle r="15.9155" cx="21" cy="21" fill="transparent" stroke="'+c+'" stroke-width="6.5" stroke-dasharray="'+pct.toFixed(2)+' '+(100-pct).toFixed(2)+'" stroke-dashoffset="'+(100-off+25).toFixed(2)+'"/>';off+=pct;
+      leg+='<div class="row"><i style="background:'+c+'"></i><span class="nm">'+s.n+'</span><span class="ct num">'+fmt(s.v)+'</span></div>';});
+    document.getElementById('donut').innerHTML=svg;document.getElementById('dleg').innerHTML=leg;document.getElementById('dtot').textContent=fmt(tot);
+  }
+  function drawAging(ag){
+    var max=Math.max.apply(null,ag.map(function(a){return a.v}))||1,cols=['#ffb44d','#fd8a72','#ff5d73'];
+    document.getElementById('aging').innerHTML=ag.map(function(a,i){
+      return '<div class="bar"><span class="t">'+a.t+'</span><div class="track"><div class="fill" style="background:'+cols[i%3]+';width:'+(a.v/max*100).toFixed(0)+'%"></div></div>'
+        +'<span class="amt num">₡'+fmt(a.v/1000000)+'M <small>· '+a.ct+'</small></span></div>';}).join('');
+  }
+
+  function ini(nm){var p=(nm||'?').trim().split(/\s+/);return ((p[0]||'?')[0]+(p[1]?p[1][0]:'')).toUpperCase();}
+  function counts(){document.getElementById('c-porvencer').textContent=T.porVencer.length;
+    document.getElementById('c-vencidos').textContent=T.vencidos.length;
+    document.getElementById('c-contactados').textContent=T.contactados.length;}
+  function renderList(){
+    var rows=T[current];
+    var el=document.getElementById('list');
+    if(!rows.length){el.innerHTML='<div class="empty">'+(current==='contactados'?'Todavía nadie contactado hoy.':'Nada por acá. ¡Buen trabajo!')+'</div>';return;}
+    el.innerHTML=rows.map(function(r){
+      var soon=current==='porvencer',od=current==='vencidos';
+      var cls='item'+(soon?' soon':'')+(od?' overdue':'')+(current==='contactados'?' contacted':'');
+      var due=current==='contactados'
+        ?'<div class="stamp"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M20 6L9 17l-5-5"/></svg>Contactado</div>'
+        :'<div class="due"><div class="d num">'+Math.abs(r.dias)+'</div><div class="lbl">'+(od?'días vencido':'días')+'</div></div>';
+      var acts=current==='contactados'?''
+        :'<div class="acts"><button class="wa" data-wa="'+r.id+'"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 00-8.6 15l-1.3 4.7 4.8-1.3A10 10 0 1012 2zm0 18a8 8 0 01-4.1-1.1l-.3-.2-2.9.8.8-2.8-.2-.3A8 8 0 1112 20zm4.5-6c-.2-.1-1.4-.7-1.6-.8s-.4-.1-.5.1-.6.8-.8 1-.3.2-.5.1a6.5 6.5 0 01-1.9-1.2 7.2 7.2 0 01-1.3-1.7c-.1-.2 0-.4.1-.5l.4-.5.2-.3v-.4c0-.1-.5-1.3-.7-1.7s-.4-.4-.5-.4h-.5a.9.9 0 00-.7.3A2.8 2.8 0 006 8.9c0 1.7 1.2 3.3 1.4 3.5s2.4 3.7 5.8 5c2 .8 2.4.7 2.9.6.5 0 1.4-.6 1.6-1.1s.2-1 .1-1.1z"/></svg>WhatsApp</button>'
+          +'<button class="done" title="Marcar contactado" data-done="'+r.id+'"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M20 6L9 17l-5-5"/></svg></button></div>';
+      return '<div class="'+cls+'"><div class="av" style="background:'+COLORS[r.id%COLORS.length]+'">'+ini(r.cli)+'</div>'
+        +'<div class="who"><div class="nm">'+r.cli+'</div><div class="pr">#'+r.id+' · '+(r.oro?'<span class="gold">◆ '+r.prenda+'</span>':r.prenda)+'</div></div>'
+        +'<div class="money"><div class="m num">₡'+fmt(r.monto)+'</div><div class="c">interés a pagar</div></div>'+due+acts+'</div>';
+    }).join('');
+  }
+
+  window.renderTablero=function(data){
+    T=data; if(!T.contactados)T.contactados=[];
+    document.getElementById('fecha').textContent='Resumen del negocio · '+(T.fecha||'');
+    document.getElementById('uname').textContent=T.empleado||'Empleado';
+    document.getElementById('uav').textContent=ini(T.empleado||'EM');
+    renderKpis(T.kpis); drawArea(T.serie); drawDonut(T.estados); drawAging(T.aging); counts(); renderList();
+  };
+
+  // interacciones
+  document.getElementById('ranges').addEventListener('click',function(e){var b=e.target.closest('button');if(!b)return;
+    document.querySelectorAll('#ranges button').forEach(function(x){x.classList.remove('on')});b.classList.add('on');
+    var idx=+b.dataset.r;
+    if(HOST) post({type:'range',index:idx}); else window.updateSerie(sampleSerie(idx));});
+  document.getElementById('tabs').addEventListener('click',function(e){var b=e.target.closest('button');if(!b)return;
+    document.querySelectorAll('#tabs button').forEach(function(x){x.classList.remove('on')});b.classList.add('on');current=b.dataset.tab;renderList();});
+  document.getElementById('list').addEventListener('click',function(e){
+    var wa=e.target.closest('[data-wa]');if(wa){var id=+wa.dataset.wa;var r=find(id);if(!r)return;
+      if(HOST) post({type:'whatsapp',id:id}); else window.open(waFallback(r),'_blank');return;}
+    var dn=e.target.closest('[data-done]');if(dn){var id2=+dn.dataset.done;markContacted(id2);}
+  });
+  function find(id){return T.porVencer.concat(T.vencidos).filter(function(r){return r.id===id})[0];}
+  function markContacted(id){
+    ['porVencer','vencidos'].forEach(function(k){var i=T[k].findIndex(function(r){return r.id===id});if(i>=0){T.contactados.unshift(T[k][i]);T[k].splice(i,1);}});
+    if(HOST) post({type:'contactado',id:id});
+    counts();renderList();
+  }
+  function waFallback(r){var estado=r.dias>=0?('vence en '+r.dias+' día(s)'):('vencido hace '+(-r.dias)+' día(s)');
+    var msg='Hola '+r.cli+', su empeño #'+r.id+' ('+r.prenda+') '+estado+'. Puede pagar el interés de ₡'+fmt(r.monto)+' para conservar su artículo. ¡Gracias!';
+    return 'https://wa.me/'+(r.tel||'')+'?text='+encodeURIComponent(msg);}
+
+  // ---- sample (solo preview standalone, sin host) ----
+  function gen(n,base,amp,ph){var a=[];for(var i=0;i<n;i++)a.push(Math.max(0,base+Math.sin(i*.65+ph)*amp*.5+Math.sin(i*.23+ph)*amp*.3+(i/n)*amp*.35));return a;}
+  function sampleSerie(idx){var n=[8,15,30,13,24,12][idx]||15;return{ingresos:gen(n,620000,520000,1.2),egresos:gen(n,780000,640000,2.6)};}
+  function sampleData(){return{fecha:'preview',empleado:'Donovan · Cajero',
+    kpis:{cartera:148320500,empenosActivos:2680,nuevosMes:128,porVencer:96,vencidos:740,montoRiesgo:41200000,recaudoMes:22870300},
+    serie:sampleSerie(1),
+    estados:[{n:'Vigente',v:2680},{n:'Pendiente',v:610},{n:'Vencido',v:740},{n:'Cancelado',v:180},{n:'Retirado',v:91}],
+    aging:[{t:'1–30 días',v:18400000,ct:410},{t:'31–60 días',v:13900000,ct:210},{t:'60+ días',v:8900000,ct:120}],
+    porVencer:[{id:4188,cli:'María Fernández',tel:'50688120011',prenda:'Cadena de oro 18k',oro:true,monto:34500,dias:1},
+      {id:4172,cli:'Carlos Jiménez',tel:'50687340022',prenda:'Laptop HP',oro:false,monto:52000,dias:2},
+      {id:4205,cli:'Ana Rodríguez',tel:'50683450033',prenda:'Anillo de oro',oro:true,monto:18700,dias:3}],
+    vencidos:[{id:3987,cli:'Roberto Salas',tel:'50688990077',prenda:'Celular Samsung',oro:false,monto:41200,dias:-3}],
+    contactados:[]};}
+
+  if(!HOST){ window.renderTablero(sampleData()); }
+})();
+</script>
+</body>
+</html>

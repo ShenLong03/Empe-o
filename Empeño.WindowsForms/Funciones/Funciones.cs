@@ -429,7 +429,7 @@ namespace Empeño.WindowsForms.Funciones
 
                         foreach (var item in intereses)
                         {
-                            _context.Intereses.RemoveRange(_context.Intereses.Where(i => i.InteresesId != item.InteresesId && i.EmpenoId == item.EmpenoId && i.FechaVencimiento == item.FechaVencimiento));
+                            _context.Intereses.RemoveRange(_context.Intereses.Where(i => i.InteresesId > item.InteresesId && i.EmpenoId == item.EmpenoId && i.FechaVencimiento == item.FechaVencimiento));
                         }
                     }
                     await _context.SaveChangesAsync();
@@ -447,7 +447,7 @@ namespace Empeño.WindowsForms.Funciones
 
                     foreach (var item in intereses)
                     {
-                        _context.Intereses.RemoveRange(_context.Intereses.Where(i => i.InteresesId != item.InteresesId && i.EmpenoId == item.EmpenoId && i.FechaVencimiento == item.FechaVencimiento));
+                        _context.Intereses.RemoveRange(_context.Intereses.Where(i => i.InteresesId > item.InteresesId && i.EmpenoId == item.EmpenoId && i.FechaVencimiento == item.FechaVencimiento));
                     }
                     var proximoMes = DateTime.Today.AddMonths(1).AddDays(1);
                     _context.Intereses.RemoveRange(_context.Intereses.Where(i => i.FechaVencimiento > proximoMes && i.Pagado <= 0));
@@ -474,93 +474,88 @@ namespace Empeño.WindowsForms.Funciones
                     {
                         foreach (var empeño in empeños)
                         {
-                            if (empeño.Estado == Estado.Vigente || empeño.Estado == Estado.Vencido
-                                    || empeño.Estado == Estado.Pendiente)
+                            try
                             {
-                                var fechaCalculo = empeño.Fecha;
-                                if (empeño.Intereses.Any())
-                                    fechaCalculo = empeño.Intereses.OrderByDescending(i => i.FechaVencimiento).FirstOrDefault().FechaVencimiento;
-
-                                int cantidadMeses = ((int)(DateTime.Today - fechaCalculo).TotalDays / 30);
-                                double sobrante = (DateTime.Today - fechaCalculo).TotalDays % 30;
-                                cantidadMeses += sobrante > 1 ? 1 : 0;
-
-                                var numeroIntereses = cantidadMeses;
-                                for (int i = 0; i < numeroIntereses; i++)
+                                if (empeño.Estado == Estado.Vigente || empeño.Estado == Estado.Vencido
+                                        || empeño.Estado == Estado.Pendiente)
                                 {
+                                    // Generación mes a mes (calendario). El cursor avanza SIEMPRE, así una
+                                    // cuota ya existente no estanca la generación de las siguientes.
+                                    // Avalúo NO se acumula mensual (cargo único); bodegaje SÍ es mensual.
+                                    DateTime ultimaFecha = empeño.Intereses.Any()
+                                        ? empeño.Intereses.Max(i => i.FechaVencimiento)
+                                        : empeño.FechaVencimiento;
+                                    DateTime proxima = ultimaFecha.AddMonths(1);
 
-                                    var intereses = new Intereses
+                                    while (proxima <= DateTime.Today)
                                     {
-                                        EmpenoId = empeño.EmpenoId,
-                                        FechaCreacion = DateTime.Now,
-                                        Monto = Math.Truncate((double)empeño.MontoPendiente * ((double)empeño.Interes.Porcentaje / (double)100)),
-                                        //MontoAvaluo = empeño.Interes.Avaluo!=null?Math.Truncate((double)empeño.MontoPendiente * (double)empeño.Interes.PorcentajeAvaluo):0,
-                                        MontoBodega= empeño.Interes.Bodegaje!=null?Math.Truncate((double)empeño.MontoPendiente * (double)empeño.Interes.PorcentajeBodegaje):0
-                                    };
-
-
-
-                                    if (_context.Intereses.Where(x => x.EmpenoId == empeño.EmpenoId).Count() > 0)
-                                    {
-                                        intereses.FechaVencimiento = _context.Intereses
-                                            .Where(x => x.EmpenoId == empeño.EmpenoId)
-                                            .OrderByDescending(x => x.InteresesId)
-                                            .FirstOrDefault()
-                                            .FechaVencimiento.AddMonths(1);
-                                    }
-                                    else
-                                    {
-                                        intereses.FechaVencimiento = empeño.FechaVencimiento.AddMonths(1);
-                                    }
-                                    using (DataContext temp = new DataContext())
-                                    {
-                                        var interesesFind = await temp.Intereses.Where(x => x.EmpenoId == empeño.EmpenoId && x.FechaVencimiento == intereses.FechaVencimiento).ToListAsync();
-                                        if (interesesFind.Count() == 0)
+                                        bool yaExiste = _context.Intereses.Any(x => x.EmpenoId == empeño.EmpenoId && x.FechaVencimiento == proxima);
+                                        if (!yaExiste)
                                         {
+                                            var intereses = new Intereses
+                                            {
+                                                EmpenoId = empeño.EmpenoId,
+                                                FechaCreacion = DateTime.Now,
+                                                Monto = Math.Truncate((double)empeño.MontoPendiente * ((double)empeño.Interes.Porcentaje / (double)100)),
+                                                MontoBodega = empeño.Interes.Bodegaje != null ? Math.Truncate((double)empeño.MontoPendiente * (double)empeño.Interes.PorcentajeBodegaje) : 0,
+                                                FechaVencimiento = proxima
+                                            };
                                             _context.Intereses.Add(intereses);
                                             await _context.SaveChangesAsync();
                                         }
+                                        proxima = proxima.AddMonths(1);
                                     }
                                 }
-                            }
 
-                            var count = await _context.Intereses.Where(i => i.EmpenoId == empeño.EmpenoId).ToListAsync();
-                            if (count.Count() > 0)
-                            {
-                                var ultimoInteres = await _context.Intereses.Where(p => p.EmpenoId == empeño.EmpenoId)
-                                            .OrderByDescending(o => o.InteresesId)
-                                            .FirstOrDefaultAsync();
-                                if (ultimoInteres != null)
+                                var count = await _context.Intereses.Where(i => i.EmpenoId == empeño.EmpenoId).ToListAsync();
+                                if (count.Count() > 0)
                                 {
-                                    if (ultimoInteres.FechaVencimiento < DateTime.Today && ultimoInteres.Monto > ultimoInteres.Pagado)
+                                    var ultimoInteres = await _context.Intereses.Where(p => p.EmpenoId == empeño.EmpenoId)
+                                                .OrderByDescending(o => o.InteresesId)
+                                                .FirstOrDefaultAsync();
+                                    if (ultimoInteres != null)
                                     {
-                                        empeño.Estado = Estado.Pendiente;
+                                        if (ultimoInteres.FechaVencimiento < DateTime.Today && Math.Truncate(Math.Round(ultimoInteres.Pagado)) < Math.Truncate(ultimoInteres.MontoTotal))
+                                        {
+                                            empeño.Estado = Estado.Pendiente;
+                                        }
+                                        else
+                                        {
+                                            empeño.Estado = Estado.Vigente;
+                                        }
+                                        _context.Entry(empeño).State = EntityState.Modified;
+                                        await _context.SaveChangesAsync();
+                                    }
+
+                                }
+                                if (empeño.FechaVencimiento < DateTime.Today)
+                                {
+                                    if (empeño.Retirado || empeño.FechaRetiro != null)
+                                    {
+                                        empeño.Estado = Estado.Cancelado;
+                                    }
+                                    else if (empeño.RetiradoAdministrador || empeño.FechaRetiroAdministrador != null)
+                                    {
+                                        empeño.Estado = Estado.Retirado;
                                     }
                                     else
                                     {
-                                        empeño.Estado = Estado.Vigente;
+                                        empeño.Estado = Estado.Vencido;
                                     }
-                                    _context.Entry(empeño).State = EntityState.Modified;
+
                                     await _context.SaveChangesAsync();
                                 }
-
                             }
-                            if (empeño.FechaVencimiento < DateTime.Today)
+                            catch (Exception exEmpeño)
                             {
-                                if (empeño.Retirado || empeño.FechaRetiro != null)
+                                // Un empeño con datos inconsistentes (p.ej. Interes null) NO debe abortar
+                                // la revisión de los demás. Se registra y se continúa.
+                                await SaveBitacora(new ValorBitacora
                                 {
-                                    empeño.Estado = Estado.Cancelado;
-                                }
-                                else if (empeño.RetiradoAdministrador || empeño.FechaRetiroAdministrador != null)
-                                {
-                                    empeño.Estado = Estado.Retirado;
-                                }
-                                else
-                                {
-                                    empeño.Estado = Estado.Vencido;
-                                }
-
-                                await _context.SaveChangesAsync();
+                                    Valor = "Error al revisar el empeño " + empeño.EmpenoId,
+                                    Modulo = "Revisar Empeños",
+                                    Accion = "Error"
+                                }, 1, exEmpeño.Message);
                             }
                         }
                     }
@@ -592,65 +587,31 @@ namespace Empeño.WindowsForms.Funciones
                         if (empeño.Estado == Estado.Vigente || empeño.Estado == Estado.Vencido
                                 || empeño.Estado == Estado.Pendiente)
                         {
-                            var fechaCalculo = empeño.Fecha;
-                            if (empeño.Intereses.Any())
-                                fechaCalculo = empeño.Intereses.OrderByDescending(i => i.FechaVencimiento).FirstOrDefault().FechaVencimiento;
+                            // Generación mes a mes (calendario). El cursor avanza SIEMPRE, así una
+                            // cuota ya existente no estanca la generación de las siguientes.
+                            // Avalúo NO se acumula mensual (cargo único); bodegaje SÍ es mensual.
+                            DateTime ultimaFecha = empeño.Intereses.Any()
+                                ? empeño.Intereses.Max(i => i.FechaVencimiento)
+                                : empeño.FechaVencimiento;
+                            DateTime proxima = ultimaFecha.AddMonths(1);
 
-                            int cantidadMeses = ((int)(DateTime.Today - fechaCalculo).TotalDays / 30);
-                            double sobrante = (DateTime.Today - fechaCalculo).TotalDays % 30;
-                            cantidadMeses += sobrante > 1 ? 1 : 0;
-
-                            if (cantidadMeses>0 && !empeño.Intereses.Any())
+                            while (proxima <= DateTime.Today)
                             {
-                                var intereses = new Intereses
+                                bool yaExiste = _context.Intereses.Any(x => x.EmpenoId == empeño.EmpenoId && x.FechaVencimiento == proxima);
+                                if (!yaExiste)
                                 {
-                                    EmpenoId = empeño.EmpenoId,
-                                    FechaCreacion = DateTime.Now,
-                                    Monto = Math.Truncate((double)empeño.MontoPendiente * ((double)empeño.Interes.Porcentaje / (double)100)),
-                                    MontoBodega = empeño.Interes.Bodegaje!=null ? Math.Truncate((double)empeño.MontoPendiente * (double)empeño.Interes.PorcentajeBodegaje) : 0,
-                                    FechaVencimiento = fechaCalculo.AddMonths(1)
-                                };
-                                using (DataContext tempFirst= new DataContext())
-                                {
-                                    tempFirst.Intereses.Add(intereses);
-                                    await tempFirst.SaveChangesAsync();
-                                    await ReviewEmpeño(id);
-                                    return;
-                                }
-                            }                         
-
-                            var numeroIntereses = cantidadMeses;
-                            for (int i = 0; i < numeroIntereses; i++)
-                            {
-                                var intereses = new Intereses
-                                {
-                                    EmpenoId = empeño.EmpenoId,
-                                    FechaCreacion = DateTime.Now,
-                                    Monto = Math.Truncate((double)empeño.MontoPendiente * ((double)empeño.Interes.Porcentaje / (double)100)),
-                                    MontoBodega = empeño.Interes.Bodegaje != null ? Math.Truncate((double)empeño.MontoPendiente * (double)empeño.Interes.PorcentajeBodegaje) : 0,
-                                };
-
-                                if (_context.Intereses.Where(x => x.EmpenoId == empeño.EmpenoId).Count() > 0)
-                                {
-                                    intereses.FechaVencimiento = _context.Intereses
-                                        .Where(x => x.EmpenoId == empeño.EmpenoId)
-                                        .OrderByDescending(x => x.InteresesId)
-                                        .FirstOrDefault()
-                                        .FechaVencimiento.AddMonths(1);
-                                }
-                                else
-                                {
-                                    intereses.FechaVencimiento = empeño.FechaVencimiento.AddMonths(1);
-                                }
-                                using (DataContext temp = new DataContext())
-                                {
-                                    var interesesFind = await temp.Intereses.Where(x => x.EmpenoId == empeño.EmpenoId && x.FechaVencimiento == intereses.FechaVencimiento).ToListAsync();
-                                    if (interesesFind.Count() == 0)
+                                    var intereses = new Intereses
                                     {
-                                        _context.Intereses.Add(intereses);
-                                        await _context.SaveChangesAsync();
-                                    }
+                                        EmpenoId = empeño.EmpenoId,
+                                        FechaCreacion = DateTime.Now,
+                                        Monto = Math.Truncate((double)empeño.MontoPendiente * ((double)empeño.Interes.Porcentaje / (double)100)),
+                                        MontoBodega = empeño.Interes.Bodegaje != null ? Math.Truncate((double)empeño.MontoPendiente * (double)empeño.Interes.PorcentajeBodegaje) : 0,
+                                        FechaVencimiento = proxima
+                                    };
+                                    _context.Intereses.Add(intereses);
+                                    await _context.SaveChangesAsync();
                                 }
+                                proxima = proxima.AddMonths(1);
                             }
 
 
@@ -663,7 +624,7 @@ namespace Empeño.WindowsForms.Funciones
                                             .FirstOrDefaultAsync();
                                 if (ultimoInteres != null)
                                 {
-                                    if (ultimoInteres.FechaVencimiento < DateTime.Today && ultimoInteres.Monto > ultimoInteres.Pagado)
+                                    if (ultimoInteres.FechaVencimiento < DateTime.Today && Math.Truncate(Math.Round(ultimoInteres.Pagado)) < Math.Truncate(ultimoInteres.MontoTotal))
                                     {
                                         empeño.Estado = Estado.Pendiente;
                                     }

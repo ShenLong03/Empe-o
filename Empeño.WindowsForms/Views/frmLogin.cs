@@ -1,4 +1,6 @@
-﻿using Empeño.WindowsForms.Data;
+﻿using Empeño.CommonEF.Models;
+using Empeño.WindowsForms.Data;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -16,6 +18,7 @@ namespace Empeño.WindowsForms.Views
     public partial class frmLogin : Form
     {
         DataContext _context = new DataContext();
+        Funciones.Funciones funciones = new Funciones.Funciones();
         public int xClick = 0, yClick = 0;
 
         public frmLogin()
@@ -55,20 +58,37 @@ namespace Empeño.WindowsForms.Views
 
         private async Task Acceder() 
         {
-            var usuario = await _context.User.SingleOrDefaultAsync(u => u.Usuario == txtUsuario.Text && u.Password == txtContrasena.Text);
+            var usuario = await _context.User.SingleOrDefaultAsync(u => u.Usuario == txtUsuario.Text && u.Password == txtContrasena.Text && u.Activo);
 
             if (usuario != null)
             {
                 this.Hide();
                 Program.Usuario = usuario;
                 Program.PerfilId = usuario.PerfilId;
+
+                await funciones.SaveBitacora(new ValorBitacora
+                {
+                    Modulo = "Login",
+                    Accion = "Ingreso",
+                    Valor = JsonConvert.SerializeObject(new { Usuario = usuario.Usuario })
+                });
+
                 frmBienvenida bienvenida = new frmBienvenida();
                 bienvenida.ShowDialog();
-                frmInicio inicio = new frmInicio();
-                inicio.Show();
+                // Arranque en la VERSIÓN NUEVA (WebView2). La clásica (frmInicio) sigue intacta
+                // y se abre desde "Volver a versión clásica" dentro del shell.
+                frmShell shell = new frmShell();
+                shell.Show();
             }
             else
             {
+                await funciones.SaveBitacora(new ValorBitacora
+                {
+                    Modulo = "Login",
+                    Accion = "IngresoFallido",
+                    Valor = JsonConvert.SerializeObject(new { Usuario = txtUsuario.Text })
+                }, 1, "Ingreso incorrecto");
+
                 label1.Visible = true;
                 lblError.Text = " Ingreso Incorrecto";
                 lblError.ForeColor = Color.White;

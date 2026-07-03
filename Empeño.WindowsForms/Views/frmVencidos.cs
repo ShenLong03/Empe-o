@@ -1,7 +1,9 @@
 ﻿using Empeño.CommonEF.Entities;
 using Empeño.CommonEF.Enum;
+using Empeño.CommonEF.Models;
 using Empeño.WindowsForms.Data;
 using Empeño.WindowsForms.Funciones;
+using Newtonsoft.Json;
 using Microsoft.Office.Interop.Excel;
 using System;
 using System.Collections.Generic;
@@ -230,6 +232,15 @@ namespace Empeño.WindowsForms.Views
 
                     _context.Vencimientos.Add(vencimiento) ;
                     await _context.SaveChangesAsync();
+
+                    // Auditoría: registra quién realizó el retiro administrativo (sin PIN: es acción de rutina)
+                    await funciones.SaveBitacora(new ValorBitacora
+                    {
+                        Modulo = "Vencidos",
+                        Accion = "Retiro Administrativo",
+                        Valor = JsonConvert.SerializeObject(new { empeño.EmpenoId, vencimiento.Consecutivo })
+                    });
+
                     await PrintVencido(empeño, vencimiento);
                 }
                 else if (result == DialogResult.No)
@@ -261,6 +272,12 @@ namespace Empeño.WindowsForms.Views
                     var proroga = _context.Prorrogas.Where(p => p.EmpenoId == empeñoId).FirstOrDefault();
                     temporal.Prorroga = true;
                     empeño.Prorroga = true;
+
+                    // La prórroga movió FechaVencimiento en la BD (frmProroga usa otro contexto). Refrescamos el
+                    // valor para que el SaveChanges de más abajo NO lo pise con la copia vieja que hay en memoria.
+                    using (var ctxFv = new DataContext())
+                        empeño.FechaVencimiento = ctxFv.Empenos.Where(x => x.EmpenoId == empeñoId).Select(x => x.FechaVencimiento).First();
+
                     if (!string.IsNullOrEmpty(empeño.Cliente.Correo))
                     {
                         EmailFuncion emailFuncion = new EmailFuncion();
@@ -272,6 +289,17 @@ namespace Empeño.WindowsForms.Views
 
                 _context.Entry(empeño).State = EntityState.Modified;
                 await _context.SaveChangesAsync();
+
+                if (Program.Proroga)
+                {
+                    // Auditoría de la prórroga otorgada (sin PIN: acción de rutina)
+                    await funciones.SaveBitacora(new ValorBitacora
+                    {
+                        Modulo = "Vencidos",
+                        Accion = "Prórroga",
+                        Valor = JsonConvert.SerializeObject(new { empeño.EmpenoId })
+                    });
+                }
             }
             index = dgvDetalles.SelectedRows[0].Index;
             LoadDetalle();
@@ -329,7 +357,7 @@ namespace Empeño.WindowsForms.Views
                 x.FechaRetiroAdministrador,
                 x.Prorrogas,
                 x.Monto,
-                MontoPendiente = (x.MontoPendiente + (x.Intereses != null ? x.Intereses.Sum(i => i.Monto - i.Pagado) : 0)).ToString("N2"),
+                MontoPendiente = (x.MontoPendiente + (x.Intereses != null ? x.Intereses.Sum(i => i.MontoTotal - i.Pagado) : 0)).ToString("N2"),
                 x.Intereses
             }).ToList();
 

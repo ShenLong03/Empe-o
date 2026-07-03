@@ -116,6 +116,10 @@ namespace Empeño.WindowsForms.Views
                     if (perfil.Perfil.Nombre == "Administrador" || perfil.Perfil.Nombre == "Supervisor")
                         Program.Acceso = true;
                     break;
+                case "Cliente":
+                    if (perfil.Perfil.Nombre == "Administrador" || perfil.Perfil.Nombre == "Supervisor")
+                        Program.Acceso = true;
+                    break;
                 default:
                     Program.Acceso = false;
                     break;

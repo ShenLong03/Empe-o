@@ -33,7 +33,7 @@ namespace Empeño.CommonEF.Entities
         {
             get 
             {
-               return ((double)IVA / (double)100);
+               return ((IVA ?? 0) / (double)100);
             }
         }
         //---------------------

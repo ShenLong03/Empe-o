@@ -1,6 +1,8 @@
 ﻿using Empeño.CommonEF.Entities;
 using Empeño.CommonEF.Enum;
+using Empeño.CommonEF.Models;
 using Empeño.WindowsForms.Data;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -34,7 +36,7 @@ namespace Empeño.WindowsForms.Views
         #region Funciones
         public async Task LoadData() 
         {
-            dgvEmpleados.DataSource = await _context.Empleados.Where(d=>d.Usuario!="Admin").Select(x => new
+            dgvEmpleados.DataSource = await _context.Empleados.Where(d=>d.Usuario!="Admin" && d.Activo).Select(x => new
             {
                 Id = x.EmpleadoId,
                 x.Nombre,
@@ -60,7 +62,7 @@ namespace Empeño.WindowsForms.Views
             funciones.PlaceHolder(txtCorreo, PlaceHolderType.Leave, "Correo");
             cbPerfil.Text = string.Empty;
             txtPIN.Text = string.Empty;
-            funciones.PlaceHolder(txtNombre, PlaceHolderType.Leave, "PIN");
+            funciones.PlaceHolder(txtPIN, PlaceHolderType.Leave, "PIN");
             txtTelefono.Text = string.Empty;
             funciones.PlaceHolder(txtTelefono, PlaceHolderType.Leave, "Teléfono");
             txtUsuario.Text = string.Empty;
@@ -79,6 +81,11 @@ namespace Empeño.WindowsForms.Views
         {         
             try
             {
+                if (!funciones.ValidatePIN("Empleado"))
+                    return;
+
+                string accion = empleadoId == 0 ? "Crear" : "Editar";
+
                 if (!Validate(txtNombre, lblNombre))
                     return;
                 if (!Validate(txtUsuario, lblUsuario))
@@ -171,6 +178,22 @@ namespace Empeño.WindowsForms.Views
                     _context.Entry(empleado).State = EntityState.Modified;                    
                 }
                 await _context.SaveChangesAsync();
+
+                await funciones.SaveBitacora(new ValorBitacora
+                {
+                    Modulo = "Empleado",
+                    Accion = accion,
+                    Valor = JsonConvert.SerializeObject(new
+                    {
+                        Nombre = txtNombre.Text,
+                        Usuario = txtUsuario.Text,
+                        Correo = txtCorreo.Text,
+                        Telefono = txtTelefono.Text,
+                        Perfil = cbPerfil.Text,
+                        Activo = chbActivo.Checked
+                    })
+                });
+
                 await LoadData();
                 funciones.ResetForm(panelFormulario);
                 empleadoId = 0;
@@ -381,6 +404,7 @@ namespace Empeño.WindowsForms.Views
                 {
                     cbPerfil.Text = user.Perfil.Nombre;
                     txtPassword.Text = user.Password;
+                    txtPassword.UseSystemPasswordChar = true;
                     txtPIN.Text = user.Codigo;
                 }
 
@@ -459,32 +483,53 @@ namespace Empeño.WindowsForms.Views
 
         private async void btnEliminar_Click(object sender, EventArgs e)
         {
+            if (!funciones.ValidatePIN("Empleado"))
+                return;
+
+            var result = MessageBox.Show("¿Está seguro que desea desactivar el registro?", "Pregunta", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+
+            if (result != DialogResult.Yes)
+                return;
+
+            if (dgvEmpleados.SelectedRows.Count <= 0)
+                return;
+
             try
             {
+                var dato = await _context.Empleados.FindAsync(dgvEmpleados.SelectedRows[0].Cells[0].Value);
+                if (dato == null)
+                    return;
 
+                // Soft-delete: se desactiva empleado y usuarios, sin borrar (conserva el historial y evita romper FK)
+                dato.Activo = false;
+                _context.Entry(dato).State = EntityState.Modified;
 
-                var result = MessageBox.Show("¿Esta séguro que desea eliminar el registro?", "Pregunta", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
-
-                if (result == DialogResult.Yes)
+                var usuarios = _context.User.Where(u => u.Usuario == dato.Usuario).ToList();
+                foreach (var u in usuarios)
                 {
-                    if (dgvEmpleados.SelectedRows.Count > 0)
-                    {
-                        var dato = await _context.Empleados.FindAsync(dgvEmpleados.SelectedRows[0].Cells[0].Value);
-                        _context.Empleados.Remove(dato);
-                        _context.User.RemoveRange(_context.User.Where(u => u.Usuario == dato.Usuario));
-                        await _context.SaveChangesAsync();
-                        funciones.ResetForm(panelFormulario);
-                        empleadoId = 0;
-                        await LoadData();
-                    }
+                    u.Activo = false;
+                    _context.Entry(u).State = EntityState.Modified;
                 }
-            }
-            catch (Exception)
-            {
 
-                MessageBox.Show("El dato no puede ser eliminado", "Error");
+                await _context.SaveChangesAsync();
+
+                await funciones.SaveBitacora(new ValorBitacora
+                {
+                    Modulo = "Empleado",
+                    Accion = "Desactivar",
+                    Valor = JsonConvert.SerializeObject(new { dato.EmpleadoId, dato.Nombre, dato.Usuario })
+                });
+
+                funciones.ResetForm(panelFormulario);
+                empleadoId = 0;
+                await LoadData();
+                MessageBox.Show("El empleado fue desactivado correctamente.", "Información", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
-           
-        }  
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message.ToString(), "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+
+        }
     }
 }

@@ -1,5 +1,7 @@
 ﻿using Empeño.CommonEF.Enum;
+using Empeño.CommonEF.Models;
 using Empeño.WindowsForms.Data;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -45,25 +47,40 @@ namespace Empeño.WindowsForms.Views
 
         private async void btnGuardar_Click(object sender, EventArgs e)
         {
-            if (!string.IsNullOrEmpty(txtNuevo.Text))
+            if (string.IsNullOrEmpty(txtNuevo.Text) || txtNuevo.Text == "Nuevo Password")
             {
-                var usuario = await _context.User.SingleOrDefaultAsync(u => u.Usuario == Program.ChangeUserPassword.Usuario);
-                if (usuario!=null)
-                {
-                    if (usuario.Password==txtViejo.Text)
-                    {
-                        usuario.Password = txtNuevo.Text;
-                        Program.ChangeUserPassword.Password = usuario.Password;
-                        _context.Entry(usuario).State = EntityState.Modified;
-                        await _context.SaveChangesAsync();
+                MessageBox.Show("Ingrese la nueva contraseña.", "Alerta", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+            if (txtNuevo.Text.Length < 4)
+            {
+                MessageBox.Show("La nueva contraseña debe tener al menos 4 caracteres.", "Alerta", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
 
-                        MessageBox.Show("Dato guardado correctamente", "Información", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                        this.Close();
-                    }
-                    else
+            var usuario = await _context.User.SingleOrDefaultAsync(u => u.Usuario == Program.ChangeUserPassword.Usuario);
+            if (usuario != null)
+            {
+                if (usuario.Password == txtViejo.Text)
+                {
+                    usuario.Password = txtNuevo.Text;
+                    Program.ChangeUserPassword.Password = usuario.Password;
+                    _context.Entry(usuario).State = EntityState.Modified;
+                    await _context.SaveChangesAsync();
+
+                    await funciones.SaveBitacora(new ValorBitacora
                     {
-                        MessageBox.Show("La contraseña anterior no es correcta.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    }
+                        Modulo = "Seguridad",
+                        Accion = "CambioPassword",
+                        Valor = JsonConvert.SerializeObject(new { usuario.Usuario })
+                    });
+
+                    MessageBox.Show("Dato guardado correctamente", "Información", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    this.Close();
+                }
+                else
+                {
+                    MessageBox.Show("La contraseña anterior no es correcta.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
         }
