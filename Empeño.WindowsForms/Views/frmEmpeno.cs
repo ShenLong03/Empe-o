@@ -2166,6 +2166,106 @@ namespace Empeño.WindowsForms.Views
                 CargarPagos();
         }
 
+        // Reutilizable desde la versión nueva (frmShell): anula un PAGO por id revirtiendo saldos
+        // EXACTAMENTE como el borrar-pago del clásico (rama switchPago de iconButton4_Click).
+        // El PIN (solo Administrador) lo valida frmShell ANTES de llamar. Devuelve {ok} o {ok=false,error}.
+        public async Task<object> AnularPagoHeadless(int pagoId)
+        {
+            object antes = null, despues = null;
+            using (var tx = _context.Database.BeginTransaction())
+            {
+                try
+                {
+                    var pago = await _context.Pago.FindAsync(pagoId);
+                    if (pago == null) { tx.Rollback(); return new { ok = false, error = "El pago ya no existe." }; }
+                    var empeño = await _context.Empenos.FindAsync(pago.EmpenoId);
+                    if (empeño == null) { tx.Rollback(); return new { ok = false, error = "El empeño no existe." }; }
+
+                    antes = new
+                    {
+                        pago.PagoId, pago.EmpenoId, pago.TipoPago, pago.Monto, pago.MontoAvaluo, pago.MontoBodega, pago.MontoTotal,
+                        EmpenoMontoPendiente = empeño.MontoPendiente, empeño.Estado, empeño.FechaVencimiento
+                    };
+
+                    if (pago.TipoPago == TipoPago.Interes)
+                    {
+                        // Reversar el TOTAL cobrado (interés + bodegaje + avalúo), no solo el interés base
+                        double monto = pago.MontoTotal;
+                        var list = _context.Intereses.Where(i => i.PagoId == pago.PagoId).OrderByDescending(i => i.InteresesId).ToList();
+
+                        foreach (var item in list)
+                        {
+                            if (monto > item.Pagado)
+                            {
+                                monto -= item.Pagado;
+                                item.Pagado = 0;
+                                item.PagoId = null;
+                                _context.Entry(item).State = EntityState.Modified;
+                                empeño.FechaVencimiento = empeño.FechaVencimiento.AddMonths(-1);
+                            }
+                            else
+                            {
+                                bool estabaPago = Math.Truncate(Math.Round(item.Pagado)) >= Math.Truncate(item.MontoTotal);
+                                item.Pagado -= monto;
+                                item.PagoId = null;
+                                monto = 0;
+                                _context.Entry(item).State = EntityState.Modified;
+                                bool ahoraNoPago = Math.Truncate(Math.Round(item.Pagado)) < Math.Truncate(item.MontoTotal);
+                                if (ahoraNoPago && estabaPago)
+                                    empeño.FechaVencimiento = empeño.FechaVencimiento.AddMonths(-1);
+                            }
+                            if (monto == 0) break;
+                        }
+
+                        if (list.Count > 0)
+                        {
+                            int maxRevertidoId = list.Max(i => i.InteresesId);
+                            var futurasImpagas = _context.Intereses
+                                .Where(i => i.EmpenoId == empeño.EmpenoId && i.InteresesId > maxRevertidoId && i.Pagado == 0)
+                                .ToList();
+                            _context.Intereses.RemoveRange(futurasImpagas);
+                        }
+                    }
+                    else
+                    {
+                        empeño.MontoPendiente += pago.Monto;
+                        if (empeño.Estado == Estado.Cancelado || empeño.Retirado || empeño.FechaRetiro != null)
+                        {
+                            empeño.Estado = Estado.Vigente;
+                            empeño.Retirado = false;
+                            empeño.FechaRetiro = null;
+                        }
+                    }
+
+                    _context.Pago.Remove(pago);
+                    _context.Entry(empeño).State = EntityState.Modified;
+                    despues = new { EmpenoMontoPendiente = empeño.MontoPendiente, empeño.Estado, empeño.FechaVencimiento };
+
+                    await _context.SaveChangesAsync();
+                    tx.Commit();
+                }
+                catch (Exception ex)
+                {
+                    tx.Rollback();
+                    await funciones.SaveBitacora(new ValorBitacora
+                    {
+                        Modulo = "Pagos",
+                        Accion = "Eliminar",
+                        Valor = JsonConvert.SerializeObject(new { antes, error = ex.Message })
+                    }, 1, ex.Message);
+                    return new { ok = false, error = "No se pudo anular. La operación fue revertida." };
+                }
+            }
+
+            await funciones.SaveBitacora(new ValorBitacora
+            {
+                Modulo = "Pagos",
+                Accion = "Eliminar",
+                Valor = JsonConvert.SerializeObject(new { antes, despues })
+            });
+            return new { ok = true };
+        }
+
         private void dgvClientes_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
 
@@ -2840,6 +2940,162 @@ namespace Empeño.WindowsForms.Views
             }
         }
 
+        // Edición de empeño reutilizable (clásico + dashboard). MISMA lógica de plata que el botón Guardar:
+        // delta de MontoPendiente al cambiar monto, recálculo de 1ª cuota (monto/bodegaje) al cambiar monto/plan.
+        // Devuelve null si OK, o un mensaje de error/validación.
+        public async Task<string> EditarEmpeno(int id, string descripcion, bool esOro, string comentario, DateTime fecha, string planNombre, double monto, DateTime fechaVencimiento, double avaluo, int empleadoId, int perfilId, int mesesVencimientoDefault)
+        {
+            using (var ctx = new DataContext())
+            {
+                var empeño = await ctx.Empenos.FindAsync(id);
+                if (empeño == null) return "Empeño no encontrado.";
+                if (empeño.FechaRetiro != null || empeño.Retirado || empeño.FechaRetiroAdministrador != null || empeño.RetiradoAdministrador || empeño.Estado == Estado.Anulado)
+                    return "El registro no puede ser modificado.";
+
+                empeño.Descripcion = descripcion;
+                empeño.EditorId = empleadoId;
+                empeño.EsOro = esOro;
+                empeño.Comentario = comentario ?? string.Empty;
+
+                if (empeño.Fecha != fecha && perfilId != 4)
+                {
+                    empeño.Fecha = fecha;
+                    var plan = await ctx.Interes.Where(i => i.Nombre == planNombre).SingleAsync();
+                    if (empeño.Pagos.Count() == 0)
+                        empeño.FechaVencimiento = DateTime.Today.AddMonths(plan.Meses > 0 ? plan.Meses : mesesVencimientoDefault);
+                }
+
+                if (empeño.Monto != monto)
+                {
+                    empeño.MontoPendiente += monto - empeño.Monto;
+                    empeño.Monto = monto;
+                    if (empeño.Intereses.Count() == 1)
+                    {
+                        var cuota = empeño.Intereses.FirstOrDefault();
+                        if (cuota.Pagado == 0)
+                        {
+                            cuota.Monto = empeño.Monto * ((double)empeño.Interes.Porcentaje / (double)100);
+                            ctx.Entry(cuota).State = EntityState.Modified;
+                        }
+                    }
+                }
+
+                int nuevoPlanId = await funciones.GetInteresIdByNombre(planNombre);
+                if (empeño.InteresId != nuevoPlanId && perfilId != 4)
+                {
+                    empeño.InteresId = nuevoPlanId;
+                    if (empeño.Intereses.Count() == 1)
+                    {
+                        var cuota = empeño.Intereses.FirstOrDefault();
+                        if (cuota.Pagado == 0)
+                        {
+                            var plan = await ctx.Interes.FindAsync(empeño.InteresId);
+                            cuota.Monto = empeño.Monto * ((double)plan.Porcentaje / (double)100);
+                            cuota.MontoBodega = plan.Bodegaje != null ? Math.Truncate(empeño.Monto * plan.PorcentajeBodegaje) : 0;
+                            ctx.Entry(cuota).State = EntityState.Modified;
+                        }
+                    }
+                }
+
+                if (empeño.FechaVencimiento != fechaVencimiento && perfilId != 4)
+                    empeño.FechaVencimiento = fechaVencimiento;
+
+                empeño.MontoAvaluo = avaluo;
+
+                ctx.Entry(empeño).State = EntityState.Modified;
+                await ctx.SaveChangesAsync();
+
+                await funciones.SaveBitacora(new ValorBitacora
+                {
+                    Valor = JsonConvert.SerializeObject(empeño),
+                    Modulo = "Empeños",
+                    Accion = "Editar"
+                });
+                return null;
+            }
+        }
+
+        // Alta de empeño reutilizable desde la versión nueva (frmShell). Reusa la lógica EXACTA del
+        // alta clásica (btnGuardarEmpeño_Click_1, rama empeñoId==0): mismo cálculo de la primera cuota
+        // (interés truncado, avalúo cobrado UNA vez, bodegaje), consecutivo, bitácora Empeños+Intereses,
+        // impresión de comprobante (y contrato si el plan tiene avalúo/bodegaje) y correo al cliente.
+        // Devuelve { ok, id, warn } o { ok=false, error }. No cambia el esquema de BD.
+        public async Task<object> CrearEmpeno(int clienteId, string descripcion, string comentario, double monto, double avaluo, double bodegaje, bool esOro, int interesId, DateTime fecha, DateTime fechaVencimiento, int empleadoId, int perfilId, int mesesVencimientoDefault)
+        {
+            if (clienteId <= 0) return new { ok = false, error = "Debe seleccionar un cliente." };
+            if (monto <= 0) return new { ok = false, error = "El monto del empeño no es válido." };
+
+            var interes = await _context.Interes.FindAsync(interesId);
+            if (interes == null) return new { ok = false, error = "El plan de interés no es válido." };
+
+            // Mismo gate del clásico: PerfilId 4 (empleado) no puede alterar la fecha ni el vencimiento.
+            var venceSistema = fecha.Date.AddMonths(interes.Meses > 0 ? interes.Meses : mesesVencimientoDefault);
+            if (perfilId == 4 && (fecha.Date != DateTime.Today || fechaVencimiento.Date != venceSistema.Date))
+                return new { ok = false, error = "Solo un supervisor puede modificar la fecha o el vencimiento." };
+
+            var empeño = new Empeno
+            {
+                EmpenoId = (int)GetConsecutivo(),
+                ClienteId = clienteId,
+                Descripcion = descripcion ?? string.Empty,
+                EmpleadoId = empleadoId == 0 ? 1 : empleadoId,
+                EditorId = empleadoId == 0 ? 1 : empleadoId,
+                EsOro = esOro,
+                Estado = Estado.Vigente,
+                Fecha = fecha,
+                FechaVencimiento = fechaVencimiento,
+                InteresId = interesId,
+                Monto = monto,
+                MontoPendiente = monto,
+                Comentario = comentario ?? string.Empty,
+                MontoAvaluo = avaluo
+            };
+
+            _context.Empenos.Add(empeño);
+            await _context.SaveChangesAsync();
+            await funciones.SaveBitacora(new ValorBitacora { Valor = JsonConvert.SerializeObject(empeño), Modulo = "Empeños", Accion = "Crear" });
+
+            // Primera cuota (Intereses) inline, igual que el clásico: interés = trunc(MontoPendiente * Porcentaje/100),
+            // vence = fecha + 1 mes, avalúo (una vez) y bodegaje en esta primera cuota.
+            var cuota = new Intereses
+            {
+                EmpenoId = empeño.EmpenoId,
+                FechaCreacion = DateTime.Now,
+                FechaVencimiento = fecha.AddMonths(1),
+                Monto = Math.Truncate((double)empeño.MontoPendiente * ((double)interes.Porcentaje / (double)100)),
+                MontoAvaluo = avaluo,
+                MontoBodega = bodegaje
+            };
+            _context.Intereses.Add(cuota);
+            await _context.SaveChangesAsync();
+            await funciones.SaveBitacora(new ValorBitacora { Valor = JsonConvert.SerializeObject(empeño), Modulo = "Intereses", Accion = "Crear" });
+
+            // Impresión (comprobante siempre; contrato si el plan tiene avalúo/bodegaje) y correo, igual al clásico.
+            // Best-effort: el empeño ya quedó guardado; si falla la impresión/correo se informa sin deshacer el alta.
+            string warn = null;
+            try
+            {
+                if ((interes.Avaluo ?? 0) > 0 || (interes.Bodegaje ?? 0) > 0)
+                {
+                    var resp = MessageBox.Show("¿Deseas imprimir el contrato?", "Confirmación", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                    if (resp == DialogResult.Yes)
+                        await PrintContrato(empeño);
+                }
+                await Print(empeño);
+
+                var config = await _context.Configuraciones.FirstOrDefaultAsync();
+                var cliente = await _context.Clientes.FindAsync(empeño.ClienteId);
+                if (cliente != null && !string.IsNullOrEmpty(cliente.Correo))
+                    await emailFuncion.SendMail(cliente.Correo, "Creación de Empeño " + (config != null ? config.Compañia : "") + " #" + empeño.EmpenoId, empeño);
+            }
+            catch (Exception ex)
+            {
+                warn = "El empeño #" + empeño.EmpenoId + " se creó, pero falló la impresión o el correo: " + ex.Message;
+            }
+
+            return new { ok = true, id = empeño.EmpenoId, warn };
+        }
+
         // Reimpresión de un pago por id, reutilizable desde la versión nueva (frmShell).
         // Reusa los métodos de impresión existentes (misma lógica que "Reimprimir Pago" del grid).
         public async Task ReimprimirPagoPorId(int pagoId)
@@ -2865,6 +3121,25 @@ namespace Empeño.WindowsForms.Views
             catch (Exception)
             {
                 MessageBox.Show("No se pudo reimprimir el pago. Verifique que Microsoft Excel esté disponible.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        // Reimpresión del comprobante de un empeño por id, igual que el botón "Reimprimir" clásico del grid:
+        // si está cancelado imprime el retiro, si no el comprobante. Reutilizable desde la versión nueva (frmShell).
+        public async Task ReimprimirEmpenoPorId(int empenoId)
+        {
+            try
+            {
+                var empeño = await _context.Empenos.FindAsync(empenoId);
+                if (empeño == null) return;
+                if (empeño.Estado == Estado.Cancelado)
+                    await PrintRetiro(empeño);
+                else
+                    await Print(empeño);
+            }
+            catch (Exception)
+            {
+                MessageBox.Show("No se pudo reimprimir. Verifique que Microsoft Excel esté disponible.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 

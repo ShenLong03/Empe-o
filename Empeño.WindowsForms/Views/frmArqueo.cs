@@ -76,7 +76,7 @@ namespace Empeño.WindowsForms.Views
         }
 
         #region Funciones
-        public async void Print()
+        public async Task Print()
         {
             var configuracion = await _context.Configuraciones.FirstOrDefaultAsync();
             Microsoft.Office.Interop.Excel.Application cexcel = new Microsoft.Office.Interop.Excel.Application();
@@ -215,7 +215,7 @@ namespace Empeño.WindowsForms.Views
         }
 
         #region Funciones
-        public async void LoadDetalle()
+        public async Task LoadDetalle()
         {
             dgvDetalles.DataSource = null;
             dgvDetalles.Rows.Clear();
@@ -331,8 +331,73 @@ namespace Empeño.WindowsForms.Views
         {
             if (!funciones.ValidatePIN("Editar Empeño"))
                     return;
-            
+
             Print();
+        }
+
+        // ===== Reutilizable desde la versión nueva (frmShell), SIN mostrar el formulario =====
+
+        // Carga la misma cartera y totales que frmArqueo_Load (sin ReviewEmpeños, que es lento
+        // y ya lo corren otros flujos), dejando la grilla y los textboxes poblados para imprimir/enviar.
+        private async Task CargarHeadless()
+        {
+            empeños = await _context.Empenos.Where(x => !x.IsDelete && (x.Estado == Estado.Vigente
+                 || x.Estado == Estado.Pendiente
+                 || x.Estado == Estado.Vencido)
+                 && (!x.Retirado || x.FechaRetiro == null)
+                 && (!x.RetiradoAdministrador || x.FechaRetiroAdministrador == null))
+              .Include(x => x.Intereses).ToListAsync();
+            configuracion = _context.Configuraciones.FirstOrDefault();
+            await LoadDetalle();
+        }
+
+        // Imprime el comprobante de arqueo REUSANDO el Print clásico (mismo Excel), headless.
+        public async Task ImprimirArqueoHeadless(string observaciones)
+        {
+            try
+            {
+                await CargarHeadless();
+                txtObservaciones.Text = observaciones ?? string.Empty;
+                await Print();
+            }
+            catch (Exception)
+            {
+                MessageBox.Show("No se pudo imprimir el arqueo. Verifique que Microsoft Excel esté disponible.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        // Envía el arqueo + observaciones por correo al administrador, REUSANDO SendMailArqueo, headless.
+        public async Task<object> EnviarArqueoHeadless(string observaciones)
+        {
+            await CargarHeadless();
+            txtObservaciones.Text = observaciones ?? string.Empty;
+            if (configuracion == null || string.IsNullOrEmpty(configuracion.EmailNotification))
+                return new { ok = false, error = "No hay correo de aviso configurado (Configuración → Correo de aviso)." };
+
+            var str = "<table><tr><td></td><td>Cantidad</td><td>Valor</td></tr>";
+            str += "<tr><td>Total General</td><td> " + lblTotalPrincipal.Text + " </td><td> " + txtTotalPrincipal.Text + " </td></tr>";
+            str += "<tr><td>Total Vigente</td><td> " + lblTotalAlDia.Text + " </td><td> " + txtTotalAlDia.Text + " </td></tr>";
+            str += "<tr><td>Total Vencidos</td><td> " + lblTotalVencidos.Text + " </td><td> " + txtTotalVencido.Text + " </td></tr>";
+            str += "<tr><td>Total Prorrogra</td><td> " + lblTotalProrroga.Text + " </td><td> " + txtTotalProrroga.Text + " </td></tr>";
+            str += "</table>";
+            await emailFuncion.SendMailArqueo(configuracion.EmailNotification, "Arqueo realizado en la sucursal " + configuracion.Compañia,
+                "Arqueo realizado en la sucursal de Empeños " + configuracion.Compañia + " en " + configuracion.Direccion
+                + "<br /> <h3>Observaciones</h3> " + txtObservaciones.Text, dgvDetalles, str);
+            return new { ok = true };
+        }
+
+        // Marca un empeño como retirado por el administrador (misma lógica del clic en grilla del clásico).
+        public async Task<object> RetirarAdminHeadless(int empenoId)
+        {
+            var empeño = _context.Empenos.Where(x => x.EmpenoId == empenoId).SingleOrDefault();
+            if (empeño == null) return new { ok = false, error = "Empeño no encontrado." };
+            empeño.EditorId = await funciones.GetEmpleadoIdByUser(Program.Usuario.Usuario);
+            empeño.FechaRetiroAdministrador = DateTime.Now;
+            empeño.RetiradoAdministrador = true;
+            empeño.Estado = Estado.Retirado;
+            _context.Entry(empeño).State = EntityState.Modified;
+            await _context.SaveChangesAsync();
+            return new { ok = true };
         }
     }
 }

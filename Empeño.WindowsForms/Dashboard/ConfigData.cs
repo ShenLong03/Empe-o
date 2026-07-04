@@ -3,8 +3,8 @@ using System.Linq;
 
 namespace Empeño.WindowsForms.Dashboard
 {
-    // Config del negocio (solo lectura para mostrar). Editar se hace en el form clásico.
-    // No se toca IVA (por decisión del usuario).
+    // Config del negocio. Lectura para mostrar Y para prellenar el editor de la versión nueva.
+    // El guardado real lo hace frmConfiguracionGeneral.GuardarHeadless (misma lógica del clásico).
     public static class ConfigData
     {
         public static object Get(DataContext ctx)
@@ -20,7 +20,14 @@ namespace Empeño.WindowsForms.Dashboard
                 telefono = c.Telefono,
                 direccion = c.Direccion,
                 meses = c.Meses,
-                email = c.EmailNotification
+                iva = c.IVA ?? 0,
+                avisoEmail = c.EmailNotification,
+                smtpEmail = c.Email,
+                smtpPass = c.Password,
+                smtp = c.SMTP,
+                puerto = c.Puerto,
+                ssl = c.SSL,
+                email = c.EmailNotification   // compat con la vista de lectura actual
             };
         }
     }

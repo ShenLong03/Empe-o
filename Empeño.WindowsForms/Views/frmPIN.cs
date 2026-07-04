@@ -96,6 +96,21 @@ namespace Empeño.WindowsForms.Views
                     if (perfil.Perfil.Nombre == "Administrador" || perfil.Perfil.Nombre == "Supervisor")
                         Program.Acceso = true;
                     break;
+                case "Editar Empeño Admin":
+                    // SOLO Administrador (y SuperUsuario, que ya pasa arriba). Supervisor NO.
+                    if (perfil.Perfil.Nombre == "Administrador")
+                        Program.Acceso = true;
+                    break;
+                case "Borrar Pago Admin":
+                    // Anular un pago: SOLO Administrador (y SuperUsuario). Supervisor/Empleado NO.
+                    if (perfil.Perfil.Nombre == "Administrador")
+                        Program.Acceso = true;
+                    break;
+                case "Configuración Admin":
+                    // Entrar a la sección Configuración: SOLO Administrador (y SuperUsuario). Empleado/Supervisor NO.
+                    if (perfil.Perfil.Nombre == "Administrador")
+                        Program.Acceso = true;
+                    break;
                 case "Borrar Empeño":
                     if (perfil.Perfil.Nombre == "Administrador" || perfil.Perfil.Nombre == "Supervisor")
                         Program.Acceso = true;

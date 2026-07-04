@@ -237,6 +237,94 @@ namespace Empeño.WindowsForms.Views
             this.Close();
         }
 
+        // Cobro/abono reutilizable desde la versión nueva (frmShell), SIN mostrar el formulario.
+        // Replica EXACTO la lógica de Guardar() (mismas guardas, mismo reparto vía PagaInteres/SetPagaInteres,
+        // misma cancelación/retiro cuando el capital llega a 0) reusando los métodos existentes; corre el
+        // Load headless para poblar los controles que PagaInteres/Print leen. Devuelve { ok, warn } o { ok=false, error }.
+        // valorInteres (tope de interés) se pasa por el ctor = pagoIntereses.
+        public async Task<object> CobrarHeadless(double pagoIntereses, double pagoMonto, string comentario)
+        {
+            if (!funciones.ValidatePIN("Empeño"))
+                return new { ok = false, error = "Necesita PIN para cobrar." };
+
+            // Poblar el form como el Load (calcula montoMinimo, txtMontoAPagar, txtInteresAPagar, fechas)
+            // para que PagaInteres/SetPagaInteres/Print (que leen controles) funcionen headless.
+            frmPagar_Load(this, EventArgs.Empty);
+            txtComentario.Text = string.IsNullOrEmpty(comentario) ? "Comentario" : comentario;
+            txtPagaInteres.Text = pagoIntereses.ToString("N2");
+            txtPagaMonto.Text = pagoMonto.ToString("N2");
+
+            double montoPendiente = double.Parse(txtMontoAPagar.Text);
+            double montoIntereses = double.Parse(txtInteresAPagar.Text);
+
+            // Guarda de negocio (igual que Guardar): abonar a capital exige pagar TODO el interés pendiente.
+            if (pagoMonto > 0 && pagoMonto < montoPendiente && pagoIntereses < montoMinimo - 1)
+                return new { ok = false, error = "Para abonar a la prenda debe pagar todos los intereses pendientes (₡" + montoMinimo.ToString("N2") + ")." };
+
+            // Clamp igual que Guardar.
+            if (pagoMonto > montoPendiente) { pagoMonto = montoPendiente; txtPagaMonto.Text = pagoMonto.ToString("N2"); }
+            if (pagoIntereses > montoIntereses) { pagoIntereses = montoIntereses; txtPagaInteres.Text = pagoIntereses.ToString("N2"); }
+
+            if (pagoIntereses <= 0 && pagoMonto <= 0)
+                return new { ok = false, error = "Ingresá un pago de interés o un abono a capital." };
+
+            string warn = null;
+            empeño = null;
+            var empeñoTemp = _context.Empenos.Find(empeñoId);
+
+            if (pagoMonto > 0)
+            {
+                var pago = new Pago
+                {
+                    EmpenoId = empeñoTemp.EmpenoId,
+                    Consecutivo = GetConsecutivo(),
+                    Comentario = txtComentario.Text == "Comentario" ? string.Empty : txtComentario.Text,
+                    EmpleadoId = Program.EmpleadoId,
+                    Fecha = DateTime.Now,
+                    Monto = pagoMonto,
+                    TipoPago = TipoPago.Principal,
+                };
+                _context.Pago.Add(pago);
+                await _context.SaveChangesAsync();
+                await funciones.SaveBitacora(new ValorBitacora { Valor = JsonConvert.SerializeObject(pago), Modulo = "Pagos", Accion = "Crear" });
+
+                empeñoTemp.MontoPendiente -= pago.Monto;
+
+                if (empeñoTemp.MontoPendiente < 1)
+                {
+                    Pago pagoInteres = null;
+                    try { pagoInteres = await SetPagaInteres(pagoIntereses, false); }
+                    catch (Exception ex) { warn = "El pago se registró, pero falló algo al procesar el interés: " + ex.Message; }
+                    empeñoTemp.Estado = Estado.Cancelado;
+                    empeñoTemp.Retirado = true;
+                    empeñoTemp.FechaRetiro = DateTime.Today;
+                    _context.Intereses.RemoveRange(_context.Intereses.Where(i => i.EmpenoId == empeñoTemp.EmpenoId && i.Pagado == 0));
+                    _context.Entry(empeñoTemp).State = EntityState.Modified;
+                    await _context.SaveChangesAsync();
+                    try { if (pagoInteres == null) await PrintRetiro(empeñoTemp, pago); else await PrintRetiro(empeñoTemp, pago, pagoInteres); }
+                    catch (Exception ex) { warn = "El pago se registró, pero falló la impresión: " + ex.Message; }
+                }
+                else
+                {
+                    empeñoTemp.Estado = Estado.Vigente;
+                    _context.Entry(empeñoTemp).State = EntityState.Modified;
+                    await _context.SaveChangesAsync();
+                    try { await PagaInteres(pagoIntereses, true); }
+                    catch (Exception ex) { warn = "El pago se registró, pero falló la impresión: " + ex.Message; }
+                    try { await PrintAbono(empeñoTemp, pago); }
+                    catch (Exception ex) { warn = "El pago se registró, pero falló la impresión: " + ex.Message; }
+                }
+            }
+            else
+            {
+                try { await PagaInteres(pagoIntereses, true); }
+                catch (Exception ex) { warn = "El pago se registró, pero falló la impresión: " + ex.Message; }
+            }
+
+            await _context.SaveChangesAsync();
+            return new { ok = true, warn };
+        }
+
         private double? GetConsecutivo()
         {
             using (DataContext dataContext= new DataContext())

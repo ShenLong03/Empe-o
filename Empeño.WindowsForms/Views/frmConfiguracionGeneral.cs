@@ -186,6 +186,74 @@ namespace Empeño.WindowsForms.Views
             }
         }
 
+        // Guardado reutilizable desde la versión nueva (frmShell), sin mostrar el formulario.
+        // Misma lógica que btnGuardar_Click (validación meses/puerto/IVA + upsert + bitácora), con returns limpios.
+        public async Task<object> GuardarHeadless(Newtonsoft.Json.Linq.JObject d)
+        {
+            int meses;
+            if (!int.TryParse((string)d["meses"], out meses) || meses <= 0)
+                return new { ok = false, error = "El plazo (Meses) debe ser un número entero mayor a cero." };
+            int puerto = 0;
+            string pStr = (string)d["puerto"];
+            if (!string.IsNullOrEmpty(pStr) && !int.TryParse(pStr, out puerto))
+                return new { ok = false, error = "El puerto debe ser un número entero." };
+            double iva = 0;
+            string ivStr = (string)d["iva"];
+            if (!string.IsNullOrEmpty(ivStr) && !double.TryParse(ivStr, out iva))
+                return new { ok = false, error = "El IVA debe ser un número." };
+            if (iva < 0 || iva > 100)
+                return new { ok = false, error = "El IVA debe estar entre 0 y 100." };
+
+            var c = _context.Configuraciones.FirstOrDefault();
+            string accion;
+            if (c == null)
+            {
+                accion = "Crear";
+                c = new Configuracion();
+                c.Identificacion = (string)d["identificacion"];
+                c.Compañia = (string)d["compania"];
+                c.Nombre = (string)d["nombre"];
+                c.Telefono = (string)d["telefono"];
+                c.Direccion = (string)d["direccion"];
+                c.Meses = meses;
+                c.IVA = iva;
+                c.EmailNotification = (string)d["avisoEmail"];
+                c.Email = (string)d["smtpEmail"];
+                c.Password = (string)d["smtpPass"];
+                c.SMTP = (string)d["smtp"];
+                c.Puerto = puerto;
+                c.SSL = d["ssl"] != null && (bool)d["ssl"];
+                _context.Configuraciones.Add(c);
+            }
+            else
+            {
+                accion = "Editar";
+                c.Identificacion = (string)d["identificacion"];
+                c.Compañia = (string)d["compania"];
+                c.Nombre = (string)d["nombre"];
+                c.Telefono = (string)d["telefono"];
+                c.Direccion = (string)d["direccion"];
+                c.Meses = meses;
+                c.IVA = iva;
+                c.EmailNotification = (string)d["avisoEmail"];
+                c.Email = (string)d["smtpEmail"];
+                c.Password = (string)d["smtpPass"];
+                c.SMTP = (string)d["smtp"];
+                c.Puerto = puerto;
+                c.SSL = d["ssl"] != null && (bool)d["ssl"];
+                _context.Entry(c).State = EntityState.Modified;
+            }
+            await _context.SaveChangesAsync();
+
+            await funciones.SaveBitacora(new ValorBitacora
+            {
+                Modulo = "Configuración",
+                Accion = accion,
+                Valor = JsonConvert.SerializeObject(new { Compañia = (string)d["compania"], Nombre = (string)d["nombre"], Identificacion = (string)d["identificacion"], Telefono = (string)d["telefono"], Direccion = (string)d["direccion"], Meses = meses, IVA = iva, EmailNotification = (string)d["avisoEmail"] })
+            });
+            return new { ok = true };
+        }
+
         private void label15_Click(object sender, EventArgs e)
         {
 

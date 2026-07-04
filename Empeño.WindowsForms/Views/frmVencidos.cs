@@ -309,7 +309,7 @@ namespace Empeño.WindowsForms.Views
         }
 
         #region Funciones
-        public async void LoadDetalle()
+        public async Task LoadDetalle()
         {
             dgvDetalles.DataSource = null;
             dgvDetalles.Rows.Clear();
@@ -440,6 +440,94 @@ namespace Empeño.WindowsForms.Views
         private async void btnPrint_Click(object sender, EventArgs e)
         {
            await Print();
+        }
+
+        // ===== Reutilizable desde la versión nueva (frmShell), SIN mostrar el formulario =====
+
+        // Carga los vencidos y totales (como el Load, sin ReviewEmpeños que es lento) para imprimir/enviar.
+        private async Task CargarHeadless()
+        {
+            empeños = await _context.Empenos.Where(x => !x.IsDelete && x.Estado == Estado.Vencido
+             && !x.Retirado && x.FechaRetiro == null
+             && !x.RetiradoAdministrador && x.FechaRetiroAdministrador == null)
+          .Include(x => x.Intereses).ToListAsync();
+            configuracion = _context.Configuraciones.FirstOrDefault();
+            await LoadDetalle();
+        }
+
+        // Imprime el comprobante de vencidos REUSANDO el Print clásico (mismo Excel), headless.
+        public async Task ImprimirVencidosHeadless()
+        {
+            try
+            {
+                await CargarHeadless();
+                await Print();
+            }
+            catch (Exception)
+            {
+                MessageBox.Show("No se pudo imprimir vencidos. Verifique que Microsoft Excel esté disponible.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        // Envía el proceso de vencidos por correo REUSANDO SendMailVencidos, headless.
+        public async Task<object> EnviarVencidosHeadless()
+        {
+            await CargarHeadless();
+            if (configuracion == null || string.IsNullOrEmpty(configuracion.EmailNotification))
+                return new { ok = false, error = "No hay correo de aviso configurado (Configuración → Correo de aviso)." };
+
+            var empleado = await _context.Empleados.FindAsync(Program.EmpleadoId);
+            var str = "<p>" +
+                "<table><tr><td></td><td>Cantidad</td><td>Valor</td></tr>" +
+                "<tr><td>Total Vencidos</td><td>" + lblTotalVencidos.Text + "</td><td>" + txtTotalVencido.Text + "</td></tr>" +
+                "<tr><td>Total Vencidos Retirados</td><td>" + lblTotalRetirados.Text + "</td><td>" + txtTotalRetirados.Text + "</td></tr>" +
+                "<tr><td>Total Vencidos Prorroga</td><td>" + lblTotalProrroga.Text + "</td><td>" + txtTotalProrroga.Text + "</td></tr>" +
+                "</table></p>";
+
+            await emailFuncion.SendMailVencidos(configuracion.EmailNotification,
+                "Notificacion del Proceso de Vencidos " + configuracion.Compañia,
+                "<p>Se ha realizado departe del Local " + configuracion.Compañia + " en "
+                + configuracion.Direccion + ", un procesos de sacar vencidos por " + (empleado != null ? empleado.Nombre : "") + "</p>",
+                dgvDetalles, str);
+            return new { ok = true };
+        }
+
+        // Saca un vencido (retiro administrativo): misma lógica del clic en grilla del clásico —
+        // marca retiro admin, crea el registro Vencimientos con consecutivo, bitácora, y reimprime
+        // el comprobante de vencimiento (PrintVencido es data-driven, toma la entidad).
+        public async Task<object> SacarVencidoHeadless(int empenoId)
+        {
+            var empeño = await _context.Empenos.Where(x => x.EmpenoId == empenoId).SingleOrDefaultAsync();
+            if (empeño == null) return new { ok = false, error = "Empeño no encontrado." };
+
+            empeño.EditorId = await funciones.GetEmpleadoIdByUser(Program.Usuario.Usuario);
+            empeño.FechaRetiroAdministrador = DateTime.Now;
+            empeño.RetiradoAdministrador = true;
+            empeño.Estado = Estado.Retirado;
+            _context.Entry(empeño).State = EntityState.Modified;
+            await _context.SaveChangesAsync();
+
+            var vencimiento = new Vencimientos
+            {
+                Consecutivo = _context.Vencimientos.Any() ? _context.Vencimientos.Max(v => v.Consecutivo) + 1 : 1,
+                EmpenoId = empenoId,
+                EmpleadoId = empeño.EditorId.Value,
+                Fecha = DateTime.Today,
+            };
+            _context.Vencimientos.Add(vencimiento);
+            await _context.SaveChangesAsync();
+
+            await funciones.SaveBitacora(new ValorBitacora
+            {
+                Modulo = "Vencidos",
+                Accion = "Retiro Administrativo",
+                Valor = JsonConvert.SerializeObject(new { empeño.EmpenoId, vencimiento.Consecutivo })
+            });
+
+            string warn = null;
+            try { await PrintVencido(empeño, vencimiento); }
+            catch (Exception ex) { warn = "Se sacó el vencido #" + empenoId + ", pero falló el comprobante: " + ex.Message; }
+            return new { ok = true, warn };
         }
     }
 }

@@ -1,0 +1,220 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Empeños · Ingreso</title>
+<style>
+  :root{--bg:#131230;--sidebar:#17153c;--surface:#1e1c48;--surface-2:#262159;
+    --ink:#ECEBFF;--muted:#9b98cc;--faint:#726ea6;--violet:#ac7ef1;--pink:#f9769b;--orange:#fd8a72;--blue:#8b5cf6;
+    --green:#2ed3a7;--red:#ff5d73;--amber:#ffb44d;--line:rgba(172,126,241,.15);--line-2:rgba(172,126,241,.28);
+    --font:"Segoe UI",system-ui,-apple-system,"Helvetica Neue",Arial,sans-serif}
+  /* Tema light: base clara. El panel de marca (brandside) queda de color a propósito. */
+  html.light{--bg:#f3f3fb;--sidebar:#ffffff;--surface:#ffffff;--surface-2:#eef0f8;
+    --ink:#211d3f;--muted:#5c5885;--faint:#928eb0;--violet:#7c3aed;--pink:#e0559b;--blue:#6d5cf0;
+    --green:#0fa87c;--red:#e23b56;--amber:#c9820f;--line:rgba(40,20,90,.11);--line-2:rgba(124,58,237,.26)}
+  html.light body{background:radial-gradient(900px 520px at 90% -10%, rgba(214,58,176,.14), transparent 60%),radial-gradient(760px 460px at 6% 108%, rgba(124,58,237,.08), transparent 58%),var(--bg)}
+  html.light .splash{background:radial-gradient(900px 520px at 50% 26%, rgba(214,58,176,.14), transparent 62%),var(--bg)}
+  *{box-sizing:border-box}
+  html,body{margin:0;height:100%;overflow:hidden}
+  body{font-family:var(--font);color:var(--ink);-webkit-font-smoothing:antialiased;
+    background:radial-gradient(1000px 560px at 88% -10%, rgba(230,75,196,.28), transparent 60%),
+      radial-gradient(760px 480px at 50% -4%, rgba(233,68,180,.16), transparent 62%),
+      radial-gradient(820px 520px at -6% 112%, rgba(172,126,241,.20), transparent 55%),var(--bg)}
+  .win{position:relative;height:100vh;width:100vw;display:flex;align-items:center;justify-content:center}
+  /* barra superior para arrastrar + controles */
+  .titlebar{position:absolute;top:0;left:0;right:0;height:42px;display:flex;align-items:center;padding:0 8px 0 16px;z-index:5}
+  .titlebar .drag{flex:1;height:100%;display:flex;align-items:center;gap:9px;color:var(--faint);font-size:.74rem;font-weight:700;letter-spacing:.04em}
+  .titlebar .drag .dm{width:16px;height:16px;border-radius:5px;background:linear-gradient(135deg,var(--violet),var(--pink))}
+  .wctl{display:flex;gap:2px}
+  .wctl button{width:32px;height:30px;border:0;background:transparent;color:var(--faint);border-radius:8px;cursor:pointer;display:grid;place-items:center}
+  .wctl button:hover{background:var(--surface-2);color:var(--ink)}.wctl button.close:hover{background:var(--red);color:#fff}.wctl svg{width:15px;height:15px}
+  /* tarjeta login */
+  .card{width:min(860px,92vw);height:min(500px,84vh);display:grid;grid-template-columns:1fr 1.05fr;
+    background:var(--surface);border:1px solid var(--line-2);border-radius:22px;overflow:hidden;
+    box-shadow:0 30px 80px rgba(0,0,0,.5)}
+  @media(max-width:720px){.card{grid-template-columns:1fr}.brandside{display:none}}
+  /* panel izquierdo de marca */
+  .brandside{position:relative;padding:34px 32px;display:flex;flex-direction:column;justify-content:space-between;
+    background:radial-gradient(360px 300px at 80% 6%, rgba(230,75,196,.42), transparent 66%),linear-gradient(155deg,#3a1c6e,#221645 62%);overflow:hidden}
+  .brandside::after{content:"";position:absolute;width:300px;height:300px;border-radius:50%;right:-90px;top:-80px;
+    background:radial-gradient(circle,rgba(233,68,180,.65),transparent 68%);filter:blur(6px)}
+  .brandside .logo{display:flex;align-items:center;gap:12px;position:relative;z-index:1}
+  .brandside .mk{width:46px;height:46px;border-radius:13px;background:linear-gradient(135deg,var(--violet),var(--pink));
+    display:grid;place-items:center;color:#171034;font-weight:900;font-size:1.5rem;box-shadow:0 8px 22px rgba(172,126,241,.5)}
+  .brandside .logo .t{font-weight:800;font-size:1.12rem;line-height:1}.brandside .logo .s{font-size:.68rem;color:var(--amber);font-weight:700;margin-top:3px}
+  .brandside .pitch{position:relative;z-index:1}
+  .brandside .pitch h2{font-size:1.6rem;font-weight:800;letter-spacing:-.02em;margin:0 0 8px;line-height:1.15}
+  .brandside .pitch p{color:var(--muted);font-size:.86rem;margin:0;max-width:250px;line-height:1.5}
+  .brandside .ver{position:relative;z-index:1;color:var(--faint);font-size:.72rem;font-weight:700}
+  /* panel derecho formulario */
+  .formside{padding:40px 42px;display:flex;flex-direction:column;justify-content:center}
+  .formside h1{font-size:1.5rem;font-weight:800;letter-spacing:-.02em;margin:0}
+  .formside .hint{color:var(--muted);font-size:.85rem;margin:4px 0 26px}
+  .field{margin-bottom:16px}
+  .field label{display:block;font-size:.7rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--faint);margin-bottom:7px}
+  .field .box{display:flex;align-items:center;gap:10px;background:var(--bg);border:1px solid var(--line);border-radius:12px;padding:12px 14px;transition:border-color .15s,box-shadow .15s}
+  .field .box:focus-within{border-color:var(--line-2);box-shadow:0 0 0 3px rgba(172,126,241,.12)}
+  .field .box svg{width:17px;height:17px;color:var(--faint);flex:none}
+  .field input{flex:1;background:transparent;border:0;outline:0;color:var(--ink);font-family:inherit;font-size:.95rem}
+  .field input::placeholder{color:var(--faint)}
+  .eye{background:transparent;border:0;color:var(--faint);cursor:pointer;display:grid;place-items:center;padding:0}.eye:hover{color:var(--muted)}.eye svg{width:17px;height:17px}
+  .err{min-height:18px;color:var(--red);font-size:.8rem;font-weight:700;margin:2px 2px 8px;opacity:0;transition:opacity .15s}
+  .err.show{opacity:1}
+  .btn-in{width:100%;border:0;border-radius:12px;padding:13px;font-family:inherit;font-weight:800;font-size:.98rem;cursor:pointer;
+    color:#fff;background:linear-gradient(135deg,var(--violet),#8a5be0);box-shadow:0 10px 26px rgba(138,91,224,.4);
+    display:flex;align-items:center;justify-content:center;gap:9px;transition:transform .08s,filter .15s}
+  .btn-in:hover{filter:brightness(1.07)}.btn-in:active{transform:translateY(1px)}
+  .btn-in:disabled{filter:saturate(.5) brightness(.8);cursor:default}
+  .btn-in .sp{width:16px;height:16px;border:2px solid rgba(255,255,255,.35);border-top-color:#fff;border-radius:50%;animation:spin .7s linear infinite;display:none}
+  .btn-in.loading .sp{display:block}.btn-in.loading .lbl{opacity:.85}
+  .forgot{display:block;text-align:center;margin-top:16px;color:var(--faint);font-size:.8rem;font-weight:600;cursor:pointer;text-decoration:none}
+  .forgot:hover{color:var(--muted)}
+  .note{text-align:center;font-size:.76rem;color:var(--amber);margin-top:8px;min-height:16px;opacity:0;transition:opacity .2s}.note.show{opacity:1}
+  @keyframes spin{to{transform:rotate(360deg)}}
+  @keyframes shake{10%,90%{transform:translateX(-1px)}20%,80%{transform:translateX(2px)}30%,50%,70%{transform:translateX(-4px)}40%,60%{transform:translateX(4px)}}
+  .shake{animation:shake .5s}
+  /* splash */
+  .splash{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;
+    opacity:0;visibility:hidden;transition:opacity .5s;z-index:4;
+    background:radial-gradient(900px 520px at 50% 26%, rgba(230,75,196,.26), transparent 62%),radial-gradient(700px 460px at 50% 110%, rgba(172,126,241,.16), transparent 60%),var(--bg)}
+  .splash.show{opacity:1;visibility:visible}
+  .splash .mk{width:58px;height:58px;border-radius:16px;background:linear-gradient(135deg,var(--violet),var(--pink));
+    display:grid;place-items:center;color:#171034;font-weight:900;font-size:1.9rem;box-shadow:0 10px 30px rgba(172,126,241,.5);margin-bottom:14px}
+  .splash .hey{color:var(--muted);font-size:.8rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase}
+  .splash .who{font-size:2rem;font-weight:800;letter-spacing:-.02em;margin-top:2px}
+  .ring{position:relative;width:132px;height:132px;margin-top:22px}
+  .ring svg{transform:rotate(-90deg)}
+  .ring .pct{position:absolute;inset:0;display:grid;place-items:center;font-size:1.4rem;font-weight:800;color:var(--violet)}
+  .splash .ver{margin-top:20px;color:var(--faint);font-size:.74rem;font-weight:700}
+</style>
+</head>
+<body>
+<div class="win">
+  <div class="titlebar">
+    <div class="drag" id="drag"><span class="dm"></span> Sistema de Empeños</div>
+    <div class="wctl">
+      <button id="min" title="Minimizar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14"/></svg></button>
+      <button class="close" id="close" title="Cerrar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+    </div>
+  </div>
+
+  <div class="card" id="card">
+    <div class="brandside">
+      <div class="logo">
+        <div class="mk">E</div>
+        <div><div class="t">Empeños</div><div class="s">Más cerca de vos</div></div>
+      </div>
+      <div class="pitch">
+        <h2>Bienvenido de nuevo</h2>
+        <p>Gestioná empeños, cobros, caja y reportes desde un solo lugar.</p>
+      </div>
+      <div class="ver">v2.0 · Nueva versión</div>
+    </div>
+
+    <div class="formside">
+      <h1>Ingreso</h1>
+      <div class="hint">Entrá con tu usuario para continuar.</div>
+      <form id="form" autocomplete="off">
+        <div class="field">
+          <label>Usuario</label>
+          <div class="box">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+            <input id="user" placeholder="Tu usuario" autocomplete="off" autofocus>
+          </div>
+        </div>
+        <div class="field">
+          <label>Contraseña</label>
+          <div class="box">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+            <input id="pass" type="password" placeholder="Tu contraseña" autocomplete="off">
+            <button type="button" class="eye" id="eye" title="Mostrar/ocultar">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7z"/><circle cx="12" cy="12" r="3"/></svg>
+            </button>
+          </div>
+        </div>
+        <div class="err" id="err"></div>
+        <button type="submit" class="btn-in" id="go"><span class="sp"></span><span class="lbl">Ingresar</span></button>
+      </form>
+      <a class="forgot" id="forgot">¿Olvidaste tu contraseña?</a>
+      <div class="note" id="note"></div>
+    </div>
+  </div>
+
+  <div class="splash" id="splash">
+    <div class="mk">E</div>
+    <div class="hey">Bienvenido</div>
+    <div class="who" id="who">Admin</div>
+    <div class="ring">
+      <svg width="132" height="132" viewBox="0 0 132 132">
+        <circle cx="66" cy="66" r="52" fill="none" stroke="rgba(172,126,241,.16)" stroke-width="10"/>
+        <circle id="arc" cx="66" cy="66" r="52" fill="none" stroke="url(#g)" stroke-width="10" stroke-linecap="round"
+          stroke-dasharray="326.7" stroke-dashoffset="326.7"/>
+        <defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ac7ef1"/><stop offset="1" stop-color="#f9769b"/></linearGradient></defs>
+      </svg>
+      <div class="pct" id="pct">0%</div>
+    </div>
+    <div class="ver">Preparando tu sesión…</div>
+  </div>
+</div>
+
+<script>
+  var HOST = !!(window.chrome && window.chrome.webview);
+  function post(m){ try{ if(HOST) window.chrome.webview.postMessage(JSON.stringify(m)); }catch(e){} }
+
+  // arrastre + controles de ventana
+  document.getElementById('drag').addEventListener('mousedown', function(){ post({type:'startdrag'}); });
+  document.getElementById('min').addEventListener('click', function(){ post({type:'min'}); });
+  document.getElementById('close').addEventListener('click', function(){ post({type:'close'}); });
+
+  // mostrar/ocultar contraseña
+  var pass = document.getElementById('pass');
+  document.getElementById('eye').addEventListener('click', function(){ pass.type = pass.type === 'password' ? 'text' : 'password'; pass.focus(); });
+
+  // "olvidó contraseña" — en el clásico no hacía nada; damos una guía sin inventar lógica
+  document.getElementById('forgot').addEventListener('click', function(){
+    var n = document.getElementById('note'); n.textContent = 'Pedile a un administrador que restablezca tu contraseña.'; n.classList.add('show');
+    setTimeout(function(){ n.classList.remove('show'); }, 5000);
+  });
+
+  var go = document.getElementById('go'), err = document.getElementById('err');
+  function showErr(msg){
+    err.textContent = msg; err.classList.add('show');
+    go.classList.remove('loading'); go.disabled = false;
+    var c = document.getElementById('card'); c.classList.remove('shake'); void c.offsetWidth; c.classList.add('shake');
+  }
+
+  document.getElementById('form').addEventListener('submit', function(ev){
+    ev.preventDefault();
+    var u = document.getElementById('user').value.trim(), p = pass.value;
+    err.classList.remove('show');
+    if(!u || !p){ showErr('Ingresá usuario y contraseña.'); return; }
+    go.classList.add('loading'); go.disabled = true; go.querySelector('.lbl').textContent = 'Ingresando…';
+    if(HOST) post({type:'login', user:u, pass:p});
+    else { window.loginOk('Admin'); }   // fallback fuera del WebView (previsualización)
+  });
+
+  // ===== Callbacks desde C# =====
+  window.loginFail = function(msg){
+    go.querySelector('.lbl').textContent = 'Ingresar';
+    showErr(msg || 'Ingreso incorrecto');
+    pass.value = ''; pass.focus();
+  };
+
+  window.loginOk = function(user){
+    document.getElementById('who').textContent = user || 'Bienvenido';
+    var sp = document.getElementById('splash'); sp.classList.add('show');
+    // anillo 0→100 y luego entrar al dashboard
+    var arc = document.getElementById('arc'), pctEl = document.getElementById('pct');
+    var C = 326.7, val = 0;
+    var t = setInterval(function(){
+      val += 1;
+      if(val >= 100){ val = 100; clearInterval(t); }
+      arc.setAttribute('stroke-dashoffset', (C * (1 - val/100)).toFixed(1));
+      pctEl.textContent = val + '%';
+      if(val === 100){ setTimeout(function(){ post({type:'enter'}); }, 450); }
+    }, 17);
+  };
+</script>
+</body>
+</html>
