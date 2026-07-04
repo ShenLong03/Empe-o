@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Instalador de la VERSIÓN NUEVA (WebView2) generado con WiX.
+  CONVIVE con la versión clásica ya instalada en los locales: usa un UpgradeCode,
+  ProductName y carpeta de instalación DISTINTOS, así Windows lo trata como un
+  producto independiente (entrada aparte en "Agregar o quitar programas",
+  carpeta propia en Archivos de programa, y su propio acceso directo).
+  Empaqueta todo bin\Debug (exe + DLLs + WebView2Loader + Dashboard\*.html + Comprobantes).
+  Build:  wix build Installer.wxs -o "Empeños Nueva V2.0.0.msi"
+-->
+<Wix xmlns="http://wixtoolset.org/schemas/v4/wxs">
+  <Package Name="Empeños Nueva Versión"
+           Manufacturer="Tico Manager"
+           Version="2.0.0"
+           UpgradeCode="99FC9FF4-D354-49BB-8E48-7A2440CC6507"
+           Scope="perMachine"
+           Compressed="yes">
+
+    <!-- Solo bloquea instalar SOBRE una versión MÁS NUEVA de sí mismo; NO toca la clásica (otro UpgradeCode). -->
+    <MajorUpgrade DowngradeErrorMessage="Ya hay una versión más reciente de Empeños Nueva Versión instalada." />
+    <MediaTemplate EmbedCab="yes" />
+
+    <StandardDirectory Id="ProgramFiles6432Folder">
+      <Directory Id="MFGDIR" Name="Tico Manager">
+        <Directory Id="INSTALLFOLDER" Name="Empeños Nueva Versión" />
+      </Directory>
+    </StandardDirectory>
+    <StandardDirectory Id="ProgramMenuFolder">
+      <Directory Id="SHORTCUTDIR" Name="Empeños Nueva Versión" />
+    </StandardDirectory>
+
+    <Feature Id="Main" Title="Empeños Nueva Versión" Level="1">
+      <ComponentGroupRef Id="AppFiles" />
+      <ComponentRef Id="Shortcuts" />
+    </Feature>
+
+    <!-- Cosecha TODO bin\Debug (recursivo), recreando subcarpetas (Dashboard, runtimes, Comprobantes, idiomas). -->
+    <ComponentGroup Id="AppFiles" Directory="INSTALLFOLDER">
+      <Files Include="bin\Debug\**" />
+    </ComponentGroup>
+
+    <!-- Acceso directo en el menú Inicio (no toca el de la versión clásica). -->
+    <Component Id="Shortcuts" Directory="SHORTCUTDIR" Guid="67A1AFD9-0872-4998-AD88-C901B61522D8">
+      <Shortcut Id="StartShortcut"
+                Name="Empeños Nueva Versión"
+                Description="Sistema de Empeños — versión nueva (WebView2)"
+                Target="[INSTALLFOLDER]Empeño.WindowsForms.Nueva.exe"
+                WorkingDirectory="INSTALLFOLDER" />
+      <RemoveFolder Id="RemoveShortcutDir" On="uninstall" />
+      <RegistryValue Root="HKCU" Key="Software\TicoManager\EmpenosNuevaVersion" Name="installed" Type="integer" Value="1" KeyPath="yes" />
+    </Component>
+
+  </Package>
+</Wix>
