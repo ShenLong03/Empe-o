@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Instalador .EXE (WiX Burn) de la versión nueva.
+  Encadena: (1) Runtime de WebView2 (solo si falta) + (2) el MSI per-user de la app.
+  Un solo doble-clic. Convive con la versión clásica (el MSI ya usa UpgradeCode/ProductName/carpeta propios).
+  Build:  wix build Bundle.wxs -ext WixToolset.BootstrapperApplications.wixext -ext WixToolset.Util.wixext -arch x64 -o "Empeños Nueva Setup.exe"
+-->
+<Wix xmlns="http://wixtoolset.org/schemas/v4/wxs"
+     xmlns:bal="http://wixtoolset.org/schemas/v4/wxs/bal"
+     xmlns:util="http://wixtoolset.org/schemas/v4/wxs/util">
+
+  <Bundle Name="Empeños Nueva Versión"
+          Manufacturer="Tico Manager"
+          Version="2.0.0"
+          UpgradeCode="5415855D-87DD-449C-9678-D2092AC6395A">
+
+    <BootstrapperApplication>
+      <bal:WixStandardBootstrapperApplication Theme="hyperlinkLicense" LicenseUrl="" SuppressOptionsUI="yes" />
+    </BootstrapperApplication>
+
+    <!-- ¿Ya está instalado el Runtime de WebView2 (Evergreen, per-machine x64)? Si el valor 'pv' existe,
+         NO se reinstala (y así el bundle no fuerza UAC en las PCs que ya lo tienen). -->
+    <util:RegistrySearch
+        Root="HKLM"
+        Key="SOFTWARE\WOW6432Node\Microsoft\EdgeUpdate\Clients\{F3017226-FE2A-4295-8BDF-00C3A9A7E4C5}"
+        Value="pv"
+        Variable="Wv2Version" />
+
+    <Chain>
+      <!-- Runtime de WebView2: solo se instala si NO fue detectado. Permanent = no se desinstala con la app (es compartido). -->
+      <ExePackage
+          SourceFile="MicrosoftEdgeWebview2Setup.exe"
+          DisplayName="Runtime de WebView2 (Microsoft Edge)"
+          InstallArguments=" /silent /install"
+          Permanent="yes"
+          Vital="no"
+          DetectCondition="Wv2Version" />
+
+      <!-- La aplicación (instalación por-usuario, sin admin). -->
+      <MsiPackage SourceFile="Empeños Nueva V2.0.0.msi" Vital="yes" />
+    </Chain>
+
+  </Bundle>
+</Wix>
