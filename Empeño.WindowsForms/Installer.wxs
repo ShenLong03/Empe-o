@@ -13,16 +13,19 @@
            Manufacturer="Tico Manager"
            Version="2.0.0"
            UpgradeCode="99FC9FF4-D354-49BB-8E48-7A2440CC6507"
-           Scope="perMachine"
+           Scope="perUser"
            Compressed="yes">
 
     <!-- Solo bloquea instalar SOBRE una versión MÁS NUEVA de sí mismo; NO toca la clásica (otro UpgradeCode). -->
     <MajorUpgrade DowngradeErrorMessage="Ya hay una versión más reciente de Empeños Nueva Versión instalada." />
     <MediaTemplate EmbedCab="yes" />
 
-    <StandardDirectory Id="ProgramFiles6432Folder">
-      <Directory Id="MFGDIR" Name="Tico Manager">
-        <Directory Id="INSTALLFOLDER" Name="Empeños Nueva Versión" />
+    <!-- Instalación POR USUARIO (LocalAppData) → NO requiere administrador; el doble-clic funciona sin UAC. -->
+    <StandardDirectory Id="LocalAppDataFolder">
+      <Directory Id="ProgramsDir" Name="Programs">
+        <Directory Id="MFGDIR" Name="Tico Manager">
+          <Directory Id="INSTALLFOLDER" Name="Empeños Nueva Versión" />
+        </Directory>
       </Directory>
     </StandardDirectory>
     <StandardDirectory Id="ProgramMenuFolder">
