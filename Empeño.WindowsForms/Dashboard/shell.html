@@ -258,7 +258,6 @@
             <div class="eyebrow">Acciones de caja</div>
             <button class="btn primary" id="btnCierre" style="justify-content:center;padding:14px"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="6" width="18" height="12" rx="2"/><circle cx="12" cy="12" r="2.5"/></svg>Realizar cierre de caja</button>
             <button class="btn ghost" id="btnHistCierre" style="justify-content:center;padding:14px"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>Historial de cierres</button>
-            <button class="btn violet" id="btnArqueo" style="justify-content:center;padding:14px"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg>Arqueo de cartera</button>
           </div>
           <div class="panel"><div class="eyebrow" style="margin-bottom:10px">Resumen de hoy</div><div id="cajaresumen"></div></div>
         </div>
@@ -275,6 +274,7 @@
           <button class="chip on" data-rt="ingresos">Ingresos vs. Egresos</button>
           <button class="chip" data-rt="empenos">Reporte de empeños</button>
           <button class="chip" data-rt="vencidos">Cartera vencida</button>
+          <button class="chip" data-rt="arqueo">Arqueo</button>
         </div>
 
         <!-- Ingresos vs Egresos -->
@@ -344,6 +344,10 @@
   window.__prefsLoaded=function(data){try{PREFS=data?(typeof data==='string'?JSON.parse(data):data):{};}catch(e){PREFS={};}if(!PREFS||typeof PREFS!=='object')PREFS={};applyTheme(PREFS.theme==='light'?'light':'dark');if(window.__prefsApplyExtras)try{window.__prefsApplyExtras();}catch(e){}};
   (function(){var b=document.getElementById('themeToggle');if(b)b.addEventListener('click',function(){applyTheme(document.documentElement.classList.contains('light')?'dark':'light');savePrefs();});applyTheme('dark');})();
   var fmt=function(n){return Math.round(n).toLocaleString('es-CR')};
+  // Formateador con 2 decimales para lo que DEBE reconciliar al céntimo (cierre/arqueo), como el clásico (N2).
+  // El fmt normal redondea a colón entero (bien para KPIs), pero eso hacía que las líneas del cierre no
+  // cuadraran con el total (diferencias de pocos colones). fmt2 mantiene los decimales visibles y consistentes.
+  var fmt2=function(n){return (Number(n)||0).toLocaleString('es-CR',{minimumFractionDigits:2,maximumFractionDigits:2})};
   // Escapa texto libre de la BD antes de meterlo en innerHTML (evita XSS / que un '<' rompa la vista).
   var esc=function(s){return (s==null?'':String(s)).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];});};
   var COL=['#ac7ef1','#f9769b','#fd8a72','#46abf5','#2ed3a7','#ffb44d'];
@@ -502,8 +506,33 @@
   window.renderClientes=function(d){C=d.clientes||[];C.forEach(function(x){x.nom=esc(x.nom);x.ced=esc(x.ced);x.tel=esc(x.tel);x.cor=esc(x.cor);x.dir=esc(x.dir);x.com=esc(x.com);});csel=C.length?C[0].id:null;cdet=null;ccounts();renderCliStats();renderCList();renderCDetail();if(csel&&HOST)post({type:'clienteDet',id:csel});};
   window.renderClienteDetalle=function(d){cdet=d;if(cdet&&cdet.empenos)cdet.empenos.forEach(function(e){e.pr=esc(e.pr);});renderCDetail();};
   document.getElementById('clist').addEventListener('click',function(e){var r=e.target.closest('.erow');if(!r)return;csel=+r.dataset.id;cdet=null;renderCList();renderCDetail();if(HOST)post({type:'clienteDet',id:csel});});
-  document.getElementById('cq').addEventListener('input',function(e){cq=e.target.value;renderCList();});
+  document.getElementById('cq').addEventListener('input',function(e){cq=e.target.value;renderCList();pedirBuscarClientes(cq);});
   document.getElementById('cchips').addEventListener('click',function(e){var c=e.target.closest('.chip');if(!c)return;document.querySelectorAll('#cchips .chip').forEach(function(x){x.classList.remove('on')});c.classList.add('on');cf=c.dataset.cf;renderCList();});
+  /* ===== Búsqueda server-side de clientes (arregla: buscar un cliente que existe daba "Sin resultados") =====
+     El precargado (ClientesData.Lista) trae solo los 1000 primeros por nombre; los buscadores (modal
+     Nuevo empeño y directorio) filtraban ESA lista, así que un cliente fuera del tope (típico: apellidos
+     con V/Z) no aparecía. Ahora, al tipear, se consulta la BD (ClientesData.Buscar) y los coincidentes se
+     FUSIONAN en C; los filtros locales existentes los encuentran. Calca el patrón de Empeños (searchEmpenos). */
+  var _cliBuscarT=null;
+  function pedirBuscarClientes(q){
+    q=(q||'').trim();
+    if(!HOST||q.length<2)return;                 // en preview no hay BD; query muy corta no consulta
+    clearTimeout(_cliBuscarT);
+    _cliBuscarT=setTimeout(function(){post({type:'searchClientes',q:q});},220);
+  }
+  window.renderClientesBuscar=function(d){
+    var res=(d&&d.clientes)||[];if(!res.length)return;
+    var idx={},i;for(i=0;i<C.length;i++)idx[C[i].id]=1;
+    var add=0;
+    res.forEach(function(x){
+      if(idx[x.id])return;                        // ya cargado: no duplicar
+      x.nom=esc(x.nom);x.ced=esc(x.ced);x.tel=esc(x.tel);x.cor=esc(x.cor);x.dir=esc(x.dir);x.com=esc(x.com);
+      C.push(x);idx[x.id]=1;add++;
+    });
+    if(!add)return;
+    ccounts();renderCliStats();renderCList();      // refresca el directorio
+    if(window.__nevRefresh)window.__nevRefresh();  // refresca el dropdown del modal si está abierto
+  };
   /* ===== Modal Nuevo Cliente (UI nueva, reemplaza al form clásico) ===== */
   (function(){
     var css='<style>.cliov{position:fixed;inset:0;background:rgba(10,9,28,.66);backdrop-filter:blur(3px);display:none;align-items:center;justify-content:center;z-index:120;font-family:var(--font);color:var(--ink);-webkit-font-smoothing:antialiased}.cliov.show{display:flex}.clicard{width:440px;max-width:92vw;background:radial-gradient(480px 260px at 50% -14%, rgba(230,75,196,.20), transparent 66%),var(--surface);border:1px solid var(--line-2);border-radius:18px;box-shadow:0 24px 70px rgba(0,0,0,.55);overflow:hidden}.clicard .hd{display:flex;align-items:center;gap:10px;padding:16px 20px;border-bottom:1px solid var(--line);font-weight:800;font-size:1.05rem;background:linear-gradient(180deg,rgba(230,75,196,.14),transparent)}.clicard .hd .sp{flex:1}.clicard .hd .x{background:transparent;border:0;color:var(--faint);font-size:1.4rem;line-height:1;cursor:pointer}.clibody{padding:16px 20px;display:grid;gap:12px;max-height:64vh;overflow:auto}.clibody label{display:grid;gap:5px;font-size:.7rem;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--muted)}.clibody input,.clibody textarea{background:var(--bg);border:1px solid var(--line);border-radius:10px;padding:9px 11px;color:var(--ink);font-family:inherit;font-size:.9rem;outline:none;resize:vertical}.clibody input:focus,.clibody textarea:focus{border-color:var(--violet)}.clierr{color:var(--red);font-size:.82rem;display:none}.clierr.show{display:block}.clift{display:flex;gap:10px;padding:14px 20px;border-top:1px solid var(--line)}.clift .sp{flex:1}</style>';
@@ -607,6 +636,8 @@
       if(HOST)post({type:"editarCliente",id:editId,ced:v("ced"),nom:v("nom"),tel:v("tel"),cor:v("cor"),dir:v("dir"),com:v("com"),activo:document.getElementById("ce-activo").checked,fecha:v("fecha")});else cerrar();
     });
     window.clienteEditado=function(r){var err=document.getElementById("ce-err");if(r&&r.ok){cerrar();if(HOST)post({type:"loadClientes"});}else{err.textContent=(r&&r.error)||"No se pudo editar el cliente.";err.classList.add("show");}};
+    // Respuesta del PIN pedido al tocar "Editar" en un cliente: solo si es Administrador se abre el editor.
+    window.__clientePinResuelto=function(ok){if(ok){if(window.abrirEditCliente)window.abrirEditCliente();}else{try{alert("Necesita PIN de Administrador para editar un cliente.");}catch(e){}}};
   })();
   /* ===== Modal Nuevo Empeño (UI nueva, reusa la lógica EXACTA del alta clásica vía CrearEmpeno) ===== */
   (function(){
@@ -629,7 +660,8 @@
     function selectCli(c){selCli=c;g("nev-clisel").innerHTML='<b>'+esc(c.nom)+'</b> · '+esc(c.ced)+' <span style="color:var(--violet);cursor:pointer;float:right" id="nev-clix">cambiar</span>';g("nev-clisel").style.display="block";g("nev-clist").style.display="none";g("nev-cliq").value="";g("nev-cliq").style.display="none";}
     g("nev-clist").addEventListener("click",function(e){var r=e.target.closest(".nevrow");if(!r)return;var id=+r.dataset.id;var c=clientes().filter(function(x){return x.id===id;})[0];if(c)selectCli(c);});
     g("nev-clisel").addEventListener("click",function(e){if(e.target.id==="nev-clix"){selCli=null;g("nev-clisel").style.display="none";g("nev-cliq").style.display="";g("nev-cliq").focus();}});
-    g("nev-cliq").addEventListener("input",renderCliList);
+    g("nev-cliq").addEventListener("input",function(){renderCliList();pedirBuscarClientes(g("nev-cliq").value);});
+    window.__nevRefresh=renderCliList;   // el router de búsqueda server-side re-renderiza el dropdown al fusionar resultados
     g("nev-monto").addEventListener("input",autoPlan);
     g("nev-plan").addEventListener("change",recalc);
     g("nev-fecha").addEventListener("change",recalc);
@@ -644,7 +676,7 @@
     window.empenoCreado=function(r){var err=g("nev-err");if(r&&r.ok){cerrar();if(r.warn){try{alert(r.warn);}catch(e){}}if(HOST){post({type:"loadEmpenos"});post({type:"diaResumen"});}}else{err.textContent=(r&&r.error)||"No se pudo crear el empeño.";err.classList.add("show");}};
   })();
   /* "Nuevo cliente" lo maneja el modal nativo (IIFE de arriba), no el form clásico. */
-  document.getElementById('cdetail').addEventListener('click',function(e){if(e.target.closest('[data-cedit]')){if(window.abrirEditCliente)window.abrirEditCliente();return;}if(e.target.closest('[data-cnew]')){if(window.abrirNuevoEmpeno)window.abrirNuevoEmpeno(csel);return;}var wa=e.target.closest('[data-cwa]');if(wa){var tel=(wa.dataset.cwa||'').replace(/\D/g,'');if(tel.length===8)tel='506'+tel;window.open('https://wa.me/'+tel,'_blank');}});
+  document.getElementById('cdetail').addEventListener('click',function(e){if(e.target.closest('[data-cedit]')){if(HOST){post({type:"clientePin"});}else if(window.abrirEditCliente){window.abrirEditCliente();}return;}if(e.target.closest('[data-cnew]')){if(window.abrirNuevoEmpeno)window.abrirNuevoEmpeno(csel);return;}var wa=e.target.closest('[data-cwa]');if(wa){var tel=(wa.dataset.cwa||'').replace(/\D/g,'');if(tel.length===8)tel='506'+tel;window.open('https://wa.me/'+tel,'_blank');}});
 
   /* ---------- CAJA / REPORTES / CONFIG ---------- */
   window.renderCajaMov=function(d){var el=document.getElementById('caja-mov');if(!el)return;var ms=(d&&d.movimientos)||[];
@@ -668,22 +700,22 @@
   /* ===== Modal Cierre de Caja (UI nueva, reusa ProcessClose + Print + correo del clásico, headless) ===== */
   (function(){
     var PREV=null, MAN=[];
-    var html='<div class="cliov" id="cierrev"><div class="clicard" style="width:600px;max-width:95vw"><div class="hd">Cierre de caja<span class="sp"></span><button class="x" id="cieX">&times;</button></div><div class="clibody"><div style="display:grid;grid-template-columns:1fr auto;gap:10px;align-items:end"><label>Fecha (dd/MM/yyyy)<input id="cie-fecha" autocomplete="off"></label><button class="btn ghost" id="cieRecalc" style="padding:9px 14px">Recalcular</button></div><div class="tbl-wrap" style="margin-top:4px"><table><thead><tr><th>Concepto</th><th class="r">Valor</th><th></th></tr></thead><tbody id="cie-lineas"></tbody></table></div><div style="display:grid;grid-template-columns:1fr 120px auto;gap:8px;align-items:end"><label>Concepto (línea manual)<input id="cie-mc" autocomplete="off"></label><label>Valor<input id="cie-mv" inputmode="decimal" autocomplete="off"></label><button class="btn ghost" id="cieAdd" style="padding:9px 12px">Agregar</button></div><div style="display:grid;grid-template-columns:1fr 1fr;gap:12px"><label>Saldo inicial <span style="text-transform:none;color:var(--faint);font-weight:600">· acumulado del cierre anterior</span><input id="cie-saldo" readonly value="0" style="opacity:.85;cursor:not-allowed"></label><label>Total<input id="cie-total" readonly style="opacity:.85;cursor:not-allowed"></label></div><div class="clierr" id="cie-err"></div></div><div class="clift"><span class="sp"></span><button class="btn ghost" id="cieCancel">Cancelar</button><button class="btn violet" id="cieSave">Guardar cierre (imprime + correo)</button></div></div></div>';
+    var html='<div class="cliov" id="cierrev"><div class="clicard" style="width:600px;max-width:95vw"><div class="hd">Cierre de caja<span class="sp"></span><button class="x" id="cieX">&times;</button></div><div class="clibody"><div style="display:grid;grid-template-columns:1fr auto;gap:10px;align-items:end"><label>Fecha (dd/MM/yyyy)<input id="cie-fecha" autocomplete="off"></label><button class="btn ghost" id="cieRecalc" style="padding:9px 14px">Recalcular</button></div><div class="tbl-wrap" style="margin-top:4px"><table><thead><tr><th>Concepto</th><th class="r">Valor</th><th></th></tr></thead><tbody id="cie-lineas"></tbody></table></div><div style="display:grid;grid-template-columns:1fr 120px auto;gap:8px;align-items:end"><label>Concepto (línea manual)<input id="cie-mc" autocomplete="off"></label><label>Valor<input id="cie-mv" inputmode="decimal" autocomplete="off"></label><button class="btn ghost" id="cieAdd" style="padding:9px 12px">Agregar</button></div><div style="display:grid;grid-template-columns:1fr 1fr;gap:12px"><label>Saldo inicial<input id="cie-saldo" value="0" inputmode="decimal" autocomplete="off"></label><label>Total<input id="cie-total" readonly style="opacity:.85;cursor:not-allowed"></label></div><div class="clierr" id="cie-err"></div></div><div class="clift"><span class="sp"></span><button class="btn ghost" id="cieCancel">Cancelar</button><button class="btn violet" id="cieSave">Guardar cierre (imprime + correo)</button></div></div></div>';
     document.body.insertAdjacentHTML("beforeend",html);
     var ov=document.getElementById("cierrev");
     function g(id){return document.getElementById(id);}
     function today(){var t=new Date();return ("0"+t.getDate()).slice(-2)+"/"+("0"+(t.getMonth()+1)).slice(-2)+"/"+t.getFullYear();}
-    function saldoIni(){return (PREV&&PREV.saldoInicial!=null)?PREV.saldoInicial:0;}
+    function saldoIni(){var v=(g("cie-saldo").value||"0").toString().replace(/[^0-9.\-]/g,"");var n=parseFloat(v);return isNaN(n)?0:n;}
     function total(){var s=saldoIni();var auto=PREV?PREV.lineas.reduce(function(a,l){return a+l.valor;},0):0;var man=MAN.reduce(function(a,l){return a+l.valor;},0);return (-s)+auto+man;}
     function renderLineas(){
       var rows="";
-      if(PREV)PREV.lineas.forEach(function(l){rows+='<tr><td>'+esc(l.concepto)+'</td><td class="r num">₡'+fmt(l.valor)+'</td><td></td></tr>';});
-      MAN.forEach(function(l,i){rows+='<tr><td>'+esc(l.concepto)+' <span style="color:var(--faint);font-size:.7rem">(manual)</span></td><td class="r num">₡'+fmt(l.valor)+'</td><td class="r"><span data-delman="'+i+'" style="color:var(--red);cursor:pointer;font-weight:800">×</span></td></tr>';});
+      if(PREV)PREV.lineas.forEach(function(l){rows+='<tr><td>'+esc(l.concepto)+'</td><td class="r num">₡'+fmt2(l.valor)+'</td><td></td></tr>';});
+      MAN.forEach(function(l,i){rows+='<tr><td>'+esc(l.concepto)+' <span style="color:var(--faint);font-size:.7rem">(manual)</span></td><td class="r num">₡'+fmt2(l.valor)+'</td><td class="r"><span data-delman="'+i+'" style="color:var(--red);cursor:pointer;font-weight:800">×</span></td></tr>';});
       if(!rows)rows='<tr><td colspan="3" style="text-align:center;color:var(--faint);padding:14px">Sin datos.</td></tr>';
       g("cie-lineas").innerHTML=rows;
-      g("cie-total").value="₡"+fmt(total());
+      g("cie-total").value="₡"+fmt2(total());
     }
-    window.renderCierrePreview=function(d){PREV=d;g("cie-saldo").value=d&&d.saldoInicial!=null?fmt(d.saldoInicial):"0";renderLineas();};
+    window.renderCierrePreview=function(d){PREV=d;renderLineas();};
     g("cie-lineas").addEventListener("click",function(e){var d=e.target.closest("[data-delman]");if(d){MAN.splice(+d.dataset.delman,1);renderLineas();}});
     g("cieAdd").addEventListener("click",function(){var c=g("cie-mc").value.trim();var v=parseFloat(g("cie-mv").value);if(!c)return;if(isNaN(v))v=0;MAN.push({concepto:c,valor:v});g("cie-mc").value="";g("cie-mv").value="";renderLineas();g("cie-mc").focus();});
     g("cie-saldo").addEventListener("input",renderLineas);
@@ -805,7 +837,7 @@
   })();
   /* ===== Modal Cartera Vencida (UI nueva, reusa Print/SendMailVencidos/sacar-vencido/prórroga headless) ===== */
   (function(){
-    var html='<div class="cliov" id="venv"><div class="clicard" style="width:840px;max-width:96vw"><div class="hd">Cartera vencida<span class="sp"></span><button class="x" id="venX">&times;</button></div><div class="clibody"><section class="kpis" id="ven-tot" style="grid-template-columns:repeat(2,1fr);gap:10px"></section><div class="tbl-wrap" style="max-height:320px;overflow:auto"><table><thead><tr><th>#</th><th>Cliente</th><th>Vence</th><th class="r">Pendiente</th><th></th></tr></thead><tbody id="ven-rows"><tr><td colspan="5" style="text-align:center;color:var(--faint);padding:16px">Cargando…</td></tr></tbody></table></div><div class="clierr" id="ven-err"></div></div><div class="clift"><button class="btn ghost" id="venImp">Imprimir</button><button class="btn ghost" id="venMail">Enviar por correo</button><span class="sp"></span><button class="btn violet" id="venCerrar">Cerrar</button></div></div></div>';
+    var html='<div class="cliov" id="venv"><div class="clicard" style="width:840px;max-width:96vw"><div class="hd">Cartera vencida<span class="sp"></span><button class="x" id="venX">&times;</button></div><div class="clibody"><div style="display:grid;grid-template-columns:1fr auto;gap:10px;align-items:end;margin-bottom:8px"><label>Fecha de corte (dd/MM/yyyy)<input id="ven-fecha" autocomplete="off"></label><button class="btn ghost" id="venVer" style="padding:9px 14px">Ver al corte</button></div><section class="kpis" id="ven-tot" style="grid-template-columns:repeat(2,1fr);gap:10px"></section><div class="tbl-wrap" style="max-height:320px;overflow:auto"><table><thead><tr><th>#</th><th>Cliente</th><th>Vence</th><th class="r">Pendiente</th><th></th></tr></thead><tbody id="ven-rows"><tr><td colspan="5" style="text-align:center;color:var(--faint);padding:16px">Cargando…</td></tr></tbody></table></div><div class="clierr" id="ven-err"></div></div><div class="clift"><button class="btn ghost" id="venImp">Imprimir</button><button class="btn ghost" id="venMail">Enviar por correo</button><span class="sp"></span><button class="btn violet" id="venCerrar">Cerrar</button></div></div></div>';
     document.body.insertAdjacentHTML("beforeend",html);
     var ov=document.getElementById("venv");
     function cerrar(){ov.classList.remove("show");}
@@ -820,11 +852,16 @@
       }).join(''):'<tr><td colspan="5" style="text-align:center;color:var(--faint);padding:16px">Sin empeños vencidos.</td></tr>';
     };
     document.getElementById("ven-rows").addEventListener("click",function(e){var p=e.target.closest("[data-vpro]");if(p){if(window.abrirProroga)window.abrirProroga(+p.dataset.vpro,'vencidos');return;}var s=e.target.closest("[data-vsac]");if(s){if(confirm("¿Sacar el empeño #"+s.dataset.vsac+" por vencido? Queda retirado y se imprime el comprobante de vencimiento.")){if(HOST)post({type:"sacarVencido",id:+s.dataset.vsac});}return;}});
-    document.getElementById("venImp").addEventListener("click",function(){document.getElementById("ven-err").classList.remove("show");if(HOST)post({type:"imprimirVencidos"});});
-    document.getElementById("venMail").addEventListener("click",function(){document.getElementById("ven-err").classList.remove("show");if(HOST)post({type:"enviarVencidos"});});
+    var vtoday=function(){var t=new Date();return ("0"+t.getDate()).slice(-2)+"/"+("0"+(t.getMonth()+1)).slice(-2)+"/"+t.getFullYear();};
+    var vfecha=function(){return document.getElementById("ven-fecha").value||vtoday();};
+    function verAlCorte(){document.getElementById("ven-err").classList.remove("show");document.getElementById("ven-rows").innerHTML='<tr><td colspan="5" style="text-align:center;color:var(--faint);padding:16px">Cargando…</td></tr>';if(HOST)post({type:"loadVencidos",fecha:vfecha()});}
+    document.getElementById("venVer").addEventListener("click",verAlCorte);
+    document.getElementById("ven-fecha").addEventListener("keydown",function(e){if(e.key==="Enter")verAlCorte();});
+    document.getElementById("venImp").addEventListener("click",function(){document.getElementById("ven-err").classList.remove("show");if(HOST)post({type:"imprimirVencidos",fecha:vfecha()});});
+    document.getElementById("venMail").addEventListener("click",function(){document.getElementById("ven-err").classList.remove("show");if(HOST)post({type:"enviarVencidos",fecha:vfecha()});});
     window.vencidosResult=function(r){var err=document.getElementById("ven-err");if(r&&r.ok){err.style.color="var(--green)";err.textContent="Listo.";err.classList.add("show");setTimeout(function(){err.classList.remove("show");err.style.color="";},2500);}else{err.style.color="";err.textContent=(r&&r.error)||"No se pudo completar.";err.classList.add("show");}};
     window.vencidosAccion=function(r){if(r){if(r.ok){if(r.warn){try{alert(r.warn);}catch(e){}}}else{try{alert(r.error||"No se pudo completar la acción.");}catch(e){}}}if(HOST)post({type:"loadVencidos"});};
-    window.abrirVencidos=function(){document.getElementById("ven-tot").innerHTML="";document.getElementById("ven-rows").innerHTML='<tr><td colspan="5" style="text-align:center;color:var(--faint);padding:16px">Cargando…</td></tr>';document.getElementById("ven-err").classList.remove("show");if(HOST)post({type:"openVencidos"});ov.classList.add("show");};
+    window.abrirVencidos=function(){document.getElementById("ven-tot").innerHTML="";document.getElementById("ven-rows").innerHTML='<tr><td colspan="5" style="text-align:center;color:var(--faint);padding:16px">Cargando…</td></tr>';document.getElementById("ven-err").classList.remove("show");var vf=document.getElementById("ven-fecha");vf.value=vtoday();if(HOST)post({type:"openVencidos",fecha:vf.value});ov.classList.add("show");};
     var bV=document.getElementById("btnVencidos");if(bV)bV.addEventListener("click",window.abrirVencidos);
     document.getElementById("venX").addEventListener("click",cerrar);
     document.getElementById("venCerrar").addEventListener("click",cerrar);
@@ -833,7 +870,7 @@
   /* ===== Modal Cobrar / Abonar (UI nueva, reusa frmPagar.CobrarHeadless: misma matemática y comprobantes) ===== */
   (function(){
     var D=null;
-    var html='<div class="cliov" id="cobv"><div class="clicard" style="width:600px;max-width:95vw"><div class="hd">Cobrar / Abonar <span id="cob-num" style="color:var(--violet);margin-left:6px"></span><span class="sp"></span><button class="x" id="cobX">&times;</button></div><div class="clibody" style="max-height:82vh"><div id="cob-cli" style="font-size:.9rem;color:var(--muted)"></div><section class="kpis" id="cob-kpis" style="grid-template-columns:repeat(3,1fr);gap:10px"></section><div class="eyebrow" style="margin-top:4px">Cuotas de interés — marcá las que vas a cobrar (se pagan de la más vieja a la más nueva)</div><div class="tbl-wrap" style="max-height:190px;overflow:auto"><table><thead><tr><th></th><th>Mes</th><th>Vence</th><th class="r">Pendiente</th></tr></thead><tbody id="cob-cuotas"></tbody></table></div><div style="display:grid;grid-template-columns:1fr 1fr;gap:12px"><label>Interés a pagar<input id="cob-int" inputmode="decimal" autocomplete="off" value="0"></label><label>Interés que queda<input id="cob-intr" readonly style="opacity:.8;cursor:not-allowed"></label></div><div style="display:grid;grid-template-columns:1fr 1fr;gap:12px"><label>Abono a capital<input id="cob-cap" inputmode="decimal" autocomplete="off" value="0"></label><label>Capital que queda<input id="cob-capr" readonly style="opacity:.8;cursor:not-allowed"></label></div><div class="kv" style="border-top:1px solid var(--line);padding-top:8px"><span class="k">Total a pagar</span><span class="v num" id="cob-total" style="color:var(--green);font-size:1.05rem">₡0</span></div><div style="display:grid;grid-template-columns:1fr 1fr;gap:12px"><label>Paga con<input id="cob-con" inputmode="decimal" autocomplete="off" value="0"></label><label>Vuelto<input id="cob-vuelto" readonly style="opacity:.9;cursor:not-allowed"></label></div><label>Comentario<textarea id="cob-com" rows="2"></textarea></label><div class="clierr" id="cob-err"></div></div><div class="clift"><span class="sp"></span><button class="btn ghost" id="cobCancel">Cancelar</button><button class="btn violet" id="cobSave">Cobrar</button></div></div></div>';
+    var html='<div class="cliov" id="cobv"><div class="clicard" style="width:600px;max-width:95vw"><div class="hd">Cobrar / Abonar <span id="cob-num" style="color:var(--violet);margin-left:6px"></span><span class="sp"></span><button class="x" id="cobX">&times;</button></div><div class="clibody" style="max-height:82vh"><div id="cob-cli" style="font-size:.9rem;color:var(--muted)"></div><section class="kpis" id="cob-kpis" style="grid-template-columns:repeat(3,1fr);gap:10px"></section><div class="eyebrow" style="margin-top:4px">Cuotas de interés — marcá las que vas a cobrar (se pagan de la más vieja a la más nueva)</div><div class="tbl-wrap" style="max-height:190px;overflow:auto"><table><thead><tr><th></th><th>Mes</th><th>Vence</th><th class="r">Pendiente</th></tr></thead><tbody id="cob-cuotas"></tbody></table></div><div style="display:grid;grid-template-columns:1fr 1fr;gap:12px"><label>Interés a pagar<input id="cob-int" inputmode="decimal" autocomplete="off" value="0"></label><label>Interés que queda<input id="cob-intr" readonly style="opacity:.8;cursor:not-allowed"></label></div><div style="display:grid;grid-template-columns:1fr 1fr;gap:12px"><label>Abono a capital<input id="cob-cap" inputmode="decimal" autocomplete="off" value="0"></label><label>Capital que queda<input id="cob-capr" readonly style="opacity:.8;cursor:not-allowed"></label></div><div class="kv" style="border-top:1px solid var(--line);padding-top:8px"><span class="k">Total a pagar</span><span class="v num" id="cob-total" style="color:var(--green);font-size:1.05rem">₡0</span></div><div style="display:grid;grid-template-columns:1fr 1fr;gap:12px"><label>Paga con<input id="cob-con" inputmode="decimal" autocomplete="off" value="0"></label><label>Vuelto<input id="cob-vuelto" readonly style="opacity:.9;cursor:not-allowed"></label></div><label>Comentario<textarea id="cob-com" rows="2"></textarea></label><div class="clierr" id="cob-err"></div></div><div class="clift"><button class="btn ghost" id="cobSacar" title="Marca todo el interés pendiente y pone el capital completo para sacar (redimir) la prenda — se ven antes de Cobrar">Sacar prenda</button><span class="sp"></span><button class="btn ghost" id="cobCancel">Cancelar</button><button class="btn violet" id="cobSave">Cobrar</button></div></div></div>';
     document.body.insertAdjacentHTML("beforeend",html);
     var ov=document.getElementById("cobv");
     function cerrar(){ov.classList.remove("show");}
@@ -859,6 +896,17 @@
     document.getElementById("cobX").addEventListener("click",cerrar);
     document.getElementById("cobCancel").addEventListener("click",cerrar);
     ov.addEventListener("click",function(e){if(e.target===ov)cerrar();});
+    // "Sacar prenda": redimir en un solo cobro. Marca TODO el interés pendiente y pone el capital completo;
+    // quedan VISIBLES en el modal para que la cajera confirme y dé Cobrar (no auto-envía). CobrarHeadless
+    // cancela y retira el empeño cuando el capital queda en 0 (misma lógica que el clásico).
+    document.getElementById("cobSacar").addEventListener("click",function(){
+      if(!D||!D.id)return;
+      (D.cuotas||[]).forEach(function(q){var ck=document.getElementById("cob-q"+q.id);if(ck)ck.checked=true;});
+      sumSel();                                                     // cob-int = todo el interés pendiente
+      document.getElementById("cob-cap").value=Math.round((D.capital||0)*100)/100;   // capital completo
+      recompute();
+      try{document.getElementById("cob-con").focus();}catch(e){}
+    });
     document.getElementById("cobSave").addEventListener("click",function(){
       if(!D||!D.id)return;
       var err=document.getElementById("cob-err");
@@ -922,7 +970,7 @@
       if(tab==='empenos'){g('rpe-desde').value=repDesde;g('rpe-hasta').value=repHasta;loadedR.empenos=true;reReload();}
       if(tab==='vencidos'&&!loadedR.vencidos){loadedR.vencidos=true;if(HOST)post({type:'openVencidos'});}
     };
-    g('rtabs').addEventListener('click',function(e){var c=e.target.closest('.chip');if(!c)return;window.__abrirReporte(c.dataset.rt);});
+    g('rtabs').addEventListener('click',function(e){var c=e.target.closest('.chip');if(!c)return;if(c.dataset.rt==='arqueo'){if(window.abrirArqueo)window.abrirArqueo();return;}window.__abrirReporte(c.dataset.rt);});
   })();
   /* ===== Modal Configuración (editable en WebView, reusa frmConfiguracionGeneral.GuardarHeadless) ===== */
   (function(){

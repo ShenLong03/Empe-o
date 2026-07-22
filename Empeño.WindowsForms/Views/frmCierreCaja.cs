@@ -126,9 +126,11 @@ namespace Empeño.WindowsForms.Views
 
             // Interés = solo el interés base (Monto). Avalúo y bodegaje se reportan en sus propias
             // líneas (txtAvaluo/txtBodegaje), así que sumar MontoTotal aquí los contaría dos veces.
-            double? montoInteresDia = _context.Empenos.Where(x => !x.IsDelete && (x.Estado == Estado.Vigente
-                       || x.Estado == Estado.Pendiente || x.Estado == Estado.Vencido || x.Estado==Estado.Cancelado))
-                  .SelectMany(x => x.Pagos).Where(x => x.TipoPago == TipoPago.Interes && x.Fecha >= fecha && x.Fecha < tomorrow).ToList().Sum(x => x.Monto);
+            // Se cuenta POR PAGO (no por estado del empeño): el interés cobrado hoy entra al cierre
+            // aunque el empeño quede después Retirado / Anulado / Cancelado el mismo día.
+            double? montoInteresDia = _context.Pago.Where(p => !p.Empeno.IsDelete
+                       && p.TipoPago == TipoPago.Interes && p.Fecha >= fecha && p.Fecha < tomorrow)
+                  .ToList().Sum(x => x.Monto);
 
             txtInteres.Text = montoInteresDia != null ? montoInteresDia.Value.ToString("N2") : "0.00";
 
@@ -146,15 +148,15 @@ namespace Empeño.WindowsForms.Views
             txtCancelados.Text = cancelados != null ? cancelados.Value.ToString("N2") : "0.00";
             txtAcumulado.Text = ((acumuladoInicial + montoEmpeñoDia) - (abonoDia + vencidos + cancelados)).Value.ToString("N2");
 
-            double? montoAvaluoDia = _context.Empenos.Where(x => !x.IsDelete && (x.Estado == Estado.Vigente
-                      || x.Estado == Estado.Pendiente || x.Estado == Estado.Vencido || x.Estado == Estado.Cancelado))
-                 .SelectMany(x => x.Pagos).Where(x => x.TipoPago == TipoPago.Interes && x.Fecha >= fecha && x.Fecha < tomorrow).ToList().Sum(x => x.MontoAvaluo);
+            double? montoAvaluoDia = _context.Pago.Where(p => !p.Empeno.IsDelete
+                      && p.TipoPago == TipoPago.Interes && p.Fecha >= fecha && p.Fecha < tomorrow)
+                 .ToList().Sum(x => x.MontoAvaluo);
 
             txtAvaluo.Text = montoAvaluoDia != null ? montoAvaluoDia.Value.ToString("N2") : "0.00";
 
-            double? montoBodegajeDia = _context.Empenos.Where(x => !x.IsDelete && (x.Estado == Estado.Vigente
-                     || x.Estado == Estado.Pendiente || x.Estado == Estado.Vencido || x.Estado == Estado.Cancelado))
-                .SelectMany(x => x.Pagos).Where(x => x.TipoPago == TipoPago.Interes && x.Fecha >= fecha && x.Fecha < tomorrow).ToList().Sum(x => x.MontoBodega);
+            double? montoBodegajeDia = _context.Pago.Where(p => !p.Empeno.IsDelete
+                     && p.TipoPago == TipoPago.Interes && p.Fecha >= fecha && p.Fecha < tomorrow)
+                .ToList().Sum(x => x.MontoBodega);
 
             txtBodegaje.Text = montoBodegajeDia != null ? montoBodegajeDia.Value.ToString("N2") : "0.00";
 

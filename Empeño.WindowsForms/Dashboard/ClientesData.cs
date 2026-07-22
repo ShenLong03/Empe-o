@@ -47,6 +47,48 @@ namespace Empeño.WindowsForms.Dashboard
             return new { clientes };
         }
 
+        // Búsqueda de clientes contra la BD (server-side): encuentra CUALQUIER cliente por
+        // nombre o cédula, no solo los precargados por Lista (tope 1000). Calca el patrón de
+        // EmpenosData.Buscar. Mismo formato de item que Lista para que el front lo renderice igual.
+        public static object Buscar(DataContext ctx, string texto)
+        {
+            texto = (texto ?? "").Trim();
+            if (texto.Length == 0) return new { clientes = new object[0] };
+
+            var clientes = ctx.Clientes
+                .Where(c => !c.IsDelete && (c.Nombre.Contains(texto) || c.Identificacion.Contains(texto)))
+                .OrderBy(c => c.Nombre)
+                .Select(c => new
+                {
+                    c.ClienteId,
+                    c.Nombre,
+                    c.Identificacion,
+                    c.Telefono,
+                    c.Correo,
+                    c.Direccion,
+                    c.Comentario,
+                    c.Activo,
+                    c.Fecha,
+                    activos = c.Empenos.Count(e => !e.IsDelete && (e.Estado == Estado.Vigente || e.Estado == Estado.Pendiente || e.Estado == Estado.Vencido))
+                })
+                .Take(50).ToList()
+                .Select(c => new
+                {
+                    id = c.ClienteId,
+                    nom = c.Nombre,
+                    ced = c.Identificacion,
+                    tel = c.Telefono,
+                    cor = c.Correo,
+                    dir = c.Direccion,
+                    com = c.Comentario,
+                    activo = c.Activo,
+                    fecha = c.Fecha.ToString("dd/MM/yyyy"),
+                    act = c.activos
+                }).ToList();
+
+            return new { clientes };
+        }
+
         // Alta de cliente desde la versión nueva. Misma validación que el clásico:
         // nombre e identificación obligatorios, cédula única entre los no borrados.
         public static object Crear(DataContext ctx, string identificacion, string nombre, string telefono, string correo, string direccion, string comentario, bool activo, DateTime fecha)

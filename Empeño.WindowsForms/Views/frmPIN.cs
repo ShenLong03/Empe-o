@@ -101,6 +101,11 @@ namespace Empeño.WindowsForms.Views
                     if (perfil.Perfil.Nombre == "Administrador")
                         Program.Acceso = true;
                     break;
+                case "Cliente Admin":
+                    // Editar un cliente: SOLO Administrador (y SuperUsuario, que ya pasa arriba). Supervisor/Empleado NO.
+                    if (perfil.Perfil.Nombre == "Administrador")
+                        Program.Acceso = true;
+                    break;
                 case "Borrar Pago Admin":
                     // Anular un pago: SOLO Administrador (y SuperUsuario). Supervisor/Empleado NO.
                     if (perfil.Perfil.Nombre == "Administrador")

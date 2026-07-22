@@ -42,6 +42,7 @@ La exploración de este repositorio se guardó en Engram bajo el proyecto **`esc
 | [[15 - Oportunidades de Mejora]] | Mejoras recomendadas, con plantilla por mejora |
 | [[16 - Decisiones Técnicas]] | Decisiones técnicas observadas (ADRs implícitos) |
 | [[17 - Pendientes para SDD]] | Dudas técnicas abiertas y candidatos a especificación SDD |
+| [[18 - Rediseño WebView2 y Bitácora de Sesión]] | Bitácora 2026-07-03: versión nueva en WebView2 en paralelo, fixes, auditoría, backup + PR #10 |
 
 ## Ver también
 

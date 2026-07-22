@@ -134,6 +134,16 @@ namespace Empeño.WindowsForms.Views
             catch { }
         }
 
+        // Parsea la "fecha de corte" opcional (dd/MM/yyyy) que manda el front; null si no vino o es inválida.
+        private static DateTime? ParseFecha(Newtonsoft.Json.Linq.JObject m)
+        {
+            DateTime d;
+            if (m["fecha"] != null && DateTime.TryParseExact((string)m["fecha"], "dd/MM/yyyy",
+                    System.Globalization.CultureInfo.InvariantCulture, System.Globalization.DateTimeStyles.None, out d))
+                return d;
+            return null;
+        }
+
         private async void OnMessage(object sender, CoreWebView2WebMessageReceivedEventArgs e)
         {
             try
@@ -240,6 +250,13 @@ namespace Empeño.WindowsForms.Views
                             await web.CoreWebView2.ExecuteScriptAsync("window.renderClientes(" + cj + ")");
                             break;
                         }
+                    case "searchClientes":
+                        {
+                            // Búsqueda server-side (gemelo de searchEmpenos): encuentra clientes fuera del precargado.
+                            string cj = JsonConvert.SerializeObject(ClientesData.Buscar(_context, (string)m["q"]));
+                            await web.CoreWebView2.ExecuteScriptAsync("window.renderClientesBuscar(" + cj + ")");
+                            break;
+                        }
                     case "clienteDet":
                         {
                             string cdj = JsonConvert.SerializeObject(ClientesData.Detalle(_context, (int)m["id"]));
@@ -292,6 +309,13 @@ namespace Empeño.WindowsForms.Views
                             // PIN al tocar "Editar" (antes de abrir el editor). SOLO Administrador.
                             bool okPin = funciones.ValidatePIN("Editar Empeño Admin");
                             await web.CoreWebView2.ExecuteScriptAsync("window.__editarPinResuelto(" + (okPin ? "true" : "false") + ")");
+                            break;
+                        }
+                    case "clientePin":
+                        {
+                            // PIN al tocar "Editar" en un cliente (antes de abrir el editor). SOLO Administrador.
+                            bool okCli = funciones.ValidatePIN("Cliente Admin");
+                            await web.CoreWebView2.ExecuteScriptAsync("window.__clientePinResuelto(" + (okCli ? "true" : "false") + ")");
                             break;
                         }
                     case "editarEmpeno":
@@ -484,21 +508,21 @@ namespace Empeño.WindowsForms.Views
                                 await web.CoreWebView2.ExecuteScriptAsync("window.renderVencidos({error:'Necesita PIN para ver la cartera vencida.'})");
                                 break;
                             }
-                            string vj0 = JsonConvert.SerializeObject(ReportesData.Vencidos(_context));
+                            string vj0 = JsonConvert.SerializeObject(ReportesData.Vencidos(_context, ParseFecha(m)));
                             await web.CoreWebView2.ExecuteScriptAsync("window.renderVencidos(" + vj0 + ")");
                             break;
                         }
                     case "loadVencidos":
                         {
                             // Recarga tras una acción; no re-pide PIN (ya se validó al abrir).
-                            string vj = JsonConvert.SerializeObject(ReportesData.Vencidos(_context));
+                            string vj = JsonConvert.SerializeObject(ReportesData.Vencidos(_context, ParseFecha(m)));
                             await web.CoreWebView2.ExecuteScriptAsync("window.renderVencidos(" + vj + ")");
                             break;
                         }
                     case "imprimirVencidos":
                         {
                             var fv = new frmVencidos();
-                            await fv.ImprimirVencidosHeadless();
+                            await fv.ImprimirVencidosHeadless(ParseFecha(m));
                             fv.Dispose();
                             await web.CoreWebView2.ExecuteScriptAsync("window.vencidosResult({ok:true})");
                             break;
@@ -506,7 +530,7 @@ namespace Empeño.WindowsForms.Views
                     case "enviarVencidos":
                         {
                             var fv = new frmVencidos();
-                            var rv = await fv.EnviarVencidosHeadless();
+                            var rv = await fv.EnviarVencidosHeadless(ParseFecha(m));
                             fv.Dispose();
                             await web.CoreWebView2.ExecuteScriptAsync("window.vencidosResult(" + JsonConvert.SerializeObject(rv) + ")");
                             break;

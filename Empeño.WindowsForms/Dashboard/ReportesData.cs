@@ -140,17 +140,23 @@ namespace Empeño.WindowsForms.Dashboard
         }
 
         // Cartera vencida (frmVencidos): empeños en estado Vencido, no retirados. Totales de vencido y prórroga.
-        public static object Vencidos(DataContext ctx)
+        public static object Vencidos(DataContext ctx, DateTime? corte = null)
         {
-            var empenos = ctx.Empenos.Where(x => !x.IsDelete && x.Estado == Estado.Vencido
-                     && !x.Retirado && x.FechaRetiro == null
-                     && !x.RetiradoAdministrador && x.FechaRetiroAdministrador == null)
+            // "Vencido al corte": empeños cuyo vencimiento cae EN/ANTES de la fecha de corte y que NO
+            // estaban retirados/sacados a esa fecha. Si no se pasa corte, se toma el día de hoy.
+            var f = (corte ?? DateTime.Today).Date;
+            var tope = f.AddDays(1);
+
+            var empenos = ctx.Empenos.Where(x => !x.IsDelete
+                     && x.FechaVencimiento < tope
+                     && (x.FechaRetiro == null || x.FechaRetiro >= tope)
+                     && (x.FechaRetiroAdministrador == null || x.FechaRetiroAdministrador >= tope))
                 .Include(x => x.Cliente).Include(x => x.Empleado).Include(x => x.Intereses).Include(x => x.Prorrogas)
                 .ToList();
 
-            var vencidoSet = empenos.Where(l => l.Estado == Estado.Vencido && l.Prorrogas.Count() == 0 && !l.RetiradoAdministrador);
-            double totalVencido = vencidoSet.Sum(l => l.Monto + l.Intereses.Sum(i => i.Monto));
             var prorrogaSet = empenos.Where(m => m.Prorrogas.Count() > 0);
+            var vencidoSet = empenos.Where(l => l.Prorrogas.Count() == 0);
+            double totalVencido = vencidoSet.Sum(l => l.Monto + l.Intereses.Sum(i => i.Monto));
             double totalProrroga = prorrogaSet.Sum(m => m.Monto + m.Intereses.Sum(i => i.Monto));
 
             var lista = empenos.Select(x => new
@@ -160,7 +166,7 @@ namespace Empeño.WindowsForms.Dashboard
                 ced = x.Cliente != null ? x.Cliente.Identificacion : "",
                 cli = x.Cliente != null ? x.Cliente.Nombre : "",
                 vence = x.FechaVencimiento.ToString("dd/MM/yyyy"),
-                dias = (int)(x.FechaVencimiento.Date - DateTime.Today).TotalDays,
+                dias = (int)(x.FechaVencimiento.Date - f).TotalDays,
                 empleado = x.Empleado != null ? x.Empleado.Nombre : "",
                 prorroga = x.Prorroga,
                 monto = x.Monto,
@@ -169,6 +175,7 @@ namespace Empeño.WindowsForms.Dashboard
 
             return new
             {
+                fecha = f.ToString("dd/MM/yyyy"),
                 totales = new
                 {
                     vencido = totalVencido,

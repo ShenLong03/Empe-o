@@ -122,9 +122,12 @@ namespace Empeño.WindowsForms.Dashboard
 
             double montoEmpeñoDia = empeñosActivos.Where(x => !x.IsDelete && x.Fecha >= f && x.Fecha < tomorrow).ToList().Sum(x => x.Monto);
 
-            double montoInteresDia = ctx.Empenos.Where(x => !x.IsDelete && (x.Estado == Estado.Vigente
-                       || x.Estado == Estado.Pendiente || x.Estado == Estado.Vencido || x.Estado == Estado.Cancelado))
-                  .SelectMany(x => x.Pagos).Where(x => x.TipoPago == TipoPago.Interes && x.Fecha >= f && x.Fecha < tomorrow).ToList().Sum(x => x.Monto);
+            // Se cuenta POR PAGO (no por estado del empeño): el interés cobrado hoy entra al cierre
+            // aunque el empeño quede después Retirado / Anulado / Cancelado el mismo día. Debe coincidir
+            // con frmCierreCaja.ProcessClose y con el interés del flujo (ResumenHoy).
+            double montoInteresDia = ctx.Pago.Where(p => !p.Empeno.IsDelete
+                       && p.TipoPago == TipoPago.Interes && p.Fecha >= f && p.Fecha < tomorrow)
+                  .ToList().Sum(x => x.Monto);
 
             double abonoDia = empeñosActivos
                 .SelectMany(x => x.Pagos).Where(x => x.TipoPago == TipoPago.Principal && x.Fecha >= f && x.Fecha < tomorrow).ToList().Sum(x => x.Monto);
@@ -135,28 +138,31 @@ namespace Empeño.WindowsForms.Dashboard
 
             double acumulado = (acumuladoInicial + montoEmpeñoDia) - (abonoDia + vencidos + cancelados);
 
-            double montoAvaluoDia = ctx.Empenos.Where(x => !x.IsDelete && (x.Estado == Estado.Vigente
-                      || x.Estado == Estado.Pendiente || x.Estado == Estado.Vencido || x.Estado == Estado.Cancelado))
-                 .SelectMany(x => x.Pagos).Where(x => x.TipoPago == TipoPago.Interes && x.Fecha >= f && x.Fecha < tomorrow).ToList().Sum(x => (x.MontoAvaluo ?? 0));
+            double montoAvaluoDia = ctx.Pago.Where(p => !p.Empeno.IsDelete
+                      && p.TipoPago == TipoPago.Interes && p.Fecha >= f && p.Fecha < tomorrow)
+                 .ToList().Sum(x => (x.MontoAvaluo ?? 0));
 
-            double montoBodegajeDia = ctx.Empenos.Where(x => !x.IsDelete && (x.Estado == Estado.Vigente
-                     || x.Estado == Estado.Pendiente || x.Estado == Estado.Vencido || x.Estado == Estado.Cancelado))
-                .SelectMany(x => x.Pagos).Where(x => x.TipoPago == TipoPago.Interes && x.Fecha >= f && x.Fecha < tomorrow).ToList().Sum(x => (x.MontoBodega ?? 0));
+            double montoBodegajeDia = ctx.Pago.Where(p => !p.Empeno.IsDelete
+                     && p.TipoPago == TipoPago.Interes && p.Fecha >= f && p.Fecha < tomorrow)
+                .ToList().Sum(x => (x.MontoBodega ?? 0));
 
             var configuracion = ctx.Configuraciones.FirstOrDefault();
             double iva = (montoAvaluoDia + montoBodegajeDia) * ((configuracion != null ? (configuracion.IVA ?? 0) : 0) / 100.0);
 
+            // Orden y nombres IGUAL al formulario clásico (frmCierreCaja): así el cierre nuevo se ve como
+            // "la ventana pasada" que la cajera conoce (coincide con el reporte impreso Cierre.xlsx).
+            // Es solo el DISPLAY del preview; no cambia la matemática ni lo que se guarda (DetalleCierreCaja).
             var lineas = new[]
             {
-                new { concepto = "Empeños", valor = montoEmpeñoDia },
-                new { concepto = "Monto de Abonos", valor = abonoDia },
-                new { concepto = "Intereses", valor = montoInteresDia },
-                new { concepto = "Avalúos", valor = montoAvaluoDia },
-                new { concepto = "Bodegajes", valor = montoBodegajeDia },
-                new { concepto = "Retiros", valor = cancelados },
-                new { concepto = "Vencidos", valor = vencidos },
-                new { concepto = "Acumulado", valor = acumulado },
-                new { concepto = "IVA", valor = iva },
+                new { concepto = "Monto Empeños", valor = montoEmpeñoDia },
+                new { concepto = "Monto Avalúos", valor = montoAvaluoDia },
+                new { concepto = "Monto Bodegajes", valor = montoBodegajeDia },
+                new { concepto = "Intereses Cobrados", valor = montoInteresDia },
+                new { concepto = "Abonos Recibidos", valor = abonoDia },
+                new { concepto = "Monto Vencimientos", valor = vencidos },
+                new { concepto = "Monto Cancelados", valor = cancelados },
+                new { concepto = "Total Acumulado", valor = acumulado },
+                new { concepto = "Total IVA", valor = iva },
             };
 
             return new

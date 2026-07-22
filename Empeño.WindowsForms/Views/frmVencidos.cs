@@ -445,22 +445,27 @@ namespace Empeño.WindowsForms.Views
         // ===== Reutilizable desde la versión nueva (frmShell), SIN mostrar el formulario =====
 
         // Carga los vencidos y totales (como el Load, sin ReviewEmpeños que es lento) para imprimir/enviar.
-        private async Task CargarHeadless()
+        private async Task CargarHeadless(DateTime? corte = null)
         {
-            empeños = await _context.Empenos.Where(x => !x.IsDelete && x.Estado == Estado.Vencido
-             && !x.Retirado && x.FechaRetiro == null
-             && !x.RetiradoAdministrador && x.FechaRetiroAdministrador == null)
+            // Vencidos AL CORTE: vencimiento en/antes del corte y sin retirar a esa fecha (default: hoy).
+            var f = (corte ?? DateTime.Today).Date;
+            var tope = f.AddDays(1);
+            empeños = await _context.Empenos.Where(x => !x.IsDelete
+             && x.FechaVencimiento < tope
+             && (x.FechaRetiro == null || x.FechaRetiro >= tope)
+             && (x.FechaRetiroAdministrador == null || x.FechaRetiroAdministrador >= tope))
           .Include(x => x.Intereses).ToListAsync();
             configuracion = _context.Configuraciones.FirstOrDefault();
             await LoadDetalle();
+            txtFecha.Text = f.ToString("dd/MM/yyyy");   // estampa la fecha de corte en el comprobante
         }
 
         // Imprime el comprobante de vencidos REUSANDO el Print clásico (mismo Excel), headless.
-        public async Task ImprimirVencidosHeadless()
+        public async Task ImprimirVencidosHeadless(DateTime? corte = null)
         {
             try
             {
-                await CargarHeadless();
+                await CargarHeadless(corte);
                 await Print();
             }
             catch (Exception)
@@ -470,9 +475,9 @@ namespace Empeño.WindowsForms.Views
         }
 
         // Envía el proceso de vencidos por correo REUSANDO SendMailVencidos, headless.
-        public async Task<object> EnviarVencidosHeadless()
+        public async Task<object> EnviarVencidosHeadless(DateTime? corte = null)
         {
-            await CargarHeadless();
+            await CargarHeadless(corte);
             if (configuracion == null || string.IsNullOrEmpty(configuracion.EmailNotification))
                 return new { ok = false, error = "No hay correo de aviso configurado (Configuración → Correo de aviso)." };
 
