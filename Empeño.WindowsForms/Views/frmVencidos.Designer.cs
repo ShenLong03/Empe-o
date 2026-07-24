@@ -60,8 +60,8 @@
             this.txtFecha = new System.Windows.Forms.TextBox();
             this.lblFecha = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
-            this.elipsePanelArqueo = new ns1.BunifuElipse(this.components);
-            this.elipseDetalles = new ns1.BunifuElipse(this.components);
+            this.elipsePanelArqueo = new Bunifu.Framework.UI.BunifuElipse(this.components);
+            this.elipseDetalles = new Bunifu.Framework.UI.BunifuElipse(this.components);
             this.printDocument1 = new System.Drawing.Printing.PrintDocument();
             this.btnPrint = new System.Windows.Forms.Button();
             this.panelDetalle.SuspendLayout();
@@ -535,8 +535,8 @@
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.TextBox txtTotalVencido;
         private System.Windows.Forms.Label label3;
-        private ns1.BunifuElipse elipsePanelArqueo;
-        private ns1.BunifuElipse elipseDetalles;
+        private Bunifu.Framework.UI.BunifuElipse elipsePanelArqueo;
+        private Bunifu.Framework.UI.BunifuElipse elipseDetalles;
 
         private System.Drawing.Printing.PrintDocument printDocument1;
         private System.Windows.Forms.Label lblTotalProrroga;

@@ -1,6 +1,8 @@
 ﻿using Empeño.CommonEF.Entities;
 using Empeño.CommonEF.Enum;
+using Empeño.CommonEF.Models;
 using Empeño.WindowsForms.Data;
+using Newtonsoft.Json;
 using System;
 using System.Data;
 using System.Data.Entity;
@@ -21,53 +23,244 @@ namespace Empeño.WindowsForms.Views
             InitializeComponent();
         }
 
-        private async void btnGuardar_Click(object sender, EventArgs e)
+        // ===== Reutilizable desde la versión nueva (frmShell), SIN mostrar el formulario =====
+        // Misma lógica que btnGuardar_Click: validación + upsert + bitácora "Intereses".
+        // El PIN "Configuración" lo valida frmShell ANTES de llamar (igual que el resto de acciones).
+        public async Task<object> GuardarHeadless(Newtonsoft.Json.Linq.JObject d)
         {
-            if (interesId > 0)
-            {
-                var interes = await _context.Interes.FindAsync(interesId);
+            string nombre = (string)d["nombre"];
+            if (string.IsNullOrWhiteSpace(nombre))
+                return new { ok = false, error = "El nombre del plan es obligatorio." };
 
-                interes.Igual = txtIgual.Text == "Igual que" ? 0 : int.Parse(txtIgual.Text);
-                interes.Mayor = txtMayor.Text == "Mayor que" ? 0 : int.Parse(txtMayor.Text);
-                interes.Menor = txtMenor.Text == "Menor que" ? 0 : int.Parse(txtMenor.Text);
-                interes.Avaluo = txtAvaluo.Text == "Avalúo" ? 0 : double.Parse(txtAvaluo.Text);
-                interes.Bodegaje = txtBodegaje.Text == "Bodegaje" ? 0 : double.Parse(txtBodegaje.Text);
-                interes.Nombre = txtNombre.Text;
-                interes.Porcentaje = txtValor.Text == "Porcentaje" ? 0 : double.Parse(txtValor.Text);
-                interes.Activo = chbActivo.Checked;
-                interes.Meses = txtMeses.Text == "Meses" ? 0 : int.Parse(txtMeses.Text);
+            double porcentaje = d["porcentaje"] != null ? (double)d["porcentaje"] : 0;
+            int mayor = d["mayor"] != null ? (int)d["mayor"] : 0;
+            int menor = d["menor"] != null ? (int)d["menor"] : 0;
+            int igual = d["igual"] != null ? (int)d["igual"] : 0;
+            int meses = d["meses"] != null ? (int)d["meses"] : 0;
+            double avaluo = d["avaluo"] != null ? (double)d["avaluo"] : 0;
+            double bodegaje = d["bodegaje"] != null ? (double)d["bodegaje"] : 0;
+            bool activo = d["activo"] != null && (bool)d["activo"];
+
+            if (porcentaje < 0 || meses < 0 || mayor < 0 || menor < 0 || igual < 0)
+                return new { ok = false, error = "No se permiten valores negativos." };
+            if (avaluo < 0 || avaluo > 100 || bodegaje < 0 || bodegaje > 100)
+                return new { ok = false, error = "El avalúo y el bodegaje deben estar entre 0 y 100." };
+
+            object antes = null;
+            string accion;
+            int id = d["id"] != null ? (int)d["id"] : 0;
+
+            if (id > 0)
+            {
+                accion = "Editar";
+                var interes = await _context.Interes.FindAsync(id);
+                if (interes == null) return new { ok = false, error = "El plan ya no existe." };
+                antes = new { interes.Nombre, interes.Porcentaje, interes.Mayor, interes.Menor, interes.Igual, interes.Meses, interes.Avaluo, interes.Bodegaje, interes.Activo };
+                interes.Igual = igual;
+                interes.Mayor = mayor;
+                interes.Menor = menor;
+                interes.Avaluo = avaluo;
+                interes.Bodegaje = bodegaje;
+                interes.Nombre = nombre;
+                interes.Porcentaje = porcentaje;
+                interes.Activo = activo;
+                interes.Meses = meses;
                 _context.Entry(interes).State = EntityState.Modified;
             }
             else
             {
+                accion = "Crear";
+                _context.Interes.Add(new Interes
+                {
+                    Igual = igual,
+                    Mayor = mayor,
+                    Menor = menor,
+                    Avaluo = avaluo,
+                    Bodegaje = bodegaje,
+                    Nombre = nombre,
+                    Activo = activo,
+                    Meses = meses,
+                    Porcentaje = porcentaje
+                });
+            }
+            await _context.SaveChangesAsync();
+
+            await funciones.SaveBitacora(new ValorBitacora
+            {
+                Modulo = "Intereses",
+                Accion = accion,
+                Valor = JsonConvert.SerializeObject(new { antes, despues = new { Nombre = nombre, Porcentaje = porcentaje, Mayor = mayor, Menor = menor, Igual = igual, Meses = meses, Avaluo = avaluo, Bodegaje = bodegaje, Activo = activo } })
+            });
+            return new { ok = true };
+        }
+
+        // Baja = soft-delete (Activo=false), igual que btnEliminar_Click. PIN validado en frmShell.
+        public async Task<object> EliminarHeadless(int id)
+        {
+            var interes = await _context.Interes.FindAsync(id);
+            if (interes == null) return new { ok = false, error = "El plan ya no existe." };
+
+            interes.Activo = false;
+            _context.Entry(interes).State = EntityState.Modified;
+            await _context.SaveChangesAsync();
+
+            await funciones.SaveBitacora(new ValorBitacora
+            {
+                Modulo = "Intereses",
+                Accion = "Desactivar",
+                Valor = JsonConvert.SerializeObject(new { interes.InteresId, interes.Nombre })
+            });
+            return new { ok = true };
+        }
+
+        private async void btnGuardar_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if (!funciones.ValidatePIN("Configuración"))
+                    return;
+
                 if (!funciones.Validate(txtNombre, lblNombre))
                     return;
                 if (!funciones.ValidateNum(txtValor, lblValor))
                     return;
 
+                // Parseo con guardas (respeta los placeholders), sin cambios de base de datos
+                int mayor = 0, menor = 0, igual = 0, meses = 0;
+                double avaluo = 0, bodegaje = 0, porcentaje = 0;
 
-                var interes = new Interes
+                if (txtMayor.Text != "Mayor que" && !int.TryParse(txtMayor.Text, out mayor))
                 {
-                    Igual = txtIgual.Text == "Igual que" ? 0 : int.Parse(txtIgual.Text),
-                    Mayor = txtMayor.Text == "Mayor que" ? 0 : int.Parse(txtMayor.Text),
-                    Menor = txtMenor.Text == "Menor que" ? 0 : int.Parse(txtMenor.Text),
-                    Avaluo = txtAvaluo.Text == "Avalúo" ? 0 : double.Parse(txtAvaluo.Text),
-                    Bodegaje = txtBodegaje.Text == "Bodegaje" ? 0 : double.Parse(txtBodegaje.Text),
-                    Nombre = txtNombre.Text,
-                    Activo = chbActivo.Checked,
-                    Meses = txtMeses.Text == "Meses" ? 0 : int.Parse(txtMeses.Text),
-                    Porcentaje = txtValor.Text == "Porcentaje" ? 0 : double.Parse(txtValor.Text),
-                };
+                    MessageBox.Show("El valor de 'Mayor que' debe ser numérico.", "Dato inválido", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+                if (txtMenor.Text != "Menor que" && !int.TryParse(txtMenor.Text, out menor))
+                {
+                    MessageBox.Show("El valor de 'Menor que' debe ser numérico.", "Dato inválido", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+                if (txtIgual.Text != "Igual que" && !int.TryParse(txtIgual.Text, out igual))
+                {
+                    MessageBox.Show("El valor de 'Igual que' debe ser numérico.", "Dato inválido", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+                if (txtMeses.Text != "Meses" && !int.TryParse(txtMeses.Text, out meses))
+                {
+                    MessageBox.Show("El plazo (Meses) debe ser numérico.", "Dato inválido", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+                if (txtValor.Text != "Porcentaje" && !double.TryParse(txtValor.Text, out porcentaje))
+                {
+                    MessageBox.Show("El porcentaje debe ser numérico.", "Dato inválido", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+                if (txtAvaluo.Text != "Avalúo" && !double.TryParse(txtAvaluo.Text, out avaluo))
+                {
+                    MessageBox.Show("El avalúo debe ser numérico.", "Dato inválido", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+                if (txtBodegaje.Text != "Bodegaje" && !double.TryParse(txtBodegaje.Text, out bodegaje))
+                {
+                    MessageBox.Show("El bodegaje debe ser numérico.", "Dato inválido", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
 
-                _context.Interes.Add(interes);
+                if (porcentaje < 0 || meses < 0 || mayor < 0 || menor < 0 || igual < 0)
+                {
+                    MessageBox.Show("No se permiten valores negativos.", "Dato inválido", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+                if (avaluo < 0 || avaluo > 100 || bodegaje < 0 || bodegaje > 100)
+                {
+                    MessageBox.Show("El avalúo y el bodegaje deben estar entre 0 y 100.", "Dato inválido", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+
+                object antes = null;
+                string accion;
+
+                if (interesId > 0)
+                {
+                    accion = "Editar";
+                    var interes = await _context.Interes.FindAsync(interesId);
+
+                    antes = new
+                    {
+                        interes.Nombre,
+                        interes.Porcentaje,
+                        interes.Mayor,
+                        interes.Menor,
+                        interes.Igual,
+                        interes.Meses,
+                        interes.Avaluo,
+                        interes.Bodegaje,
+                        interes.Activo
+                    };
+
+                    interes.Igual = igual;
+                    interes.Mayor = mayor;
+                    interes.Menor = menor;
+                    interes.Avaluo = avaluo;
+                    interes.Bodegaje = bodegaje;
+                    interes.Nombre = txtNombre.Text;
+                    interes.Porcentaje = porcentaje;
+                    interes.Activo = chbActivo.Checked;
+                    interes.Meses = meses;
+                    _context.Entry(interes).State = EntityState.Modified;
+                }
+                else
+                {
+                    accion = "Crear";
+                    var interes = new Interes
+                    {
+                        Igual = igual,
+                        Mayor = mayor,
+                        Menor = menor,
+                        Avaluo = avaluo,
+                        Bodegaje = bodegaje,
+                        Nombre = txtNombre.Text,
+                        Activo = chbActivo.Checked,
+                        Meses = meses,
+                        Porcentaje = porcentaje,
+                    };
+
+                    _context.Interes.Add(interes);
+                }
+
+                await _context.SaveChangesAsync();
+
+                await funciones.SaveBitacora(new ValorBitacora
+                {
+                    Modulo = "Intereses",
+                    Accion = accion,
+                    Valor = JsonConvert.SerializeObject(new
+                    {
+                        antes,
+                        despues = new
+                        {
+                            Nombre = txtNombre.Text,
+                            Porcentaje = porcentaje,
+                            Mayor = mayor,
+                            Menor = menor,
+                            Igual = igual,
+                            Meses = meses,
+                            Avaluo = avaluo,
+                            Bodegaje = bodegaje,
+                            Activo = chbActivo.Checked
+                        }
+                    })
+                });
+
+                await LoadData();
+
+                interesId = 0;
+                funciones.ResetForm(panelFormulario);
+                MessageBox.Show("Datos guardados correctamente");
             }
-
-            await _context.SaveChangesAsync();
-            await LoadData();
-
-            interesId = 0;
-            funciones.ResetForm(panelFormulario);
-            MessageBox.Show("Datos guardados correctamente");
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message.ToString(), "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
 
         private async void frmIntereses_Load(object sender, EventArgs e)
@@ -237,17 +430,41 @@ namespace Empeño.WindowsForms.Views
 
         private async void btnEliminar_Click(object sender, EventArgs e)
         {
-            var result = MessageBox.Show("¿Esta séguro que desea eliminar el registro?", "Pregunta", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+            if (!funciones.ValidatePIN("Configuración"))
+                return;
 
-            if (result == DialogResult.Yes)
+            var result = MessageBox.Show("¿Está seguro que desea desactivar el registro?", "Pregunta", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+
+            if (result != DialogResult.Yes)
+                return;
+
+            if (dgvLista.SelectedRows.Count <= 0)
+                return;
+
+            try
             {
-                if (dgvLista.SelectedRows.Count > 0)
+                var interes = await _context.Interes.FindAsync(dgvLista.SelectedRows[0].Cells[0].Value);
+                if (interes == null)
+                    return;
+
+                // Soft-delete: se desactiva en vez de borrar (evita romper FK con empeños existentes)
+                interes.Activo = false;
+                _context.Entry(interes).State = EntityState.Modified;
+                await _context.SaveChangesAsync();
+
+                await funciones.SaveBitacora(new ValorBitacora
                 {
-                    var interes = await _context.Interes.FindAsync(dgvLista.SelectedRows[0].Cells[0].Value);
-                    _context.Interes.Remove(interes);
-                    await _context.SaveChangesAsync();
-                    await LoadData();
-                }
+                    Modulo = "Intereses",
+                    Accion = "Desactivar",
+                    Valor = JsonConvert.SerializeObject(new { interes.InteresId, interes.Nombre })
+                });
+
+                await LoadData();
+                MessageBox.Show("El plan de tasa fue desactivado correctamente.", "Información", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message.ToString(), "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 

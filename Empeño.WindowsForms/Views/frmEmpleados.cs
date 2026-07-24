@@ -1,6 +1,8 @@
 ﻿using Empeño.CommonEF.Entities;
 using Empeño.CommonEF.Enum;
+using Empeño.CommonEF.Models;
 using Empeño.WindowsForms.Data;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -26,6 +28,108 @@ namespace Empeño.WindowsForms.Views
             InitializeComponent();
         }
 
+        // ===== Reutilizable desde la versión nueva (frmShell), SIN mostrar el formulario =====
+        // Misma lógica que btnGuardar_Click: valida, crea/edita Empleado + User (Usuario/Codigo/Password/Perfil)
+        // y registra bitácora "Empleado". El PIN "Empleado" lo valida frmShell ANTES de llamar.
+        public async Task<object> GuardarHeadless(Newtonsoft.Json.Linq.JObject d)
+        {
+            int id = d["id"] != null ? (int)d["id"] : 0;
+            string nombre = ((string)d["nombre"] ?? "").Trim();
+            string usuario = ((string)d["usuario"] ?? "").Trim();
+            string password = (string)d["password"] ?? "";
+            string pin = ((string)d["pin"] ?? "").Trim();
+            string perfil = ((string)d["perfil"] ?? "").Trim();
+            string telefono = ((string)d["telefono"] ?? "").Trim();
+            string correo = ((string)d["correo"] ?? "").Trim();
+            bool activo = d["activo"] != null && (bool)d["activo"];
+
+            if (nombre.Length == 0) return new { ok = false, error = "El nombre es obligatorio." };
+            if (perfil.Length == 0 || perfil == "Perfil") return new { ok = false, error = "Seleccione el perfil del empleado." };
+            var perf = _context.Perfil.FirstOrDefault(p => p.Nombre == perfil);
+            if (perf == null) return new { ok = false, error = "El perfil no es válido." };
+            int perfilId = perf.PerfilId;
+
+            string accion = id == 0 ? "Crear" : "Editar";
+            string usuarioLog = usuario;
+
+            if (id == 0)
+            {
+                if (usuario.Length == 0) return new { ok = false, error = "El usuario es obligatorio." };
+                if (password.Length == 0) return new { ok = false, error = "La contraseña es obligatoria." };
+                if (pin.Length == 0) return new { ok = false, error = "El PIN es obligatorio." };
+                if (_context.User.Any(u => u.Codigo == pin || u.Usuario == usuario))
+                    return new { ok = false, error = "Ya existe un usuario o PIN igual. Elegí un PIN/usuario diferente." };
+
+                _context.Empleados.Add(new Empleado { Nombre = nombre, Telefono = telefono, Correo = correo, Activo = activo, Usuario = usuario });
+                _context.User.Add(new User { Activo = activo, Usuario = usuario, Codigo = pin, Password = password, PerfilId = perfilId });
+            }
+            else
+            {
+                var empleado = await _context.Empleados.FindAsync(id);
+                if (empleado == null) return new { ok = false, error = "El empleado ya no existe." };
+                usuarioLog = empleado.Usuario;   // el usuario NO se cambia en edición (igual que el clásico)
+                var user = await _context.User.SingleOrDefaultAsync(u => u.Usuario == empleado.Usuario);
+
+                empleado.Correo = correo;
+                empleado.Nombre = nombre;
+                empleado.Telefono = telefono;
+                empleado.Activo = activo;
+
+                if (pin.Length == 0) return new { ok = false, error = "El PIN es obligatorio." };
+                if (user != null)
+                {
+                    user.Activo = activo;
+                    // Unicidad de PIN EXCLUYENDO al propio usuario (el clásico se comparaba consigo mismo y bloqueaba el cambio).
+                    if (user.Codigo != pin && _context.User.Any(u => u.UsuarioId != user.UsuarioId && u.Codigo == pin))
+                        return new { ok = false, error = "Ese PIN ya está en uso por otro usuario." };
+                    user.Codigo = pin;
+                    if (!string.IsNullOrEmpty(password)) user.Password = password;   // en blanco = mantener la actual
+                    user.PerfilId = perfilId;
+                    _context.Entry(user).State = EntityState.Modified;
+                }
+                else
+                {
+                    _context.User.Add(new User { Activo = activo, Usuario = empleado.Usuario, Codigo = pin, Password = password, PerfilId = perfilId });
+                }
+                _context.Entry(empleado).State = EntityState.Modified;
+            }
+            await _context.SaveChangesAsync();
+
+            await funciones.SaveBitacora(new ValorBitacora
+            {
+                Modulo = "Empleado",
+                Accion = accion,
+                Valor = JsonConvert.SerializeObject(new { Nombre = nombre, Usuario = usuarioLog, Correo = correo, Telefono = telefono, Perfil = perfil, Activo = activo })
+            });
+            return new { ok = true };
+        }
+
+        // Baja = soft-delete del empleado y sus usuarios (igual que btnEliminar_Click). PIN validado en frmShell.
+        public async Task<object> EliminarHeadless(int id)
+        {
+            var dato = await _context.Empleados.FindAsync(id);
+            if (dato == null) return new { ok = false, error = "El empleado ya no existe." };
+
+            dato.Activo = false;
+            _context.Entry(dato).State = EntityState.Modified;
+
+            var usuarios = _context.User.Where(u => u.Usuario == dato.Usuario).ToList();
+            foreach (var u in usuarios)
+            {
+                u.Activo = false;
+                _context.Entry(u).State = EntityState.Modified;
+            }
+            await _context.SaveChangesAsync();
+
+            await funciones.SaveBitacora(new ValorBitacora
+            {
+                Modulo = "Empleado",
+                Accion = "Desactivar",
+                Valor = JsonConvert.SerializeObject(new { dato.EmpleadoId, dato.Nombre, dato.Usuario })
+            });
+            return new { ok = true };
+        }
+
         private async void frmEmpleados_Load(object sender, EventArgs e)
         {
             await LoadData();
@@ -34,7 +138,7 @@ namespace Empeño.WindowsForms.Views
         #region Funciones
         public async Task LoadData() 
         {
-            dgvEmpleados.DataSource = await _context.Empleados.Where(d=>d.Usuario!="Admin").Select(x => new
+            dgvEmpleados.DataSource = await _context.Empleados.Where(d=>d.Usuario!="Admin" && d.Activo).Select(x => new
             {
                 Id = x.EmpleadoId,
                 x.Nombre,
@@ -60,7 +164,7 @@ namespace Empeño.WindowsForms.Views
             funciones.PlaceHolder(txtCorreo, PlaceHolderType.Leave, "Correo");
             cbPerfil.Text = string.Empty;
             txtPIN.Text = string.Empty;
-            funciones.PlaceHolder(txtNombre, PlaceHolderType.Leave, "PIN");
+            funciones.PlaceHolder(txtPIN, PlaceHolderType.Leave, "PIN");
             txtTelefono.Text = string.Empty;
             funciones.PlaceHolder(txtTelefono, PlaceHolderType.Leave, "Teléfono");
             txtUsuario.Text = string.Empty;
@@ -79,6 +183,11 @@ namespace Empeño.WindowsForms.Views
         {         
             try
             {
+                if (!funciones.ValidatePIN("Empleado"))
+                    return;
+
+                string accion = empleadoId == 0 ? "Crear" : "Editar";
+
                 if (!Validate(txtNombre, lblNombre))
                     return;
                 if (!Validate(txtUsuario, lblUsuario))
@@ -171,6 +280,22 @@ namespace Empeño.WindowsForms.Views
                     _context.Entry(empleado).State = EntityState.Modified;                    
                 }
                 await _context.SaveChangesAsync();
+
+                await funciones.SaveBitacora(new ValorBitacora
+                {
+                    Modulo = "Empleado",
+                    Accion = accion,
+                    Valor = JsonConvert.SerializeObject(new
+                    {
+                        Nombre = txtNombre.Text,
+                        Usuario = txtUsuario.Text,
+                        Correo = txtCorreo.Text,
+                        Telefono = txtTelefono.Text,
+                        Perfil = cbPerfil.Text,
+                        Activo = chbActivo.Checked
+                    })
+                });
+
                 await LoadData();
                 funciones.ResetForm(panelFormulario);
                 empleadoId = 0;
@@ -381,6 +506,7 @@ namespace Empeño.WindowsForms.Views
                 {
                     cbPerfil.Text = user.Perfil.Nombre;
                     txtPassword.Text = user.Password;
+                    txtPassword.UseSystemPasswordChar = true;
                     txtPIN.Text = user.Codigo;
                 }
 
@@ -459,32 +585,53 @@ namespace Empeño.WindowsForms.Views
 
         private async void btnEliminar_Click(object sender, EventArgs e)
         {
+            if (!funciones.ValidatePIN("Empleado"))
+                return;
+
+            var result = MessageBox.Show("¿Está seguro que desea desactivar el registro?", "Pregunta", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+
+            if (result != DialogResult.Yes)
+                return;
+
+            if (dgvEmpleados.SelectedRows.Count <= 0)
+                return;
+
             try
             {
+                var dato = await _context.Empleados.FindAsync(dgvEmpleados.SelectedRows[0].Cells[0].Value);
+                if (dato == null)
+                    return;
 
+                // Soft-delete: se desactiva empleado y usuarios, sin borrar (conserva el historial y evita romper FK)
+                dato.Activo = false;
+                _context.Entry(dato).State = EntityState.Modified;
 
-                var result = MessageBox.Show("¿Esta séguro que desea eliminar el registro?", "Pregunta", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
-
-                if (result == DialogResult.Yes)
+                var usuarios = _context.User.Where(u => u.Usuario == dato.Usuario).ToList();
+                foreach (var u in usuarios)
                 {
-                    if (dgvEmpleados.SelectedRows.Count > 0)
-                    {
-                        var dato = await _context.Empleados.FindAsync(dgvEmpleados.SelectedRows[0].Cells[0].Value);
-                        _context.Empleados.Remove(dato);
-                        _context.User.RemoveRange(_context.User.Where(u => u.Usuario == dato.Usuario));
-                        await _context.SaveChangesAsync();
-                        funciones.ResetForm(panelFormulario);
-                        empleadoId = 0;
-                        await LoadData();
-                    }
+                    u.Activo = false;
+                    _context.Entry(u).State = EntityState.Modified;
                 }
-            }
-            catch (Exception)
-            {
 
-                MessageBox.Show("El dato no puede ser eliminado", "Error");
+                await _context.SaveChangesAsync();
+
+                await funciones.SaveBitacora(new ValorBitacora
+                {
+                    Modulo = "Empleado",
+                    Accion = "Desactivar",
+                    Valor = JsonConvert.SerializeObject(new { dato.EmpleadoId, dato.Nombre, dato.Usuario })
+                });
+
+                funciones.ResetForm(panelFormulario);
+                empleadoId = 0;
+                await LoadData();
+                MessageBox.Show("El empleado fue desactivado correctamente.", "Información", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
-           
-        }  
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message.ToString(), "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+
+        }
     }
 }

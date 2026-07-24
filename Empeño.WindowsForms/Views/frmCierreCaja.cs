@@ -124,9 +124,13 @@ namespace Empeño.WindowsForms.Views
 
             txtMonto.Text = montoEmpeñoDia != null ? montoEmpeñoDia.Value.ToString("N2") : "0.00";
 
-            double? montoInteresDia = _context.Empenos.Where(x => !x.IsDelete && (x.Estado == Estado.Vigente
-                       || x.Estado == Estado.Pendiente || x.Estado == Estado.Vencido || x.Estado==Estado.Cancelado))
-                  .SelectMany(x => x.Pagos).Where(x => x.TipoPago == TipoPago.Interes && x.Fecha >= fecha && x.Fecha < tomorrow).ToList().Sum(x => x.MontoTotal);
+            // Interés = solo el interés base (Monto). Avalúo y bodegaje se reportan en sus propias
+            // líneas (txtAvaluo/txtBodegaje), así que sumar MontoTotal aquí los contaría dos veces.
+            // Se cuenta POR PAGO (no por estado del empeño): el interés cobrado hoy entra al cierre
+            // aunque el empeño quede después Retirado / Anulado / Cancelado el mismo día.
+            double? montoInteresDia = _context.Pago.Where(p => !p.Empeno.IsDelete
+                       && p.TipoPago == TipoPago.Interes && p.Fecha >= fecha && p.Fecha < tomorrow)
+                  .ToList().Sum(x => x.Monto);
 
             txtInteres.Text = montoInteresDia != null ? montoInteresDia.Value.ToString("N2") : "0.00";
 
@@ -144,15 +148,15 @@ namespace Empeño.WindowsForms.Views
             txtCancelados.Text = cancelados != null ? cancelados.Value.ToString("N2") : "0.00";
             txtAcumulado.Text = ((acumuladoInicial + montoEmpeñoDia) - (abonoDia + vencidos + cancelados)).Value.ToString("N2");
 
-            double? montoAvaluoDia = _context.Empenos.Where(x => !x.IsDelete && (x.Estado == Estado.Vigente
-                      || x.Estado == Estado.Pendiente || x.Estado == Estado.Vencido || x.Estado == Estado.Cancelado))
-                 .SelectMany(x => x.Pagos).Where(x => x.TipoPago == TipoPago.Interes && x.Fecha >= fecha && x.Fecha < tomorrow).ToList().Sum(x => x.MontoAvaluo);
+            double? montoAvaluoDia = _context.Pago.Where(p => !p.Empeno.IsDelete
+                      && p.TipoPago == TipoPago.Interes && p.Fecha >= fecha && p.Fecha < tomorrow)
+                 .ToList().Sum(x => x.MontoAvaluo);
 
             txtAvaluo.Text = montoAvaluoDia != null ? montoAvaluoDia.Value.ToString("N2") : "0.00";
 
-            double? montoBodegajeDia = _context.Empenos.Where(x => !x.IsDelete && (x.Estado == Estado.Vigente
-                     || x.Estado == Estado.Pendiente || x.Estado == Estado.Vencido || x.Estado == Estado.Cancelado))
-                .SelectMany(x => x.Pagos).Where(x => x.TipoPago == TipoPago.Interes && x.Fecha >= fecha && x.Fecha < tomorrow).ToList().Sum(x => x.MontoBodega);
+            double? montoBodegajeDia = _context.Pago.Where(p => !p.Empeno.IsDelete
+                     && p.TipoPago == TipoPago.Interes && p.Fecha >= fecha && p.Fecha < tomorrow)
+                .ToList().Sum(x => x.MontoBodega);
 
             txtBodegaje.Text = montoBodegajeDia != null ? montoBodegajeDia.Value.ToString("N2") : "0.00";
 
@@ -325,7 +329,7 @@ namespace Empeño.WindowsForms.Views
         }
 
         #region Funciones
-        public async void Print(CierreCaja cierreCaja)
+        public async Task Print(CierreCaja cierreCaja)
         {
 
             var configuracion = await _context.Configuraciones.FirstOrDefaultAsync();
@@ -348,18 +352,27 @@ namespace Empeño.WindowsForms.Views
             cexcel.Cells[10, 2].value = empleado.Usuario;
             cexcel.Cells[11, 2].value = txtFecha.Text;
 
+            // A1: interés COMPLETO (base + avalúo + bodegaje); avalúo/bodegaje quedan informativos.
+            double _ava = detalles.Where(d => d.Concepto == "Avalúos").Sum(d => d.Valor);
+            double _bod = detalles.Where(d => d.Concepto == "Bodegajes").Sum(d => d.Valor);
+            double _intBase = detalles.Where(d => d.Concepto == "Intereses").Sum(d => d.Valor);
             var index = 0;
             foreach (DataGridViewRow item in dgvDetalles.Rows)
             {
-                cexcel.Cells[14 + index, 1].value = item.Cells[1].Value.ToString();
-                cexcel.Cells[14 + index, 2].value = item.Cells[2].Value.ToString();
-                cexcel.Cells[14 + index, 3].value = item.Cells[3].Value.ToString();
-                cexcel.Cells[14 + index, 4].value = item.Cells[4].Value.ToString();     
+                // A2: la grilla del cierre tiene 2 columnas (Concepto, Valor) → leer [0] y [1], no [1..4].
+                string concepto = item.Cells[0].Value != null ? item.Cells[0].Value.ToString() : "";
+                string valor = item.Cells[1].Value != null ? item.Cells[1].Value.ToString() : "";
+                if (concepto == "Intereses")
+                    valor = (_intBase + _ava + _bod).ToString("N2");         // interés completo
+                else if (concepto == "Avalúos" || concepto == "Bodegajes")
+                    concepto = concepto + " (incluido en intereses)";        // informativo, no re-sumar
+                cexcel.Cells[14 + index, 1].value = concepto;
+                cexcel.Cells[14 + index, 2].value = valor;
 
                 Range range = (Range)cexcel.Rows[15 + index];
                 Range line = range;
                 line.Insert();
-                ++index;              
+                ++index;
             }
 
             double saldoInicial = double.Parse(textBox1.Text);
@@ -369,6 +382,71 @@ namespace Empeño.WindowsForms.Views
             System.Threading.Thread.Sleep(300);
             cexcel.ActiveWorkbook.Close(false);
             cexcel.Quit();
+        }
+
+        // Guardado de cierre reutilizable desde la versión nueva (frmShell), SIN mostrar el formulario:
+        // corre el MISMO ProcessClose() (matemática exacta), agrega las líneas manuales, persiste
+        // CierreCaja + DetalleCierreCaja, y REUSA el mismo Print (comprobante Excel) y el correo del clásico.
+        // La fecha se arma en el llamador (evita el bug de formato "dd/MM/yyyy HH:mm" del botón clásico).
+        public async Task<object> GuardarCierreHeadless(DateTime fecha, double saldoInicial, List<DetalleCierreCaja> manuales, int empleadoId)
+        {
+            txtFecha.Value = fecha.Date;
+            await ProcessClose();                       // llena `detalles` (9 líneas) + grilla + textboxes
+            if (manuales != null)
+                manuales.ForEach(d => detalles.Add(d));
+            textBox1.Text = saldoInicial.ToString("N2");
+            LoadList();                                 // refresca grilla + txtTotal con manuales + saldo inicial
+
+            var cierreCaja = new CierreCaja
+            {
+                Fecha = fecha,
+                EmpleadoId = empleadoId == 0 ? 1 : empleadoId,
+                SaldoInicial = saldoInicial,
+                IsDelete = false,
+            };
+            _context.CierreCajas.Add(cierreCaja);
+            await _context.SaveChangesAsync();
+            detalles.ForEach(d => d.CierreCajaId = cierreCaja.CierreCajaId);
+            _context.DetalleCierreCajas.AddRange(detalles);
+            await _context.SaveChangesAsync();
+
+            string warn = null;
+            try
+            {
+                await Print(cierreCaja);                // mismo comprobante Excel del clásico (grilla ya poblada)
+                var configuracion = _context.Configuraciones.FirstOrDefault();
+                if (configuracion != null && !string.IsNullOrEmpty(configuracion.EmailNotification))
+                {
+                    EmailFuncion emailFuncion = new EmailFuncion();
+                    var empleado = await _context.Empleados.FindAsync(empleadoId);
+                    string str = "Se ha realizado el cierre de caja al ser el <b>" + cierreCaja.Fecha.ToLongDateString() + " " + cierreCaja.Fecha.ToLongTimeString() + "</b> por <b>" + (empleado != null ? empleado.Nombre : "") + "</b>. <br /><br />";
+                    await emailFuncion.SendMail(configuracion.EmailNotification, "Cierre de Caja " + cierreCaja.Fecha, str, detalles);
+                }
+            }
+            catch (Exception ex)
+            {
+                warn = "El cierre #" + cierreCaja.CierreCajaId + " se guardó, pero falló la impresión o el correo: " + ex.Message;
+            }
+            return new { ok = true, id = cierreCaja.CierreCajaId, warn };
+        }
+
+        // Reimpresión de un cierre guardado (para el historial de la versión nueva), sin mostrar el form.
+        public async Task ReimprimirCierrePorId(int cierreId)
+        {
+            try
+            {
+                var cierre = await _context.CierreCajas.FindAsync(cierreId);
+                if (cierre == null) return;
+                detalles = _context.DetalleCierreCajas.Where(d => d.CierreCajaId == cierreId).ToList();
+                txtFecha.Value = cierre.Fecha.Date;
+                textBox1.Text = cierre.SaldoInicial.ToString("N2");
+                LoadList();
+                await Print(cierre);
+            }
+            catch (Exception)
+            {
+                MessageBox.Show("No se pudo reimprimir el cierre. Verifique que Microsoft Excel esté disponible.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
         #endregion
 

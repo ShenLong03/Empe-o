@@ -72,17 +72,21 @@ namespace Empeño.WindowsForms.Views
 
         private void txtPagaMonto_TextChanged(object sender, EventArgs e)
         {
-            var monto = double.Parse(txtMontoAPagar.Text);
+            try
+            {
+                if (string.IsNullOrEmpty(txtPagaMonto.Text) || string.IsNullOrEmpty(txtMontoAPagar.Text) || string.IsNullOrEmpty(txtPagaInteres.Text))
+                    return;
 
-            var pagaMonto = double.Parse(txtPagaMonto.Text);
-
-            txtAdeudaMonto.Text = (monto - pagaMonto).ToString("N2");
-
-            var pagaInteres = double.Parse(txtPagaInteres.Text);
-
-            txtTotalAPagar.Text = (pagaInteres + pagaMonto).ToString("N2");
-
-            txtPagaCon.Text = (pagaInteres + pagaMonto).ToString("N2");
+                var monto = double.Parse(txtMontoAPagar.Text);
+                var pagaMonto = double.Parse(txtPagaMonto.Text);
+                txtAdeudaMonto.Text = (monto - pagaMonto).ToString("N2");
+                var pagaInteres = double.Parse(txtPagaInteres.Text);
+                txtTotalAPagar.Text = (pagaInteres + pagaMonto).ToString("N2");
+                txtPagaCon.Text = (pagaInteres + pagaMonto).ToString("N2");
+            }
+            catch (Exception)
+            {
+            }
         }
 
         private void txtPagaCon_TextChanged_1(object sender, EventArgs e)
@@ -124,9 +128,14 @@ namespace Empeño.WindowsForms.Views
             if (!funciones.ValidatePIN("Empeño"))
                 return;
 
-            double pagoIntereses = double.Parse(txtPagaInteres.Text);
-            double pagoMonto = double.Parse(txtPagaMonto.Text);
-            double montoPendiente = double.Parse(txtMontoAPagar.Text);
+            double pagoIntereses, pagoMonto, montoPendiente;
+            if (!double.TryParse(txtPagaInteres.Text, out pagoIntereses) ||
+                !double.TryParse(txtPagaMonto.Text, out pagoMonto) ||
+                !double.TryParse(txtMontoAPagar.Text, out montoPendiente))
+            {
+                MessageBox.Show("Los montos ingresados no son válidos.", "Dato inválido", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
 
             if (pagoMonto<montoPendiente)
             {
@@ -137,7 +146,12 @@ namespace Empeño.WindowsForms.Views
                 } 
             }
             var empleadoId = await funciones.GetEmpleadoIdByUser(Program.Usuario.Usuario);
-            double montoIntereses = double.Parse(txtInteresAPagar.Text);
+            double montoIntereses;
+            if (!double.TryParse(txtInteresAPagar.Text, out montoIntereses))
+            {
+                MessageBox.Show("El interés a pagar no es válido.", "Dato inválido", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
            
             
             
@@ -192,7 +206,7 @@ namespace Empeño.WindowsForms.Views
                     empeñoTemp.Estado = Estado.Cancelado;
                     empeñoTemp.Retirado = true;
                     empeñoTemp.FechaRetiro = DateTime.Today;
-                    _context.Intereses.RemoveRange(_context.Intereses.Where(i => i.EmpenoId == empleadoId && i.Pagado == 0));
+                    _context.Intereses.RemoveRange(_context.Intereses.Where(i => i.EmpenoId == empeñoTemp.EmpenoId && i.Pagado == 0));
                     _context.Entry(empeñoTemp).State = EntityState.Modified;
                     await _context.SaveChangesAsync();
                     if (pagoInteres==null)
@@ -223,6 +237,94 @@ namespace Empeño.WindowsForms.Views
             this.Close();
         }
 
+        // Cobro/abono reutilizable desde la versión nueva (frmShell), SIN mostrar el formulario.
+        // Replica EXACTO la lógica de Guardar() (mismas guardas, mismo reparto vía PagaInteres/SetPagaInteres,
+        // misma cancelación/retiro cuando el capital llega a 0) reusando los métodos existentes; corre el
+        // Load headless para poblar los controles que PagaInteres/Print leen. Devuelve { ok, warn } o { ok=false, error }.
+        // valorInteres (tope de interés) se pasa por el ctor = pagoIntereses.
+        public async Task<object> CobrarHeadless(double pagoIntereses, double pagoMonto, string comentario)
+        {
+            if (!funciones.ValidatePIN("Empeño"))
+                return new { ok = false, error = "Necesita PIN para cobrar." };
+
+            // Poblar el form como el Load (calcula montoMinimo, txtMontoAPagar, txtInteresAPagar, fechas)
+            // para que PagaInteres/SetPagaInteres/Print (que leen controles) funcionen headless.
+            frmPagar_Load(this, EventArgs.Empty);
+            txtComentario.Text = string.IsNullOrEmpty(comentario) ? "Comentario" : comentario;
+            txtPagaInteres.Text = pagoIntereses.ToString("N2");
+            txtPagaMonto.Text = pagoMonto.ToString("N2");
+
+            double montoPendiente = double.Parse(txtMontoAPagar.Text);
+            double montoIntereses = double.Parse(txtInteresAPagar.Text);
+
+            // Guarda de negocio (igual que Guardar): abonar a capital exige pagar TODO el interés pendiente.
+            if (pagoMonto > 0 && pagoMonto < montoPendiente && pagoIntereses < montoMinimo - 1)
+                return new { ok = false, error = "Para abonar a la prenda debe pagar todos los intereses pendientes (₡" + montoMinimo.ToString("N2") + ")." };
+
+            // Clamp igual que Guardar.
+            if (pagoMonto > montoPendiente) { pagoMonto = montoPendiente; txtPagaMonto.Text = pagoMonto.ToString("N2"); }
+            if (pagoIntereses > montoIntereses) { pagoIntereses = montoIntereses; txtPagaInteres.Text = pagoIntereses.ToString("N2"); }
+
+            if (pagoIntereses <= 0 && pagoMonto <= 0)
+                return new { ok = false, error = "Ingresá un pago de interés o un abono a capital." };
+
+            string warn = null;
+            empeño = null;
+            var empeñoTemp = _context.Empenos.Find(empeñoId);
+
+            if (pagoMonto > 0)
+            {
+                var pago = new Pago
+                {
+                    EmpenoId = empeñoTemp.EmpenoId,
+                    Consecutivo = GetConsecutivo(),
+                    Comentario = txtComentario.Text == "Comentario" ? string.Empty : txtComentario.Text,
+                    EmpleadoId = Program.EmpleadoId,
+                    Fecha = DateTime.Now,
+                    Monto = pagoMonto,
+                    TipoPago = TipoPago.Principal,
+                };
+                _context.Pago.Add(pago);
+                await _context.SaveChangesAsync();
+                await funciones.SaveBitacora(new ValorBitacora { Valor = JsonConvert.SerializeObject(pago), Modulo = "Pagos", Accion = "Crear" });
+
+                empeñoTemp.MontoPendiente -= pago.Monto;
+
+                if (empeñoTemp.MontoPendiente < 1)
+                {
+                    Pago pagoInteres = null;
+                    try { pagoInteres = await SetPagaInteres(pagoIntereses, false); }
+                    catch (Exception ex) { warn = "El pago se registró, pero falló algo al procesar el interés: " + ex.Message; }
+                    empeñoTemp.Estado = Estado.Cancelado;
+                    empeñoTemp.Retirado = true;
+                    empeñoTemp.FechaRetiro = DateTime.Today;
+                    _context.Intereses.RemoveRange(_context.Intereses.Where(i => i.EmpenoId == empeñoTemp.EmpenoId && i.Pagado == 0));
+                    _context.Entry(empeñoTemp).State = EntityState.Modified;
+                    await _context.SaveChangesAsync();
+                    try { if (pagoInteres == null) await PrintRetiro(empeñoTemp, pago); else await PrintRetiro(empeñoTemp, pago, pagoInteres); }
+                    catch (Exception ex) { warn = "El pago se registró, pero falló la impresión: " + ex.Message; }
+                }
+                else
+                {
+                    empeñoTemp.Estado = Estado.Vigente;
+                    _context.Entry(empeñoTemp).State = EntityState.Modified;
+                    await _context.SaveChangesAsync();
+                    try { await PagaInteres(pagoIntereses, true); }
+                    catch (Exception ex) { warn = "El pago se registró, pero falló la impresión: " + ex.Message; }
+                    try { await PrintAbono(empeñoTemp, pago); }
+                    catch (Exception ex) { warn = "El pago se registró, pero falló la impresión: " + ex.Message; }
+                }
+            }
+            else
+            {
+                try { await PagaInteres(pagoIntereses, true); }
+                catch (Exception ex) { warn = "El pago se registró, pero falló la impresión: " + ex.Message; }
+            }
+
+            await _context.SaveChangesAsync();
+            return new { ok = true, warn };
+        }
+
         private double? GetConsecutivo()
         {
             using (DataContext dataContext= new DataContext())
@@ -242,7 +344,6 @@ namespace Empeño.WindowsForms.Views
             empeño = await _context.Empenos.FindAsync(empeñoId);
             if (pagoIntereses > 0)
             {
-                var monto = pagoIntereses - (empeño.Monto * empeño.Interes.PorcentajeAvaluo) - (empeño.Monto * empeño.Interes.PorcentajeBodegaje);
                 var pago = new Pago
                 {
                     EmpenoId = empeño.EmpenoId,
@@ -250,80 +351,78 @@ namespace Empeño.WindowsForms.Views
                     Comentario = txtComentario.Text,
                     EmpleadoId = Program.EmpleadoId,
                     Fecha = DateTime.Now,
-                    Monto = monto,
-                    MontoAvaluo =  pagoIntereses- monto - (empeño.Monto * empeño.Interes.PorcentajeBodegaje),
-                    MontoBodega= pagoIntereses-monto - (empeño.Monto * empeño.Interes.PorcentajeAvaluo),
+                    Monto = 0,
+                    MontoAvaluo = 0,
+                    MontoBodega = 0,
                     TipoPago = TipoPago.Interes,
                 };
 
                 _context.Pago.Add(pago);
                 await _context.SaveChangesAsync();
+
+                List<Intereses> intereses = new List<Intereses>();
+                double sobrante = pagoIntereses;
+                double accInteres = 0, accAvaluo = 0, accBodega = 0;
+                var listInteres = await _context.Intereses.Where(i => i.EmpenoId == pago.EmpenoId && i.Pagado < i.Monto + (i.MontoBodega ?? 0) + (i.MontoAvaluo ?? 0)).OrderBy(i => i.FechaVencimiento).ToListAsync();
+                foreach (var item in listInteres)
+                {
+                    if (sobrante <= 0)
+                        break;
+
+                    double due = item.MontoTotal - item.Pagado;
+                    double paga = Math.Min(due, sobrante);
+
+                    // Reparto proporcional del pago entre interés / bodegaje / avalúo de ESTA cuota.
+                    // En meses sin avalúo (MontoAvaluo == 0) la porción de avalúo del pago queda en 0.
+                    double rowAvaluo = item.MontoAvaluo ?? 0;
+                    double rowBodega = item.MontoBodega ?? 0;
+                    double rowTotal = item.MontoTotal;
+                    double fraccion = rowTotal > 0 ? paga / rowTotal : 0;
+                    accInteres += Math.Truncate(Math.Round(item.Monto * fraccion));
+                    accAvaluo += Math.Truncate(Math.Round(rowAvaluo * fraccion));
+                    accBodega += Math.Truncate(Math.Round(rowBodega * fraccion));
+
+                    item.Pagado += paga;
+                    if (Math.Truncate(Math.Round(item.Pagado)) >= Math.Truncate(item.MontoTotal))
+                    {
+                        empeño.FechaVencimiento = empeño.FechaVencimiento.AddMonths(1);
+                        item.Pagado = item.MontoTotal;
+                    }
+                    item.PagoId = pago.PagoId;
+                    sobrante -= paga;
+                    _context.Entry(item).State = EntityState.Modified;
+                    await _context.SaveChangesAsync();
+
+                    Intereses valorTemp = new Intereses
+                    {
+                        EmpenoId = item.EmpenoId,
+                        FechaCreacion = item.FechaCreacion,
+                        FechaVencimiento = item.FechaVencimiento,
+                        InteresesId = item.InteresesId,
+                        Monto = item.Monto,
+                        MontoAvaluo = item.MontoAvaluo,
+                        MontoBodega = item.MontoBodega,
+                        Pagado = paga,
+                        PagoId = item.PagoId
+                    };
+                    intereses.Add(valorTemp);
+                }
+
+                // El split del pago se arma con lo realmente cubierto de cada cuota.
+                // El resto por redondeo se acumula en el interés para que MontoTotal == lo cobrado.
+                double aplicado = pagoIntereses - sobrante;
+                pago.MontoAvaluo = accAvaluo;
+                pago.MontoBodega = accBodega;
+                pago.Monto = aplicado - accAvaluo - accBodega;
+                _context.Entry(pago).State = EntityState.Modified;
+                await _context.SaveChangesAsync();
+
                 await funciones.SaveBitacora(new ValorBitacora
                 {
                     Valor = JsonConvert.SerializeObject(pago),
                     Modulo = "Pagos",
                     Accion = "Crear"
                 });
-                List<Intereses> intereses = new List<Intereses>();
-                var sobrante = pago.MontoTotal;
-                var listInteres = await _context.Intereses.Where(i => i.EmpenoId == pago.EmpenoId && i.Pagado < i.Monto).ToListAsync();
-                foreach (var item in listInteres)
-                {
-                    if ((item.MontoTotal - item.Pagado) > sobrante && sobrante > 0)
-                    {
-                        item.Pagado += sobrante;
-                        if (Math.Truncate(Math.Round(item.Pagado)) >= Math.Truncate(item.MontoTotal))
-                        {
-                            empeño.FechaVencimiento = empeño.FechaVencimiento.AddMonths(1);
-                            item.Pagado = item.MontoTotal;
-                        }
-                        item.PagoId = pago.PagoId;
-                        _context.Entry(item).State = EntityState.Modified;
-                        await _context.SaveChangesAsync();
-                        Intereses valorTemp = new Intereses
-                        {
-                            EmpenoId = item.EmpenoId,
-                            FechaCreacion = item.FechaCreacion,
-                            FechaVencimiento = item.FechaVencimiento,
-                            InteresesId = item.InteresesId,
-                            Monto = item.Monto,
-                            MontoAvaluo=item.MontoAvaluo,
-                            MontoBodega=item.MontoBodega,
-                            Pagado = sobrante,
-                            PagoId = item.PagoId
-                        };
-
-                        intereses.Add(valorTemp);
-                        break;
-                    }
-                    else if (sobrante > 0)
-                    {
-                        double paga = (item.MontoTotal - item.Pagado);
-                        item.Pagado += paga;
-                        if (Math.Truncate(Math.Round(item.Pagado)) >= Math.Truncate(item.MontoTotal))
-                        {
-                            empeño.FechaVencimiento = empeño.FechaVencimiento.AddMonths(1);
-                            item.Pagado = item.MontoTotal;
-                        }
-                        item.PagoId = pago.PagoId;
-                        sobrante -= paga;                      
-                        _context.Entry(item).State = EntityState.Modified;
-                        await _context.SaveChangesAsync();
-                        Intereses valorTemp=new Intereses { 
-                            EmpenoId=item.EmpenoId,
-                            FechaCreacion=item.FechaCreacion,
-                            FechaVencimiento=item.FechaVencimiento,
-                            InteresesId=item.InteresesId,
-                            Monto=item.Monto,
-                            MontoAvaluo=item.Monto,
-                            MontoBodega=item.MontoBodega,
-                            Pagado= paga,
-                            PagoId=item.PagoId
-                        } ;
-                        intereses.Add(valorTemp);
-                    }
-                }
-
                 await funciones.SaveBitacora(new ValorBitacora
                 {
                     Valor = JsonConvert.SerializeObject(intereses),
@@ -350,7 +449,6 @@ namespace Empeño.WindowsForms.Views
             empeño = await _context.Empenos.FindAsync(empeñoId);
             if (pagoIntereses > 0)
             {
-                var monto = pagoIntereses - (empeño.Monto * empeño.Interes.PorcentajeAvaluo) - (empeño.Monto * empeño.Interes.PorcentajeBodegaje);
                 var pago = new Pago
                 {
                     EmpenoId = empeño.EmpenoId,
@@ -358,53 +456,78 @@ namespace Empeño.WindowsForms.Views
                     Comentario = txtComentario.Text,
                     EmpleadoId = Program.EmpleadoId,
                     Fecha = DateTime.Now,
-                    Monto = monto,
-                    MontoAvaluo = pagoIntereses - monto - (empeño.Monto * empeño.Interes.PorcentajeBodegaje),
-                    MontoBodega = pagoIntereses - monto - (empeño.Monto * empeño.Interes.PorcentajeAvaluo),
+                    Monto = 0,
+                    MontoAvaluo = 0,
+                    MontoBodega = 0,
                     TipoPago = TipoPago.Interes,
                 };
 
                 _context.Pago.Add(pago);
                 await _context.SaveChangesAsync();
+
+                List<Intereses> intereses = new List<Intereses>();
+                double sobrante = pagoIntereses;
+                double accInteres = 0, accAvaluo = 0, accBodega = 0;
+                var listInteres = await _context.Intereses.Where(i => i.EmpenoId == pago.EmpenoId && i.Pagado < i.Monto + (i.MontoBodega ?? 0) + (i.MontoAvaluo ?? 0)).OrderBy(i => i.FechaVencimiento).ToListAsync();
+                foreach (var item in listInteres)
+                {
+                    if (sobrante <= 0)
+                        break;
+
+                    double due = item.MontoTotal - item.Pagado;
+                    double paga = Math.Min(due, sobrante);
+
+                    // Reparto proporcional del pago entre interés / bodegaje / avalúo de ESTA cuota.
+                    // En meses sin avalúo (MontoAvaluo == 0) la porción de avalúo del pago queda en 0.
+                    double rowAvaluo = item.MontoAvaluo ?? 0;
+                    double rowBodega = item.MontoBodega ?? 0;
+                    double rowTotal = item.MontoTotal;
+                    double fraccion = rowTotal > 0 ? paga / rowTotal : 0;
+                    accInteres += Math.Truncate(Math.Round(item.Monto * fraccion));
+                    accAvaluo += Math.Truncate(Math.Round(rowAvaluo * fraccion));
+                    accBodega += Math.Truncate(Math.Round(rowBodega * fraccion));
+
+                    item.Pagado += paga;
+                    if (Math.Truncate(Math.Round(item.Pagado)) >= Math.Truncate(item.MontoTotal))
+                    {
+                        empeño.FechaVencimiento = empeño.FechaVencimiento.AddMonths(1);
+                        item.Pagado = item.MontoTotal;
+                    }
+                    item.PagoId = pago.PagoId;
+                    sobrante -= paga;
+                    _context.Entry(item).State = EntityState.Modified;
+                    await _context.SaveChangesAsync();
+
+                    Intereses valorTemp = new Intereses
+                    {
+                        EmpenoId = item.EmpenoId,
+                        FechaCreacion = item.FechaCreacion,
+                        FechaVencimiento = item.FechaVencimiento,
+                        InteresesId = item.InteresesId,
+                        Monto = item.Monto,
+                        MontoAvaluo = item.MontoAvaluo,
+                        MontoBodega = item.MontoBodega,
+                        Pagado = paga,
+                        PagoId = item.PagoId
+                    };
+                    intereses.Add(valorTemp);
+                }
+
+                // El split del pago se arma con lo realmente cubierto de cada cuota.
+                // El resto por redondeo se acumula en el interés para que MontoTotal == lo cobrado.
+                double aplicado = pagoIntereses - sobrante;
+                pago.MontoAvaluo = accAvaluo;
+                pago.MontoBodega = accBodega;
+                pago.Monto = aplicado - accAvaluo - accBodega;
+                _context.Entry(pago).State = EntityState.Modified;
+                await _context.SaveChangesAsync();
+
                 await funciones.SaveBitacora(new ValorBitacora
                 {
                     Valor = JsonConvert.SerializeObject(pago),
                     Modulo = "Pagos",
                     Accion = "Crear"
                 });
-                List<Intereses> intereses = new List<Intereses>();
-                var sobrante = pago.MontoTotal;
-                var listInteres = await _context.Intereses.Where(i => i.EmpenoId == pago.EmpenoId && i.Pagado < i.Monto).ToListAsync();
-                foreach (var item in listInteres)
-                {
-                    if ((item.MontoTotal - item.Pagado) > sobrante && sobrante > 0)
-                    {
-                        item.Pagado += sobrante;
-                        if (item.Pagado == item.MontoTotal)
-                        {
-                            empeño.FechaVencimiento = empeño.FechaVencimiento.AddMonths(1);
-                        }
-
-                        intereses.Add(item);
-                        _context.Entry(item).State = EntityState.Modified;
-                        break;
-                    }
-                    else if (sobrante > 0)
-                    {
-                        double paga = (item.MontoTotal - item.Pagado);
-                        item.Pagado += paga;
-                        if (item.Pagado == item.MontoTotal)
-                        {
-                            empeño.FechaVencimiento = empeño.FechaVencimiento.AddMonths(1);
-                        }
-                        item.PagoId = pago.PagoId;
-                        sobrante -= paga;
-                        intereses.Add(item);
-                        _context.Entry(item).State = EntityState.Modified;
-                    }
-                }
-
-                await _context.SaveChangesAsync();
                 await funciones.SaveBitacora(new ValorBitacora
                 {
                     Valor = JsonConvert.SerializeObject(intereses),
@@ -438,26 +561,27 @@ namespace Empeño.WindowsForms.Views
             {
                 txtPagaInteres.Text = "0.00";
             }
-            var interes = double.Parse(txtInteresAPagar.Text);
-
-            var pagaInteres = double.Parse(txtPagaInteres.Text);
-
-            txtAdeudaIntereses.Text = (interes - pagaInteres).ToString("N2");
-
-            var pagaMonto = double.Parse(txtPagaMonto.Text);
-
-            txtTotalAPagar.Text = (pagaInteres + pagaMonto).ToString("N2");
-
-            txtPagaCon.Text = (pagaInteres + pagaMonto).ToString("N2");
-
-            if (pagaInteres >= montoMinimo)
+            try
             {
-                txtPagaMonto.Enabled = true;
+                var interes = double.Parse(txtInteresAPagar.Text);
+                var pagaInteres = double.Parse(txtPagaInteres.Text);
+                txtAdeudaIntereses.Text = (interes - pagaInteres).ToString("N2");
+                var pagaMonto = double.Parse(txtPagaMonto.Text);
+                txtTotalAPagar.Text = (pagaInteres + pagaMonto).ToString("N2");
+                txtPagaCon.Text = (pagaInteres + pagaMonto).ToString("N2");
+
+                if (pagaInteres >= montoMinimo)
+                {
+                    txtPagaMonto.Enabled = true;
+                }
+                else
+                {
+                    txtPagaMonto.Enabled = false;
+                    txtPagaMonto.Text = "0.00";
+                }
             }
-            else
+            catch (Exception)
             {
-                txtPagaMonto.Enabled = false;
-                txtPagaMonto.Text = "0.00";
             }
         }
 
@@ -784,7 +908,10 @@ namespace Empeño.WindowsForms.Views
             }
             else
             {
-                interes = empeño.Intereses.Where(i=>i.MontoTotal>i.Pagado).Sum(i => i.MontoTotal - i.Pagado);
+                // Sin selección: se cobra SOLO la cuota más antigua pendiente (no todo el pendiente).
+                // Para pagar más meses, el usuario debe seleccionar más filas en la tabla.
+                var masAntigua = empeño.Intereses.Where(i => i.MontoTotal > i.Pagado).OrderBy(i => i.FechaVencimiento).FirstOrDefault();
+                interes = masAntigua != null ? (masAntigua.MontoTotal - masAntigua.Pagado) : 0;
             }
             montoMinimo= empeño.Intereses.Where(i => i.MontoTotal > i.Pagado).Sum(i => i.MontoTotal - i.Pagado);
             var intereses = interes.ToString("N2");

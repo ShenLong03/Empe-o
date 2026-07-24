@@ -1,6 +1,8 @@
 ﻿using Empeño.CommonEF.Entities;
 using Empeño.CommonEF.Enum;
+using Empeño.CommonEF.Models;
 using Empeño.WindowsForms.Data;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -86,7 +88,7 @@ namespace Empeño.WindowsForms.Views
             chbActivo.Checked = true;
             txtFecha.Text = DateTime.Today.ToString("dd/MM/yyyy");
 
-            if (clienteId > 0)
+            if (clienteId > 0 && dgvClientes.SelectedRows.Count > 0)
             {
                 await Editar((int)dgvClientes.SelectedRows[0].Cells[0].Value);
             }
@@ -94,7 +96,7 @@ namespace Empeño.WindowsForms.Views
 
         private async void txtBuscar_TextChanged(object sender, EventArgs e)
         {
-            dgvClientes.DataSource = await _context.Clientes.Where(c => c.Nombre.Contains(txtBuscar.Text) || c.Identificacion.Contains(txtBuscar.Text))
+            dgvClientes.DataSource = await _context.Clientes.Where(c => !c.IsDelete && (c.Nombre.Contains(txtBuscar.Text) || c.Identificacion.Contains(txtBuscar.Text)))
                 .Select(x => new
             {
                 Id = x.ClienteId,
@@ -124,8 +126,24 @@ namespace Empeño.WindowsForms.Views
                     MessageBox.Show("La Identificación es requerida", "Advertencia", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     return;
                 }
+
+                DateTime fecha;
+                if (!DateTime.TryParseExact(txtFecha.Text, "dd/MM/yyyy", CultureInfo.InvariantCulture, DateTimeStyles.None, out fecha))
+                {
+                    MessageBox.Show("La fecha no es válida (formato dd/MM/yyyy).", "Dato inválido", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+
+                string accion = clienteId == 0 ? "Crear" : "Editar";
+
                 if (clienteId == 0)
                 {
+                    if (_context.Clientes.Any(c => !c.IsDelete && c.Identificacion == txtIdentificacion.Text))
+                    {
+                        MessageBox.Show("Ya existe un cliente con esa identificación.", "Alerta", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        return;
+                    }
+
                     var cliente = new Cliente
                     {
                         ClienteId = clienteId,
@@ -136,7 +154,7 @@ namespace Empeño.WindowsForms.Views
                         Activo = chbActivo.Checked,
                         Direccion = txtDireccion.Text == lblDireccion.Text ? string.Empty : txtDireccion.Text,
                         Comentario = txtComentario.Text == lblComentario.Text ? string.Empty : txtComentario.Text,
-                        Fecha = DateTime.ParseExact(txtFecha.Text, "dd/MM/yyyy", CultureInfo.InvariantCulture),
+                        Fecha = fecha,
                     };
 
                     _context.Clientes.Add(cliente);
@@ -152,10 +170,25 @@ namespace Empeño.WindowsForms.Views
                     cliente.Activo = chbActivo.Checked;
                     cliente.Direccion = txtDireccion.Text == lblDireccion.Text ? string.Empty : txtDireccion.Text;
                     cliente.Comentario = txtComentario.Text == lblComentario.Text ? string.Empty : txtComentario.Text;
-                    cliente.Fecha = DateTime.ParseExact(txtFecha.Text, "dd/MM/yyyy", CultureInfo.InvariantCulture);
+                    cliente.Fecha = fecha;
                     _context.Entry(cliente).State = EntityState.Modified;
                 }
                 await _context.SaveChangesAsync();
+
+                await funciones.SaveBitacora(new ValorBitacora
+                {
+                    Modulo = "Cliente",
+                    Accion = accion,
+                    Valor = JsonConvert.SerializeObject(new
+                    {
+                        Identificacion = txtIdentificacion.Text,
+                        Nombre = txtNombre.Text,
+                        Telefono = txtTelefono.Text,
+                        Correo = txtCorreo.Text,
+                        Activo = chbActivo.Checked
+                    })
+                });
+
                 await LoadData();
                 funciones.ResetForm(panelFormulario);
                 clienteId = 0;
@@ -181,9 +214,23 @@ namespace Empeño.WindowsForms.Views
                     return;
                 }
 
+                DateTime fecha;
+                if (!DateTime.TryParseExact(txtFecha.Text, "dd/MM/yyyy", CultureInfo.InvariantCulture, DateTimeStyles.None, out fecha))
+                {
+                    MessageBox.Show("La fecha no es válida (formato dd/MM/yyyy).", "Dato inválido", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+
+                string accion = clienteId == 0 ? "Crear" : "Editar";
 
                 if (clienteId == 0)
                 {
+                    if (_context.Clientes.Any(c => !c.IsDelete && c.Identificacion == txtIdentificacion.Text))
+                    {
+                        MessageBox.Show("Ya existe un cliente con esa identificación.", "Alerta", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        return;
+                    }
+
                     cliente = new Cliente
                     {
                         ClienteId = clienteId,
@@ -194,7 +241,7 @@ namespace Empeño.WindowsForms.Views
                         Activo = chbActivo.Checked,
                         Direccion = txtDireccion.Text,
                         Comentario = txtComentario.Text,
-                        Fecha = DateTime.ParseExact(txtFecha.Text,"dd/MM/yyyy",CultureInfo.InvariantCulture),
+                        Fecha = fecha,
                     };
 
                     _context.Clientes.Add(cliente);
@@ -210,10 +257,25 @@ namespace Empeño.WindowsForms.Views
                     cliente.Activo = chbActivo.Checked;
                     cliente.Direccion = txtDireccion.Text;
                     cliente.Comentario = txtComentario.Text;
-                    cliente.Fecha = DateTime.ParseExact(txtFecha.Text, "dd/MM/yyyy", CultureInfo.InvariantCulture);
+                    cliente.Fecha = fecha;
                     _context.Entry(cliente).State = EntityState.Modified;
                 }
                 await _context.SaveChangesAsync();
+
+                await funciones.SaveBitacora(new ValorBitacora
+                {
+                    Modulo = "Cliente",
+                    Accion = accion,
+                    Valor = JsonConvert.SerializeObject(new
+                    {
+                        Identificacion = txtIdentificacion.Text,
+                        Nombre = txtNombre.Text,
+                        Telefono = txtTelefono.Text,
+                        Correo = txtCorreo.Text,
+                        Activo = chbActivo.Checked
+                    })
+                });
+
                 await LoadData();
                 funciones.ResetForm(panelFormulario);
                 clienteId = 0;
@@ -407,6 +469,9 @@ namespace Empeño.WindowsForms.Views
         {
             if (dgvClientes.SelectedRows.Count > 0)
             {
+                if (!funciones.ValidatePIN("Cliente"))
+                    return;
+
                 var resp = MessageBox.Show("Esta seguro que desea borrar los datos", "Pregunta", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
                 if (resp==DialogResult.Yes)
                 {
@@ -416,10 +481,18 @@ namespace Empeño.WindowsForms.Views
                         cliente.IsDelete = true;
                         _context.Entry(cliente).State = EntityState.Modified;
                         await _context.SaveChangesAsync();
+
+                        await funciones.SaveBitacora(new ValorBitacora
+                        {
+                            Modulo = "Cliente",
+                            Accion = "Eliminar",
+                            Valor = JsonConvert.SerializeObject(new { cliente.ClienteId, cliente.Identificacion, cliente.Nombre })
+                        });
+
                         await LoadData();
                     }
                 }
-                       
+
             }
             else
             {

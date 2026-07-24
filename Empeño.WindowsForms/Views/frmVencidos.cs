@@ -1,7 +1,9 @@
 ﻿using Empeño.CommonEF.Entities;
 using Empeño.CommonEF.Enum;
+using Empeño.CommonEF.Models;
 using Empeño.WindowsForms.Data;
 using Empeño.WindowsForms.Funciones;
+using Newtonsoft.Json;
 using Microsoft.Office.Interop.Excel;
 using System;
 using System.Collections.Generic;
@@ -230,6 +232,15 @@ namespace Empeño.WindowsForms.Views
 
                     _context.Vencimientos.Add(vencimiento) ;
                     await _context.SaveChangesAsync();
+
+                    // Auditoría: registra quién realizó el retiro administrativo (sin PIN: es acción de rutina)
+                    await funciones.SaveBitacora(new ValorBitacora
+                    {
+                        Modulo = "Vencidos",
+                        Accion = "Retiro Administrativo",
+                        Valor = JsonConvert.SerializeObject(new { empeño.EmpenoId, vencimiento.Consecutivo })
+                    });
+
                     await PrintVencido(empeño, vencimiento);
                 }
                 else if (result == DialogResult.No)
@@ -261,6 +272,12 @@ namespace Empeño.WindowsForms.Views
                     var proroga = _context.Prorrogas.Where(p => p.EmpenoId == empeñoId).FirstOrDefault();
                     temporal.Prorroga = true;
                     empeño.Prorroga = true;
+
+                    // La prórroga movió FechaVencimiento en la BD (frmProroga usa otro contexto). Refrescamos el
+                    // valor para que el SaveChanges de más abajo NO lo pise con la copia vieja que hay en memoria.
+                    using (var ctxFv = new DataContext())
+                        empeño.FechaVencimiento = ctxFv.Empenos.Where(x => x.EmpenoId == empeñoId).Select(x => x.FechaVencimiento).First();
+
                     if (!string.IsNullOrEmpty(empeño.Cliente.Correo))
                     {
                         EmailFuncion emailFuncion = new EmailFuncion();
@@ -272,6 +289,17 @@ namespace Empeño.WindowsForms.Views
 
                 _context.Entry(empeño).State = EntityState.Modified;
                 await _context.SaveChangesAsync();
+
+                if (Program.Proroga)
+                {
+                    // Auditoría de la prórroga otorgada (sin PIN: acción de rutina)
+                    await funciones.SaveBitacora(new ValorBitacora
+                    {
+                        Modulo = "Vencidos",
+                        Accion = "Prórroga",
+                        Valor = JsonConvert.SerializeObject(new { empeño.EmpenoId })
+                    });
+                }
             }
             index = dgvDetalles.SelectedRows[0].Index;
             LoadDetalle();
@@ -281,7 +309,7 @@ namespace Empeño.WindowsForms.Views
         }
 
         #region Funciones
-        public async void LoadDetalle()
+        public async Task LoadDetalle()
         {
             dgvDetalles.DataSource = null;
             dgvDetalles.Rows.Clear();
@@ -329,7 +357,7 @@ namespace Empeño.WindowsForms.Views
                 x.FechaRetiroAdministrador,
                 x.Prorrogas,
                 x.Monto,
-                MontoPendiente = (x.MontoPendiente + (x.Intereses != null ? x.Intereses.Sum(i => i.Monto - i.Pagado) : 0)).ToString("N2"),
+                MontoPendiente = (x.MontoPendiente + (x.Intereses != null ? x.Intereses.Sum(i => i.MontoTotal - i.Pagado) : 0)).ToString("N2"),
                 x.Intereses
             }).ToList();
 
@@ -412,6 +440,99 @@ namespace Empeño.WindowsForms.Views
         private async void btnPrint_Click(object sender, EventArgs e)
         {
            await Print();
+        }
+
+        // ===== Reutilizable desde la versión nueva (frmShell), SIN mostrar el formulario =====
+
+        // Carga los vencidos y totales (como el Load, sin ReviewEmpeños que es lento) para imprimir/enviar.
+        private async Task CargarHeadless(DateTime? corte = null)
+        {
+            // Vencidos AL CORTE: vencimiento en/antes del corte y sin retirar a esa fecha (default: hoy).
+            var f = (corte ?? DateTime.Today).Date;
+            var tope = f.AddDays(1);
+            empeños = await _context.Empenos.Where(x => !x.IsDelete
+             && x.FechaVencimiento < tope
+             && (x.FechaRetiro == null || x.FechaRetiro >= tope)
+             && (x.FechaRetiroAdministrador == null || x.FechaRetiroAdministrador >= tope))
+          .Include(x => x.Intereses).ToListAsync();
+            configuracion = _context.Configuraciones.FirstOrDefault();
+            await LoadDetalle();
+            txtFecha.Text = f.ToString("dd/MM/yyyy");   // estampa la fecha de corte en el comprobante
+        }
+
+        // Imprime el comprobante de vencidos REUSANDO el Print clásico (mismo Excel), headless.
+        public async Task ImprimirVencidosHeadless(DateTime? corte = null)
+        {
+            try
+            {
+                await CargarHeadless(corte);
+                await Print();
+            }
+            catch (Exception)
+            {
+                MessageBox.Show("No se pudo imprimir vencidos. Verifique que Microsoft Excel esté disponible.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        // Envía el proceso de vencidos por correo REUSANDO SendMailVencidos, headless.
+        public async Task<object> EnviarVencidosHeadless(DateTime? corte = null)
+        {
+            await CargarHeadless(corte);
+            if (configuracion == null || string.IsNullOrEmpty(configuracion.EmailNotification))
+                return new { ok = false, error = "No hay correo de aviso configurado (Configuración → Correo de aviso)." };
+
+            var empleado = await _context.Empleados.FindAsync(Program.EmpleadoId);
+            var str = "<p>" +
+                "<table><tr><td></td><td>Cantidad</td><td>Valor</td></tr>" +
+                "<tr><td>Total Vencidos</td><td>" + lblTotalVencidos.Text + "</td><td>" + txtTotalVencido.Text + "</td></tr>" +
+                "<tr><td>Total Vencidos Retirados</td><td>" + lblTotalRetirados.Text + "</td><td>" + txtTotalRetirados.Text + "</td></tr>" +
+                "<tr><td>Total Vencidos Prorroga</td><td>" + lblTotalProrroga.Text + "</td><td>" + txtTotalProrroga.Text + "</td></tr>" +
+                "</table></p>";
+
+            await emailFuncion.SendMailVencidos(configuracion.EmailNotification,
+                "Notificacion del Proceso de Vencidos " + configuracion.Compañia,
+                "<p>Se ha realizado departe del Local " + configuracion.Compañia + " en "
+                + configuracion.Direccion + ", un procesos de sacar vencidos por " + (empleado != null ? empleado.Nombre : "") + "</p>",
+                dgvDetalles, str);
+            return new { ok = true };
+        }
+
+        // Saca un vencido (retiro administrativo): misma lógica del clic en grilla del clásico —
+        // marca retiro admin, crea el registro Vencimientos con consecutivo, bitácora, y reimprime
+        // el comprobante de vencimiento (PrintVencido es data-driven, toma la entidad).
+        public async Task<object> SacarVencidoHeadless(int empenoId)
+        {
+            var empeño = await _context.Empenos.Where(x => x.EmpenoId == empenoId).SingleOrDefaultAsync();
+            if (empeño == null) return new { ok = false, error = "Empeño no encontrado." };
+
+            empeño.EditorId = await funciones.GetEmpleadoIdByUser(Program.Usuario.Usuario);
+            empeño.FechaRetiroAdministrador = DateTime.Now;
+            empeño.RetiradoAdministrador = true;
+            empeño.Estado = Estado.Retirado;
+            _context.Entry(empeño).State = EntityState.Modified;
+            await _context.SaveChangesAsync();
+
+            var vencimiento = new Vencimientos
+            {
+                Consecutivo = _context.Vencimientos.Any() ? _context.Vencimientos.Max(v => v.Consecutivo) + 1 : 1,
+                EmpenoId = empenoId,
+                EmpleadoId = empeño.EditorId.Value,
+                Fecha = DateTime.Today,
+            };
+            _context.Vencimientos.Add(vencimiento);
+            await _context.SaveChangesAsync();
+
+            await funciones.SaveBitacora(new ValorBitacora
+            {
+                Modulo = "Vencidos",
+                Accion = "Retiro Administrativo",
+                Valor = JsonConvert.SerializeObject(new { empeño.EmpenoId, vencimiento.Consecutivo })
+            });
+
+            string warn = null;
+            try { await PrintVencido(empeño, vencimiento); }
+            catch (Exception ex) { warn = "Se sacó el vencido #" + empenoId + ", pero falló el comprobante: " + ex.Message; }
+            return new { ok = true, warn };
         }
     }
 }

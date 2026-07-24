@@ -116,9 +116,10 @@ namespace Empeño.WindowsForms.Views
 
         public async Task Buscar()
         {
-            if (txtBuscar.Text != " Buscar" && txtBuscar.Text != "")
+            var q = txtBuscar.Text.Trim();
+            if (q != "Buscar" && q != "")
             {
-                dgvClientes.DataSource = await _context.Clientes.Where(w => !w.IsDelete && (w.Nombre.Contains(txtBuscar.Text) || w.Identificacion.Contains(txtBuscar.Text))).Select(x => new
+                dgvClientes.DataSource = await _context.Clientes.Where(w => !w.IsDelete && (w.Nombre.Contains(q) || w.Identificacion.Contains(q))).Select(x => new
                 {
                     Id = x.ClienteId,
                     x.Identificacion,
@@ -128,7 +129,7 @@ namespace Empeño.WindowsForms.Views
                 }).ToListAsync();
 
                 int number;
-                int.TryParse(txtBuscar.Text, out number);
+                int.TryParse(q, out number);
                 if (number != 0)
                 {                    
                     var listEmpeños = await _context.Empenos.Where(w => w.EmpenoId == number && !w.IsDelete && !w.RetiradoAdministrador).Select(x => new
@@ -286,7 +287,7 @@ namespace Empeño.WindowsForms.Views
                 empeno.Estado = Estado.Vencido;
                 return empeno;
             }
-            if (empeno.Intereses.Where(i => i.FechaVencimiento < DateTime.Today && i.Monto > i.Pagado).Count() > 0)
+            if (empeno.Intereses.Where(i => i.FechaVencimiento < DateTime.Today && Math.Truncate(Math.Round(i.Pagado)) < Math.Truncate(i.MontoTotal)).Count() > 0)
             {
                 empeno.Estado = Estado.Pendiente;
                 return empeno;
@@ -328,18 +329,17 @@ namespace Empeño.WindowsForms.Views
                                 empeño.FechaVencimiento = DateTime.Today.AddMonths(interes.Meses > 0 ? interes.Meses : mesesVencimiento);
                         }
 
-                        if (empeño.Monto != double.Parse(txtMonto.Text))
+                        double montoEditado;
+                        if (!double.TryParse(txtMonto.Text, out montoEditado))
                         {
-                            empeño.Monto = double.Parse(txtMonto.Text);
-
-                            if (empeño.Monto < double.Parse(txtMonto.Text))
-                            {
-                                empeño.MontoPendiente += double.Parse(txtMonto.Text) - empeño.Monto;
-                            }
-                            else if (empeño.Monto > double.Parse(txtMonto.Text))
-                            {
-                                empeño.MontoPendiente -= empeño.Monto - double.Parse(txtMonto.Text);
-                            }
+                            MessageBox.Show("El monto no es válido.", "Dato inválido", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                            return;
+                        }
+                        if (empeño.Monto != montoEditado)
+                        {
+                            // Ajustar el pendiente por el delta ANTES de sobrescribir el monto
+                            empeño.MontoPendiente += montoEditado - empeño.Monto;
+                            empeño.Monto = montoEditado;
 
                             if (empeño.Intereses.Count() == 1)
                             {
@@ -363,6 +363,8 @@ namespace Empeño.WindowsForms.Views
                                 {
                                     var porcentaje = await _context.Interes.FindAsync(empeño.InteresId);
                                     interes.Monto = empeño.Monto * ((double)porcentaje.Porcentaje / (double)100);
+                                    // Empeño nuevo sin cuotas pagadas: el bodegaje también sigue al plan nuevo (avalúo es cargo único)
+                                    interes.MontoBodega = porcentaje.Bodegaje != null ? Math.Truncate(empeño.Monto * porcentaje.PorcentajeBodegaje) : 0;
                                     _context.Entry(interes).State = EntityState.Modified;
                                 }
                             }
@@ -402,7 +404,7 @@ namespace Empeño.WindowsForms.Views
                             x.MontoAvaluo,
                             x.MontoBodega,
                             x.Pagado,
-                            Vencimiento = x.Monto == x.Pagado ? 0 : DbFunctions.DiffDays(DateTime.Today, x.FechaVencimiento),
+                            Vencimiento = Math.Truncate(Math.Round(x.Monto + (x.MontoAvaluo != null ? x.MontoAvaluo.Value : 0) + (x.MontoBodega != null ? x.MontoBodega.Value : 0))) == Math.Truncate(Math.Round(x.Pagado)) ? 0 : DbFunctions.DiffDays(DateTime.Today, x.FechaVencimiento),
                         }).OrderByDescending(i => i.Id)
                             .AsEnumerable()
                             .Select(x => new
@@ -425,8 +427,32 @@ namespace Empeño.WindowsForms.Views
                         var empleadoId = Program.EmpleadoId;
                         var empleado = await _context.Empleados.FindAsync(empleadoId);
                         var strFecha = Fecha.Text + " " + DateTime.Now.ToString("HH:mm");
-                        var fecha = DateTime.ParseExact(strFecha, "dd/MM/yyyy HH:mm", CultureInfo.InvariantCulture);
-                        var fechaVencimiento = DateTime.ParseExact(lblVence.Text, "dd/MM/yyyy", CultureInfo.InvariantCulture);
+                        DateTime fecha, fechaVencimiento;
+                        if (!DateTime.TryParseExact(strFecha, "dd/MM/yyyy HH:mm", CultureInfo.InvariantCulture, DateTimeStyles.None, out fecha)
+                            || !DateTime.TryParseExact(lblVence.Text, "dd/MM/yyyy", CultureInfo.InvariantCulture, DateTimeStyles.None, out fechaVencimiento))
+                        {
+                            MessageBox.Show("Las fechas no son válidas (formato dd/MM/yyyy).", "Dato inválido", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                            return;
+                        }
+
+                        // Validar montos ANTES de crear nada (evita empeño a medias)
+                        double montoNuevo, avaluoNuevo = 0, bodegajeNuevo = 0;
+                        if (!double.TryParse(txtMonto.Text, out montoNuevo) || montoNuevo <= 0)
+                        {
+                            MessageBox.Show("El monto del empeño no es válido.", "Dato inválido", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                            return;
+                        }
+                        if (txtAvaluo.Text != "Avalúo" && !double.TryParse(txtAvaluo.Text, out avaluoNuevo))
+                        {
+                            MessageBox.Show("El avalúo no es válido.", "Dato inválido", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                            return;
+                        }
+                        if (txtBodegaje.Text != "Bodegaje" && !double.TryParse(txtBodegaje.Text, out bodegajeNuevo))
+                        {
+                            MessageBox.Show("El bodegaje no es válido.", "Dato inválido", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                            return;
+                        }
+
                         var interes = await _context.Interes.Where(i => i.Nombre == cbInteres.Text).SingleAsync();
 
                         var vence = fecha.Date.AddMonths(interes.Meses > 0 ? interes.Meses : mesesVencimiento);
@@ -476,11 +502,10 @@ namespace Empeño.WindowsForms.Views
                             Fecha = fecha,
                             FechaVencimiento = fechaVencimiento,
                             InteresId = await funciones.GetInteresIdByNombre(cbInteres.Text),
-                            Monto = double.Parse(txtMonto.Text),
-                            MontoPendiente = double.Parse(txtMonto.Text),
+                            Monto = montoNuevo,
+                            MontoPendiente = montoNuevo,
                             Comentario = txtComentario.Text != lblComentario.Text ? txtComentario.Text : string.Empty,
-                            MontoAvaluo = (txtAvaluo.Text != "Avalúo")
-                            ? double.Parse(txtAvaluo.Text): 0
+                            MontoAvaluo = avaluoNuevo
                         };
 
                         _context.Empenos.Add(empeño);
@@ -503,10 +528,8 @@ namespace Empeño.WindowsForms.Views
                             FechaCreacion = DateTime.Now,
                             FechaVencimiento = fecha.AddMonths(1),
                             Monto = Math.Truncate((double)empeño.MontoPendiente * ((double)interes.Porcentaje / (double)100)),
-                            MontoAvaluo = (txtAvaluo.Text != "Avalúo")
-                            ? double.Parse(txtAvaluo.Text) : 0,
-                            MontoBodega = (txtBodegaje.Text != "Bodegaje")
-                            ? double.Parse(txtBodegaje.Text) : 0
+                            MontoAvaluo = avaluoNuevo,
+                            MontoBodega = bodegajeNuevo
                         };
 
                         _context.Intereses.Add(intereses);
@@ -529,7 +552,7 @@ namespace Empeño.WindowsForms.Views
                             x.MontoAvaluo,
                             x.MontoBodega,
                             x.Pagado,
-                            Vencimiento = x.Monto == x.Pagado ? 0 : DbFunctions.DiffDays(DateTime.Today, x.FechaVencimiento),
+                            Vencimiento = Math.Truncate(Math.Round(x.Monto + (x.MontoAvaluo != null ? x.MontoAvaluo.Value : 0) + (x.MontoBodega != null ? x.MontoBodega.Value : 0))) == Math.Truncate(Math.Round(x.Pagado)) ? 0 : DbFunctions.DiffDays(DateTime.Today, x.FechaVencimiento),
                         }).OrderByDescending(i => i.Id)
                             .AsEnumerable()
                             .Select(x => new
@@ -1168,7 +1191,7 @@ namespace Empeño.WindowsForms.Views
                                 x.MontoAvaluo,
                                 x.MontoBodega,
                                 x.Pagado,
-                                Vencimiento = x.Monto == x.Pagado ? 0 : DbFunctions.DiffDays(DateTime.Today, x.FechaVencimiento),
+                                Vencimiento = Math.Truncate(Math.Round(x.Monto + (x.MontoAvaluo != null ? x.MontoAvaluo.Value : 0) + (x.MontoBodega != null ? x.MontoBodega.Value : 0))) == Math.Truncate(Math.Round(x.Pagado)) ? 0 : DbFunctions.DiffDays(DateTime.Today, x.FechaVencimiento),
                             }).OrderByDescending(i => i.Id)
                             .AsEnumerable()
                             .Select(x => new
@@ -1214,10 +1237,7 @@ namespace Empeño.WindowsForms.Views
                             x.MontoAvaluo,
                             x.MontoBodega,
                             x.Pagado,
-                            Vencimiento = Math.Truncate(Math.Round(x.Monto + x.MontoAvaluo 
-                            + x.MontoAvaluo!=null ? x.MontoAvaluo.Value : 0
-                            + x.MontoBodega != null ? x.MontoBodega.Value : 0))
-                            == Math.Truncate(Math.Round(x.Pagado)) ? 0 : DbFunctions.DiffDays(DateTime.Today, x.FechaVencimiento),
+                            Vencimiento = Math.Truncate(Math.Round(x.Monto + (x.MontoAvaluo != null ? x.MontoAvaluo.Value : 0) + (x.MontoBodega != null ? x.MontoBodega.Value : 0))) == Math.Truncate(Math.Round(x.Pagado)) ? 0 : DbFunctions.DiffDays(DateTime.Today, x.FechaVencimiento),
                         }).OrderByDescending(i => i.Id)
                         .AsEnumerable()
                         .Select(x => new
@@ -1577,7 +1597,7 @@ namespace Empeño.WindowsForms.Views
             {
                 CleanForm();
 
-                var listEmpeños = await _context.Empenos.Where(x => ((x.Intereses.Where(i => i.Monto > i.Pagado && i.FechaVencimiento == DateTime.Today).Count() > 0)
+                var listEmpeños = await _context.Empenos.Where(x => ((x.Intereses.Where(i => (i.Monto + (i.MontoBodega ?? 0) + (i.MontoAvaluo ?? 0)) > i.Pagado && i.FechaVencimiento == DateTime.Today).Count() > 0)
                 || (x.MontoPendiente > 0 && x.FechaVencimiento == DateTime.Today)
                 )
                 && (!x.IsDelete && !x.RetiradoAdministrador && x.Retirado == false && x.FechaRetiro == null
@@ -1624,7 +1644,7 @@ namespace Empeño.WindowsForms.Views
             try
             {
                 CleanForm();
-                var listEmpeños = await _context.Empenos.Where(x => ((x.Intereses.Where(i => i.Monto > i.Pagado).Count() > 0) || x.MontoPendiente > 0)
+                var listEmpeños = await _context.Empenos.Where(x => ((x.Intereses.Where(i => (i.Monto + (i.MontoBodega ?? 0) + (i.MontoAvaluo ?? 0)) > i.Pagado).Count() > 0) || x.MontoPendiente > 0)
                 && (!x.IsDelete && !x.RetiradoAdministrador && x.Retirado == false && x.FechaRetiro == null
                  && !x.RetiradoAdministrador && x.FechaRetiroAdministrador == null)
                  && (x.Estado == Estado.Pendiente || x.Estado == Estado.Vencido)
@@ -1732,13 +1752,13 @@ namespace Empeño.WindowsForms.Views
             cexcel.Cells[16, 2].value = empeno.Fecha.ToString("dd/MM/yyyy");
             cexcel.Cells[17, 2].value = empeno.EmpenoId.ToString();            
 
-            if (chbEsOro.Checked)
+            if (empeno.EsOro)
             {
-                cexcel.Cells[19, 1].value ="ORO : " + txtDescripcion.Text;
+                cexcel.Cells[19, 1].value ="ORO : " + empeno.Descripcion;
             }
             else
             {
-                cexcel.Cells[19, 1].value = txtDescripcion.Text;
+                cexcel.Cells[19, 1].value = empeno.Descripcion;
             }
             cexcel.Cells[22, 3].value = empeno.Monto.ToString("N2");
             cexcel.Cells[23, 3].value = empeno.Monto.ToString("N2");
@@ -1804,21 +1824,30 @@ namespace Empeño.WindowsForms.Views
         {
             if (dgvEmpeños.SelectedRows.Count>0)
             {
-                using (DataContext _context= new DataContext())
+                try
                 {
-                    var empeñoId = dgvEmpeños.SelectedRows[0].Cells[0].Value;
-
-                    var empeño = await _context.Empenos.FindAsync(empeñoId);
-
-                    if (empeño.Estado == Estado.Cancelado)
+                    using (DataContext _context= new DataContext())
                     {
-                        await PrintRetiro(empeño);
+                        var empeñoId = dgvEmpeños.SelectedRows[0].Cells[0].Value;
+
+                        var empeño = await _context.Empenos.FindAsync(empeñoId);
+                        if (empeño == null)
+                            return;
+
+                        if (empeño.Estado == Estado.Cancelado)
+                        {
+                            await PrintRetiro(empeño);
+                        }
+                        else
+                        {
+                            await Print(empeño);
+                        }
                     }
-                    else
-                    {
-                        await Print(empeño);
-                    }         
-                }        
+                }
+                catch (Exception)
+                {
+                    MessageBox.Show("No se pudo reimprimir. Verifique que Microsoft Excel esté disponible.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
             }
         }
 
@@ -1977,93 +2006,264 @@ namespace Empeño.WindowsForms.Views
 
         private async void iconButton4_Click(object sender, EventArgs e)
         {
-            if (dgvPagos.SelectedRows.Count>0)
+            if (dgvPagos.SelectedRows.Count <= 0)
+                return;
+
+            if (!funciones.ValidatePIN("Borrar Pago"))
+                return;
+
+            var resp = MessageBox.Show("Esta seguro que desea elminar los datos", "Confirmar", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+            if (resp != DialogResult.Yes)
+                return;
+
+            int interesId = int.Parse(dgvPagos.SelectedRows[0].Cells[0].Value.ToString());
+
+            // Snapshots para la bitácora (valores antes/después del reverso)
+            object antes = null;
+            object despues = null;
+
+            // Todo el reverso es una sola unidad de trabajo (un contexto, una transacción)
+            using (var tx = _context.Database.BeginTransaction())
             {
-                using (DataContext _contextTemp = new DataContext())
+                try
                 {
-                    if (!funciones.ValidatePIN("Borrar Pago"))
-                        return;
-
-                    var resp = MessageBox.Show("Esta seguro que desea elminar los datos", "Confirmar", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
-                    if (resp == DialogResult.Yes)
+                    if (switchPago)
                     {
-                        int interesId = int.Parse(dgvPagos.SelectedRows[0].Cells[0].Value.ToString());
-                        if (switchPago)
+                        // interesId == PagoId (grid cargado por LoadPays)
+                        var pago = await _context.Pago.FindAsync(interesId);
+                        var empeño = await _context.Empenos.FindAsync(pago.EmpenoId);
+
+                        antes = new
                         {
-                            var pago = await _context.Pago.FindAsync(interesId);
-                            var monto = pago.Monto;
-                            var empeño = await _contextTemp.Empenos.FindAsync(pago.EmpenoId);
+                            pago.PagoId,
+                            pago.EmpenoId,
+                            pago.TipoPago,
+                            pago.Monto,
+                            pago.MontoAvaluo,
+                            pago.MontoBodega,
+                            pago.MontoTotal,
+                            EmpenoMontoPendiente = empeño.MontoPendiente,
+                            empeño.Estado,
+                            empeño.FechaVencimiento
+                        };
 
-                            if (pago.TipoPago == TipoPago.Interes)
+                        if (pago.TipoPago == TipoPago.Interes)
+                        {
+                            // Reversar el TOTAL cobrado (interés + bodegaje + avalúo), no solo el interés base
+                            double monto = pago.MontoTotal;
+                            var list = _context.Intereses.Where(i => i.PagoId == pago.PagoId).OrderByDescending(i => i.InteresesId).ToList();
+
+                            foreach (var item in list)
                             {
-                                var list = _contextTemp.Intereses.Where(i => i.PagoId == pago.PagoId).OrderByDescending(i => i.InteresesId).ToList();
-
-                                foreach (var item in list)
+                                if (monto > item.Pagado)
                                 {
-                                    if (monto > item.Pagado)
-                                    {
-                                        monto -= item.Pagado;
-                                        item.Pagado = 0;
-                                        item.PagoId = null;
-                                        _contextTemp.Entry(item).State = EntityState.Modified;
+                                    monto -= item.Pagado;
+                                    item.Pagado = 0;
+                                    item.PagoId = null;
+                                    _context.Entry(item).State = EntityState.Modified;
+                                    empeño.FechaVencimiento = empeño.FechaVencimiento.AddMonths(-1);
+                                }
+                                else
+                                {
+                                    // ¿El período estaba totalmente pagado? Se compara contra MontoTotal (base + bodegaje + avalúo)
+                                    bool estabaPago = Math.Truncate(Math.Round(item.Pagado)) >= Math.Truncate(item.MontoTotal);
+
+                                    item.Pagado -= monto;
+                                    item.PagoId = null;
+                                    monto = 0;
+                                    _context.Entry(item).State = EntityState.Modified;
+
+                                    bool ahoraNoPago = Math.Truncate(Math.Round(item.Pagado)) < Math.Truncate(item.MontoTotal);
+                                    if (ahoraNoPago && estabaPago)
                                         empeño.FechaVencimiento = empeño.FechaVencimiento.AddMonths(-1);
-                                    }
-                                    else
-                                    {
-                                        bool pagado = false;
-
-                                        if (item.Monto == item.Pagado)
-                                            pagado = true;
-
-                                        item.Pagado -= monto;
-                                        item.PagoId = null;
-                                        monto = 0;
-                                        _contextTemp.Entry(item).State = EntityState.Modified;
-
-                                        if (item.Monto > item.Pagado && pagado)
-                                        {
-                                            empeño.FechaVencimiento = empeño.FechaVencimiento.AddMonths(-1);
-                                        }
-                                    }
-                                    if (monto == 0)
-                                        break;
                                 }
-
+                                if (monto == 0)
+                                    break;
                             }
-                            else
+
+                            // Borrar las cuotas futuras impagas generadas después del pago revertido
+                            // (el "próximo mes"): quedan como si el pago nunca hubiera avanzado el período.
+                            // Se identifican por InteresesId mayor al de las cuotas que este pago tocó,
+                            // para no borrar nunca la cuota que acabamos de restaurar. ReviewEmpeño las
+                            // regenera si el tiempo transcurrido lo amerita.
+                            if (list.Count > 0)
                             {
-                                empeño.MontoPendiente += monto;
-                                if (empeño.Estado == Estado.Cancelado || empeño.Retirado || empeño.FechaRetiro != null)
-                                {
-                                    empeño.Estado = Estado.Vigente;
-                                    empeño.Retirado = false;
-                                    empeño.FechaRetiro = null;
-                                }
+                                int maxRevertidoId = list.Max(i => i.InteresesId);
+                                var futurasImpagas = _context.Intereses
+                                    .Where(i => i.EmpenoId == empeño.EmpenoId
+                                             && i.InteresesId > maxRevertidoId
+                                             && i.Pagado == 0)
+                                    .ToList();
+                                _context.Intereses.RemoveRange(futurasImpagas);
                             }
-                            _context.Pago.Remove(pago);
-                            _contextTemp.Entry(empeño).State = EntityState.Modified;
                         }
                         else
                         {
-                            var intereses = await _context.Intereses.FindAsync(interesId);
-                            _context.Intereses.Remove(intereses);
+                            // El pago de principal no lleva avalúo/bodegaje
+                            empeño.MontoPendiente += pago.Monto;
+                            if (empeño.Estado == Estado.Cancelado || empeño.Retirado || empeño.FechaRetiro != null)
+                            {
+                                empeño.Estado = Estado.Vigente;
+                                empeño.Retirado = false;
+                                empeño.FechaRetiro = null;
+                            }
                         }
 
-                        await _context.SaveChangesAsync();
-                        await _contextTemp.SaveChangesAsync();
-                        MessageBox.Show("Elemento eliminado correctamente", "Información", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                    }
-                }
+                        _context.Pago.Remove(pago);
+                        _context.Entry(empeño).State = EntityState.Modified;
 
-                if (switchPago)
-                {
-                    await LoadPays();
+                        despues = new
+                        {
+                            EmpenoMontoPendiente = empeño.MontoPendiente,
+                            empeño.Estado,
+                            empeño.FechaVencimiento
+                        };
+                    }
+                    else
+                    {
+                        // interesId == InteresesId (grid cargado por CargarPagos)
+                        var intereses = await _context.Intereses.FindAsync(interesId);
+                        if (intereses.Pagado > 0)
+                        {
+                            tx.Rollback();
+                            MessageBox.Show("No se puede eliminar un período con pagos aplicados. Reverse el pago desde la pestaña Pagos.", "Operación bloqueada", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                            return;
+                        }
+                        antes = new { intereses.InteresesId, intereses.EmpenoId, intereses.Monto, intereses.Pagado };
+                        _context.Intereses.Remove(intereses);
+                    }
+
+                    await _context.SaveChangesAsync();
+                    tx.Commit();
                 }
-                else
+                catch (Exception ex)
                 {
-                    CargarPagos();
-                } 
+                    tx.Rollback();
+                    await funciones.SaveBitacora(new ValorBitacora
+                    {
+                        Modulo = switchPago ? "Pagos" : "Intereses",
+                        Accion = "Eliminar",
+                        Valor = JsonConvert.SerializeObject(new { antes, error = ex.Message })
+                    }, 1, ex.Message);
+                    MessageBox.Show("No se pudo eliminar. La operación fue revertida.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
             }
+
+            // Bitácora del reverso (después del commit, para que nunca quede huérfana)
+            await funciones.SaveBitacora(new ValorBitacora
+            {
+                Modulo = switchPago ? "Pagos" : "Intereses",
+                Accion = "Eliminar",
+                Valor = JsonConvert.SerializeObject(new { antes, despues })
+            });
+
+            MessageBox.Show("Elemento eliminado correctamente", "Información", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+            if (switchPago)
+                await LoadPays();
+            else
+                CargarPagos();
+        }
+
+        // Reutilizable desde la versión nueva (frmShell): anula un PAGO por id revirtiendo saldos
+        // EXACTAMENTE como el borrar-pago del clásico (rama switchPago de iconButton4_Click).
+        // El PIN (solo Administrador) lo valida frmShell ANTES de llamar. Devuelve {ok} o {ok=false,error}.
+        public async Task<object> AnularPagoHeadless(int pagoId)
+        {
+            object antes = null, despues = null;
+            using (var tx = _context.Database.BeginTransaction())
+            {
+                try
+                {
+                    var pago = await _context.Pago.FindAsync(pagoId);
+                    if (pago == null) { tx.Rollback(); return new { ok = false, error = "El pago ya no existe." }; }
+                    var empeño = await _context.Empenos.FindAsync(pago.EmpenoId);
+                    if (empeño == null) { tx.Rollback(); return new { ok = false, error = "El empeño no existe." }; }
+
+                    antes = new
+                    {
+                        pago.PagoId, pago.EmpenoId, pago.TipoPago, pago.Monto, pago.MontoAvaluo, pago.MontoBodega, pago.MontoTotal,
+                        EmpenoMontoPendiente = empeño.MontoPendiente, empeño.Estado, empeño.FechaVencimiento
+                    };
+
+                    if (pago.TipoPago == TipoPago.Interes)
+                    {
+                        // Reversar el TOTAL cobrado (interés + bodegaje + avalúo), no solo el interés base
+                        double monto = pago.MontoTotal;
+                        var list = _context.Intereses.Where(i => i.PagoId == pago.PagoId).OrderByDescending(i => i.InteresesId).ToList();
+
+                        foreach (var item in list)
+                        {
+                            if (monto > item.Pagado)
+                            {
+                                monto -= item.Pagado;
+                                item.Pagado = 0;
+                                item.PagoId = null;
+                                _context.Entry(item).State = EntityState.Modified;
+                                empeño.FechaVencimiento = empeño.FechaVencimiento.AddMonths(-1);
+                            }
+                            else
+                            {
+                                bool estabaPago = Math.Truncate(Math.Round(item.Pagado)) >= Math.Truncate(item.MontoTotal);
+                                item.Pagado -= monto;
+                                item.PagoId = null;
+                                monto = 0;
+                                _context.Entry(item).State = EntityState.Modified;
+                                bool ahoraNoPago = Math.Truncate(Math.Round(item.Pagado)) < Math.Truncate(item.MontoTotal);
+                                if (ahoraNoPago && estabaPago)
+                                    empeño.FechaVencimiento = empeño.FechaVencimiento.AddMonths(-1);
+                            }
+                            if (monto == 0) break;
+                        }
+
+                        if (list.Count > 0)
+                        {
+                            int maxRevertidoId = list.Max(i => i.InteresesId);
+                            var futurasImpagas = _context.Intereses
+                                .Where(i => i.EmpenoId == empeño.EmpenoId && i.InteresesId > maxRevertidoId && i.Pagado == 0)
+                                .ToList();
+                            _context.Intereses.RemoveRange(futurasImpagas);
+                        }
+                    }
+                    else
+                    {
+                        empeño.MontoPendiente += pago.Monto;
+                        if (empeño.Estado == Estado.Cancelado || empeño.Retirado || empeño.FechaRetiro != null)
+                        {
+                            empeño.Estado = Estado.Vigente;
+                            empeño.Retirado = false;
+                            empeño.FechaRetiro = null;
+                        }
+                    }
+
+                    _context.Pago.Remove(pago);
+                    _context.Entry(empeño).State = EntityState.Modified;
+                    despues = new { EmpenoMontoPendiente = empeño.MontoPendiente, empeño.Estado, empeño.FechaVencimiento };
+
+                    await _context.SaveChangesAsync();
+                    tx.Commit();
+                }
+                catch (Exception ex)
+                {
+                    tx.Rollback();
+                    await funciones.SaveBitacora(new ValorBitacora
+                    {
+                        Modulo = "Pagos",
+                        Accion = "Eliminar",
+                        Valor = JsonConvert.SerializeObject(new { antes, error = ex.Message })
+                    }, 1, ex.Message);
+                    return new { ok = false, error = "No se pudo anular. La operación fue revertida." };
+                }
+            }
+
+            await funciones.SaveBitacora(new ValorBitacora
+            {
+                Modulo = "Pagos",
+                Accion = "Eliminar",
+                Valor = JsonConvert.SerializeObject(new { antes, despues })
+            });
+            return new { ok = true };
         }
 
         private void dgvClientes_CellContentClick(object sender, DataGridViewCellEventArgs e)
@@ -2684,6 +2884,8 @@ namespace Empeño.WindowsForms.Views
 
         private async void btnReimprimirPago_Click_1(object sender, EventArgs e)
         {
+            try
+            {
             if (dgvPagos.SelectedRows.Count > 0)
             {
                 if (switchPago)
@@ -2730,6 +2932,214 @@ namespace Empeño.WindowsForms.Views
                         }
                     }
                 }
+            }
+            }
+            catch (Exception)
+            {
+                MessageBox.Show("No se pudo reimprimir el pago. Verifique que Microsoft Excel esté disponible.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        // Edición de empeño reutilizable (clásico + dashboard). MISMA lógica de plata que el botón Guardar:
+        // delta de MontoPendiente al cambiar monto, recálculo de 1ª cuota (monto/bodegaje) al cambiar monto/plan.
+        // Devuelve null si OK, o un mensaje de error/validación.
+        public async Task<string> EditarEmpeno(int id, string descripcion, bool esOro, string comentario, DateTime fecha, string planNombre, double monto, DateTime fechaVencimiento, double avaluo, int empleadoId, int perfilId, int mesesVencimientoDefault)
+        {
+            using (var ctx = new DataContext())
+            {
+                var empeño = await ctx.Empenos.FindAsync(id);
+                if (empeño == null) return "Empeño no encontrado.";
+                if (empeño.FechaRetiro != null || empeño.Retirado || empeño.FechaRetiroAdministrador != null || empeño.RetiradoAdministrador || empeño.Estado == Estado.Anulado)
+                    return "El registro no puede ser modificado.";
+
+                empeño.Descripcion = descripcion;
+                empeño.EditorId = empleadoId;
+                empeño.EsOro = esOro;
+                empeño.Comentario = comentario ?? string.Empty;
+
+                if (empeño.Fecha != fecha && perfilId != 4)
+                {
+                    empeño.Fecha = fecha;
+                    var plan = await ctx.Interes.Where(i => i.Nombre == planNombre).SingleAsync();
+                    if (empeño.Pagos.Count() == 0)
+                        empeño.FechaVencimiento = DateTime.Today.AddMonths(plan.Meses > 0 ? plan.Meses : mesesVencimientoDefault);
+                }
+
+                if (empeño.Monto != monto)
+                {
+                    empeño.MontoPendiente += monto - empeño.Monto;
+                    empeño.Monto = monto;
+                    if (empeño.Intereses.Count() == 1)
+                    {
+                        var cuota = empeño.Intereses.FirstOrDefault();
+                        if (cuota.Pagado == 0)
+                        {
+                            cuota.Monto = empeño.Monto * ((double)empeño.Interes.Porcentaje / (double)100);
+                            ctx.Entry(cuota).State = EntityState.Modified;
+                        }
+                    }
+                }
+
+                int nuevoPlanId = await funciones.GetInteresIdByNombre(planNombre);
+                if (empeño.InteresId != nuevoPlanId && perfilId != 4)
+                {
+                    empeño.InteresId = nuevoPlanId;
+                    if (empeño.Intereses.Count() == 1)
+                    {
+                        var cuota = empeño.Intereses.FirstOrDefault();
+                        if (cuota.Pagado == 0)
+                        {
+                            var plan = await ctx.Interes.FindAsync(empeño.InteresId);
+                            cuota.Monto = empeño.Monto * ((double)plan.Porcentaje / (double)100);
+                            cuota.MontoBodega = plan.Bodegaje != null ? Math.Truncate(empeño.Monto * plan.PorcentajeBodegaje) : 0;
+                            ctx.Entry(cuota).State = EntityState.Modified;
+                        }
+                    }
+                }
+
+                if (empeño.FechaVencimiento != fechaVencimiento && perfilId != 4)
+                    empeño.FechaVencimiento = fechaVencimiento;
+
+                empeño.MontoAvaluo = avaluo;
+
+                ctx.Entry(empeño).State = EntityState.Modified;
+                await ctx.SaveChangesAsync();
+
+                await funciones.SaveBitacora(new ValorBitacora
+                {
+                    Valor = JsonConvert.SerializeObject(empeño),
+                    Modulo = "Empeños",
+                    Accion = "Editar"
+                });
+                return null;
+            }
+        }
+
+        // Alta de empeño reutilizable desde la versión nueva (frmShell). Reusa la lógica EXACTA del
+        // alta clásica (btnGuardarEmpeño_Click_1, rama empeñoId==0): mismo cálculo de la primera cuota
+        // (interés truncado, avalúo cobrado UNA vez, bodegaje), consecutivo, bitácora Empeños+Intereses,
+        // impresión de comprobante (y contrato si el plan tiene avalúo/bodegaje) y correo al cliente.
+        // Devuelve { ok, id, warn } o { ok=false, error }. No cambia el esquema de BD.
+        public async Task<object> CrearEmpeno(int clienteId, string descripcion, string comentario, double monto, double avaluo, double bodegaje, bool esOro, int interesId, DateTime fecha, DateTime fechaVencimiento, int empleadoId, int perfilId, int mesesVencimientoDefault)
+        {
+            if (clienteId <= 0) return new { ok = false, error = "Debe seleccionar un cliente." };
+            if (monto <= 0) return new { ok = false, error = "El monto del empeño no es válido." };
+
+            var interes = await _context.Interes.FindAsync(interesId);
+            if (interes == null) return new { ok = false, error = "El plan de interés no es válido." };
+
+            // Mismo gate del clásico: PerfilId 4 (empleado) no puede alterar la fecha ni el vencimiento.
+            var venceSistema = fecha.Date.AddMonths(interes.Meses > 0 ? interes.Meses : mesesVencimientoDefault);
+            if (perfilId == 4 && (fecha.Date != DateTime.Today || fechaVencimiento.Date != venceSistema.Date))
+                return new { ok = false, error = "Solo un supervisor puede modificar la fecha o el vencimiento." };
+
+            var empeño = new Empeno
+            {
+                EmpenoId = (int)GetConsecutivo(),
+                ClienteId = clienteId,
+                Descripcion = descripcion ?? string.Empty,
+                EmpleadoId = empleadoId == 0 ? 1 : empleadoId,
+                EditorId = empleadoId == 0 ? 1 : empleadoId,
+                EsOro = esOro,
+                Estado = Estado.Vigente,
+                Fecha = fecha,
+                FechaVencimiento = fechaVencimiento,
+                InteresId = interesId,
+                Monto = monto,
+                MontoPendiente = monto,
+                Comentario = comentario ?? string.Empty,
+                MontoAvaluo = avaluo
+            };
+
+            _context.Empenos.Add(empeño);
+            await _context.SaveChangesAsync();
+            await funciones.SaveBitacora(new ValorBitacora { Valor = JsonConvert.SerializeObject(empeño), Modulo = "Empeños", Accion = "Crear" });
+
+            // Primera cuota (Intereses) inline, igual que el clásico: interés = trunc(MontoPendiente * Porcentaje/100),
+            // vence = fecha + 1 mes, avalúo (una vez) y bodegaje en esta primera cuota.
+            var cuota = new Intereses
+            {
+                EmpenoId = empeño.EmpenoId,
+                FechaCreacion = DateTime.Now,
+                FechaVencimiento = fecha.AddMonths(1),
+                Monto = Math.Truncate((double)empeño.MontoPendiente * ((double)interes.Porcentaje / (double)100)),
+                MontoAvaluo = avaluo,
+                MontoBodega = bodegaje
+            };
+            _context.Intereses.Add(cuota);
+            await _context.SaveChangesAsync();
+            await funciones.SaveBitacora(new ValorBitacora { Valor = JsonConvert.SerializeObject(empeño), Modulo = "Intereses", Accion = "Crear" });
+
+            // Impresión (comprobante siempre; contrato si el plan tiene avalúo/bodegaje) y correo, igual al clásico.
+            // Best-effort: el empeño ya quedó guardado; si falla la impresión/correo se informa sin deshacer el alta.
+            string warn = null;
+            try
+            {
+                if ((interes.Avaluo ?? 0) > 0 || (interes.Bodegaje ?? 0) > 0)
+                {
+                    var resp = MessageBox.Show("¿Deseas imprimir el contrato?", "Confirmación", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                    if (resp == DialogResult.Yes)
+                        await PrintContrato(empeño);
+                }
+                await Print(empeño);
+
+                var config = await _context.Configuraciones.FirstOrDefaultAsync();
+                var cliente = await _context.Clientes.FindAsync(empeño.ClienteId);
+                if (cliente != null && !string.IsNullOrEmpty(cliente.Correo))
+                    await emailFuncion.SendMail(cliente.Correo, "Creación de Empeño " + (config != null ? config.Compañia : "") + " #" + empeño.EmpenoId, empeño);
+            }
+            catch (Exception ex)
+            {
+                warn = "El empeño #" + empeño.EmpenoId + " se creó, pero falló la impresión o el correo: " + ex.Message;
+            }
+
+            return new { ok = true, id = empeño.EmpenoId, warn };
+        }
+
+        // Reimpresión de un pago por id, reutilizable desde la versión nueva (frmShell).
+        // Reusa los métodos de impresión existentes (misma lógica que "Reimprimir Pago" del grid).
+        public async Task ReimprimirPagoPorId(int pagoId)
+        {
+            try
+            {
+                var pago = await _context.Pago.FindAsync(pagoId);
+                if (pago == null) return;
+                var empeño = pago.Empeno;
+                if (pago.TipoPago == TipoPago.Interes)
+                {
+                    var intereses = empeño.Intereses.Where(p => p.PagoId == pago.PagoId).ToList();
+                    await PrintInteres(empeño, intereses, pago);
+                }
+                else
+                {
+                    if (empeño.Estado == Estado.Cancelado)
+                        await PrintRetiro(empeño, pago);
+                    else
+                        await PrintAbono(empeño, pago);
+                }
+            }
+            catch (Exception)
+            {
+                MessageBox.Show("No se pudo reimprimir el pago. Verifique que Microsoft Excel esté disponible.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        // Reimpresión del comprobante de un empeño por id, igual que el botón "Reimprimir" clásico del grid:
+        // si está cancelado imprime el retiro, si no el comprobante. Reutilizable desde la versión nueva (frmShell).
+        public async Task ReimprimirEmpenoPorId(int empenoId)
+        {
+            try
+            {
+                var empeño = await _context.Empenos.FindAsync(empenoId);
+                if (empeño == null) return;
+                if (empeño.Estado == Estado.Cancelado)
+                    await PrintRetiro(empeño);
+                else
+                    await Print(empeño);
+            }
+            catch (Exception)
+            {
+                MessageBox.Show("No se pudo reimprimir. Verifique que Microsoft Excel esté disponible.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
