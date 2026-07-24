@@ -149,20 +149,21 @@ namespace Empeño.WindowsForms.Dashboard
             var configuracion = ctx.Configuraciones.FirstOrDefault();
             double iva = (montoAvaluoDia + montoBodegajeDia) * ((configuracion != null ? (configuracion.IVA ?? 0) : 0) / 100.0);
 
-            // Orden y nombres IGUAL al formulario clásico (frmCierreCaja): así el cierre nuevo se ve como
-            // "la ventana pasada" que la cajera conoce (coincide con el reporte impreso Cierre.xlsx).
-            // Es solo el DISPLAY del preview; no cambia la matemática ni lo que se guarda (DetalleCierreCaja).
+            // Orden y nombres como el clásico. El INTERÉS se muestra COMPLETO (interés base + avalúo +
+            // bodegaje), que es lo que la persona paga como "interés". Avalúo y bodegaje se muestran igual
+            // por aparte pero marcados "(incluido)" con info=true → NO se re-suman al total (evita duplicar).
+            // El total queda IDÉNTICO; es solo presentación. No cambia la matemática ni lo guardado.
             var lineas = new[]
             {
-                new { concepto = "Monto Empeños", valor = montoEmpeñoDia },
-                new { concepto = "Monto Avalúos", valor = montoAvaluoDia },
-                new { concepto = "Monto Bodegajes", valor = montoBodegajeDia },
-                new { concepto = "Intereses Cobrados", valor = montoInteresDia },
-                new { concepto = "Abonos Recibidos", valor = abonoDia },
-                new { concepto = "Monto Vencimientos", valor = vencidos },
-                new { concepto = "Monto Cancelados", valor = cancelados },
-                new { concepto = "Total Acumulado", valor = acumulado },
-                new { concepto = "Total IVA", valor = iva },
+                new { concepto = "Monto Empeños", valor = montoEmpeñoDia, info = false },
+                new { concepto = "Intereses Cobrados", valor = montoInteresDia + montoAvaluoDia + montoBodegajeDia, info = false },
+                new { concepto = "Avalúos (incluido en intereses)", valor = montoAvaluoDia, info = true },
+                new { concepto = "Bodegajes (incluido en intereses)", valor = montoBodegajeDia, info = true },
+                new { concepto = "Abonos Recibidos", valor = abonoDia, info = false },
+                new { concepto = "Monto Vencimientos", valor = vencidos, info = false },
+                new { concepto = "Monto Cancelados", valor = cancelados, info = false },
+                new { concepto = "Total Acumulado", valor = acumulado, info = false },
+                new { concepto = "Total IVA", valor = iva, info = false },
             };
 
             return new

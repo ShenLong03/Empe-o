@@ -352,18 +352,27 @@ namespace Empeño.WindowsForms.Views
             cexcel.Cells[10, 2].value = empleado.Usuario;
             cexcel.Cells[11, 2].value = txtFecha.Text;
 
+            // A1: interés COMPLETO (base + avalúo + bodegaje); avalúo/bodegaje quedan informativos.
+            double _ava = detalles.Where(d => d.Concepto == "Avalúos").Sum(d => d.Valor);
+            double _bod = detalles.Where(d => d.Concepto == "Bodegajes").Sum(d => d.Valor);
+            double _intBase = detalles.Where(d => d.Concepto == "Intereses").Sum(d => d.Valor);
             var index = 0;
             foreach (DataGridViewRow item in dgvDetalles.Rows)
             {
-                cexcel.Cells[14 + index, 1].value = item.Cells[1].Value.ToString();
-                cexcel.Cells[14 + index, 2].value = item.Cells[2].Value.ToString();
-                cexcel.Cells[14 + index, 3].value = item.Cells[3].Value.ToString();
-                cexcel.Cells[14 + index, 4].value = item.Cells[4].Value.ToString();     
+                // A2: la grilla del cierre tiene 2 columnas (Concepto, Valor) → leer [0] y [1], no [1..4].
+                string concepto = item.Cells[0].Value != null ? item.Cells[0].Value.ToString() : "";
+                string valor = item.Cells[1].Value != null ? item.Cells[1].Value.ToString() : "";
+                if (concepto == "Intereses")
+                    valor = (_intBase + _ava + _bod).ToString("N2");         // interés completo
+                else if (concepto == "Avalúos" || concepto == "Bodegajes")
+                    concepto = concepto + " (incluido en intereses)";        // informativo, no re-sumar
+                cexcel.Cells[14 + index, 1].value = concepto;
+                cexcel.Cells[14 + index, 2].value = valor;
 
                 Range range = (Range)cexcel.Rows[15 + index];
                 Range line = range;
                 line.Insert();
-                ++index;              
+                ++index;
             }
 
             double saldoInicial = double.Parse(textBox1.Text);

@@ -171,7 +171,7 @@ namespace Empeño.WindowsForms.Dashboard
                 prorroga = x.Prorroga,
                 monto = x.Monto,
                 pend = x.MontoPendiente + x.Intereses.Sum(i => i.MontoTotal - i.Pagado)
-            }).OrderBy(x => x.vence).ToList();
+            }).OrderBy(x => x.dias).ToList();   // del más viejo al más nuevo (por vencimiento real, no por el texto dd/MM/yyyy)
 
             return new
             {

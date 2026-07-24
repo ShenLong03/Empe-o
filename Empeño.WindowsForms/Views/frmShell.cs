@@ -169,6 +169,18 @@ namespace Empeño.WindowsForms.Views
                         }
                     case "clasico": AbrirClasico(); break;
                     case "logout": Logout(); break;
+                    case "backup":
+                        {
+                            // Respaldo de la BD: MISMA lógica del clásico (frmInicio.Create) → BACKUP DATABASE a C:\Backup\empeno.bak.
+                            // Servidor/BD tomados de la conexión real de la app (anda en el local con "." y en dev con LocalDB).
+                            string bpath = "C:\\Backup\\empeno.bak";
+                            try { System.IO.Directory.CreateDirectory("C:\\Backup"); } catch { }
+                            string srv = _context.Database.Connection.DataSource;
+                            string dbn = _context.Database.Connection.Database;
+                            bool okBk = await System.Threading.Tasks.Task.Run(() => frmInicio.Create(srv, dbn, bpath));
+                            await web.CoreWebView2.ExecuteScriptAsync("window.backupResuelto(" + JsonConvert.SerializeObject(new { ok = okBk, path = bpath }) + ")");
+                            break;
+                        }
                     case "nav": Navegar((string)m["module"]); break;
                     case "range":
                         string serie = JsonConvert.SerializeObject(TableroData.Serie(_context, (int)m["index"]));
