@@ -3075,12 +3075,11 @@ namespace Empeño.WindowsForms.Views
             string warn = null;
             try
             {
+                // BLINDADO: sin MessageBox bloqueante — en el flujo WebView headless el diálogo aparece detrás del
+                // shell y congela el alta ("no imprime / se colgó"). Se imprime el contrato automáticamente cuando
+                // el plan lo amerita (tiene avalúo o bodegaje), sin preguntar.
                 if ((interes.Avaluo ?? 0) > 0 || (interes.Bodegaje ?? 0) > 0)
-                {
-                    var resp = MessageBox.Show("¿Deseas imprimir el contrato?", "Confirmación", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
-                    if (resp == DialogResult.Yes)
-                        await PrintContrato(empeño);
-                }
+                    await PrintContrato(empeño);
                 await Print(empeño);
 
                 var config = await _context.Configuraciones.FirstOrDefaultAsync();
