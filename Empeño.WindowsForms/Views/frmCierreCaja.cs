@@ -346,22 +346,22 @@ namespace Empeño.WindowsForms.Views
             cexcel.Cells[6, 1].value = configuracion.Nombre;
             cexcel.Cells[7, 1].value = "Cédula: " + configuracion.Identificacion;
 
-            var empleadoId = Program.EmpleadoId;
-            var empleado = _context.Empleados.Find(empleadoId);
-            cexcel.Cells[9, 2].value = empleado.Nombre;
-            cexcel.Cells[10, 2].value = empleado.Usuario;
-            cexcel.Cells[11, 2].value = txtFecha.Text;
+            // BLINDADO/headless: Print NO depende del formulario (ni grilla ni textboxes). Lee TODO del objeto
+            // cierreCaja y de la lista `detalles`, así imprime igual aunque el form no esté visible.
+            var empleado = _context.Empleados.Find(cierreCaja.EmpleadoId);
+            cexcel.Cells[9, 2].value = empleado != null ? empleado.Nombre : "";
+            cexcel.Cells[10, 2].value = empleado != null ? empleado.Usuario : "";
+            cexcel.Cells[11, 2].value = cierreCaja.Fecha.ToString("dd/MM/yyyy");
 
             // A1: interés COMPLETO (base + avalúo + bodegaje); avalúo/bodegaje quedan informativos.
             double _ava = detalles.Where(d => d.Concepto == "Avalúos").Sum(d => d.Valor);
             double _bod = detalles.Where(d => d.Concepto == "Bodegajes").Sum(d => d.Valor);
             double _intBase = detalles.Where(d => d.Concepto == "Intereses").Sum(d => d.Valor);
             var index = 0;
-            foreach (DataGridViewRow item in dgvDetalles.Rows)
+            foreach (var d in detalles)
             {
-                // A2: la grilla del cierre tiene 2 columnas (Concepto, Valor) → leer [0] y [1], no [1..4].
-                string concepto = item.Cells[0].Value != null ? item.Cells[0].Value.ToString() : "";
-                string valor = item.Cells[1].Value != null ? item.Cells[1].Value.ToString() : "";
+                string concepto = d.Concepto ?? "";
+                string valor = d.Valor.ToString("N2");
                 if (concepto == "Intereses")
                     valor = (_intBase + _ava + _bod).ToString("N2");         // interés completo
                 else if (concepto == "Avalúos" || concepto == "Bodegajes")
@@ -370,14 +370,14 @@ namespace Empeño.WindowsForms.Views
                 cexcel.Cells[14 + index, 2].value = valor;
 
                 Range range = (Range)cexcel.Rows[15 + index];
-                Range line = range;
-                line.Insert();
+                range.Insert();
                 ++index;
             }
 
-            double saldoInicial = double.Parse(textBox1.Text);
+            double saldoInicial = cierreCaja.SaldoInicial;
+            double total = (saldoInicial * -1) + detalles.Sum(d => d.Valor);   // misma fórmula que LoadList
             cexcel.Cells[17 + index, 3].value = saldoInicial.ToString("N2");
-            cexcel.Cells[19 + index, 3].value = txtTotal.Text;
+            cexcel.Cells[19 + index, 3].value = total.ToString("N2");
             cexcel.ActiveWindow.SelectedSheets.PrintOut();
             System.Threading.Thread.Sleep(300);
             cexcel.ActiveWorkbook.Close(false);
@@ -410,10 +410,15 @@ namespace Empeño.WindowsForms.Views
             _context.DetalleCierreCajas.AddRange(detalles);
             await _context.SaveChangesAsync();
 
+            // IMPRESIÓN Y CORREO DESACOPLADOS: se IMPRIME el cierre primero; el correo va DESPUÉS y es best-effort.
+            // Si el correo falla, NO afecta la impresión ni marca fallo (antes iban en el mismo try y un fallo de
+            // correo se disfrazaba de "falló la impresión").
             string warn = null;
+            try { await Print(cierreCaja); }
+            catch (Exception ex) { warn = "El cierre #" + cierreCaja.CierreCajaId + " se guardó, pero NO se pudo imprimir: " + ex.Message + ". Revise que la impresora esté disponible."; }
+
             try
             {
-                await Print(cierreCaja);                // mismo comprobante Excel del clásico (grilla ya poblada)
                 var configuracion = _context.Configuraciones.FirstOrDefault();
                 if (configuracion != null && !string.IsNullOrEmpty(configuracion.EmailNotification))
                 {
@@ -423,10 +428,8 @@ namespace Empeño.WindowsForms.Views
                     await emailFuncion.SendMail(configuracion.EmailNotification, "Cierre de Caja " + cierreCaja.Fecha, str, detalles);
                 }
             }
-            catch (Exception ex)
-            {
-                warn = "El cierre #" + cierreCaja.CierreCajaId + " se guardó, pero falló la impresión o el correo: " + ex.Message;
-            }
+            catch (Exception) { /* el correo es OPCIONAL: su fallo NO afecta el cierre ni la impresión */ }
+
             return new { ok = true, id = cierreCaja.CierreCajaId, warn };
         }
 

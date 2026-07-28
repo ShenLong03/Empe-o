@@ -324,7 +324,7 @@ namespace Empeño.WindowsForms.Views
             lblTotalProrroga.Text = empeños.Where(m => m.Prorrogas.Count() > 0).Count().ToString();
             var totalActivos = empeños.Where(m => m.Estado == Estado.Vigente || m.Estado == Estado.Pendiente).Sum(m => m.Monto + m.Intereses.Sum(i => i.Monto));
 
-            var list = empeños.Select(x => new
+            var list = empeños.OrderBy(e => e.EmpenoId).Select(x => new   // por número de empeño ascendente — vencidos IMPRESO
             {
                 Id = x.EmpenoId,
                 Empeño = x.Descripcion,
@@ -445,27 +445,35 @@ namespace Empeño.WindowsForms.Views
         // ===== Reutilizable desde la versión nueva (frmShell), SIN mostrar el formulario =====
 
         // Carga los vencidos y totales (como el Load, sin ReviewEmpeños que es lento) para imprimir/enviar.
-        private async Task CargarHeadless(DateTime? corte = null)
+        private async Task CargarHeadless(DateTime? desde = null, DateTime? hasta = null, bool todos = false)
         {
-            // Vencidos AL CORTE: vencimiento en/antes del corte y sin retirar a esa fecha (default: hoy).
-            var f = (corte ?? DateTime.Today).Date;
-            var tope = f.AddDays(1);
-            empeños = await _context.Empenos.Where(x => !x.IsDelete
-             && x.FechaVencimiento < tope
-             && (x.FechaRetiro == null || x.FechaRetiro >= tope)
-             && (x.FechaRetiroAdministrador == null || x.FechaRetiroAdministrador >= tope))
-          .Include(x => x.Intereses).ToListAsync();
+            // Vencidos por RANGO de fecha de vencimiento [desde, hasta], no retirados. "todos" = toda la
+            // cartera vencida (vencimiento hasta hoy). Debe COINCIDIR con ReportesData.Vencidos (el modal).
+            var d = (desde ?? new DateTime(2000, 1, 1)).Date;
+            var h = (hasta ?? DateTime.Today).Date;
+            var topeH = h.AddDays(1);
+            var topeHoy = DateTime.Today.AddDays(1);
+
+            var q = _context.Empenos.Where(x => !x.IsDelete
+             && x.FechaRetiro == null
+             && x.FechaRetiroAdministrador == null);
+            if (todos)
+                q = q.Where(x => x.FechaVencimiento < topeHoy);
+            else
+                q = q.Where(x => x.FechaVencimiento >= d && x.FechaVencimiento < topeH);
+
+            empeños = await q.Include(x => x.Intereses).ToListAsync();
             configuracion = _context.Configuraciones.FirstOrDefault();
             await LoadDetalle();
-            txtFecha.Text = f.ToString("dd/MM/yyyy");   // estampa la fecha de corte en el comprobante
+            txtFecha.Text = todos ? "Todos" : (d.ToString("dd/MM/yyyy") + " - " + h.ToString("dd/MM/yyyy"));   // estampa el rango en el comprobante
         }
 
         // Imprime el comprobante de vencidos REUSANDO el Print clásico (mismo Excel), headless.
-        public async Task ImprimirVencidosHeadless(DateTime? corte = null)
+        public async Task ImprimirVencidosHeadless(DateTime? desde = null, DateTime? hasta = null, bool todos = false)
         {
             try
             {
-                await CargarHeadless(corte);
+                await CargarHeadless(desde, hasta, todos);
                 await Print();
             }
             catch (Exception)
@@ -475,9 +483,9 @@ namespace Empeño.WindowsForms.Views
         }
 
         // Envía el proceso de vencidos por correo REUSANDO SendMailVencidos, headless.
-        public async Task<object> EnviarVencidosHeadless(DateTime? corte = null)
+        public async Task<object> EnviarVencidosHeadless(DateTime? desde = null, DateTime? hasta = null, bool todos = false)
         {
-            await CargarHeadless(corte);
+            await CargarHeadless(desde, hasta, todos);
             if (configuracion == null || string.IsNullOrEmpty(configuracion.EmailNotification))
                 return new { ok = false, error = "No hay correo de aviso configurado (Configuración → Correo de aviso)." };
 

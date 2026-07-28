@@ -140,17 +140,24 @@ namespace Empeño.WindowsForms.Dashboard
         }
 
         // Cartera vencida (frmVencidos): empeños en estado Vencido, no retirados. Totales de vencido y prórroga.
-        public static object Vencidos(DataContext ctx, DateTime? corte = null)
+        public static object Vencidos(DataContext ctx, DateTime? desde = null, DateTime? hasta = null, bool todos = false)
         {
-            // "Vencido al corte": empeños cuyo vencimiento cae EN/ANTES de la fecha de corte y que NO
-            // estaban retirados/sacados a esa fecha. Si no se pasa corte, se toma el día de hoy.
-            var f = (corte ?? DateTime.Today).Date;
-            var tope = f.AddDays(1);
+            // Cartera vencida por RANGO de fecha de vencimiento [desde, hasta], NO retirada.
+            // "todos" ignora el rango y trae toda la cartera vencida (vencimiento hasta hoy).
+            var d = (desde ?? new DateTime(2000, 1, 1)).Date;
+            var h = (hasta ?? DateTime.Today).Date;
+            var topeH = h.AddDays(1);          // incluir todo el día 'hasta'
+            var topeHoy = DateTime.Today.AddDays(1);
 
-            var empenos = ctx.Empenos.Where(x => !x.IsDelete
-                     && x.FechaVencimiento < tope
-                     && (x.FechaRetiro == null || x.FechaRetiro >= tope)
-                     && (x.FechaRetiroAdministrador == null || x.FechaRetiroAdministrador >= tope))
+            var q = ctx.Empenos.Where(x => !x.IsDelete
+                     && x.FechaRetiro == null
+                     && x.FechaRetiroAdministrador == null);
+            if (todos)
+                q = q.Where(x => x.FechaVencimiento < topeHoy);        // toda la cartera vencida hasta hoy
+            else
+                q = q.Where(x => x.FechaVencimiento >= d && x.FechaVencimiento < topeH);
+
+            var empenos = q
                 .Include(x => x.Cliente).Include(x => x.Empleado).Include(x => x.Intereses).Include(x => x.Prorrogas)
                 .ToList();
 
@@ -159,6 +166,7 @@ namespace Empeño.WindowsForms.Dashboard
             double totalVencido = vencidoSet.Sum(l => l.Monto + l.Intereses.Sum(i => i.Monto));
             double totalProrroga = prorrogaSet.Sum(m => m.Monto + m.Intereses.Sum(i => i.Monto));
 
+            var hoy = DateTime.Today;
             var lista = empenos.Select(x => new
             {
                 id = x.EmpenoId,
@@ -166,16 +174,19 @@ namespace Empeño.WindowsForms.Dashboard
                 ced = x.Cliente != null ? x.Cliente.Identificacion : "",
                 cli = x.Cliente != null ? x.Cliente.Nombre : "",
                 vence = x.FechaVencimiento.ToString("dd/MM/yyyy"),
-                dias = (int)(x.FechaVencimiento.Date - f).TotalDays,
+                dias = (int)(x.FechaVencimiento.Date - hoy).TotalDays,
                 empleado = x.Empleado != null ? x.Empleado.Nombre : "",
                 prorroga = x.Prorroga,
                 monto = x.Monto,
                 pend = x.MontoPendiente + x.Intereses.Sum(i => i.MontoTotal - i.Pagado)
-            }).OrderBy(x => x.dias).ToList();   // del más viejo al más nuevo (por vencimiento real, no por el texto dd/MM/yyyy)
+            }).OrderBy(x => x.id).ToList();   // por número de empeño ascendente (1, 2, 3...)
 
             return new
             {
-                fecha = f.ToString("dd/MM/yyyy"),
+                fecha = todos ? "Todos" : (d.ToString("dd/MM/yyyy") + " – " + h.ToString("dd/MM/yyyy")),
+                desde = d.ToString("dd/MM/yyyy"),
+                hasta = h.ToString("dd/MM/yyyy"),
+                todos = todos,
                 totales = new
                 {
                     vencido = totalVencido,

@@ -232,7 +232,7 @@ namespace Empeño.WindowsForms.Views
             var totalActivos = empeños.Where(m => m.Estado == Estado.Vigente || m.Estado == Estado.Pendiente).Sum(m => m.Monto + m.Intereses.Sum(i=>i.Monto));
             lblTotalAlDia.Text = empeños.Where(m => m.Estado == Estado.Vigente || m.Estado == Estado.Pendiente).Count().ToString();
 
-            var list = empeños.Select(x => new
+            var list = empeños.OrderBy(e => e.EmpenoId).Select(x => new   // por número de empeño ascendente (1, 2, 3... → los más recientes) — arqueo impreso
             {
                 Id = x.EmpenoId,
                 Empeño = x.Descripcion,
@@ -339,24 +339,33 @@ namespace Empeño.WindowsForms.Views
 
         // Carga la misma cartera y totales que frmArqueo_Load (sin ReviewEmpeños, que es lento
         // y ya lo corren otros flujos), dejando la grilla y los textboxes poblados para imprimir/enviar.
-        private async Task CargarHeadless()
+        private async Task CargarHeadless(DateTime? desde = null, DateTime? hasta = null, bool todos = false)
         {
-            empeños = await _context.Empenos.Where(x => !x.IsDelete && (x.Estado == Estado.Vigente
+            // Cartera activa (Vigente/Pendiente/Vencido), no retirada. Opcional: acotar por RANGO de fecha
+            // de creación [desde, hasta]. "todos" ignora el rango. Debe COINCIDIR con ArqueoData.Resumen (modal).
+            var d = (desde ?? new DateTime(2000, 1, 1)).Date;
+            var h = (hasta ?? DateTime.Today).Date;
+            var topeH = h.AddDays(1);
+
+            var q = _context.Empenos.Where(x => !x.IsDelete && (x.Estado == Estado.Vigente
                  || x.Estado == Estado.Pendiente
                  || x.Estado == Estado.Vencido)
                  && (!x.Retirado || x.FechaRetiro == null)
-                 && (!x.RetiradoAdministrador || x.FechaRetiroAdministrador == null))
-              .Include(x => x.Intereses).ToListAsync();
+                 && (!x.RetiradoAdministrador || x.FechaRetiroAdministrador == null));
+            if (!todos)
+                q = q.Where(x => x.Fecha >= d && x.Fecha < topeH);
+
+            empeños = await q.Include(x => x.Intereses).ToListAsync();
             configuracion = _context.Configuraciones.FirstOrDefault();
             await LoadDetalle();
         }
 
         // Imprime el comprobante de arqueo REUSANDO el Print clásico (mismo Excel), headless.
-        public async Task ImprimirArqueoHeadless(string observaciones)
+        public async Task ImprimirArqueoHeadless(string observaciones, DateTime? desde = null, DateTime? hasta = null, bool todos = false)
         {
             try
             {
-                await CargarHeadless();
+                await CargarHeadless(desde, hasta, todos);
                 txtObservaciones.Text = observaciones ?? string.Empty;
                 await Print();
             }
@@ -367,9 +376,9 @@ namespace Empeño.WindowsForms.Views
         }
 
         // Envía el arqueo + observaciones por correo al administrador, REUSANDO SendMailArqueo, headless.
-        public async Task<object> EnviarArqueoHeadless(string observaciones)
+        public async Task<object> EnviarArqueoHeadless(string observaciones, DateTime? desde = null, DateTime? hasta = null, bool todos = false)
         {
-            await CargarHeadless();
+            await CargarHeadless(desde, hasta, todos);
             txtObservaciones.Text = observaciones ?? string.Empty;
             if (configuracion == null || string.IsNullOrEmpty(configuracion.EmailNotification))
                 return new { ok = false, error = "No hay correo de aviso configurado (Configuración → Correo de aviso)." };

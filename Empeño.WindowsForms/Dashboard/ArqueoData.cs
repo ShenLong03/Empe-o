@@ -11,14 +11,23 @@ namespace Empeño.WindowsForms.Dashboard
     // (retiro admin, prórroga, imprimir, correo) se hacen reusando la lógica clásica headless.
     public static class ArqueoData
     {
-        public static object Resumen(DataContext ctx)
+        public static object Resumen(DataContext ctx, DateTime? desde = null, DateTime? hasta = null, bool todos = false)
         {
             // Mismo filtro que frmArqueo_Load: activos (Vigente/Pendiente/Vencido), no retirados.
-            var empenos = ctx.Empenos.Where(x => !x.IsDelete && (x.Estado == Estado.Vigente
+            // Opcional: acotar por RANGO de fecha de creación del empeño [desde, hasta]. "todos" ignora el rango.
+            var d = (desde ?? new DateTime(2000, 1, 1)).Date;
+            var h = (hasta ?? DateTime.Today).Date;
+            var topeH = h.AddDays(1);          // incluir todo el día 'hasta'
+
+            var q = ctx.Empenos.Where(x => !x.IsDelete && (x.Estado == Estado.Vigente
                      || x.Estado == Estado.Pendiente
                      || x.Estado == Estado.Vencido)
                      && (!x.Retirado || x.FechaRetiro == null)
-                     && (!x.RetiradoAdministrador || x.FechaRetiroAdministrador == null))
+                     && (!x.RetiradoAdministrador || x.FechaRetiroAdministrador == null));
+            if (!todos)
+                q = q.Where(x => x.Fecha >= d && x.Fecha < topeH);
+
+            var empenos = q
                 .Include(x => x.Cliente).Include(x => x.Empleado).Include(x => x.Intereses).Include(x => x.Prorrogas)
                 .ToList();
 
@@ -38,7 +47,7 @@ namespace Empeño.WindowsForms.Dashboard
             var retSet = empenos.Where(l => l.RetiradoAdministrador || l.FechaRetiroAdministrador != null);
             double totalRetirados = retSet.Sum(l => l.Monto + l.Intereses.Sum(i => i.Monto));
 
-            var lista = empenos.Select(x => new
+            var lista = empenos.OrderBy(e => e.EmpenoId).Select(x => new
             {
                 id = x.EmpenoId,
                 prenda = x.Descripcion,
@@ -51,10 +60,14 @@ namespace Empeño.WindowsForms.Dashboard
                 prorroga = x.Prorroga,
                 monto = x.Monto,
                 pend = x.MontoPendiente + x.Intereses.Sum(i => i.MontoTotal - i.Pagado)
-            }).OrderBy(x => x.dias).ToList();   // del más viejo al más nuevo (por vencimiento real, no por el texto dd/MM/yyyy)
+            }).ToList();   // del ÚLTIMO empeño hecho al primero (por fecha de creación, el más reciente arriba)
 
             return new
             {
+                fecha = todos ? "Todos" : (d.ToString("dd/MM/yyyy") + " – " + h.ToString("dd/MM/yyyy")),
+                desde = d.ToString("dd/MM/yyyy"),
+                hasta = h.ToString("dd/MM/yyyy"),
+                todos = todos,
                 totales = new
                 {
                     principal = totalPrincipal,

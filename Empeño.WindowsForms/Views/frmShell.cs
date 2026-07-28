@@ -144,12 +144,42 @@ namespace Empeño.WindowsForms.Views
             return null;
         }
 
+        // Parsea una fecha dd/MM/yyyy de una clave arbitraria del mensaje (ej. "desde"/"hasta"); null si falta o es inválida.
+        private static DateTime? ParseFecha(Newtonsoft.Json.Linq.JObject m, string clave)
+        {
+            DateTime d;
+            if (m[clave] != null && DateTime.TryParseExact((string)m[clave], "dd/MM/yyyy",
+                    System.Globalization.CultureInfo.InvariantCulture, System.Globalization.DateTimeStyles.None, out d))
+                return d;
+            return null;
+        }
+
+        // ¿El front marcó "Mostrar todos"? (ignora el rango de fechas y muestra toda la cartera del reporte).
+        private static bool Todos(Newtonsoft.Json.Linq.JObject m)
+        {
+            return m["todos"] != null && (bool)m["todos"];
+        }
+
         private async void OnMessage(object sender, CoreWebView2WebMessageReceivedEventArgs e)
         {
             try
             {
                 var m = JsonConvert.DeserializeObject<Newtonsoft.Json.Linq.JObject>(e.TryGetWebMessageAsString());
                 string type = (string)m["type"];
+
+                // BLINDAJE anti-staleness (EF6): el _context del dashboard vive TODA la sesión y cachea en su
+                // identity-map las entidades que lee. Los forms clásicos (frmPagar, frmEmpeno, frmVencidos...) ESCRIBEN
+                // con su PROPIO contexto; sin esto el dashboard seguiría mostrando valores viejos —p.ej. un interés YA
+                // pagado que aparece "pendiente"—. Antes de procesar CADA mensaje soltamos lo cacheado (solo lo
+                // Unchanged, sin tocar cambios pendientes) para que cada lectura vuelva a leer FRESCO desde la base.
+                try
+                {
+                    foreach (var _e in _context.ChangeTracker.Entries()
+                                 .Where(x => x.State == System.Data.Entity.EntityState.Unchanged).ToList())
+                        _e.State = System.Data.Entity.EntityState.Detached;
+                }
+                catch { }
+
                 switch (type)
                 {
                     case "min": WindowState = FormWindowState.Minimized; break;
@@ -215,6 +245,14 @@ namespace Empeño.WindowsForms.Views
                             // Reimprime el comprobante del empeño (o retiro si está cancelado) SIN abrir el form clásico.
                             var f = new frmEmpeno();
                             await f.ReimprimirEmpenoPorId((int)m["id"]);
+                            f.Dispose();
+                            break;
+                        }
+                    case "reprintContrato":
+                        {
+                            // Reimprime el CONTRATO del empeño seleccionado (chooser "Reimprimir" del dashboard).
+                            var f = new frmEmpeno();
+                            await f.ReimprimirContratoPorId((int)m["id"]);
                             f.Dispose();
                             break;
                         }
@@ -447,7 +485,7 @@ namespace Empeño.WindowsForms.Views
                         }
                     case "loadArqueo":
                         {
-                            string aj = JsonConvert.SerializeObject(ArqueoData.Resumen(_context));
+                            string aj = JsonConvert.SerializeObject(ArqueoData.Resumen(_context, ParseFecha(m, "desde"), ParseFecha(m, "hasta"), Todos(m)));
                             await web.CoreWebView2.ExecuteScriptAsync("window.renderArqueo(" + aj + ")");
                             break;
                         }
@@ -459,7 +497,7 @@ namespace Empeño.WindowsForms.Views
                                 break;
                             }
                             var fa = new frmArqueo();
-                            await fa.ImprimirArqueoHeadless((string)m["obs"]);
+                            await fa.ImprimirArqueoHeadless((string)m["obs"], ParseFecha(m, "desde"), ParseFecha(m, "hasta"), Todos(m));
                             fa.Dispose();
                             await web.CoreWebView2.ExecuteScriptAsync("window.arqueoResult({ok:true})");
                             break;
@@ -472,7 +510,7 @@ namespace Empeño.WindowsForms.Views
                                 break;
                             }
                             var fa = new frmArqueo();
-                            var rEnv = await fa.EnviarArqueoHeadless((string)m["obs"]);
+                            var rEnv = await fa.EnviarArqueoHeadless((string)m["obs"], ParseFecha(m, "desde"), ParseFecha(m, "hasta"), Todos(m));
                             fa.Dispose();
                             await web.CoreWebView2.ExecuteScriptAsync("window.arqueoResult(" + JsonConvert.SerializeObject(rEnv) + ")");
                             break;
@@ -520,21 +558,21 @@ namespace Empeño.WindowsForms.Views
                                 await web.CoreWebView2.ExecuteScriptAsync("window.renderVencidos({error:'Necesita PIN para ver la cartera vencida.'})");
                                 break;
                             }
-                            string vj0 = JsonConvert.SerializeObject(ReportesData.Vencidos(_context, ParseFecha(m)));
+                            string vj0 = JsonConvert.SerializeObject(ReportesData.Vencidos(_context, ParseFecha(m, "desde"), ParseFecha(m, "hasta"), Todos(m)));
                             await web.CoreWebView2.ExecuteScriptAsync("window.renderVencidos(" + vj0 + ")");
                             break;
                         }
                     case "loadVencidos":
                         {
                             // Recarga tras una acción; no re-pide PIN (ya se validó al abrir).
-                            string vj = JsonConvert.SerializeObject(ReportesData.Vencidos(_context, ParseFecha(m)));
+                            string vj = JsonConvert.SerializeObject(ReportesData.Vencidos(_context, ParseFecha(m, "desde"), ParseFecha(m, "hasta"), Todos(m)));
                             await web.CoreWebView2.ExecuteScriptAsync("window.renderVencidos(" + vj + ")");
                             break;
                         }
                     case "imprimirVencidos":
                         {
                             var fv = new frmVencidos();
-                            await fv.ImprimirVencidosHeadless(ParseFecha(m));
+                            await fv.ImprimirVencidosHeadless(ParseFecha(m, "desde"), ParseFecha(m, "hasta"), Todos(m));
                             fv.Dispose();
                             await web.CoreWebView2.ExecuteScriptAsync("window.vencidosResult({ok:true})");
                             break;
@@ -542,7 +580,7 @@ namespace Empeño.WindowsForms.Views
                     case "enviarVencidos":
                         {
                             var fv = new frmVencidos();
-                            var rv = await fv.EnviarVencidosHeadless(ParseFecha(m));
+                            var rv = await fv.EnviarVencidosHeadless(ParseFecha(m, "desde"), ParseFecha(m, "hasta"), Todos(m));
                             fv.Dispose();
                             await web.CoreWebView2.ExecuteScriptAsync("window.vencidosResult(" + JsonConvert.SerializeObject(rv) + ")");
                             break;

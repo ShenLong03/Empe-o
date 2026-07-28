@@ -11,7 +11,7 @@
 <Wix xmlns="http://wixtoolset.org/schemas/v4/wxs">
   <Package Name="Empeños Nueva Versión"
            Manufacturer="Tico Manager"
-           Version="2.1.0"
+           Version="2.2.1"
            UpgradeCode="99FC9FF4-D354-49BB-8E48-7A2440CC6507"
            Scope="perUser"
            Compressed="yes">

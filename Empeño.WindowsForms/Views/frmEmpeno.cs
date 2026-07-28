@@ -639,6 +639,9 @@ namespace Empeño.WindowsForms.Views
             }
             catch (Exception ex)
             {
+                // Antes se tragaba el error en silencio ("no imprime y no avisa"). Lo propagamos para que el
+                // llamador (alta de empeño) lo reporte y se pueda diagnosticar.
+                throw new Exception("No se pudo imprimir el contrato: " + ex.Message, ex);
             }
         }
 
@@ -1763,7 +1766,6 @@ namespace Empeño.WindowsForms.Views
             cexcel.Cells[22, 3].value = empeno.Monto.ToString("N2");
             cexcel.Cells[23, 3].value = empeno.Monto.ToString("N2");
             cexcel.Cells[24, 3].value = empeno.FechaVencimiento.ToString("dd/MM/yyyy");
-            string FechaVence = lblVence.Text;           
             cexcel.Cells[26, 3].value = ((double)empeno.Monto *((double)empeno.Interes.Porcentaje/(double)100)).ToString("N2");
             cexcel.Cells[27, 3].value = ((double)empeno.Monto *(double)empeno.Interes.PorcentajeBodegaje).ToString("N2");
             cexcel.Cells[28, 3].value = ((double)empeno.Monto *(double)empeno.Interes.PorcentajeAvaluo).ToString("N2");
@@ -3070,28 +3072,35 @@ namespace Empeño.WindowsForms.Views
             await _context.SaveChangesAsync();
             await funciones.SaveBitacora(new ValorBitacora { Valor = JsonConvert.SerializeObject(empeño), Modulo = "Intereses", Accion = "Crear" });
 
-            // Impresión (comprobante siempre; contrato si el plan tiene avalúo/bodegaje) y correo, igual al clásico.
-            // Best-effort: el empeño ya quedó guardado; si falla la impresión/correo se informa sin deshacer el alta.
-            string warn = null;
+            // El comprobante (Print) lee empeño.Interes.Porcentaje/PorcentajeBodegaje/PorcentajeAvaluo. Como el empeño
+            // se creó con `new Empeno{}` (NO es proxy con lazy-loading), la navegación Interes viene null y Print tiraba
+            // NullReferenceException → "no imprime nada". Fijamos la navegación con el plan YA cargado.
+            empeño.Interes = interes;
+
+            // Impresión igual al clásico: primero el CONTRATO (si el plan tiene avalúo/bodegaje) y luego el
+            // COMPROBANTE (SIEMPRE). Cada uno con su propia captura para saber EXACTAMENTE qué falló; el correo va
+            // aparte y NO cuenta como fallo de impresión. Sin MessageBox bloqueante (colgaba el flujo WebView headless).
+            var erroresImp = new System.Collections.Generic.List<string>();
+            if ((interes.Avaluo ?? 0) > 0 || (interes.Bodegaje ?? 0) > 0)
+            {
+                try { await PrintContrato(empeño); }
+                catch (Exception ex) { erroresImp.Add("contrato (" + ex.Message + ")"); }
+            }
+            try { await Print(empeño); }
+            catch (Exception ex) { erroresImp.Add("comprobante (" + ex.Message + ")"); }
+
             try
             {
-                // BLINDADO: sin MessageBox bloqueante — en el flujo WebView headless el diálogo aparece detrás del
-                // shell y congela el alta ("no imprime / se colgó"). Se imprime el contrato automáticamente cuando
-                // el plan lo amerita (tiene avalúo o bodegaje), sin preguntar.
-                if ((interes.Avaluo ?? 0) > 0 || (interes.Bodegaje ?? 0) > 0)
-                    await PrintContrato(empeño);
-                await Print(empeño);
-
                 var config = await _context.Configuraciones.FirstOrDefaultAsync();
                 var cliente = await _context.Clientes.FindAsync(empeño.ClienteId);
                 if (cliente != null && !string.IsNullOrEmpty(cliente.Correo))
                     await emailFuncion.SendMail(cliente.Correo, "Creación de Empeño " + (config != null ? config.Compañia : "") + " #" + empeño.EmpenoId, empeño);
             }
-            catch (Exception ex)
-            {
-                warn = "El empeño #" + empeño.EmpenoId + " se creó, pero falló la impresión o el correo: " + ex.Message;
-            }
+            catch (Exception) { /* el correo NO bloquea el alta ni marca fallo de impresión */ }
 
+            string warn = erroresImp.Count > 0
+                ? "El empeño #" + empeño.EmpenoId + " se creó, pero no se pudo imprimir: " + string.Join(" y ", erroresImp) + ". Revise que la impresora esté disponible."
+                : null;
             return new { ok = true, id = empeño.EmpenoId, warn };
         }
 
@@ -3131,14 +3140,32 @@ namespace Empeño.WindowsForms.Views
             {
                 var empeño = await _context.Empenos.FindAsync(empenoId);
                 if (empeño == null) return;
+                // El comprobante (Print) lee empeño.Interes; asegurar la navegación cargada (mismo motivo que en el alta).
+                if (empeño.Interes == null) empeño.Interes = await _context.Interes.FindAsync(empeño.InteresId);
                 if (empeño.Estado == Estado.Cancelado)
                     await PrintRetiro(empeño);
                 else
                     await Print(empeño);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                MessageBox.Show("No se pudo reimprimir. Verifique que Microsoft Excel esté disponible.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("No se pudo reimprimir el comprobante: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        // Reimpresión del CONTRATO de un empeño por id (reusa PrintContrato). Se imprime a pedido, sin la condición
+        // de avalúo/bodegaje del alta: si el cajero lo elige, se imprime.
+        public async Task ReimprimirContratoPorId(int empenoId)
+        {
+            try
+            {
+                var empeño = await _context.Empenos.FindAsync(empenoId);
+                if (empeño == null) return;
+                await PrintContrato(empeño);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("No se pudo reimprimir el contrato: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 

@@ -157,7 +157,9 @@ namespace Empeño.WindowsForms.Dashboard
                     tieneBodegaje = (i.Bodegaje ?? 0) > 0,
                     mayor = i.Mayor
                 }).ToList();
-            return new { planes };
+            // Próximo número de empeño (igual que el clásico: Max(EmpenoId)+1) para mostrarlo en el modal de alta.
+            int proximo = ctx.Empenos.Any() ? ctx.Empenos.Max(e => e.EmpenoId) + 1 : 1;
+            return new { planes, proximo };
         }
 
         public static object Detalle(DataContext ctx, int id)
