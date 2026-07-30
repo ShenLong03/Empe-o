@@ -336,48 +336,38 @@ namespace Empeño.WindowsForms.Views
 
             Microsoft.Office.Interop.Excel.Application cexcel = new Microsoft.Office.Interop.Excel.Application();
             string pathch = Path.GetDirectoryName(System.Windows.Forms.Application.ExecutablePath);
-            pathch = $"{pathch}\\Empeños\\Comprobantes\\ComprobanteCierreCaja.xlsx";
+            // MISMA plantilla y formato que el clásico (btnPrint / Cierre.xlsx): "Empeños y Venta", con los valores
+            // en la columna 3. La otra plantilla (ComprobanteCierreCaja) salía con las celdas de valor en blanco.
+            pathch = $"{pathch}\\Empeños\\Comprobantes\\Cierre.xlsx";
             cexcel.Workbooks.Open(pathch, true, true);
-
             cexcel.Visible = false;
-            cexcel.Cells[3, 1].value = configuracion.Compañia;
-            cexcel.Cells[4, 1].value = configuracion.Direccion;
-            cexcel.Cells[5, 1].value = "Tel. " + configuracion.Telefono;
-            cexcel.Cells[6, 1].value = configuracion.Nombre;
-            cexcel.Cells[7, 1].value = "Cédula: " + configuracion.Identificacion;
 
-            // BLINDADO/headless: Print NO depende del formulario (ni grilla ni textboxes). Lee TODO del objeto
-            // cierreCaja y de la lista `detalles`, así imprime igual aunque el form no esté visible.
-            var empleado = _context.Empleados.Find(cierreCaja.EmpleadoId);
-            cexcel.Cells[9, 2].value = empleado != null ? empleado.Nombre : "";
-            cexcel.Cells[10, 2].value = empleado != null ? empleado.Usuario : "";
-            cexcel.Cells[11, 2].value = cierreCaja.Fecha.ToString("dd/MM/yyyy");
+            // Valores desde la lista `detalles` (headless-safe: NO lee controles del formulario).
+            Func<string, double> val = c => detalles.Where(d => d.Concepto == c).Sum(d => d.Valor);
+            double emp = val("Empeños");
+            double abo = val("Monto de Abonos");
+            double inte = val("Intereses");
+            double ava = val("Avalúos");
+            double bod = val("Bodegajes");
+            double ret = val("Retiros");
+            double ven = val("Vencidos");
+            double acum = val("Acumulado");
+            double iva = val("IVA");
+            // Acumulado inicial: inverso de Acumulado = AcumInicial + Empeños - Abonos - Vencidos - Retiros.
+            double acumIni = acum - emp + abo + ven + ret;
 
-            // A1: interés COMPLETO (base + avalúo + bodegaje); avalúo/bodegaje quedan informativos.
-            double _ava = detalles.Where(d => d.Concepto == "Avalúos").Sum(d => d.Valor);
-            double _bod = detalles.Where(d => d.Concepto == "Bodegajes").Sum(d => d.Valor);
-            double _intBase = detalles.Where(d => d.Concepto == "Intereses").Sum(d => d.Valor);
-            var index = 0;
-            foreach (var d in detalles)
-            {
-                string concepto = d.Concepto ?? "";
-                string valor = d.Valor.ToString("N2");
-                if (concepto == "Intereses")
-                    valor = (_intBase + _ava + _bod).ToString("N2");         // interés completo
-                else if (concepto == "Avalúos" || concepto == "Bodegajes")
-                    concepto = concepto + " (incluido en intereses)";        // informativo, no re-sumar
-                cexcel.Cells[14 + index, 1].value = concepto;
-                cexcel.Cells[14 + index, 2].value = valor;
-
-                Range range = (Range)cexcel.Rows[15 + index];
-                range.Insert();
-                ++index;
-            }
-
-            double saldoInicial = cierreCaja.SaldoInicial;
-            double total = (saldoInicial * -1) + detalles.Sum(d => d.Valor);   // misma fórmula que LoadList
-            cexcel.Cells[17 + index, 3].value = saldoInicial.ToString("N2");
-            cexcel.Cells[19 + index, 3].value = total.ToString("N2");
+            cexcel.Cells[2, 1].value = $"Empeños y Venta       {(configuracion != null ? configuracion.Compañia : "")}";
+            cexcel.Cells[3, 3].value = cierreCaja.Fecha.ToShortDateString();
+            cexcel.Cells[5, 3].value = acumIni.ToString("N2");    // Acumulado Inicial
+            cexcel.Cells[6, 3].value = emp.ToString("N2");        // Monto Empeños
+            cexcel.Cells[8, 3].value = ava.ToString("N2");        // Monto Avalúos
+            cexcel.Cells[10, 3].value = bod.ToString("N2");       // Monto Bodegajes
+            cexcel.Cells[12, 3].value = inte.ToString("N2");      // Monto Intereses
+            cexcel.Cells[14, 3].value = abo.ToString("N2");       // Monto Abonos
+            cexcel.Cells[16, 3].value = ven.ToString("N2");       // Monto Vencidos
+            cexcel.Cells[18, 3].value = ret.ToString("N2");       // Monto Cancelados
+            cexcel.Cells[20, 3].value = acum.ToString("N2");      // Acumulado
+            cexcel.Cells[22, 3].value = iva.ToString("N2");       // Total IVA
             try
             {
                 cexcel.ActiveWindow.SelectedSheets.PrintOut();
