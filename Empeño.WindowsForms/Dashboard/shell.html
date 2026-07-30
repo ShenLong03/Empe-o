@@ -305,6 +305,15 @@
           <div class="panel" style="padding:0;margin-bottom:12px"><div class="tbl-wrap" style="border:0;max-height:340px;overflow:auto"><table><thead><tr><th>#</th><th>Cliente</th><th>Vence</th><th class="r">Pendiente</th><th></th></tr></thead><tbody id="rpv-rows"></tbody></table></div></div>
           <div style="display:flex;gap:10px;align-items:center"><button class="btn ghost" id="rpv-imp">Imprimir</button><button class="btn ghost" id="rpv-mail">Enviar por correo</button><span class="clierr" id="rpv-err"></span></div>
         </div>
+
+        <!-- Arqueo de cartera -->
+        <div id="rp-arqueo" class="hide">
+          <div style="display:grid;grid-template-columns:1fr 1fr auto auto;gap:10px;align-items:end;margin-bottom:14px"><label>Desde (dd/MM/yyyy)<input id="arq-desde" autocomplete="off" placeholder="todo" disabled></label><label>Hasta (dd/MM/yyyy)<input id="arq-hasta" autocomplete="off" disabled></label><label style="flex-direction:row;align-items:center;gap:7px;text-transform:none;font-size:.8rem;color:var(--ink)"><input type="checkbox" id="arq-todos" checked style="width:15px;height:15px"> Mostrar todos</label><button class="btn ghost" id="arq-ver" style="padding:10px 16px">Ver</button></div>
+          <section class="kpis" id="arq-tot" style="grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:14px"></section>
+          <div class="panel" style="padding:0;margin-bottom:12px"><div class="tbl-wrap" style="border:0;max-height:360px;overflow:auto"><table><thead><tr><th>#</th><th>Cliente</th><th>Vence</th><th>Estado</th><th class="r">Pendiente</th><th></th></tr></thead><tbody id="arq-rows"><tr><td colspan="6" style="text-align:center;color:var(--faint);padding:16px">Cargando…</td></tr></tbody></table></div></div>
+          <label style="display:block;font-size:.7rem;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--muted);margin-bottom:10px">Observaciones<textarea id="arq-obs" rows="2" style="display:block;width:100%;margin-top:5px;background:var(--bg);border:1px solid var(--line);border-radius:10px;padding:9px 11px;color:var(--ink);font-family:inherit;font-size:.9rem;box-sizing:border-box;resize:vertical"></textarea></label>
+          <div style="display:flex;gap:10px;align-items:center"><button class="btn ghost" id="arqImp">Imprimir</button><button class="btn ghost" id="arqMail">Enviar por correo</button><span class="clierr" id="arq-err"></span></div>
+        </div>
       </div>
 
       <!-- ===== CONFIGURACIÓN ===== -->
@@ -778,13 +787,9 @@
       +'<div class="kv"><span class="k">Plazo por defecto</span><span class="v num">'+(d.meses||'—')+' meses</span></div>'
       +'<div class="kv"><span class="k">IVA</span><span class="v num">'+(d.iva||0)+'%</span></div>'
       +'<div class="kv"><span class="k">Correo de aviso</span><span class="v">'+(d.email||'—')+'</span></div>';};
-  /* ===== Modal Arqueo de Cartera (UI nueva, reusa Print/SendMailArqueo/retiro/prórroga headless) ===== */
+  /* ===== Arqueo de cartera (panel dentro de Reportes, uniforme con los demás reportes) ===== */
   (function(){
     var A=null;
-    var html='<div class="cliov" id="arqv"><div class="clicard" style="width:840px;max-width:96vw"><div class="hd">Arqueo de cartera<span class="sp"></span><button class="x" id="arqX">&times;</button></div><div class="clibody"><div style="display:grid;grid-template-columns:1fr 1fr auto auto;gap:10px;align-items:end"><label>Desde (dd/MM/yyyy)<input id="arq-desde" autocomplete="off" placeholder="todo" disabled></label><label>Hasta (dd/MM/yyyy)<input id="arq-hasta" autocomplete="off" disabled></label><label style="flex-direction:row;align-items:center;gap:7px;text-transform:none;font-size:.8rem;color:var(--ink)"><input type="checkbox" id="arq-todos" checked style="width:15px;height:15px"> Mostrar todos</label><button class="btn ghost" id="arq-ver" style="padding:10px 16px">Ver</button></div><section class="kpis" id="arq-tot" style="grid-template-columns:repeat(3,1fr);gap:10px"></section><div class="tbl-wrap" style="max-height:300px;overflow:auto"><table><thead><tr><th>#</th><th>Cliente</th><th>Vence</th><th>Estado</th><th class="r">Pendiente</th><th></th></tr></thead><tbody id="arq-rows"><tr><td colspan="6" style="text-align:center;color:var(--faint);padding:16px">Cargando…</td></tr></tbody></table></div><label>Observaciones<textarea id="arq-obs" rows="2"></textarea></label><div class="clierr" id="arq-err"></div></div><div class="clift"><button class="btn ghost" id="arqImp">Imprimir</button><button class="btn ghost" id="arqMail">Enviar por correo</button><span class="sp"></span><button class="btn violet" id="arqCerrar">Cerrar</button></div></div></div>';
-    document.body.insertAdjacentHTML("beforeend",html);
-    var ov=document.getElementById("arqv");
-    function cerrar(){ov.classList.remove("show");}
     var arqToday=function(){var t=new Date();return ("0"+t.getDate()).slice(-2)+"/"+("0"+(t.getMonth()+1)).slice(-2)+"/"+t.getFullYear();};
     // Rango del arqueo (fecha de creación del empeño), o "todos" = toda la cartera activa.
     function arqDates(){var td=document.getElementById("arq-todos").checked;return {todos:td,desde:document.getElementById("arq-desde").value||'01/01/2000',hasta:document.getElementById("arq-hasta").value||arqToday()};}
@@ -808,15 +813,11 @@
     document.getElementById("arqMail").addEventListener("click",function(){document.getElementById("arq-err").classList.remove("show");var dt=arqDates();if(HOST)post({type:"enviarArqueo",obs:document.getElementById("arq-obs").value,todos:dt.todos,desde:dt.desde,hasta:dt.hasta});});
     window.arqueoResult=function(r){var err=document.getElementById("arq-err");if(r&&r.ok){err.style.color="var(--green)";err.textContent="Listo.";err.classList.add("show");setTimeout(function(){err.classList.remove("show");err.style.color="";},2500);}else{err.style.color="";err.textContent=(r&&r.error)||"No se pudo completar.";err.classList.add("show");}};
     window.arqueoAccion=function(r){if(r){if(r.ok){if(r.warn){try{alert(r.warn);}catch(e){}}}else{try{alert(r.error||"No se pudo completar la acción.");}catch(e){}}}arqRecargar();};
-    window.abrirArqueo=function(){document.getElementById("arq-obs").value="";var chk=document.getElementById("arq-todos");chk.checked=true;document.getElementById("arq-desde").disabled=true;document.getElementById("arq-hasta").disabled=true;ov.classList.add("show");arqRecargar();};
+    window.abrirArqueo=function(){document.getElementById("arq-obs").value="";var chk=document.getElementById("arq-todos");chk.checked=true;document.getElementById("arq-desde").disabled=true;document.getElementById("arq-hasta").disabled=true;arqRecargar();};
     document.getElementById("arq-ver").addEventListener("click",arqRecargar);
     document.getElementById("arq-desde").addEventListener("keydown",function(e){if(e.key==='Enter')arqRecargar();});
     document.getElementById("arq-hasta").addEventListener("keydown",function(e){if(e.key==='Enter')arqRecargar();});
     document.getElementById("arq-todos").addEventListener("change",function(){var c=document.getElementById("arq-todos").checked;document.getElementById("arq-desde").disabled=c;document.getElementById("arq-hasta").disabled=c;arqRecargar();});
-    var bA=document.getElementById("btnArqueo");if(bA)bA.addEventListener("click",window.abrirArqueo);
-    document.getElementById("arqX").addEventListener("click",cerrar);
-    document.getElementById("arqCerrar").addEventListener("click",cerrar);
-    ov.addEventListener("click",function(e){if(e.target===ov)cerrar();});
   })();
   /* ===== Modal Prórroga (UI nueva, reusa frmProroga.AplicarProrogaHeadless) ===== */
   (function(){
@@ -1008,14 +1009,15 @@
       else if(curRep==='empenos'){var _d2=g('rpe-desde').value,_h2=g('rpe-hasta').value;if(_d2)repDesde=_d2;if(_h2)repHasta=_h2;}
       tab=tab||curRep;curRep=tab;
       if(!repDesde)repDesde=monthAgo();if(!repHasta)repHasta=today();
-      ['ingresos','empenos','vencidos'].forEach(function(t){var el=g('rp-'+t);if(el)el.classList.toggle('hide',t!==tab);});
+      ['ingresos','empenos','vencidos','arqueo'].forEach(function(t){var el=g('rp-'+t);if(el)el.classList.toggle('hide',t!==tab);});
       document.querySelectorAll('#rtabs .chip').forEach(function(x){x.classList.toggle('on',x.dataset.rt===tab);});
       // Aplicar las fechas compartidas al reporte destino y recargar (así se mantiene el período elegido).
       if(tab==='ingresos'){g('rpi-desde').value=repDesde;g('rpi-hasta').value=repHasta;loadedR.ingresos=true;riReload();}
       if(tab==='empenos'){g('rpe-desde').value=repDesde;g('rpe-hasta').value=repHasta;loadedR.empenos=true;reReload();}
       if(tab==='vencidos'&&!loadedR.vencidos){loadedR.vencidos=true;g('rpv-rows').innerHTML='<tr><td colspan="5" style="text-align:center;color:var(--faint);padding:16px">Cargando…</td></tr>';if(HOST)post(rpvPayload('openVencidos'));}
+      if(tab==='arqueo'){if(window.abrirArqueo)window.abrirArqueo();}
     };
-    g('rtabs').addEventListener('click',function(e){var c=e.target.closest('.chip');if(!c)return;if(c.dataset.rt==='arqueo'){if(window.abrirArqueo)window.abrirArqueo();return;}window.__abrirReporte(c.dataset.rt);});
+    g('rtabs').addEventListener('click',function(e){var c=e.target.closest('.chip');if(!c)return;window.__abrirReporte(c.dataset.rt);});
   })();
   /* ===== Modal Configuración (editable en WebView, reusa frmConfiguracionGeneral.GuardarHeadless) ===== */
   (function(){
