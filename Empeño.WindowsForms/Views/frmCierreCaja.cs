@@ -88,9 +88,9 @@ namespace Empeño.WindowsForms.Views
 
 
 
-        public async Task ProcessClose()
-        {            
-            var fecha = DateTime.ParseExact(txtFecha.Text, "dd/MM/yyyy", CultureInfo.InvariantCulture);
+        public async Task ProcessClose(DateTime? fechaOverride = null)
+        {
+            var fecha = fechaOverride ?? DateTime.ParseExact(txtFecha.Text, "dd/MM/yyyy", CultureInfo.InvariantCulture);
             var tomorrow = fecha.AddDays(1);
             empleadoId = await funciones.GetEmpleadoIdByUser(Program.Usuario.Usuario);
             empleadoId = empleadoId == null ? 1 : empleadoId;
@@ -378,7 +378,22 @@ namespace Empeño.WindowsForms.Views
             double total = (saldoInicial * -1) + detalles.Sum(d => d.Valor);   // misma fórmula que LoadList
             cexcel.Cells[17 + index, 3].value = saldoInicial.ToString("N2");
             cexcel.Cells[19 + index, 3].value = total.ToString("N2");
-            cexcel.ActiveWindow.SelectedSheets.PrintOut();
+            try
+            {
+                cexcel.ActiveWindow.SelectedSheets.PrintOut();
+            }
+            catch
+            {
+                // Máquina SIN impresora (o falló): exportar el cierre a PDF y abrirlo, así se puede ver/verificar.
+                try
+                {
+                    string dirPdf = Path.GetDirectoryName(System.Windows.Forms.Application.ExecutablePath);
+                    string pdf = Path.Combine(dirPdf, "Cierre_" + cierreCaja.CierreCajaId + "_" + DateTime.Now.ToString("yyyyMMdd_HHmmss") + ".pdf");
+                    cexcel.ActiveWorkbook.ExportAsFixedFormat(Microsoft.Office.Interop.Excel.XlFixedFormatType.xlTypePDF, pdf);
+                    try { System.Diagnostics.Process.Start(pdf); } catch { }
+                }
+                catch { }
+            }
             System.Threading.Thread.Sleep(300);
             cexcel.ActiveWorkbook.Close(false);
             cexcel.Quit();
@@ -390,8 +405,7 @@ namespace Empeño.WindowsForms.Views
         // La fecha se arma en el llamador (evita el bug de formato "dd/MM/yyyy HH:mm" del botón clásico).
         public async Task<object> GuardarCierreHeadless(DateTime fecha, double saldoInicial, List<DetalleCierreCaja> manuales, int empleadoId)
         {
-            txtFecha.Value = fecha.Date;
-            await ProcessClose();                       // llena `detalles` (9 líneas) + grilla + textboxes
+            await ProcessClose(fecha);                  // usa la fecha RECIBIDA, no el control DateTimePicker (headless-safe: eso lo hacía caer antes de imprimir)
             if (manuales != null)
                 manuales.ForEach(d => detalles.Add(d));
             textBox1.Text = saldoInicial.ToString("N2");

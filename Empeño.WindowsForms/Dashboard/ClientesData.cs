@@ -29,7 +29,7 @@ namespace Empeño.WindowsForms.Dashboard
                     c.Fecha,
                     activos = c.Empenos.Count(e => !e.IsDelete && (e.Estado == Estado.Vigente || e.Estado == Estado.Pendiente || e.Estado == Estado.Vencido))
                 })
-                .Take(1000).ToList()
+                .Take(20000).ToList()   // precargar TODA la cartera de clientes (antes 1000: los nombres M-Z quedaban fuera y no aparecían en la búsqueda local)
                 .Select(c => new
                 {
                     id = c.ClienteId,
