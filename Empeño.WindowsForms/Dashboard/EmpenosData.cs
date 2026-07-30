@@ -19,6 +19,7 @@ namespace Empeño.WindowsForms.Dashboard
                 activos = b.Count(x => !x.RetiradoAdministrador && (x.Estado == Estado.Vigente || x.Estado == Estado.Pendiente || x.Estado == Estado.Vencido)),
                 vencidos = b.Count(x => !x.RetiradoAdministrador && x.Estado == Estado.Vencido),
                 retirados = b.Count(x => !x.RetiradoAdministrador && (x.Estado == Estado.Cancelado || x.Estado == Estado.Anulado)),
+                anulados = b.Count(x => x.Estado == Estado.Anulado),
                 perdidos = b.Count(x => x.RetiradoAdministrador),
                 todo = b.Count()
             };
@@ -35,6 +36,7 @@ namespace Empeño.WindowsForms.Dashboard
             {
                 case "vencidos": q = b.Where(x => !x.RetiradoAdministrador && x.Estado == Estado.Vencido); break;
                 case "cancelados": q = b.Where(x => !x.RetiradoAdministrador && (x.Estado == Estado.Cancelado || x.Estado == Estado.Anulado)); break;
+                case "anulados": q = b.Where(x => x.Estado == Estado.Anulado); break;
                 case "perdidos": q = b.Where(x => x.RetiradoAdministrador); break;
                 case "todo": q = b; break;
                 default: q = b.Where(x => !x.RetiradoAdministrador && (x.Estado == Estado.Vigente || x.Estado == Estado.Pendiente || x.Estado == Estado.Vencido)); break; // activos
@@ -71,6 +73,7 @@ namespace Empeño.WindowsForms.Dashboard
             {
                 case "vencidos": q = matched.Where(x => !x.RetiradoAdministrador && x.Estado == Estado.Vencido); break;
                 case "cancelados": q = matched.Where(x => !x.RetiradoAdministrador && (x.Estado == Estado.Cancelado || x.Estado == Estado.Anulado)); break;
+                case "anulados": q = matched.Where(x => x.Estado == Estado.Anulado); break;
                 case "perdidos": q = matched.Where(x => x.RetiradoAdministrador); break;
                 case "todo": q = matched; break;
                 default: q = matched.Where(x => !x.RetiradoAdministrador && (x.Estado == Estado.Vigente || x.Estado == Estado.Pendiente || x.Estado == Estado.Vencido)); break; // activos

@@ -820,8 +820,10 @@ namespace Empeño.WindowsForms.Funciones
         public bool ValidatePIN(string modulo)
         {
             frmOscuro oscuro = new frmOscuro();
+            oscuro.TopMost = true;
             oscuro.Show();
             frmPIN pin = new frmPIN(modulo);
+            pin.TopMost = true;                 // que el PIN quede SIEMPRE al frente del shell (WebView sin bordes), no detrás
             pin.ShowDialog();
             oscuro.Close();
 
