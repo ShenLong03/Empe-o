@@ -3169,6 +3169,38 @@ namespace Empeño.WindowsForms.Views
             }
         }
 
+        // Cambia el estado del empeño a cualquiera de los 6 estados (acción "Cambiar estado" del dashboard).
+        // Sensible → el PIN de admin/supervisor se valida en frmShell. "Anulado" queda fuera de arqueo/reportes/cierre
+        // (esas consultas filtran estados activos), pero el empeño sigue visible en la lista marcado con su estado.
+        public async Task<object> CambiarEstadoHeadless(int empenoId, int estado)
+        {
+            try
+            {
+                var empeño = await _context.Empenos.FindAsync(empenoId);
+                if (empeño == null) return new { ok = false, error = "Empeño no encontrado." };
+                if (empeño.IsDelete) return new { ok = false, error = "El empeño está eliminado." };
+                if (!Enum.IsDefined(typeof(Estado), estado)) return new { ok = false, error = "Estado inválido." };
+
+                var antes = empeño.Estado;
+                empeño.Estado = (Estado)estado;
+                empeño.EditorId = Program.EmpleadoId;
+                _context.Entry(empeño).State = EntityState.Modified;
+                await _context.SaveChangesAsync();
+
+                await funciones.SaveBitacora(new ValorBitacora
+                {
+                    Modulo = "Empeños",
+                    Accion = "CambiarEstado",
+                    Valor = JsonConvert.SerializeObject(new { empeño.EmpenoId, De = antes.ToString(), A = empeño.Estado.ToString(), EmpleadoId = Program.EmpleadoId })
+                });
+                return new { ok = true, estado = empeño.Estado.ToString() };
+            }
+            catch (Exception ex)
+            {
+                return new { ok = false, error = ex.Message };
+            }
+        }
+
         private void btnVerPago_Click(object sender, EventArgs e)
         {
 

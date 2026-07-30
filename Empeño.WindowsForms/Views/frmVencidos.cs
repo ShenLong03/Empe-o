@@ -455,6 +455,7 @@ namespace Empeño.WindowsForms.Views
             var topeHoy = DateTime.Today.AddDays(1);
 
             var q = _context.Empenos.Where(x => !x.IsDelete
+             && x.Estado != Estado.Anulado
              && x.FechaRetiro == null
              && x.FechaRetiroAdministrador == null);
             if (todos)

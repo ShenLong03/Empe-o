@@ -150,6 +150,7 @@ namespace Empeño.WindowsForms.Dashboard
             var topeHoy = DateTime.Today.AddDays(1);
 
             var q = ctx.Empenos.Where(x => !x.IsDelete
+                     && x.Estado != Estado.Anulado
                      && x.FechaRetiro == null
                      && x.FechaRetiroAdministrador == null);
             if (todos)

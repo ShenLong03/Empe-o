@@ -256,6 +256,20 @@ namespace Empeño.WindowsForms.Views
                             f.Dispose();
                             break;
                         }
+                    case "cambiarEstado":
+                        {
+                            // Cambiar estado del empeño: SOLO Administrador/Supervisor (mismo PIN que editar).
+                            if (!funciones.ValidatePIN("Editar Empeño"))
+                            {
+                                await web.CoreWebView2.ExecuteScriptAsync("window.estadoCambiado({ok:false,error:'Necesita PIN de Administrador o Supervisor.'})");
+                                break;
+                            }
+                            var fce = new frmEmpeno();
+                            var rce = await fce.CambiarEstadoHeadless((int)m["id"], (int)m["estado"]);
+                            fce.Dispose();
+                            await web.CoreWebView2.ExecuteScriptAsync("window.estadoCambiado(" + JsonConvert.SerializeObject(rce) + ")");
+                            break;
+                        }
                     case "cobrarInfo":
                         {
                             string cj = JsonConvert.SerializeObject(PagosData.CobrarInfo(_context, (int)m["id"]));

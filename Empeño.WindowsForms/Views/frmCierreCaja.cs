@@ -342,17 +342,18 @@ namespace Empeño.WindowsForms.Views
             cexcel.Workbooks.Open(pathch, true, true);
             cexcel.Visible = false;
 
-            // Valores desde la lista `detalles` (headless-safe: NO lee controles del formulario).
-            Func<string, double> val = c => detalles.Where(d => d.Concepto == c).Sum(d => d.Valor);
-            double emp = val("Empeños");
-            double abo = val("Monto de Abonos");
-            double inte = val("Intereses");
-            double ava = val("Avalúos");
-            double bod = val("Bodegajes");
-            double ret = val("Retiros");
-            double ven = val("Vencidos");
-            double acum = val("Acumulado");
-            double iva = val("IVA");
+            // Valores desde la lista `detalles` (headless-safe). Se compara por fragmento ASCII (SIN ñ ni tildes):
+            // comparar "Empeños"/"Avalúos" con == fallaba por codificación de la ñ/ú y devolvía 0 (Empeños salía en 0).
+            Func<string, double> val = frag => detalles.Where(d => (d.Concepto ?? "").IndexOf(frag, StringComparison.OrdinalIgnoreCase) >= 0).Sum(d => d.Valor);
+            double emp = val("Empe");       // Empeños
+            double abo = val("Abono");      // Monto de Abonos
+            double inte = val("Inter");     // Intereses
+            double ava = val("Aval");       // Avalúos
+            double bod = val("Bodeg");      // Bodegajes
+            double ret = val("Retiro");     // Retiros
+            double ven = val("Vencido");    // Vencidos
+            double acum = val("Acumulado"); // Acumulado
+            double iva = val("IVA");        // IVA
             // Acumulado inicial: inverso de Acumulado = AcumInicial + Empeños - Abonos - Vencidos - Retiros.
             double acumIni = acum - emp + abo + ven + ret;
 
