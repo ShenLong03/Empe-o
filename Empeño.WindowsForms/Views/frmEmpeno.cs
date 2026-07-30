@@ -3022,7 +3022,7 @@ namespace Empeño.WindowsForms.Views
         // (interés truncado, avalúo cobrado UNA vez, bodegaje), consecutivo, bitácora Empeños+Intereses,
         // impresión de comprobante (y contrato si el plan tiene avalúo/bodegaje) y correo al cliente.
         // Devuelve { ok, id, warn } o { ok=false, error }. No cambia el esquema de BD.
-        public async Task<object> CrearEmpeno(int clienteId, string descripcion, string comentario, double monto, double avaluo, double bodegaje, bool esOro, int interesId, DateTime fecha, DateTime fechaVencimiento, int empleadoId, int perfilId, int mesesVencimientoDefault)
+        public async Task<object> CrearEmpeno(int clienteId, string descripcion, string comentario, double monto, double avaluo, double bodegaje, bool esOro, int interesId, DateTime fecha, DateTime fechaVencimiento, int empleadoId, int perfilId, int mesesVencimientoDefault, bool imprimirContrato = true)
         {
             if (clienteId <= 0) return new { ok = false, error = "Debe seleccionar un cliente." };
             if (monto <= 0) return new { ok = false, error = "El monto del empeño no es válido." };
@@ -3081,12 +3081,12 @@ namespace Empeño.WindowsForms.Views
             // COMPROBANTE (SIEMPRE). Cada uno con su propia captura para saber EXACTAMENTE qué falló; el correo va
             // aparte y NO cuenta como fallo de impresión. Sin MessageBox bloqueante (colgaba el flujo WebView headless).
             var erroresImp = new System.Collections.Generic.List<string>();
-            if ((interes.Avaluo ?? 0) > 0 || (interes.Bodegaje ?? 0) > 0)
+            if (imprimirContrato)   // el cajero decide en el alta (como el frmEmpeño clásico preguntaba)
             {
                 try { await PrintContrato(empeño); }
                 catch (Exception ex) { erroresImp.Add("contrato (" + ex.Message + ")"); }
             }
-            try { await Print(empeño); }
+            try { await Print(empeño); }   // el comprobante/factura SIEMPRE se imprime
             catch (Exception ex) { erroresImp.Add("comprobante (" + ex.Message + ")"); }
 
             try

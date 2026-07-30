@@ -413,8 +413,9 @@ namespace Empeño.WindowsForms.Views
                             var ahora = DateTime.Now;
                             fc = fc.Date.Add(new TimeSpan(ahora.Hour, ahora.Minute, 0));
                             int mesesCfg = _context.Configuraciones.Select(c => c.Meses).FirstOrDefault();
+                            bool impContrato = m["imprimirContrato"] != null && (bool)m["imprimirContrato"];
                             var fc2 = new frmEmpeno();
-                            var resCrear = await fc2.CrearEmpeno((int)m["clienteId"], (string)m["desc"], (string)m["com"], (double)m["monto"], (double)m["avaluo"], (double)m["bodegaje"], (bool)m["oro"], (int)m["planId"], fc, fvc, Program.EmpleadoId, Program.PerfilId, mesesCfg > 0 ? mesesCfg : 3);
+                            var resCrear = await fc2.CrearEmpeno((int)m["clienteId"], (string)m["desc"], (string)m["com"], (double)m["monto"], (double)m["avaluo"], (double)m["bodegaje"], (bool)m["oro"], (int)m["planId"], fc, fvc, Program.EmpleadoId, Program.PerfilId, mesesCfg > 0 ? mesesCfg : 3, impContrato);
                             fc2.Dispose();
                             await web.CoreWebView2.ExecuteScriptAsync("window.empenoCreado(" + JsonConvert.SerializeObject(resCrear) + ")");
                             break;

@@ -410,12 +410,29 @@ namespace Empeño.WindowsForms.Views
             _context.DetalleCierreCajas.AddRange(detalles);
             await _context.SaveChangesAsync();
 
+            // LOG a archivo (cierre-log.txt en la carpeta de la app) para diagnosticar en la máquina del usuario:
+            // no puedo ver la impresión desde el dev, así que grabamos si se llamó a imprimir, si salió OK o el error.
+            System.Action<string> logCierre = (msg) =>
+            {
+                try
+                {
+                    var lp = System.IO.Path.Combine(System.IO.Path.GetDirectoryName(System.Windows.Forms.Application.ExecutablePath), "cierre-log.txt");
+                    System.IO.File.AppendAllText(lp, DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "  " + msg + Environment.NewLine);
+                }
+                catch { }
+            };
+            logCierre("=== Cierre id=" + cierreCaja.CierreCajaId + " detalles=" + detalles.Count + " empleado=" + cierreCaja.EmpleadoId + " ===");
+
             // IMPRESIÓN Y CORREO DESACOPLADOS: se IMPRIME el cierre primero; el correo va DESPUÉS y es best-effort.
             // Si el correo falla, NO afecta la impresión ni marca fallo (antes iban en el mismo try y un fallo de
             // correo se disfrazaba de "falló la impresión").
             string warn = null;
-            try { await Print(cierreCaja); }
-            catch (Exception ex) { warn = "El cierre #" + cierreCaja.CierreCajaId + " se guardó, pero NO se pudo imprimir: " + ex.Message + ". Revise que la impresora esté disponible."; }
+            try { logCierre("Print: inicio"); await Print(cierreCaja); logCierre("Print: OK (enviado a la impresora predeterminada)"); }
+            catch (Exception ex)
+            {
+                warn = "El cierre #" + cierreCaja.CierreCajaId + " se guardó, pero NO se pudo imprimir: " + ex.Message + ". Revise que la impresora esté disponible.";
+                logCierre("Print: ERROR -> " + ex.ToString());
+            }
 
             try
             {

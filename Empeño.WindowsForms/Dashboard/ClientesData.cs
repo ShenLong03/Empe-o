@@ -55,8 +55,18 @@ namespace Empeño.WindowsForms.Dashboard
             texto = (texto ?? "").Trim();
             if (texto.Length == 0) return new { clientes = new object[0] };
 
-            var clientes = ctx.Clientes
-                .Where(c => !c.IsDelete && (c.Nombre.Contains(texto) || c.Identificacion.Contains(texto)))
+            // Búsqueda por PALABRAS, tolerante al ORDEN: cada palabra debe aparecer en el Nombre o la Identificación,
+            // sin importar el orden. Así "Carla Castro" encuentra "CASTRO CARLA VANESSA" (apellido primero) y viceversa.
+            // Antes se hacía Contains(texto) como UNA sola cadena contigua y no matcheaba con el orden invertido.
+            var palabras = texto.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+            var query = ctx.Clientes.Where(c => !c.IsDelete);
+            foreach (var p in palabras)
+            {
+                var palabra = p;   // copia local para el árbol de expresión (evita capturar el iterador)
+                query = query.Where(c => c.Nombre.Contains(palabra) || c.Identificacion.Contains(palabra));
+            }
+
+            var clientes = query
                 .OrderBy(c => c.Nombre)
                 .Select(c => new
                 {
