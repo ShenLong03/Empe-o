@@ -515,7 +515,7 @@
     window.estadoCambiado=function(r){var err=document.getElementById("cst-err");if(r&&r.ok){cerrar();if(HOST){post({type:"empenoDet",id:esel});post({type:"loadEmpenos"});post({type:"diaResumen"});}}else{err.textContent=(r&&r.error)||"No se pudo cambiar el estado.";err.classList.add("show");}};
     document.getElementById("cstX").addEventListener("click",cerrar);
     document.getElementById("cstCerrar").addEventListener("click",cerrar);
-    ov.addEventListener("click",function(e){if(e.target===ov)cerrar();});
+    ov.addEventListener("click",function(e){/* click afuera NO cierra: solo X o Cancelar */});
   })();
 
   /* ===== Chooser "Reimprimir" (UNO solo, inteligente): con el empeño seleccionado pregunta qué reimprimir:
@@ -529,7 +529,7 @@
     window.abrirReimprimir=function(){if(!esel)return;document.getElementById("rip-num").textContent="#"+esel;var pg=(det&&det.id===esel&&det.pagos)?det.pagos:[];var ints=pg.filter(function(p){return (p.tipo||'').toLowerCase().indexOf('inter')>=0;});var pags=pg.filter(function(p){return (p.tipo||'').toLowerCase().indexOf('inter')<0;});document.getElementById("rip-int").innerHTML=lista(ints);document.getElementById("rip-pag").innerHTML=lista(pags);ov.classList.add("show");};
     document.getElementById("rip-comp").addEventListener("click",function(){if(HOST)post({type:"reprintEmpeno",id:esel});cerrar();});
     document.getElementById("rip-contrato").addEventListener("click",function(){if(HOST)post({type:"reprintContrato",id:esel});cerrar();});
-    ov.addEventListener("click",function(e){var b=e.target.closest("[data-ripp]");if(b){if(HOST)post({type:"reprintPago",id:+b.dataset.ripp});cerrar();return;}if(e.target===ov)cerrar();});
+    ov.addEventListener("click",function(e){var b=e.target.closest("[data-ripp]");if(b){if(HOST)post({type:"reprintPago",id:+b.dataset.ripp});cerrar();return;}/* click afuera NO cierra: solo X o Cancelar */});
     document.getElementById("ripX").addEventListener("click",cerrar);
     document.getElementById("ripCerrar").addEventListener("click",cerrar);
   })();
@@ -603,7 +603,7 @@
     window.abrirNuevoCliente=abrir;   // para el acceso rápido "Nuevo cliente" desde Empeños
     document.getElementById("cliX").addEventListener("click",cerrar);
     document.getElementById("cliCancel").addEventListener("click",cerrar);
-    ov.addEventListener("click",function(e){if(e.target===ov)cerrar();});
+    ov.addEventListener("click",function(e){/* click afuera NO cierra: solo X o Cancelar */});
     document.getElementById("cliSave").addEventListener("click",function(){
       var v=function(f){return document.getElementById("cli-"+f).value;};
       var err=document.getElementById("cli-err");
@@ -645,7 +645,7 @@
     function cerrar(){ov.classList.remove("show");}
     document.getElementById("edX").addEventListener("click",cerrar);
     document.getElementById("edCancel").addEventListener("click",cerrar);
-    ov.addEventListener("click",function(e){if(e.target===ov)cerrar();});
+    ov.addEventListener("click",function(e){/* click afuera NO cierra: solo X o Cancelar */});
     document.getElementById("edSave").addEventListener("click",function(){
       var x=E.filter(function(e){return e.id===esel})[0];if(!x)return;
       var err=document.getElementById("ed-err");
@@ -683,7 +683,7 @@
     function cerrar(){ov.classList.remove("show");}
     document.getElementById("ceX").addEventListener("click",cerrar);
     document.getElementById("ceCancel").addEventListener("click",cerrar);
-    ov.addEventListener("click",function(e){if(e.target===ov)cerrar();});
+    ov.addEventListener("click",function(e){/* click afuera NO cierra: solo X o Cancelar */});
     document.getElementById("ceSave").addEventListener("click",function(){
       var v=function(f){return document.getElementById("ce-"+f).value;};
       var err=document.getElementById("ce-err");
@@ -729,7 +729,7 @@
     window.abrirNuevoEmpeno=function(preId){selCli=null;g("nev-clisel").style.display="none";g("nev-clist").style.display="none";g("nev-cliq").style.display="";g("nev-cliq").value="";g("nev-desc").value="";g("nev-oro").checked=true;g("nev-monto").value="";g("nev-avaluo").value="0";g("nev-bodegaje").value="0";g("nev-com").value="";g("nev-fecha").value=today();g("nev-vence").value="";g("nev-err").classList.remove("show");if(HOST){post({type:"loadClientes"});post({type:"loadPlanesFull"});}nevPending=0;if(preId){var c=clientes().filter(function(x){return x.id===preId;})[0];if(c)selectCli(c);else nevPending=preId;}ov.classList.add("show");if(!selCli)g("nev-cliq").focus();};
     g("nevX").addEventListener("click",cerrar);
     g("nevCancel").addEventListener("click",cerrar);
-    ov.addEventListener("click",function(e){if(e.target===ov)cerrar();});
+    ov.addEventListener("click",function(e){/* click afuera NO cierra: solo X o Cancelar */});
     g("nevSave").addEventListener("click",function(){var err=g("nev-err");if(!selCli){err.textContent="Seleccioná un cliente.";err.classList.add("show");return;}var monto=parseFloat(g("nev-monto").value);if(isNaN(monto)||monto<=0){err.textContent="El monto debe ser mayor a cero.";err.classList.add("show");return;}var p=currentPlan();if(!p){err.textContent="Seleccioná un plan de interés.";err.classList.add("show");return;}var re=/^\d{2}\/\d{2}\/\d{4}$/;var fecha=g("nev-fecha").value,vence=g("nev-vence").value;if(!re.test(fecha)||!re.test(vence)){err.textContent="Las fechas deben tener formato dd/MM/yyyy.";err.classList.add("show");return;}var avaluo=parseFloat(g("nev-avaluo").value);if(isNaN(avaluo))avaluo=0;var bodegaje=parseFloat(g("nev-bodegaje").value);if(isNaN(bodegaje))bodegaje=0;err.classList.remove("show");var impContrato=false;try{impContrato=confirm("¿Imprimir también el CONTRATO?\n\nAceptar = contrato + comprobante\nCancelar = solo el comprobante");}catch(e){}if(HOST)post({type:"crearEmpeno",clienteId:selCli.id,desc:g("nev-desc").value,com:g("nev-com").value,monto:monto,avaluo:avaluo,bodegaje:bodegaje,oro:g("nev-oro").checked,planId:p.id,fecha:fecha,vence:vence,imprimirContrato:impContrato});else cerrar();});
     window.empenoCreado=function(r){var err=g("nev-err");if(r&&r.ok){cerrar();try{alert("Empeño #"+r.id+" creado."+(r.warn?"\n\n⚠ "+r.warn:""));}catch(e){}if(HOST){post({type:"loadEmpenos"});post({type:"diaResumen"});}}else{err.textContent=(r&&r.error)||"No se pudo crear el empeño.";err.classList.add("show");}};
   })();
@@ -755,7 +755,7 @@
     document.getElementById("cpk-list").addEventListener("click",function(e){var r=e.target.closest(".cpkrow");if(!r)return;var id=+r.dataset.id;var c=listaC().filter(function(x){return x.id===id;})[0];if(c&&window.__nevPickCliente){window.__nevPickCliente(c);cerrar();}});
     document.getElementById("cpkX").addEventListener("click",cerrar);
     document.getElementById("cpkCerrar").addEventListener("click",cerrar);
-    ov.addEventListener("click",function(e){if(e.target===ov)cerrar();});
+    ov.addEventListener("click",function(e){/* click afuera NO cierra: solo X o Cancelar */});
   })();
   /* "Nuevo cliente" lo maneja el modal nativo (IIFE de arriba), no el form clásico. */
   document.getElementById('cdetail').addEventListener('click',function(e){if(e.target.closest('[data-cedit]')){if(HOST){post({type:"clientePin"});}else if(window.abrirEditCliente){window.abrirEditCliente();}return;}if(e.target.closest('[data-cnew]')){if(window.abrirNuevoEmpeno)window.abrirNuevoEmpeno(csel);return;}var wa=e.target.closest('[data-cwa]');if(wa){var tel=(wa.dataset.cwa||'').replace(/\D/g,'');if(tel.length===8)tel='506'+tel;window.open('https://wa.me/'+tel,'_blank');}});
@@ -808,7 +808,7 @@
     var bC=document.getElementById("btnCierre");if(bC)bC.addEventListener("click",window.abrirCierre);
     g("cieX").addEventListener("click",cerrar);
     g("cieCancel").addEventListener("click",cerrar);
-    ov.addEventListener("click",function(e){if(e.target===ov)cerrar();});
+    ov.addEventListener("click",function(e){/* click afuera NO cierra: solo X o Cancelar */});
     g("cieSave").addEventListener("click",function(){var err=g("cie-err");var re=/^\d{2}\/\d{2}\/\d{4}$/;var fecha=g("cie-fecha").value;if(!re.test(fecha)){err.textContent="La fecha debe tener formato dd/MM/yyyy.";err.classList.add("show");return;}err.classList.remove("show");if(HOST)post({type:"guardarCierre",fecha:fecha,saldoInicial:saldoIni(),manuales:MAN});else cerrar();});
     window.cierreGuardado=function(r){var err=g("cie-err");if(r&&r.ok){cerrar();if(r.warn){try{alert(r.warn);}catch(e){}}if(HOST)post({type:"loadCaja"});}else{err.textContent=(r&&r.error)||"No se pudo guardar el cierre.";err.classList.add("show");}};
   })();
@@ -824,7 +824,7 @@
     var bH=document.getElementById("btnHistCierre");if(bH)bH.addEventListener("click",window.abrirHistorial);
     document.getElementById("hisX").addEventListener("click",cerrar);
     document.getElementById("hisCancel").addEventListener("click",cerrar);
-    ov.addEventListener("click",function(e){if(e.target===ov)cerrar();});
+    ov.addEventListener("click",function(e){/* click afuera NO cierra: solo X o Cancelar */});
   })();
   window.renderConfig=function(d){window.__cfg=d;var el=document.getElementById('confinfo');if(!d.existe){el.innerHTML='<div class="empty">Todavía sin configurar. Usá Editar para cargar los datos.</div>';return;}
     el.innerHTML='<div class="kv"><span class="k">Compañía</span><span class="v">'+(d.compania||'—')+'</span></div>'
@@ -878,7 +878,7 @@
     window.prorogaResuelta=function(r){if(r){if(r.ok){if(r.warn){try{alert(r.warn);}catch(e){}}}else{try{alert(r.error||"No se pudo aplicar la prórroga.");}catch(e){}}}if(HOST)post({type:origin==='vencidos'?'loadVencidos':'loadArqueo'});};
     document.getElementById("proX").addEventListener("click",cerrar);
     document.getElementById("proCancel").addEventListener("click",cerrar);
-    ov.addEventListener("click",function(e){if(e.target===ov)cerrar();});
+    ov.addEventListener("click",function(e){/* click afuera NO cierra: solo X o Cancelar */});
     document.getElementById("proSave").addEventListener("click",function(){var err=document.getElementById("pro-err");var dias=parseInt(document.getElementById("pro-dias").value,10);if(isNaN(dias)||dias<=0){err.textContent="Los días deben ser un número mayor a cero.";err.classList.add("show");return;}err.classList.remove("show");if(HOST)post({type:"aplicarProroga",id:proid,dias:dias,comentario:document.getElementById("pro-com").value});cerrar();});
   })();
   /* ===== Modal Reporte Ingresos vs Egresos (UI nueva, SIN print/email: el clásico no los tenía) ===== */
@@ -897,7 +897,7 @@
     var bRI=document.getElementById('btnRepIngresos');if(bRI)bRI.addEventListener('click',window.abrirRepIngresos);
     document.getElementById('riX').addEventListener('click',cerrar);
     document.getElementById('riCerrar').addEventListener('click',cerrar);
-    ov.addEventListener('click',function(e){if(e.target===ov)cerrar();});
+    ov.addEventListener('click',function(e){/* click afuera NO cierra: solo X o Cancelar */});
   })();
   /* ===== Modal Reporte de Empeños (UI nueva, SIN print/email: el clásico no los tenía) ===== */
   (function(){
@@ -915,7 +915,7 @@
     var bRE=document.getElementById('btnRepEmpenos');if(bRE)bRE.addEventListener('click',window.abrirRepEmpenos);
     document.getElementById('reX').addEventListener('click',cerrar);
     document.getElementById('reCerrar').addEventListener('click',cerrar);
-    ov.addEventListener('click',function(e){if(e.target===ov)cerrar();});
+    ov.addEventListener('click',function(e){/* click afuera NO cierra: solo X o Cancelar */});
   })();
   /* ===== Modal Cartera Vencida (UI nueva, reusa Print/SendMailVencidos/sacar-vencido/prórroga headless) ===== */
   (function(){
@@ -947,7 +947,7 @@
     var bV=document.getElementById("btnVencidos");if(bV)bV.addEventListener("click",window.abrirVencidos);
     document.getElementById("venX").addEventListener("click",cerrar);
     document.getElementById("venCerrar").addEventListener("click",cerrar);
-    ov.addEventListener("click",function(e){if(e.target===ov)cerrar();});
+    ov.addEventListener("click",function(e){/* click afuera NO cierra: solo X o Cancelar */});
   })();
   /* ===== Modal Cobrar / Abonar (UI nueva, reusa frmPagar.CobrarHeadless: misma matemática y comprobantes) ===== */
   (function(){
@@ -977,7 +977,7 @@
     window.abrirCobrar=function(id){D=null;document.getElementById("cob-num").textContent="#"+id;document.getElementById("cob-cli").textContent="";document.getElementById("cob-kpis").innerHTML="";document.getElementById("cob-cuotas").innerHTML='<tr><td colspan="4" style="text-align:center;color:var(--faint);padding:14px">Cargando…</td></tr>';document.getElementById("cob-int").value="0";document.getElementById("cob-cap").value="0";document.getElementById("cob-con").value="0";document.getElementById("cob-com").value="";document.getElementById("cob-err").classList.remove("show");document.getElementById("cob-total").textContent="₡0";document.getElementById("cob-intr").value="";document.getElementById("cob-capr").value="";document.getElementById("cob-vuelto").value="";if(HOST)post({type:"cobrarInfo",id:id});ov.classList.add("show");};
     document.getElementById("cobX").addEventListener("click",cerrar);
     document.getElementById("cobCancel").addEventListener("click",cerrar);
-    ov.addEventListener("click",function(e){if(e.target===ov)cerrar();});
+    ov.addEventListener("click",function(e){/* click afuera NO cierra: solo X o Cancelar */});
     // "Sacar prenda": redimir en un solo cobro. Marca TODO el interés pendiente y pone el capital completo;
     // quedan VISIBLES en el modal para que la cajera confirme y dé Cobrar (no auto-envía). CobrarHeadless
     // cancela y retira el empeño cuando el capital queda en 0 (misma lógica que el clásico).
@@ -1078,7 +1078,7 @@
     var b=document.getElementById("btnCfgEdit");if(b)b.addEventListener("click",function(){window.abrirConfig();});
     g("cfgX").addEventListener("click",cerrar);
     g("cfgCancel").addEventListener("click",cerrar);
-    ov.addEventListener("click",function(e){if(e.target===ov)cerrar();});
+    ov.addEventListener("click",function(e){/* click afuera NO cierra: solo X o Cancelar */});
     g("cfgSave").addEventListener("click",function(){var err=g("cfg-err");if(!g("cfg-compania").value.trim()){err.textContent="La compañía es obligatoria.";err.classList.add("show");return;}var meses=parseInt(g("cfg-meses").value,10);if(isNaN(meses)||meses<=0){err.textContent="El plazo (meses) debe ser mayor a cero.";err.classList.add("show");return;}var iva=parseFloat(g("cfg-iva").value);if(isNaN(iva))iva=0;if(iva<0||iva>100){err.textContent="El IVA debe estar entre 0 y 100.";err.classList.add("show");return;}err.classList.remove("show");if(HOST)post({type:"guardarConfig",compania:g("cfg-compania").value,nombre:g("cfg-nombre").value,identificacion:g("cfg-id").value,telefono:g("cfg-tel").value,direccion:g("cfg-dir").value,meses:String(meses),iva:String(iva),avisoEmail:g("cfg-aviso").value,smtpEmail:g("cfg-smtpemail").value,smtpPass:g("cfg-smtppass").value,smtp:g("cfg-smtp").value,puerto:g("cfg-puerto").value,ssl:g("cfg-ssl").checked});else cerrar();});
     window.configGuardada=function(r){var err=g("cfg-err");if(r&&r.ok){cerrar();if(HOST)post({type:"loadConfig"});}else{err.textContent=(r&&r.error)||"No se pudo guardar la configuración.";err.classList.add("show");}};
   })();
@@ -1137,7 +1137,7 @@
     window.abrirIntereses=function(){limpiar();g("int-rows").innerHTML='<tr><td colspan="10" style="text-align:center;color:var(--faint);padding:16px">Cargando…</td></tr>';if(HOST)post({type:"loadIntereses"});ov.classList.add("show");};
     var bp=document.getElementById("btnPlanes");if(bp)bp.addEventListener("click",window.abrirIntereses);
     g("intX").addEventListener("click",cerrar);g("intCerrar").addEventListener("click",cerrar);
-    ov.addEventListener("click",function(e){if(e.target===ov)cerrar();});
+    ov.addEventListener("click",function(e){/* click afuera NO cierra: solo X o Cancelar */});
   })();
   /* ===== Modal Empleados y accesos (UI nueva, reusa frmEmpleados.GuardarHeadless / EliminarHeadless) ===== */
   (function(){
@@ -1196,7 +1196,7 @@
     var be=document.getElementById("btnEmpleados");if(be)be.addEventListener("click",window.abrirEmpleados);
     var be2=document.getElementById("btnEmpleados2");if(be2)be2.addEventListener("click",window.abrirEmpleados);
     g("empX").addEventListener("click",cerrar);g("empCerrar").addEventListener("click",cerrar);
-    ov.addEventListener("click",function(e){if(e.target===ov)cerrar();});
+    ov.addEventListener("click",function(e){/* click afuera NO cierra: solo X o Cancelar */});
   })();
   document.addEventListener('click',function(e){var f=e.target.closest('[data-form]');if(f&&HOST)post({type:'openForm',form:f.dataset.form});});
 
