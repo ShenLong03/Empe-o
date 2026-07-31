@@ -346,6 +346,9 @@
   var _busyT=null;
   function busy(on){var el=document.getElementById('loader');if(!el)return;if(on){el.classList.add('show');clearTimeout(_busyT);_busyT=setTimeout(function(){el.classList.remove('show');},25000);}else{el.classList.remove('show');clearTimeout(_busyT);}}
   window.__busyOff=function(){busy(false);};
+  // Error global de acción: NINGUNA acción puede fallar en silencio. Si el backend tira excepción, apaga el
+  // loader y avisa claramente que NO se guardó, en vez de dejar la sensación de que "se hizo".
+  window.__accionError=function(msg){busy(false);try{alert("⚠ No se completó la acción.\n\n"+(msg||"Ocurrió un error inesperado.")+"\n\nNo se guardó nada. Revisá e intentá de nuevo.");}catch(e){}};
   var post=function(m){try{if(m&&HEAVY[m.type])busy(true);window.chrome.webview.postMessage(JSON.stringify(m));}catch(e){busy(false);}};
   /* ===== Tema (dark/light) + caché de preferencias (archivo TXT vía C#) ===== */
   var PREFS={};

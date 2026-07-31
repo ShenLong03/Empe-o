@@ -3053,24 +3053,46 @@ namespace Empeño.WindowsForms.Views
                 MontoAvaluo = avaluo
             };
 
-            _context.Empenos.Add(empeño);
-            await _context.SaveChangesAsync();
-            await funciones.SaveBitacora(new ValorBitacora { Valor = JsonConvert.SerializeObject(empeño), Modulo = "Empeños", Accion = "Crear" });
-
-            // Primera cuota (Intereses) inline, igual que el clásico: interés = trunc(MontoPendiente * Porcentaje/100),
-            // vence = fecha + 1 mes, avalúo (una vez) y bodegaje en esta primera cuota.
-            var cuota = new Intereses
+            // ATÓMICO: el empeño y su primera cuota se guardan JUNTOS o no se guarda NADA. Antes eran dos
+            // SaveChanges sueltos SIN transacción: si el 2º fallaba quedaba un empeño a medias (sin cuota) y, con el
+            // catch vacío del shell, el usuario ni se enteraba. Ahora, ante CUALQUIER error, se revierte TODO y se
+            // devuelve ok:false con el motivo para que el front lo muestre (jamás un "fantasma" que parece guardado).
+            using (var tx = _context.Database.BeginTransaction())
             {
-                EmpenoId = empeño.EmpenoId,
-                FechaCreacion = DateTime.Now,
-                FechaVencimiento = fecha.AddMonths(1),
-                Monto = Math.Truncate((double)empeño.MontoPendiente * ((double)interes.Porcentaje / (double)100)),
-                MontoAvaluo = avaluo,
-                MontoBodega = bodegaje
-            };
-            _context.Intereses.Add(cuota);
-            await _context.SaveChangesAsync();
-            await funciones.SaveBitacora(new ValorBitacora { Valor = JsonConvert.SerializeObject(empeño), Modulo = "Intereses", Accion = "Crear" });
+                try
+                {
+                    _context.Empenos.Add(empeño);
+                    await _context.SaveChangesAsync();
+
+                    // Primera cuota (Intereses) inline, igual que el clásico: interés = trunc(MontoPendiente * Porcentaje/100),
+                    // vence = fecha + 1 mes, avalúo (una vez) y bodegaje en esta primera cuota.
+                    var cuota = new Intereses
+                    {
+                        EmpenoId = empeño.EmpenoId,
+                        FechaCreacion = DateTime.Now,
+                        FechaVencimiento = fecha.AddMonths(1),
+                        Monto = Math.Truncate((double)empeño.MontoPendiente * ((double)interes.Porcentaje / (double)100)),
+                        MontoAvaluo = avaluo,
+                        MontoBodega = bodegaje
+                    };
+                    _context.Intereses.Add(cuota);
+                    await _context.SaveChangesAsync();
+                    tx.Commit();
+                }
+                catch (Exception exSave)
+                {
+                    try { tx.Rollback(); } catch { }
+                    return new { ok = false, error = "No se pudo guardar el empeño: " + exSave.Message };
+                }
+            }
+
+            // Bitácora: NO crítica. Si falla, el empeño YA quedó bien guardado; no debe tumbar el alta.
+            try
+            {
+                await funciones.SaveBitacora(new ValorBitacora { Valor = JsonConvert.SerializeObject(empeño), Modulo = "Empeños", Accion = "Crear" });
+                await funciones.SaveBitacora(new ValorBitacora { Valor = JsonConvert.SerializeObject(empeño), Modulo = "Intereses", Accion = "Crear" });
+            }
+            catch { }
 
             // El comprobante (Print) lee empeño.Interes.Porcentaje/PorcentajeBodegaje/PorcentajeAvaluo. Como el empeño
             // se creó con `new Empeno{}` (NO es proxy con lazy-loading), la navegación Interes viene null y Print tiraba

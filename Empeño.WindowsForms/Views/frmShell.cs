@@ -162,10 +162,11 @@ namespace Empeño.WindowsForms.Views
 
         private async void OnMessage(object sender, CoreWebView2WebMessageReceivedEventArgs e)
         {
+            string type = null;
             try
             {
                 var m = JsonConvert.DeserializeObject<Newtonsoft.Json.Linq.JObject>(e.TryGetWebMessageAsString());
-                string type = (string)m["type"];
+                type = (string)m["type"];
 
                 // BLINDAJE anti-staleness (EF6): el _context del dashboard vive TODA la sesión y cachea en su
                 // identity-map las entidades que lee. Los forms clásicos (frmPagar, frmEmpeno, frmVencidos...) ESCRIBEN
@@ -697,7 +698,26 @@ namespace Empeño.WindowsForms.Views
                     case "whatsapp": AbrirWhatsApp((int)m["id"]); break;
                 }
             }
-            catch { }
+            catch (Exception ex)
+            {
+                // NUNCA tragarse un error en silencio. Si una acción (crear empeño, cobrar, cierre…) falla, hay que
+                // (1) dejar traza en disco para diagnosticar en la máquina del usuario y (2) AVISARLE al front, para
+                // que el usuario vea un error claro en vez de creer que "se hizo". Antes este catch estaba VACÍO: una
+                // falla de guardado/impresión/conexión desaparecía sin rastro ni mensaje → "empeño fantasma".
+                try
+                {
+                    var lp = System.IO.Path.Combine(System.IO.Path.GetDirectoryName(Application.ExecutablePath), "shell-error-log.txt");
+                    System.IO.File.AppendAllText(lp, DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "  [" + (type ?? "?") + "]  " + ex.ToString() + Environment.NewLine + Environment.NewLine);
+                }
+                catch { }
+                try
+                {
+                    string emsg = JsonConvert.SerializeObject("La acción '" + (type ?? "") + "' no se completó: " + ex.Message);
+                    if (web != null && web.CoreWebView2 != null)
+                        await web.CoreWebView2.ExecuteScriptAsync("window.__accionError && window.__accionError(" + emsg + ")");
+                }
+                catch { }
+            }
             finally
             {
                 // Apaga el loader global de la vista nueva al terminar CUALQUIER operación (éxito o error).
