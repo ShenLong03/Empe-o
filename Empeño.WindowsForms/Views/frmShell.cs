@@ -191,6 +191,16 @@ namespace Empeño.WindowsForms.Views
                         break;
                     case "close": Application.Exit(); break;
                     case "prefsSave": GuardarPrefs((string)m["data"]); break;
+                    case "jsError":
+                        // Error JS del WebView reportado por el front: se deja en shell-error-log.txt para diagnosticar
+                        // en la máquina del local (WebView2 viejo, etc.) sin tener que adivinar por qué falla en prod.
+                        try
+                        {
+                            var lpJs = System.IO.Path.Combine(System.IO.Path.GetDirectoryName(Application.ExecutablePath), "shell-error-log.txt");
+                            System.IO.File.AppendAllText(lpJs, DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "  [JS] " + (m["msg"] != null ? m["msg"].ToString() : "") + Environment.NewLine);
+                        }
+                        catch { }
+                        break;
                     case "configPin":
                         {
                             // Entrar a Configuración: solo Administrador. La vista no se muestra si no pasa.
