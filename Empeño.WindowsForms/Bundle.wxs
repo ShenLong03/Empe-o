@@ -11,7 +11,7 @@
 
   <Bundle Name="Empeños Nueva Versión"
           Manufacturer="Tico Manager"
-          Version="2.3.1"
+          Version="2.3.2"
           UpgradeCode="5415855D-87DD-449C-9678-D2092AC6395A">
 
     <BootstrapperApplication>
@@ -37,7 +37,7 @@
           DetectCondition="Wv2Version" />
 
       <!-- La aplicación (instalación por-usuario, sin admin). -->
-      <MsiPackage SourceFile="Empeños Nueva V2.3.1.msi" Vital="yes" />
+      <MsiPackage SourceFile="Empeños Nueva V2.3.2.msi" Vital="yes" />
     </Chain>
 
   </Bundle>
