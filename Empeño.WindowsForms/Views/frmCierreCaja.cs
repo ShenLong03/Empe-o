@@ -90,7 +90,13 @@ namespace Empeño.WindowsForms.Views
 
         public async Task ProcessClose(DateTime? fechaOverride = null)
         {
-            var fecha = fechaOverride ?? DateTime.ParseExact(txtFecha.Text, "dd/MM/yyyy", CultureInfo.InvariantCulture);
+            // La ventana de consulta DEBE ser de medianoche a medianoche, IDÉNTICA a CajaData.CierrePreview
+            // (que hace fecha.Date, ver CajaData.cs:106). Antes NO se normalizaba: el guardado headless le
+            // pega la hora actual a la fecha (frmShell "guardarCierre": fcierre.Date.Add(hora:min)) y el
+            // parse clásico usa "dd/MM/yyyy HH:mm", así la ventana quedaba corrida ~un día respecto al modal.
+            // Resultado: la IMPRESIÓN sumaba pagos de OTRO tramo horario (interés/avalúo/bodegaje distintos a
+            // los del modal). Con .Date la impresión y el modal usan EXACTAMENTE la misma ventana → mismos montos.
+            var fecha = (fechaOverride ?? DateTime.ParseExact(txtFecha.Text, "dd/MM/yyyy", CultureInfo.InvariantCulture)).Date;
             var tomorrow = fecha.AddDays(1);
             empleadoId = await funciones.GetEmpleadoIdByUser(Program.Usuario.Usuario);
             empleadoId = empleadoId == null ? 1 : empleadoId;
