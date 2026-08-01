@@ -369,7 +369,7 @@ namespace Empeño.WindowsForms.Views
             cexcel.Cells[6, 3].value = emp.ToString("N2");        // Monto Empeños
             cexcel.Cells[8, 3].value = ava.ToString("N2");        // Monto Avalúos
             cexcel.Cells[10, 3].value = bod.ToString("N2");       // Monto Bodegajes
-            cexcel.Cells[12, 3].value = inte.ToString("N2");      // Monto Intereses
+            cexcel.Cells[12, 3].value = (inte + ava + bod).ToString("N2");   // Monto Intereses = interés base + avalúo + bodegaje del día (pedido del dueño). Avalúo/bodegaje siguen en sus líneas; el acumulado NO se toca (se calcula aparte).
             cexcel.Cells[14, 3].value = abo.ToString("N2");       // Monto Abonos
             cexcel.Cells[16, 3].value = ven.ToString("N2");       // Monto Vencidos
             cexcel.Cells[18, 3].value = ret.ToString("N2");       // Monto Cancelados
