@@ -1079,7 +1079,22 @@
     var curRep='ingresos', loadedR={}, riFilt='todo', riD=null, reEf='Todos', reD=null, vD=null;
     var repDesde='', repHasta='';   // fechas COMPARTIDAS entre reportes (persisten al cambiar de pestaña)
     // Al cargar la caché, restaurar las fechas de reportes guardadas de la sesión anterior.
-    window.__prefsApplyExtras=function(){if(PREFS&&PREFS.repDesde)repDesde=PREFS.repDesde;if(PREFS&&PREFS.repHasta)repHasta=PREFS.repHasta;if(PREFS){if(PREFS.empFilter)ef=PREFS.empFilter;if(PREFS.empQ!=null)eq=PREFS.empQ;}};
+    window.__prefsApplyExtras=function(){
+      if(PREFS&&PREFS.repDesde)repDesde=PREFS.repDesde;
+      if(PREFS&&PREFS.repHasta)repHasta=PREFS.repHasta;
+      if(PREFS){
+        // Migración one-shot: máquinas que tenían PREFS.empFilter='todo' pegado del default histórico se
+        // llevan a 'activos' UNA sola vez (regla del dueño: default = Activos si no hay elección explícita).
+        // Después, si el usuario clickea 'todo' a propósito, se persiste normal (empFilterMigrated ya está).
+        if(PREFS.empFilter==='todo'&&!PREFS.empFilterMigrated){
+          PREFS.empFilter='activos';
+          PREFS.empFilterMigrated=true;
+          try{if(window.savePrefs)window.savePrefs();}catch(e){}
+        }
+        if(PREFS.empFilter)ef=PREFS.empFilter;
+        if(PREFS.empQ!=null)eq=PREFS.empQ;
+      }
+    };
     function g(id){return document.getElementById(id);}
     function today(){var t=new Date();return ("0"+t.getDate()).slice(-2)+"/"+("0"+(t.getMonth()+1)).slice(-2)+"/"+t.getFullYear();}
     function monthAgo(){var t=new Date();var m=new Date(t.getFullYear(),t.getMonth()-1,t.getDate());return ("0"+m.getDate()).slice(-2)+"/"+("0"+(m.getMonth()+1)).slice(-2)+"/"+m.getFullYear();}
