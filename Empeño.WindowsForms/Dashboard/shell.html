@@ -495,15 +495,7 @@
   document.getElementById('eq').addEventListener('input',function(e){eq=e.target.value;renderEList();
     if(HOST){clearTimeout(eqTimer);eqTimer=setTimeout(function(){var s=eq.trim();post(s?{type:'searchEmpenos',q:s,filtro:ef}:{type:'loadEmpenos',filtro:ef});PREFS.empQ=eq;PREFS.empFilter=ef;if(window.savePrefs)window.savePrefs();},250);}});
   // Abre Empeños respetando la búsqueda guardada (chip + texto) de la caché.
-  function abrirEmpenosView(){
-    // Regla del dueño: cada vez que se abre el módulo Empeños se arranca en ACTIVOS (Vigentes+Vencidos+Pendientes).
-    // Cancelados/Perdidos/Anulados solo se ven si el usuario clickea su chip. Antes se restauraba el último
-    // filtro elegido desde PREFS y "Todo" quedaba pegado como default -> aparecían empeños ya cancelados en cada búsqueda.
-    ef='activos';eq='';
-    var eqEl=document.getElementById('eq');if(eqEl)eqEl.value='';
-    document.querySelectorAll('#echips .chip').forEach(function(x){x.classList.toggle('on',x.dataset.f==='activos');});
-    if(HOST)post({type:'loadEmpenos',filtro:'activos'});
-  }
+  function abrirEmpenosView(){var eqEl=document.getElementById('eq');if(eqEl)eqEl.value=eq;document.querySelectorAll('#echips .chip').forEach(function(x){x.classList.toggle('on',x.dataset.f===ef);});var s=(eq||'').trim();if(HOST)post(s?{type:'searchEmpenos',q:s,filtro:ef}:{type:'loadEmpenos',filtro:ef});}
   // Refresco FORZADO: recarga la lista (respetando búsqueda/filtro), los contadores del día y el detalle abierto.
   // Combinado con el blindaje anti-staleness del backend, garantiza ver el estado real de la base (pagos, saldos).
   function refrescarEmpenos(){var s=(eq||'').trim();if(HOST){post(s?{type:'searchEmpenos',q:s,filtro:ef}:{type:'loadEmpenos',filtro:ef});post({type:'diaResumen'});if(typeof esel!=='undefined'&&esel)post({type:'empenoDet',id:esel});}}
@@ -1087,7 +1079,7 @@
     var curRep='ingresos', loadedR={}, riFilt='todo', riD=null, reEf='Todos', reD=null, vD=null;
     var repDesde='', repHasta='';   // fechas COMPARTIDAS entre reportes (persisten al cambiar de pestaña)
     // Al cargar la caché, restaurar las fechas de reportes guardadas de la sesión anterior.
-    window.__prefsApplyExtras=function(){if(PREFS&&PREFS.repDesde)repDesde=PREFS.repDesde;if(PREFS&&PREFS.repHasta)repHasta=PREFS.repHasta;/* NO restaurar PREFS.empFilter/empQ: el módulo Empeños siempre arranca en ACTIVOS (regla del dueño). */};
+    window.__prefsApplyExtras=function(){if(PREFS&&PREFS.repDesde)repDesde=PREFS.repDesde;if(PREFS&&PREFS.repHasta)repHasta=PREFS.repHasta;if(PREFS){if(PREFS.empFilter)ef=PREFS.empFilter;if(PREFS.empQ!=null)eq=PREFS.empQ;}};
     function g(id){return document.getElementById(id);}
     function today(){var t=new Date();return ("0"+t.getDate()).slice(-2)+"/"+("0"+(t.getMonth()+1)).slice(-2)+"/"+t.getFullYear();}
     function monthAgo(){var t=new Date();var m=new Date(t.getFullYear(),t.getMonth()-1,t.getDate());return ("0"+m.getDate()).slice(-2)+"/"+("0"+(m.getMonth()+1)).slice(-2)+"/"+m.getFullYear();}
