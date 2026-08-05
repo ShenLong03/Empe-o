@@ -727,14 +727,82 @@
     g("nev-plan").addEventListener("change",recalc);
     g("nev-fecha").addEventListener("change",recalc);
     var nevPending=0;
+    // BLINDAJE DURO (regla del dueño): la ventana de Nuevo Empeño NO se cierra a menos que el backend
+    // confirme que el empeño quedó guardado. Ni click afuera, ni Escape, ni cerrar accidental. Solo:
+    //   (a) ok:true SIN warn -> cierre limpio automático,
+    //   (b) X/Cancelar con confirmación si hay datos o guardado en vuelo,
+    //   (c) botón "Cerrar (empeño #X guardado)" que aparece cuando el empeño se guardó pero la impresión falló.
+    // nev_saving: hay un submit en vuelo (bloquea cierre, doble-submit).
+    // nev_saved_ok: el backend confirmó que el empeño quedó guardado en BD (habilita cerrar sin confirmar).
+    var nev_saving=false, nev_saved_ok=false, nev_saved_id=0, nev_save_timeout=null;
     var _rc=window.renderClientes;window.renderClientes=function(d){if(_rc)_rc(d);if(ov.classList.contains("show")){if(nevPending){var c=clientes().filter(function(x){return x.id===nevPending;})[0];if(c){selectCli(c);nevPending=0;}}renderCliList();}};
-    function cerrar(){ov.classList.remove("show");}
-    window.abrirNuevoEmpeno=function(preId){selCli=null;g("nev-clisel").style.display="none";g("nev-clist").style.display="none";g("nev-cliq").style.display="";g("nev-cliq").value="";g("nev-desc").value="";g("nev-oro").checked=true;g("nev-monto").value="";g("nev-avaluo").value="0";g("nev-bodegaje").value="0";g("nev-com").value="";g("nev-fecha").value=today();g("nev-vence").value="";g("nev-err").classList.remove("show");if(HOST){post({type:"loadClientes"});post({type:"loadPlanesFull"});}nevPending=0;if(preId){var c=clientes().filter(function(x){return x.id===preId;})[0];if(c)selectCli(c);else nevPending=preId;}ov.classList.add("show");if(!selCli)g("nev-cliq").focus();};
+    function nev_hasData(){return !!(selCli||(g("nev-desc").value||"").trim()||parseFloat(g("nev-monto").value)>0||(g("nev-com").value||"").trim());}
+    function cerrar_hard(){ov.classList.remove("show");}
+    // cerrar() BLINDADO: nunca cierra "sola". Si hay guardado en vuelo -> imposible. Si hay datos y no
+    // hay confirmación de guardado -> pregunta al usuario. Si ya se guardó (nev_saved_ok) -> cierra libre.
+    function cerrar(){
+      if(nev_saving){try{alert("⏳ Se está guardando el empeño. Esperá a que termine antes de cerrar.");}catch(e){}return;}
+      if(nev_saved_ok){cerrar_hard();return;}
+      if(nev_hasData()){var ok=false;try{ok=confirm("¿Salir sin crear el empeño?\n\nTenés datos cargados que se van a PERDER.");}catch(e){ok=true;}if(!ok)return;}
+      cerrar_hard();
+    }
+    // Escape: bloqueado sobre este modal cuando está visible (evita cierres accidentales por teclado).
+    document.addEventListener("keydown",function(e){if(e.key==="Escape"&&ov.classList.contains("show")){e.preventDefault();e.stopPropagation();cerrar();}},true);
+    window.abrirNuevoEmpeno=function(preId){selCli=null;g("nev-clisel").style.display="none";g("nev-clist").style.display="none";g("nev-cliq").style.display="";g("nev-cliq").value="";g("nev-desc").value="";g("nev-oro").checked=true;g("nev-monto").value="";g("nev-avaluo").value="0";g("nev-bodegaje").value="0";g("nev-com").value="";g("nev-fecha").value=today();g("nev-vence").value="";g("nev-err").classList.remove("show");if(HOST){post({type:"loadClientes"});post({type:"loadPlanesFull"});}nevPending=0;
+      // Reset del estado de blindaje (por si la modal se reabre después de un guardado ok o un error).
+      nev_saving=false;nev_saved_ok=false;nev_saved_id=0;if(nev_save_timeout){clearTimeout(nev_save_timeout);nev_save_timeout=null;}
+      var _bs=g("nevSave");if(_bs){_bs.disabled=false;_bs.textContent="Crear empeño";}
+      if(preId){var c=clientes().filter(function(x){return x.id===preId;})[0];if(c)selectCli(c);else nevPending=preId;}ov.classList.add("show");if(!selCli)g("nev-cliq").focus();};
     g("nevX").addEventListener("click",cerrar);
     g("nevCancel").addEventListener("click",cerrar);
     ov.addEventListener("click",function(e){/* click afuera NO cierra: solo X o Cancelar */});
-    g("nevSave").addEventListener("click",function(){var err=g("nev-err");if(!selCli){err.textContent="Seleccioná un cliente.";err.classList.add("show");return;}var monto=parseFloat(g("nev-monto").value);if(isNaN(monto)||monto<=0){err.textContent="El monto debe ser mayor a cero.";err.classList.add("show");return;}var p=currentPlan();if(!p){err.textContent="Seleccioná un plan de interés.";err.classList.add("show");return;}var re=/^\d{2}\/\d{2}\/\d{4}$/;var fecha=g("nev-fecha").value,vence=g("nev-vence").value;if(!re.test(fecha)||!re.test(vence)){err.textContent="Las fechas deben tener formato dd/MM/yyyy.";err.classList.add("show");return;}var avaluo=parseFloat(g("nev-avaluo").value);if(isNaN(avaluo))avaluo=0;var bodegaje=parseFloat(g("nev-bodegaje").value);if(isNaN(bodegaje))bodegaje=0;err.classList.remove("show");var impContrato=false;try{impContrato=confirm("¿Imprimir también el CONTRATO?\n\nAceptar = contrato + comprobante\nCancelar = solo el comprobante");}catch(e){}if(HOST)post({type:"crearEmpeno",clienteId:selCli.id,desc:g("nev-desc").value,com:g("nev-com").value,monto:monto,avaluo:avaluo,bodegaje:bodegaje,oro:g("nev-oro").checked,planId:p.id,fecha:fecha,vence:vence,imprimirContrato:impContrato});else cerrar();});
-    window.empenoCreado=function(r){var err=g("nev-err");if(r&&r.ok){cerrar();try{alert("Empeño #"+r.id+" creado."+(r.warn?"\n\n⚠ "+r.warn:""));}catch(e){}if(HOST){post({type:"loadEmpenos"});post({type:"diaResumen"});}}else{err.textContent=(r&&r.error)||"No se pudo crear el empeño.";err.classList.add("show");}};
+    g("nevSave").addEventListener("click",function(){
+      if(nev_saving)return;  // anti doble-click / doble-submit
+      if(nev_saved_ok){cerrar_hard();return;}  // si el empeño ya se guardó, el botón se transformó en "Cerrar"
+      var err=g("nev-err");
+      if(!selCli){err.textContent="Seleccioná un cliente.";err.classList.add("show");return;}
+      var monto=parseFloat(g("nev-monto").value);if(isNaN(monto)||monto<=0){err.textContent="El monto debe ser mayor a cero.";err.classList.add("show");return;}
+      var p=currentPlan();if(!p){err.textContent="Seleccioná un plan de interés.";err.classList.add("show");return;}
+      var re=/^\d{2}\/\d{2}\/\d{4}$/;var fecha=g("nev-fecha").value,vence=g("nev-vence").value;
+      if(!re.test(fecha)||!re.test(vence)){err.textContent="Las fechas deben tener formato dd/MM/yyyy.";err.classList.add("show");return;}
+      var avaluo=parseFloat(g("nev-avaluo").value);if(isNaN(avaluo))avaluo=0;var bodegaje=parseFloat(g("nev-bodegaje").value);if(isNaN(bodegaje))bodegaje=0;
+      err.classList.remove("show");
+      var impContrato=false;try{impContrato=confirm("¿Imprimir también el CONTRATO?\n\nAceptar = contrato + comprobante\nCancelar = solo el comprobante");}catch(e){}
+      // Marcar submit en vuelo (bloquea cierre, doble-submit).
+      nev_saving=true;var _b=g("nevSave");if(_b){_b.disabled=true;_b.textContent="Guardando…";}
+      // Timeout de seguridad: si el backend no respondió en 60s, liberar y avisar (sin cerrar la ventana).
+      if(nev_save_timeout)clearTimeout(nev_save_timeout);
+      nev_save_timeout=setTimeout(function(){if(!nev_saving)return;nev_saving=false;if(_b){_b.disabled=false;_b.textContent="Crear empeño";}err.textContent="El sistema no respondió a tiempo. NO se guardó nada. Revisá e intentá de nuevo.";err.classList.add("show");},60000);
+      if(HOST)post({type:"crearEmpeno",clienteId:selCli.id,desc:g("nev-desc").value,com:g("nev-com").value,monto:monto,avaluo:avaluo,bodegaje:bodegaje,oro:g("nev-oro").checked,planId:p.id,fecha:fecha,vence:vence,imprimirContrato:impContrato});
+      else {nev_saving=false;if(_b){_b.disabled=false;_b.textContent="Crear empeño";}cerrar_hard();}
+    });
+    window.empenoCreado=function(r){
+      var err=g("nev-err");var b=g("nevSave");
+      // Libera el submit en vuelo pase lo que pase.
+      nev_saving=false;if(nev_save_timeout){clearTimeout(nev_save_timeout);nev_save_timeout=null;}
+      if(r&&r.ok){
+        // BACKEND CONFIRMÓ: el empeño quedó guardado en BD (transacción committed).
+        nev_saved_ok=true;nev_saved_id=r.id||0;
+        if(r.warn){
+          // Guardado SÍ, impresión NO. Regla del dueño: NO cerrar sola. Mostrar el problema y dejar que el
+          // usuario decida cerrar. El botón deja de ser "Crear empeño" y pasa a "Cerrar (empeño #X guardado)".
+          err.textContent="⚠ Empeño #"+(nev_saved_id||"?")+" guardado, pero: "+r.warn+"\n\nRevisá la impresora / plantillas. Cuando estés listo, cerrá con el botón.";
+          err.classList.add("show");
+          if(b){b.disabled=false;b.textContent="Cerrar (empeño #"+(nev_saved_id||"?")+" guardado)";}
+          if(HOST){post({type:"loadEmpenos"});post({type:"diaResumen"});}
+        } else {
+          // Guardado + impresión OK -> cerrar limpio.
+          cerrar_hard();
+          try{alert("Empeño #"+(nev_saved_id||"?")+" creado.");}catch(e){}
+          if(HOST){post({type:"loadEmpenos"});post({type:"diaResumen"});}
+        }
+      } else {
+        // NO se guardó nada (transacción hizo rollback o falló antes). NO cerrar, mostrar error, liberar botón.
+        err.textContent=(r&&r.error)||"No se pudo crear el empeño. No se guardó nada. Revisá e intentá de nuevo.";
+        err.classList.add("show");
+        if(b){b.disabled=false;b.textContent="Crear empeño";}
+      }
+    };
   })();
   /* ===== Picker "Ver lista completa" de clientes — fallback ROBUSTO del buscador del Nuevo Empeño ===== */
   (function(){
