@@ -3030,10 +3030,12 @@ namespace Empeño.WindowsForms.Views
             var interes = await _context.Interes.FindAsync(interesId);
             if (interes == null) return new { ok = false, error = "El plan de interés no es válido." };
 
-            // Mismo gate del clásico: PerfilId 4 (empleado) no puede alterar la fecha ni el vencimiento.
-            var venceSistema = fecha.Date.AddMonths(interes.Meses > 0 ? interes.Meses : mesesVencimientoDefault);
-            if (perfilId == 4 && (fecha.Date != DateTime.Today || fechaVencimiento.Date != venceSistema.Date))
-                return new { ok = false, error = "Solo un supervisor puede modificar la fecha o el vencimiento." };
+            // Regla del dueño: CUALQUIER perfil (Empleado/Supervisor/Administrador) puede crear un empeño con
+            // su PIN. El PIN ya se validó en frmShell -> ValidatePIN("Empeño"), que permite Empleado también
+            // (ver frmPIN.Aceptar case "Empeño"). Se removió el gate PerfilId==4 sobre fecha/vencimiento porque
+            // (a) duplicaba una autorización ya dada por el PIN, y (b) causaba un falso positivo cuando el JS
+            // del shell calcula el vencimiento con default=1 mes y el C# lo comparaba contra Configuraciones.Meses
+            // (o 3 si es 0): aunque el empleado no tocara nada, la comparación fallaba y bloqueaba el alta.
 
             var empeño = new Empeno
             {
