@@ -51,7 +51,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup>
-    <ApplicationIcon>LetraDegradadoGold0.ico</ApplicationIcon>
+    <ApplicationIcon>Estrella.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Bunifu_UI_v1.52">
@@ -1179,7 +1179,7 @@
     <None Include="Resources\Linea.png" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="LetraDegradadoGold0.ico" />
+    <Content Include="Estrella.ico" />
     <None Include="Resources\airplane-11-16.png" />
   </ItemGroup>
   <ItemGroup>
