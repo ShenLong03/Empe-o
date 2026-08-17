@@ -2448,7 +2448,10 @@ namespace Empeño.WindowsForms.Views
             }
 
             cexcel.Cells[24, 3].value = _context.Intereses.Where(i => i.EmpenoId == empeno.EmpenoId).Sum(i => i.Monto).ToString("N2");
-            cexcel.Cells[25, 3].value = empeno.MontoPendiente.ToString("N2");
+            // Saldo del empeño ANTES del pago actual. En CobrarHeadless se hace `empeñoTemp.MontoPendiente -= pago.Monto`
+            // ANTES de llamar a PrintRetiro, así que a esta altura MontoPendiente ya está en 0. Sumamos pago.Monto para
+            // mostrar el saldo real que el cliente está pagando (lo del pedido del dueño: el saldo debe ser lo que se cobra).
+            cexcel.Cells[25, 3].value = (empeno.MontoPendiente + pago.Monto).ToString("N2");
             cexcel.Cells[26, 3].value = pago.MontoTotal.ToString("N2");
             cexcel.Cells[28, 3].value = "Retirado";
             cexcel.ActiveWindow.SelectedSheets.PrintOut();
@@ -2504,7 +2507,9 @@ namespace Empeño.WindowsForms.Views
             }
 
             cexcel.Cells[24, 3].value = _context.Intereses.Where(i => i.EmpenoId == empeno.EmpenoId).Sum(i => i.Monto).ToString("N2");
-            cexcel.Cells[25, 3].value = empeno.MontoPendiente.ToString("N2");
+            // Saldo del empeño ANTES del pago actual (mismo criterio que el otro PrintRetiro): MontoPendiente aquí ya
+            // está en ~0 después del descuento, así que se recompone sumando pago.Monto para mostrar lo que se cobró.
+            cexcel.Cells[25, 3].value = (empeno.MontoPendiente + pago.Monto).ToString("N2");
             cexcel.Cells[26, 3].value = pago.MontoTotal.ToString("N2");
             cexcel.Cells[28, 3].value = "Retirado";
             cexcel.ActiveWindow.SelectedSheets.PrintOut();
