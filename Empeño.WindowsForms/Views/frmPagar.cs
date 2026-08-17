@@ -738,7 +738,10 @@ namespace Empeño.WindowsForms.Views
 
                 // BLINDADO: montos desde datos persistidos, no textboxes (gemelo frmEmpeno.PrintRetiro).
                 cexcel.Cells[24, 3].value = _context.Intereses.Where(i => i.EmpenoId == empeno.EmpenoId).Sum(i => i.Monto).ToString("N2");
-                cexcel.Cells[25, 3].value = empeno.MontoPendiente.ToString("N2");
+                // Saldo del empeño ANTES del pago. CobrarHeadless hace `empeñoTemp.MontoPendiente -= pago.Monto` ANTES
+                // de llamar acá, así que MontoPendiente ya está en 0. Recomponemos sumando pago.Monto para mostrar el
+                // saldo real que el cliente pagó por la prenda (regla del dueño: el saldo del comprobante es lo cobrado).
+                cexcel.Cells[25, 3].value = (empeno.MontoPendiente + pago.Monto).ToString("N2");
                 cexcel.Cells[26, 3].value = pago.MontoTotal.ToString("N2");
                 cexcel.Cells[28, 3].value = "Cancelado";
                 cexcel.ActiveWindow.SelectedSheets.PrintOut();
@@ -790,7 +793,9 @@ namespace Empeño.WindowsForms.Views
 
                 // BLINDADO: desde el pago de capital y el pago de interés reales, no textboxes.
                 cexcel.Cells[24, 3].value = pagoInteres.MontoTotal.ToString("N2");
-                cexcel.Cells[25, 3].value = empeno.MontoPendiente.ToString("N2");
+                // Saldo del empeño ANTES del pago (mismo criterio que el overload sin pagoInteres): MontoPendiente aquí
+                // ya está en 0 tras el descuento, así que sumamos pago.Monto (capital pagado) para mostrar lo cobrado.
+                cexcel.Cells[25, 3].value = (empeno.MontoPendiente + pago.Monto).ToString("N2");
                 cexcel.Cells[26, 3].value = (pago.MontoTotal + pagoInteres.MontoTotal).ToString("N2");
                 cexcel.Cells[28, 3].value = "Cancelado";
                 cexcel.ActiveWindow.SelectedSheets.PrintOut();
