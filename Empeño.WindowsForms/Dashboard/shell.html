@@ -452,7 +452,7 @@
   function badge(e){return '<span class="badge '+bcl(e)+'">'+e+'</span>';}
   function renderEList(){var L=efilter();var q=eq.trim();document.getElementById('ecnt').textContent=q?(L.length+' encontrado'+(L.length===1?'':'s')):(ETOTAL+(E.length<ETOTAL?' · mostrando '+E.length:''));
     document.getElementById('elist').innerHTML=L.length?L.map(function(x){return '<div class="erow'+(x.id===esel?' sel':'')+'" data-id="'+x.id+'"><div class="ico'+(x.oro?' oro':'')+'">'+gem+'</div><div class="mid"><div class="t"><span class="id">#'+x.id+'</span> '+x.prenda+'</div><div class="s">'+x.cli+' · '+x.ced+'</div></div><div class="end">'+badge(x.estado)+'<div class="m num">₡'+fmt(x.pend)+' <small>pend.</small></div></div></div>';}).join(''):'<div class="empty">Sin empeños en este filtro.</div>';}
-  function renderEDetail(){var x=E.filter(function(e){return e.id===esel})[0];if(!x){document.getElementById('edetail').innerHTML='<div class="empty" style="padding:60px">Seleccioná un empeño para ver el detalle.</div>';return;}
+  function renderEDetail(){var x=E.filter(function(e){return e.id===esel})[0];if(!x){document.getElementById('edetail').innerHTML='<div style="display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:80px 40px;min-height:340px;border:2px dashed var(--line-2);border-radius:16px;background:linear-gradient(180deg,rgba(172,126,241,.04),transparent);color:var(--muted)"><svg width="72" height="72" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="opacity:.5;margin-bottom:14px"><path d="M4 7h16M4 12h16M4 17h10"/><circle cx="19" cy="17" r="3"/><path d="M21.5 19.5L23 21"/></svg><div style="font-size:1.05rem;font-weight:700;color:var(--ink);margin-bottom:6px">Seleccioná un empeño</div><div style="font-size:.85rem;max-width:280px;line-height:1.4">Elegí uno de la lista de la izquierda para ver sus cuotas, pagos y acciones.</div></div>';return;}
     var blq=(x.estado==='Cancelado'||x.estado==='Perdido'||x.estado==='Anulado');
     var rows,npag=(det&&det.id===x.id&&det.cuotas)?det.cuotas.filter(function(c){return c.pag>=c.tot;}).length:0;
     if(!det||det.id!==x.id){rows='<tbody><tr><td colspan="4" style="text-align:center;color:var(--faint);padding:16px">Cargando…</td></tr></tbody>';}
@@ -483,13 +483,14 @@
     var append=(d.skip&&d.skip>0);
     if(append){E=E.concat(nuevos);}
     else{
-      // Preservar la selección del usuario. Antes se hacía `esel=E[0].id` a ciegas → al refrescar mientras un
-      // empeño estaba abierto en el detalle, esel saltaba al primero de la lista (otro cliente) y el detalle
-      // terminaba mostrando datos de OTRO cliente. Ahora: si el empeño seleccionado sigue en la lista fresca,
-      // se mantiene (y su `det` local también). Solo si desapareció (por filtro/estado) se cae al primero.
+      // (a) Refresco manual del botón → deseleccionar SIEMPRE (regla del dueño: no dejar posicionado en
+      //     un empeño que la operadora no eligió deliberadamente). El detalle muestra el placeholder.
+      // (b) Cambio de filtro/carga inicial: si el empeño previo sigue en la lista fresca se conserva; si
+      //     desapareció (o no había ninguno) se cae al primero (comportamiento útil al entrar al módulo).
       var _prevEsel=esel;
       E=nuevos;
-      if(_prevEsel&&E.some(function(x){return x.id===_prevEsel;})){/* sigue en la lista → conservar esel y det */}
+      if(_deselOnRefresh){_deselOnRefresh=false;esel=null;det=null;}
+      else if(_prevEsel&&E.some(function(x){return x.id===_prevEsel;})){/* sigue en la lista → conservar esel y det */}
       else{esel=E.length?E[0].id:null;det=null;}
     }
     ETOTAL=(d.total!=null?d.total:E.length);
@@ -510,18 +511,24 @@
   // Combinado con el blindaje anti-staleness del backend, garantiza ver el estado real de la base (pagos, saldos).
   // Refrescar con FEEDBACK VISIBLE: loader global "Procesando…" + botón deshabilitado con spinner + "Actualizado ✓" al terminar.
   // Antes el botón hacía la petición pero SIN NINGÚN feedback → el usuario clickeaba y no sabía si había pasado algo.
-  var _refrRunning=false, _refrT=null, _refrBtnHtml=null;
+  // NUEVO (v2.5.0): al refrescar se DESELECCIONA el empeño abierto y el detalle muestra el placeholder "Seleccioná un
+  // empeño". Regla del dueño: nunca dejar posicionado en un empeño que la operadora no eligió deliberadamente.
+  var _refrRunning=false, _refrT=null, _refrBtnHtml=null, _deselOnRefresh=false;
   function refrescarEmpenos(){
     if(_refrRunning)return;   // anti-doble-click mientras hay uno en vuelo
     var b=document.getElementById('btnRefrescar');
     if(b&&_refrBtnHtml===null)_refrBtnHtml=b.innerHTML;
     _refrRunning=true;
+    // Deseleccionar YA (visualmente): el detalle se queda con el placeholder mientras llega la respuesta.
+    _deselOnRefresh=true; esel=null; det=null;
+    try{renderEDetail();}catch(e){}
     if(b){b.disabled=true;b.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="animation:ldspin 1s linear infinite"><path d="M21 12a9 9 0 1 1-2.64-6.36"/><path d="M21 3v6h-6"/></svg>Actualizando…';}
     busy(true);
     // Timeout de seguridad: si el backend no responde en 15s, libera el botón y avisa (no deja al usuario colgado).
     _refrT=setTimeout(function(){_refrRunning=false;busy(false);if(b){b.disabled=false;b.innerHTML=_refrBtnHtml||'Refrescar';}try{alert('El sistema no respondió al refrescar. Volvé a intentarlo.');}catch(e){}},15000);
     var s=(eq||'').trim();
-    if(HOST){post(s?{type:'searchEmpenos',q:s,filtro:ef}:{type:'loadEmpenos',filtro:ef});post({type:'diaResumen'});if(typeof esel!=='undefined'&&esel)post({type:'empenoDet',id:esel});}
+    // NO se postea empenoDet: sin selección no hay detalle que traer. La lista y el resumen del día sí se recargan.
+    if(HOST){post(s?{type:'searchEmpenos',q:s,filtro:ef}:{type:'loadEmpenos',filtro:ef});post({type:'diaResumen'});}
     else{_refrRunning=false;busy(false);if(b){b.disabled=false;b.innerHTML=_refrBtnHtml||'Refrescar';}}
   }
   // Cuando renderEmpenos aplica los datos nuevos, apagar el spinner y mostrar "Actualizado ✓" durante 1.5s.
