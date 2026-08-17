@@ -498,7 +498,30 @@
   function abrirEmpenosView(){var eqEl=document.getElementById('eq');if(eqEl)eqEl.value=eq;document.querySelectorAll('#echips .chip').forEach(function(x){x.classList.toggle('on',x.dataset.f===ef);});var s=(eq||'').trim();if(HOST)post(s?{type:'searchEmpenos',q:s,filtro:ef}:{type:'loadEmpenos',filtro:ef});}
   // Refresco FORZADO: recarga la lista (respetando búsqueda/filtro), los contadores del día y el detalle abierto.
   // Combinado con el blindaje anti-staleness del backend, garantiza ver el estado real de la base (pagos, saldos).
-  function refrescarEmpenos(){var s=(eq||'').trim();if(HOST){post(s?{type:'searchEmpenos',q:s,filtro:ef}:{type:'loadEmpenos',filtro:ef});post({type:'diaResumen'});if(typeof esel!=='undefined'&&esel)post({type:'empenoDet',id:esel});}}
+  // Refrescar con FEEDBACK VISIBLE: loader global "Procesando…" + botón deshabilitado con spinner + "Actualizado ✓" al terminar.
+  // Antes el botón hacía la petición pero SIN NINGÚN feedback → el usuario clickeaba y no sabía si había pasado algo.
+  var _refrRunning=false, _refrT=null, _refrBtnHtml=null;
+  function refrescarEmpenos(){
+    if(_refrRunning)return;   // anti-doble-click mientras hay uno en vuelo
+    var b=document.getElementById('btnRefrescar');
+    if(b&&_refrBtnHtml===null)_refrBtnHtml=b.innerHTML;
+    _refrRunning=true;
+    if(b){b.disabled=true;b.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="animation:ldspin 1s linear infinite"><path d="M21 12a9 9 0 1 1-2.64-6.36"/><path d="M21 3v6h-6"/></svg>Actualizando…';}
+    busy(true);
+    // Timeout de seguridad: si el backend no responde en 15s, libera el botón y avisa (no deja al usuario colgado).
+    _refrT=setTimeout(function(){_refrRunning=false;busy(false);if(b){b.disabled=false;b.innerHTML=_refrBtnHtml||'Refrescar';}try{alert('El sistema no respondió al refrescar. Volvé a intentarlo.');}catch(e){}},15000);
+    var s=(eq||'').trim();
+    if(HOST){post(s?{type:'searchEmpenos',q:s,filtro:ef}:{type:'loadEmpenos',filtro:ef});post({type:'diaResumen'});if(typeof esel!=='undefined'&&esel)post({type:'empenoDet',id:esel});}
+    else{_refrRunning=false;busy(false);if(b){b.disabled=false;b.innerHTML=_refrBtnHtml||'Refrescar';}}
+  }
+  // Cuando renderEmpenos aplica los datos nuevos, apagar el spinner y mostrar "Actualizado ✓" durante 1.5s.
+  (function(){var _origRE=window.renderEmpenos;window.renderEmpenos=function(d){var r;try{r=_origRE(d);}catch(e){}
+    if(_refrRunning){_refrRunning=false;if(_refrT){clearTimeout(_refrT);_refrT=null;}busy(false);
+      var b=document.getElementById('btnRefrescar');
+      if(b){b.disabled=false;b.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg>Actualizado';setTimeout(function(){if(b)b.innerHTML=_refrBtnHtml||'Refrescar';},1500);}
+    }
+    return r;
+  };})();
   (function(){var b=document.getElementById('btnRefrescar');if(b)b.addEventListener('click',refrescarEmpenos);})();
   window.abrirEmpenosView=abrirEmpenosView;
   document.getElementById('btnNuevo').addEventListener('click',function(){if(window.abrirNuevoEmpeno)window.abrirNuevoEmpeno();});
