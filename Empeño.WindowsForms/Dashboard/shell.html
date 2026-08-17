@@ -481,7 +481,17 @@
       +s(fcolor,(flujo<0?'-':'')+'<span class="c">₡</span>'+fmt(Math.abs(flujo)),'Flujo '+(d.fecha||'hoy'),'Cobrado menos prestado');};
   window.renderEmpenos=function(d){var nuevos=d.empenos||[];nuevos.forEach(function(x){x.cli=esc(x.cli);x.ced=esc(x.ced);x.tel=esc(x.tel);x.prenda=esc(x.prenda);x.plan=esc(x.plan);x.empleado=esc(x.empleado);x.correo=esc(x.correo);x.comentario=esc(x.comentario);});
     var append=(d.skip&&d.skip>0);
-    if(append){E=E.concat(nuevos);}else{E=nuevos;esel=E.length?E[0].id:null;det=null;}
+    if(append){E=E.concat(nuevos);}
+    else{
+      // Preservar la selección del usuario. Antes se hacía `esel=E[0].id` a ciegas → al refrescar mientras un
+      // empeño estaba abierto en el detalle, esel saltaba al primero de la lista (otro cliente) y el detalle
+      // terminaba mostrando datos de OTRO cliente. Ahora: si el empeño seleccionado sigue en la lista fresca,
+      // se mantiene (y su `det` local también). Solo si desapareció (por filtro/estado) se cae al primero.
+      var _prevEsel=esel;
+      E=nuevos;
+      if(_prevEsel&&E.some(function(x){return x.id===_prevEsel;})){/* sigue en la lista → conservar esel y det */}
+      else{esel=E.length?E[0].id:null;det=null;}
+    }
     ETOTAL=(d.total!=null?d.total:E.length);
     var _c=d.counts||{};document.getElementById('n-act').textContent=(_c.activos!=null?_c.activos:E.length);document.getElementById('n-ven').textContent=(_c.vencidos||0);document.getElementById('n-per').textContent=(_c.perdidos||0);var _na=document.getElementById('n-anu');if(_na)_na.textContent=(_c.anulados||0);document.getElementById('n-tod').textContent=(_c.todo!=null?_c.todo:E.length);
     ELOADING=false;
