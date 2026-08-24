@@ -160,9 +160,14 @@ namespace Empeño.WindowsForms.Dashboard
                     tieneBodegaje = (i.Bodegaje ?? 0) > 0,
                     mayor = i.Mayor
                 }).ToList();
-            // Próximo número de empeño (igual que el clásico: Max(EmpenoId)+1) para mostrarlo en el modal de alta.
+            // Próximo número de empeño (igual que el clásico: Max(EmpenoId)+1) para mostrarlo en el modal de alta
+            // y en el panel de detalle cuando no hay ningún empeño seleccionado.
             int proximo = ctx.Empenos.Any() ? ctx.Empenos.Max(e => e.EmpenoId) + 1 : 1;
-            return new { planes, proximo };
+            // Plazo por defecto del negocio (Configuraciones.Meses). El front lo usa cuando el plan no define meses;
+            // antes caía a 1 mes hardcodeado, que es la causa de que el empeño naciera venciendo al mes siguiente.
+            int mesesDefault = ctx.Configuraciones.Select(c => (int?)c.Meses).FirstOrDefault() ?? 0;
+            if (mesesDefault <= 0) mesesDefault = 3;
+            return new { planes, proximo, mesesDefault };
         }
 
         public static object Detalle(DataContext ctx, int id)

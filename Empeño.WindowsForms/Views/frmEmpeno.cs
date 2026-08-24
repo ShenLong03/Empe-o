@@ -1553,7 +1553,10 @@ namespace Empeño.WindowsForms.Views
                             funciones.PlaceHolder(txtAvaluo, lblAvaluo, PlaceHolderType.Leave, "Avalúo");
                             funciones.PlaceHolder(txtBodegaje, lblBodegaje, PlaceHolderType.Leave, "Bodegaje");
 
-                            lblVence.Text = DateTime.Today.AddMonths(mesesVencimiento).ToString("dd/MM/yyyy");
+                            // El plazo lo manda el PLAN. Antes esta rama (planes sin avalúo ni bodegaje) usaba
+                            // siempre el plazo por defecto de la configuración e ignoraba interes.Meses, así que un
+                            // plan de 3 meses nacía venciendo según la config y no según su propia regla.
+                            lblVence.Text = DateTime.Today.AddMonths(interes.Meses > 0 ? interes.Meses : mesesVencimiento).ToString("dd/MM/yyyy");
                         }
                             
                     }
@@ -1948,6 +1951,17 @@ namespace Empeño.WindowsForms.Views
         {
             try
             {
+                // El vencimiento depende SOLO del plan elegido, no del monto. Antes esto vivía únicamente dentro de
+                // SetupInteres, que corre solo si el plan tiene avalúo o bodegaje > 0 y además exige monto escrito:
+                // si la operadora elegía el plan ANTES de teclear el monto, "Vence" se quedaba con el plazo por
+                // defecto de la configuración, y ese valor es el que se guarda al crear el empeño.
+                if (this.empeñoId == 0)
+                {
+                    var planSel = await _context.Interes.Where(i => i.Nombre == cbInteres.Text).SingleOrDefaultAsync();
+                    if (planSel != null)
+                        lblVence.Text = DateTime.Today.AddMonths(planSel.Meses > 0 ? planSel.Meses : mesesVencimiento).ToString("dd/MM/yyyy");
+                }
+
                 if (!string.IsNullOrEmpty(txtMonto.Text) && txtMonto.Text != "Monto")
                 {
                     double monto;
@@ -1969,7 +1983,7 @@ namespace Empeño.WindowsForms.Views
                             funciones.PlaceHolder(txtAvaluo, lblAvaluo, PlaceHolderType.Leave, "Avalúo");
                             funciones.PlaceHolder(txtBodegaje, lblBodegaje, PlaceHolderType.Leave, "Bodegaje");
 
-                            lblVence.Text = this.empeñoId==0 ? DateTime.Today.AddMonths(mesesVencimiento).ToString("dd/MM/yyyy") : lblVence.Text;
+                            lblVence.Text = this.empeñoId==0 ? DateTime.Today.AddMonths(interes.Meses > 0 ? interes.Meses : mesesVencimiento).ToString("dd/MM/yyyy") : lblVence.Text;
                         }
 
                     }
@@ -2597,6 +2611,8 @@ namespace Empeño.WindowsForms.Views
                     Empeno = empeno,
                     EmpleadoId = empleado.EmpleadoId,
                     Empleado = empleado,
+                    // Cuota histórica sin PagoId: NO existe fecha de pago real que imprimir, así que se usa el
+                    // vencimiento de la cuota como referencia del período. No se inventa una fecha de caja.
                     Fecha=intereses.First().FechaVencimiento,
                     Monto=intereses.First().Pagado,
                     TipoPago=TipoPago.Interes
@@ -3034,6 +3050,13 @@ namespace Empeño.WindowsForms.Views
 
             var interes = await _context.Interes.FindAsync(interesId);
             if (interes == null) return new { ok = false, error = "El plan de interés no es válido." };
+
+            // RED DE SEGURIDAD del vencimiento. La pantalla lo calcula (fecha + meses del plan), pero si llega un
+            // valor imposible —vacío o no posterior a la fecha del empeño— se recalcula acá con el plazo del plan y,
+            // si el plan no lo define, con el plazo por defecto de la configuración. NO bloquea: un supervisor puede
+            // seguir ajustando la fecha a mano en el modal. Ese bloqueo fue el falso positivo removido en v2.4.4.
+            if (fechaVencimiento.Date <= fecha.Date)
+                fechaVencimiento = fecha.Date.AddMonths(interes.Meses > 0 ? interes.Meses : (mesesVencimientoDefault > 0 ? mesesVencimientoDefault : 3));
 
             // Regla del dueño: CUALQUIER perfil (Empleado/Supervisor/Administrador) puede crear un empeño con
             // su PIN. El PIN ya se validó en frmShell -> ValidatePIN("Empeño"), que permite Empleado también

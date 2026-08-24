@@ -1,4 +1,4 @@
-<!doctype html>
+﻿<!doctype html>
 <html lang="es">
 <head>
 <meta charset="utf-8">
@@ -452,7 +452,7 @@
   function badge(e){return '<span class="badge '+bcl(e)+'">'+e+'</span>';}
   function renderEList(){var L=efilter();var q=eq.trim();document.getElementById('ecnt').textContent=q?(L.length+' encontrado'+(L.length===1?'':'s')):(ETOTAL+(E.length<ETOTAL?' · mostrando '+E.length:''));
     document.getElementById('elist').innerHTML=L.length?L.map(function(x){return '<div class="erow'+(x.id===esel?' sel':'')+'" data-id="'+x.id+'"><div class="ico'+(x.oro?' oro':'')+'">'+gem+'</div><div class="mid"><div class="t"><span class="id">#'+x.id+'</span> '+x.prenda+'</div><div class="s">'+x.cli+' · '+x.ced+'</div></div><div class="end">'+badge(x.estado)+'<div class="m num">₡'+fmt(x.pend)+' <small>pend.</small></div></div></div>';}).join(''):'<div class="empty">Sin empeños en este filtro.</div>';}
-  function renderEDetail(){var x=E.filter(function(e){return e.id===esel})[0];if(!x){document.getElementById('edetail').innerHTML='<div style="display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:80px 40px;min-height:340px;border:2px dashed var(--line-2);border-radius:16px;background:linear-gradient(180deg,rgba(172,126,241,.04),transparent);color:var(--muted)"><svg width="72" height="72" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="opacity:.5;margin-bottom:14px"><path d="M4 7h16M4 12h16M4 17h10"/><circle cx="19" cy="17" r="3"/><path d="M21.5 19.5L23 21"/></svg><div style="font-size:1.05rem;font-weight:700;color:var(--ink);margin-bottom:6px">Seleccioná un empeño</div><div style="font-size:.85rem;max-width:280px;line-height:1.4">Elegí uno de la lista de la izquierda para ver sus cuotas, pagos y acciones.</div></div>';return;}
+  function renderEDetail(){var x=E.filter(function(e){return e.id===esel})[0];if(!x){var _pn=window.__proximoEmp;document.getElementById('edetail').innerHTML='<div style="display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:80px 40px;min-height:340px;border:2px dashed var(--line-2);border-radius:16px;background:linear-gradient(180deg,rgba(172,126,241,.04),transparent);color:var(--muted)">'+(_pn?'<div style="font-size:.7rem;letter-spacing:.09em;text-transform:uppercase;font-weight:800;color:var(--faint);margin-bottom:10px">Próximo empeño</div><div class="num" style="font-size:3rem;font-weight:800;color:var(--violet);line-height:1;margin-bottom:12px">#'+_pn+'</div><div style="font-size:.85rem;max-width:300px;line-height:1.4">Es el número que va a llevar el siguiente empeño que se cree. Elegí uno de la lista de la izquierda para ver sus cuotas, pagos y acciones.</div>':'<svg width="72" height="72" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="opacity:.5;margin-bottom:14px"><path d="M4 7h16M4 12h16M4 17h10"/><circle cx="19" cy="17" r="3"/><path d="M21.5 19.5L23 21"/></svg><div style="font-size:1.05rem;font-weight:700;color:var(--ink);margin-bottom:6px">Seleccioná un empeño</div><div style="font-size:.85rem;max-width:280px;line-height:1.4">Elegí uno de la lista de la izquierda para ver sus cuotas, pagos y acciones.</div>')+'</div>';return;}
     var blq=(x.estado==='Cancelado'||x.estado==='Perdido'||x.estado==='Anulado');
     var rows,npag=(det&&det.id===x.id&&det.cuotas)?det.cuotas.filter(function(c){return c.pag>=c.tot;}).length:0;
     if(!det||det.id!==x.id){rows='<tbody><tr><td colspan="4" style="text-align:center;color:var(--faint);padding:16px">Cargando…</td></tr></tbody>';}
@@ -499,6 +499,9 @@
     renderEList();
     if(!append){renderEDetail();if(esel&&HOST)post({type:'empenoDet',id:esel});}};
   window.renderEmpenoDetalle=function(d){det=d;renderEDetail();};
+  // El panel de detalle sin selección muestra el próximo número de empeño, que llega en el payload de
+  // loadPlanesFull. Este hook permite repintarlo cuando ese dato entra después del primer render.
+  window._edetailRefresh=function(){try{renderEDetail();}catch(e){}};
   document.getElementById('elist').addEventListener('click',function(e){var r=e.target.closest('.erow');if(!r)return;esel=+r.dataset.id;det=null;subtab='cuotas';verPagadas=false;renderEList();renderEDetail();if(HOST)post({type:'empenoDet',id:esel});});
   document.getElementById('elist').addEventListener('scroll',function(){var el=this;if(ELOADING||E.length>=ETOTAL)return;if(el.scrollTop+el.clientHeight>=el.scrollHeight-48){ELOADING=true;var s=eq.trim();if(HOST)post(s?{type:'searchEmpenos',q:s,filtro:ef,skip:E.length}:{type:'loadEmpenos',filtro:ef,skip:E.length});}});
   document.getElementById('echips').addEventListener('click',function(e){var c=e.target.closest('.chip');if(!c)return;document.querySelectorAll('#echips .chip').forEach(function(x){x.classList.remove('on')});c.classList.add('on');ef=c.dataset.f;PREFS.empFilter=ef;PREFS.empQ=eq;if(window.savePrefs)window.savePrefs();var s=eq.trim();if(HOST)post(s?{type:'searchEmpenos',q:s,filtro:ef}:{type:'loadEmpenos',filtro:ef});else renderEList();});
@@ -506,13 +509,15 @@
   document.getElementById('eq').addEventListener('input',function(e){eq=e.target.value;renderEList();
     if(HOST){clearTimeout(eqTimer);eqTimer=setTimeout(function(){var s=eq.trim();post(s?{type:'searchEmpenos',q:s,filtro:ef}:{type:'loadEmpenos',filtro:ef});PREFS.empQ=eq;PREFS.empFilter=ef;if(window.savePrefs)window.savePrefs();},250);}});
   // Abre Empeños respetando la búsqueda guardada (chip + texto) de la caché.
-  function abrirEmpenosView(){var eqEl=document.getElementById('eq');if(eqEl)eqEl.value=eq;document.querySelectorAll('#echips .chip').forEach(function(x){x.classList.toggle('on',x.dataset.f===ef);});var s=(eq||'').trim();if(HOST)post(s?{type:'searchEmpenos',q:s,filtro:ef}:{type:'loadEmpenos',filtro:ef});}
+  function abrirEmpenosView(){var eqEl=document.getElementById('eq');if(eqEl)eqEl.value=eq;document.querySelectorAll('#echips .chip').forEach(function(x){x.classList.toggle('on',x.dataset.f===ef);});var s=(eq||'').trim();if(HOST){post(s?{type:'searchEmpenos',q:s,filtro:ef}:{type:'loadEmpenos',filtro:ef});post({type:'loadPlanesFull'});}}
   // Refresco FORZADO: recarga la lista (respetando búsqueda/filtro), los contadores del día y el detalle abierto.
   // Combinado con el blindaje anti-staleness del backend, garantiza ver el estado real de la base (pagos, saldos).
   // Refrescar con FEEDBACK VISIBLE: loader global "Procesando…" + botón deshabilitado con spinner + "Actualizado ✓" al terminar.
   // Antes el botón hacía la petición pero SIN NINGÚN feedback → el usuario clickeaba y no sabía si había pasado algo.
-  // NUEVO (v2.5.0): al refrescar se DESELECCIONA el empeño abierto y el detalle muestra el placeholder "Seleccioná un
-  // empeño". Regla del dueño: nunca dejar posicionado en un empeño que la operadora no eligió deliberadamente.
+  // NUEVO (v2.5.0): al refrescar se DESELECCIONA el empeño abierto. Regla del dueño: nunca dejar posicionado en un
+  // empeño que la operadora no eligió deliberadamente.
+  // NUEVO (v2.5.1): sin selección el panel derecho muestra el NÚMERO DEL PRÓXIMO EMPEÑO (el código que va a llevar
+  // el siguiente que se cree), no un placeholder genérico.
   var _refrRunning=false, _refrT=null, _refrBtnHtml=null, _deselOnRefresh=false;
   function refrescarEmpenos(){
     if(_refrRunning)return;   // anti-doble-click mientras hay uno en vuelo
@@ -522,6 +527,8 @@
     // Deseleccionar YA (visualmente): el detalle se queda con el placeholder mientras llega la respuesta.
     _deselOnRefresh=true; esel=null; det=null;
     try{renderEDetail();}catch(e){}
+    // Repedir el próximo número: si se creó un empeño desde la última carga, ya avanzó.
+    if(HOST)post({type:'loadPlanesFull'});
     if(b){b.disabled=true;b.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="animation:ldspin 1s linear infinite"><path d="M21 12a9 9 0 1 1-2.64-6.36"/><path d="M21 3v6h-6"/></svg>Actualizando…';}
     busy(true);
     // Timeout de seguridad: si el backend no responde en 15s, libera el botón y avisa (no deja al usuario colgado).
@@ -751,10 +758,23 @@
     function planOpts(){g("nev-plan").innerHTML=PLANES.map(function(p){return '<option value="'+p.id+'">'+esc(p.nombre)+'</option>';}).join("");}
     function currentPlan(){var id=+g("nev-plan").value;for(var i=0;i<PLANES.length;i++)if(PLANES[i].id===id)return PLANES[i];return null;}
     function recalc(){var p=currentPlan();if(!p)return;var monto=parseFloat(g("nev-monto").value)||0;g("nev-avaluo").value=p.tieneAvaluo?(monto*p.avaluoPct).toFixed(2):"0";g("nev-bodegaje").value=p.tieneBodegaje?(monto*p.bodegajePct).toFixed(2):"0";
-      // Vence automático: fecha + meses del plan; si el plan no define meses (0), se usa 1 mes.
-      g("nev-vence").value=addMonths(g("nev-fecha").value||today(),(p.meses>0?p.meses:1));}
-    function autoPlan(){var monto=parseFloat(g("nev-monto").value)||0;var best=null;for(var i=0;i<PLANES.length;i++){if(PLANES[i].mayor<=monto&&(!best||PLANES[i].mayor>best.mayor))best=PLANES[i];}if(best)g("nev-plan").value=best.id;recalc();}
-    window.renderPlanesFull=function(d){PLANES=(d&&d.planes)||[];window.PLANESD=PLANES;planOpts();recalc();var _nn=g("nev-num");if(_nn)_nn.textContent=(d&&d.proximo)?("#"+d.proximo):"";if(window._edBodegajeRefresh)window._edBodegajeRefresh();};
+      // Vence automático: fecha + meses del plan. Si el plan no define meses (0) se usa el "Plazo por defecto"
+      // de la configuración del negocio (window.__mesesDefault, que llega del backend), NO 1 mes: ese 1 hardcodeado
+      // hacía que un empeño con plan sin meses configurados naciera venciendo al mes siguiente.
+      g("nev-vence").value=addMonths(g("nev-fecha").value||today(),(p.meses>0?p.meses:(window.__mesesDefault>0?window.__mesesDefault:3)));}
+    // Selección automática del plan por monto. Replica EXACTO al clásico (frmEmpeno.txtMonto_TextChanged):
+    // recorre los planes activos por InteresId ascendente y se queda con el ÚLTIMO cuyo umbral Mayor no supera
+    // el monto — o sea, entre todos los que califican gana el de InteresId más alto. Antes acá se elegía el de
+    // Mayor más grande y, ante empate, el PRIMERO de una lista ordenada alfabéticamente por nombre. Como casi
+    // todos los planes comparten Mayor (0 o 1), ese desempate era el que decidía la tarifa: para un monto de
+    // 150.000 el clásico daba "4.51%" (10,00% el primer mes) y acá salía "3.94% (new)" (9,00%).
+    function autoPlan(){var monto=parseFloat(g("nev-monto").value)||0;var best=null;for(var i=0;i<PLANES.length;i++){var p=PLANES[i];if(p.mayor<=monto&&(!best||p.id>best.id))best=p;}if(best)g("nev-plan").value=best.id;recalc();}
+    window.renderPlanesFull=function(d){PLANES=(d&&d.planes)||[];window.PLANESD=PLANES;
+      if(d&&d.mesesDefault>0)window.__mesesDefault=d.mesesDefault;
+      if(d&&d.proximo)window.__proximoEmp=d.proximo;
+      planOpts();recalc();var _nn=g("nev-num");if(_nn)_nn.textContent=(d&&d.proximo)?("#"+d.proximo):"";
+      if(window._edetailRefresh)window._edetailRefresh();
+      if(window._edBodegajeRefresh)window._edBodegajeRefresh();};
     function renderCliList(){var q=(g("nev-cliq").value||"").toLowerCase().trim();var box=g("nev-clist");if(!box)return;if(!q){box.style.display="none";box.innerHTML="";return;}var words=q.split(/\s+/).filter(Boolean);var res=clientes().filter(function(c){var hay=((c.nom||"")+" "+(c.ced||"")).toLowerCase();return words.every(function(w){return hay.indexOf(w)>=0;});}).slice(0,15);box.innerHTML=res.length?res.map(function(c){return '<div class="nevrow" data-id="'+c.id+'" style="padding:8px 11px;cursor:pointer;border-bottom:1px solid var(--line)">'+esc(c.nom)+' <span style="color:var(--muted)">· '+esc(c.ced)+'</span></div>';}).join(""):'<div style="padding:8px 11px;color:var(--muted)">Sin resultados — tocá «Ver lista» o probá otra palabra.</div>';box.style.display="block";}
     function selectCli(c){selCli=c;g("nev-clisel").innerHTML='<b>'+esc(c.nom)+'</b> · '+esc(c.ced)+' <span style="color:var(--violet);cursor:pointer;float:right" id="nev-clix">cambiar</span>';g("nev-clisel").style.display="block";g("nev-clist").style.display="none";g("nev-cliq").value="";g("nev-cliq").style.display="none";}
     g("nev-clist").addEventListener("click",function(e){var r=e.target.closest(".nevrow");if(!r)return;var id=+r.dataset.id;var c=clientes().filter(function(x){return x.id===id;})[0];if(c)selectCli(c);});
