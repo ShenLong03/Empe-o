@@ -97,10 +97,37 @@ namespace Empeño.WindowsForms.Views
                         await Autenticar((string)m["user"], (string)m["pass"]);
                         break;
                     case "enter":
-                        // Igual que el clásico (frmBienvenida): la revisión de vencimientos corre en
-                        // SEGUNDO PLANO y NO bloquea la apertura del dashboard. ReviewEmpeños abre su
-                        // propio DataContext y tiene try/catch interno, así que es seguro sin await.
-                        var _ = funciones.ReviewEmpeños();
+                        // Como el clásico (frmBienvenida): la puesta al día de intereses corre AQUÍ y se
+                        // ESPERA, detrás del splash que ya existe. A diferencia del clásico, el splash se
+                        // cierra cuando el trabajo TERMINA, no cuando se acaba un temporizador.
+                        var progreso = new Progress<Funciones.Funciones.ReviewProgreso>(p =>
+                        {
+                            try
+                            {
+                                var _p = web.CoreWebView2.ExecuteScriptAsync(
+                                    "window.reviewProgress(" + JsonConvert.SerializeObject(p) + ")");
+                            }
+                            catch { }
+                        });
+                        var resumen = await funciones.ReviewEmpeños(progreso);
+                        if (resumen == null || resumen.Fallo)
+                        {
+                            string aviso = "No se pudieron actualizar todos los intereses. "
+                                         + "Avisá al administrador antes de cobrar: los montos pueden estar incompletos.";
+                            await web.CoreWebView2.ExecuteScriptAsync("window.reviewError(" + JsonConvert.SerializeObject(aviso) + ")");
+                            // El fallo NO se pasa por alto en silencio: quien entra tiene que enterarse,
+                            // porque a partir de acá los intereses que vea pueden estar incompletos.
+                            MessageBox.Show(aviso, "Revisión de intereses", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        }
+                        else
+                        {
+                            await web.CoreWebView2.ExecuteScriptAsync("window.reviewOk(" + JsonConvert.SerializeObject(
+                                "Intereses al día: " + resumen.CuotasCreadas + " cuotas en " + resumen.EmpeñosRevisados + " empeños.") + ")");
+                            // Pausa breve para que el resumen del barrido se pueda LEER antes de que el
+                            // splash se vaya. Es el único lugar donde estos números quedan a la vista:
+                            // la bitácora se escribe pero nadie la lee desde la aplicación.
+                            await System.Threading.Tasks.Task.Delay(1800);
+                        }
                         var shell = new frmShell();
                         shell.Show();
                         // OJO: esta es la ventana de Application.Run. Si la cerramos, la app entera se

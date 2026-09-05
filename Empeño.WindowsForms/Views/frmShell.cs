@@ -22,6 +22,13 @@ namespace Empeño.WindowsForms.Views
         private readonly Funciones.Funciones funciones = new Funciones.Funciones();
         private WebView2 web;
 
+        // Autorizaciones de la sesión validadas en C#, no solo en el JS del shell: el PIN se pide al entrar a la
+        // sección y acá se recuerda. Los mensajes de carga que devuelven datos sensibles (loadBitacora: pagos y
+        // montos serializados; loadConfig: clave SMTP) se rechazan sin PIN válido aunque alguien publique el
+        // mensaje a mano (F12 / postMessage) saltándose el menú.
+        private bool _bitacoraAutorizada;
+        private bool _configAutorizada;
+
         public frmShell()
         {
             Text = "Empeños";
@@ -86,6 +93,10 @@ namespace Empeño.WindowsForms.Views
 
                 web.CoreWebView2.Settings.AreDefaultContextMenusEnabled = false;
                 web.CoreWebView2.Settings.IsStatusBarEnabled = false;
+                // Sin herramientas de desarrollador (F12) en el shell: desde ahí se puede publicar cualquier mensaje al
+                // C# (postMessage) saltándose el menú. Nada del sistema depende de ellas; los errores JS ya llegan por
+                // el mensaje "jsError" a shell-error-log.txt.
+                web.CoreWebView2.Settings.AreDevToolsEnabled = false;
                 web.CoreWebView2.WebMessageReceived += OnMessage;
                 web.CoreWebView2.NewWindowRequested += (s, a) => { a.Handled = true; try { Process.Start(a.Uri); } catch { } };
                 web.CoreWebView2.NavigationCompleted += async (s, a) =>
@@ -205,7 +216,33 @@ namespace Empeño.WindowsForms.Views
                         {
                             // Entrar a Configuración: solo Administrador. La vista no se muestra si no pasa.
                             bool okCfg = funciones.ValidatePIN("Configuración Admin");
+                            _configAutorizada = okCfg;
                             await web.CoreWebView2.ExecuteScriptAsync("window.__configPinResuelto(" + (okCfg ? "true" : "false") + ")");
+                            break;
+                        }
+                    case "bitacoraPin":
+                        {
+                            // Entrar a Bitácora: mismo gate que Configuración (SOLO Administrador). Valor puede
+                            // traer datos de negocio serializados (pagos, montos), por eso el mismo nivel de acceso.
+                            bool okBit = funciones.ValidatePIN("Configuración Admin");
+                            _bitacoraAutorizada = okBit;
+                            await web.CoreWebView2.ExecuteScriptAsync("window.__bitacoraPinResuelto(" + (okBit ? "true" : "false") + ")");
+                            break;
+                        }
+                    case "loadBitacora":
+                        {
+                            // SOLO LECTURA: BitacoraData nunca escribe. El PIN ya se validó al entrar a la sección
+                            // (case "bitacoraPin"); acá no se repite para no pedirlo en cada filtro/búsqueda, pero SÍ se
+                            // exige que esa validación haya ocurrido en esta sesión: sin ella no se devuelve nada.
+                            if (!_bitacoraAutorizada)
+                            {
+                                await funciones.SaveBitacora(new Empeño.CommonEF.Models.ValorBitacora { Modulo = "Bitácora", Accion = "AccesoDenegado", Valor = "loadBitacora sin PIN validado" }, 1, "Acceso a Bitácora sin PIN de administrador");
+                                break;
+                            }
+                            bool bitSoloErrores = m["soloErrores"] != null && (bool)m["soloErrores"];
+                            string bitTexto = m["texto"] != null ? (string)m["texto"] : null;
+                            string bj = JsonConvert.SerializeObject(BitacoraData.Lista(_context, ParseFecha(m, "desde"), ParseFecha(m, "hasta"), bitSoloErrores, bitTexto));
+                            await web.CoreWebView2.ExecuteScriptAsync("window.renderBitacora(" + bj + ")");
                             break;
                         }
                     case "clasico": AbrirClasico(); break;
@@ -283,6 +320,9 @@ namespace Empeño.WindowsForms.Views
                         }
                     case "cobrarInfo":
                         {
+                            // Interés al día ANTES de mostrar montos: PagosData.CobrarInfo es SOLO LECTURA,
+                            // así que la puesta al día se hace acá, antes de la consulta.
+                            await funciones.ReviewEmpeño((int)m["id"]);
                             string cj = JsonConvert.SerializeObject(PagosData.CobrarInfo(_context, (int)m["id"]));
                             await web.CoreWebView2.ExecuteScriptAsync("window.renderCobrar(" + cj + ")");
                             break;
@@ -314,7 +354,15 @@ namespace Empeño.WindowsForms.Views
                         }
                     case "empenoDet":
                         {
-                            string dj = JsonConvert.SerializeObject(EmpenosData.Detalle(_context, (int)m["id"]));
+                            // Igual que el clásico (frmEmpeno.cs:991-996): antes de MOSTRAR un empeño se revisa
+                            // (genera lo que falte) y se depuran duplicados. Ambas son idempotentes.
+                            int idDet = (int)m["id"];
+                            if (idDet > 0)
+                            {
+                                await funciones.ReviewEmpeño(idDet);
+                                await funciones.ReviewDuplicateEmpeños(idDet);
+                            }
+                            string dj = JsonConvert.SerializeObject(EmpenosData.Detalle(_context, idDet));
                             await web.CoreWebView2.ExecuteScriptAsync("window.renderEmpenoDetalle(" + dj + ")");
                             break;
                         }
@@ -621,6 +669,12 @@ namespace Empeño.WindowsForms.Views
                         }
                     case "loadConfig":
                         {
+                            // Devuelve la clave SMTP: mismo gate en C# que Bitácora (el PIN se validó en "configPin").
+                            if (!_configAutorizada)
+                            {
+                                await funciones.SaveBitacora(new Empeño.CommonEF.Models.ValorBitacora { Modulo = "Configuración", Accion = "AccesoDenegado", Valor = "loadConfig sin PIN validado" }, 1, "Acceso a Configuración sin PIN de administrador");
+                                break;
+                            }
                             string gj = JsonConvert.SerializeObject(ConfigData.Get(_context));
                             await web.CoreWebView2.ExecuteScriptAsync("window.renderConfig(" + gj + ")");
                             break;

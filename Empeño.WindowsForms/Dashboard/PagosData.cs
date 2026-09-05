@@ -30,6 +30,11 @@ namespace Empeño.WindowsForms.Dashboard
             // montoMinimo = TODO el interés pendiente. Es el mínimo a pagar para poder abonar a capital.
             double montoMinimo = e.Intereses.Where(i => i.MontoTotal > i.Pagado).Sum(i => i.MontoTotal - i.Pagado);
             var ultima = e.Intereses.OrderByDescending(o => o.InteresesId).FirstOrDefault();
+            // "Próxima fecha" = la primera cuota IMPAGA que vence hoy o después. Con el devengo al inicio del
+            // periodo la última cuota es la del mes en curso, así que "última + 1 mes" corría la fecha un periodo
+            // de más. Sin cuotas impagas a futuro (todo pagado) se conserva el criterio anterior.
+            var proximaCuota = e.Intereses.Where(i => i.MontoTotal > i.Pagado && i.FechaVencimiento >= DateTime.Today)
+                .OrderBy(i => i.FechaVencimiento).FirstOrDefault();
 
             return new
             {
@@ -39,7 +44,8 @@ namespace Empeño.WindowsForms.Dashboard
                 prenda = e.Descripcion,
                 capital = e.MontoPendiente,
                 montoMinimo,
-                proxima = ultima != null ? ultima.FechaVencimiento.AddMonths(1).ToString("dd/MM/yyyy") : "",
+                proxima = proximaCuota != null ? proximaCuota.FechaVencimiento.ToString("dd/MM/yyyy")
+                        : (ultima != null ? ultima.FechaVencimiento.AddMonths(1).ToString("dd/MM/yyyy") : ""),
                 cuotas
             };
         }

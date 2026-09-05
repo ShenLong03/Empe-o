@@ -109,7 +109,7 @@
         <h2>Bienvenido de nuevo</h2>
         <p>Gestioná empeños, cobros, caja y reportes desde un solo lugar.</p>
       </div>
-      <div class="ver">v2.5.2 · Nueva versión</div>
+      <div class="ver">v2.5.22 · Nueva versión</div>
     </div>
 
     <div class="formside">
@@ -201,19 +201,40 @@
     pass.value = ''; pass.focus();
   };
 
+  var RING_C = 326.7;
+
   window.loginOk = function(user){
     document.getElementById('who').textContent = user || 'Bienvenido';
     var sp = document.getElementById('splash'); sp.classList.add('show');
-    // anillo 0→100 y luego entrar al dashboard
-    var arc = document.getElementById('arc'), pctEl = document.getElementById('pct');
-    var C = 326.7, val = 0;
-    var t = setInterval(function(){
-      val += 1;
-      if(val >= 100){ val = 100; clearInterval(t); }
-      arc.setAttribute('stroke-dashoffset', (C * (1 - val/100)).toFixed(1));
-      pctEl.textContent = val + '%';
-      if(val === 100){ setTimeout(function(){ post({type:'enter'}); }, 450); }
-    }, 17);
+    // El anillo ya NO se auto-anima con un temporizador: refleja el progreso REAL de la
+    // puesta al día de intereses (window.reviewProgress) y se entra apenas arranca ese trabajo.
+    document.getElementById('arc').setAttribute('stroke-dashoffset', RING_C.toFixed(1));
+    document.getElementById('pct').textContent = '0%';
+    post({type:'enter'});
+  };
+
+  // ===== Progreso de la puesta al día de intereses (corre detrás del splash, ESPERADO) =====
+  // Recibe el objeto de avance (Etapa, Porcentaje, Procesados, Total, CuotasCreadas) para que
+  // el usuario vea QUE se esta haciendo y cuanto falta, no solo un numero subiendo.
+  window.reviewProgress = function(p){
+    if(!p) return;
+    var pct = p.Porcentaje || 0;
+    document.getElementById('arc').setAttribute('stroke-dashoffset', (RING_C * (1 - pct/100)).toFixed(1));
+    document.getElementById('pct').textContent = pct + '%';
+    var txt = p.Etapa || 'Trabajando';
+    if(p.Total > 0) txt += ' — ' + (p.Procesados || 0) + ' de ' + p.Total + ' empeños';
+    if(p.CuotasCreadas > 0) txt += ' · ' + p.CuotasCreadas + ' cuotas nuevas';
+    document.querySelector('.splash .ver').textContent = txt;
+  };
+
+  window.reviewOk = function(msg){
+    document.getElementById('arc').setAttribute('stroke-dashoffset', '0');
+    document.getElementById('pct').textContent = '100%';
+    document.querySelector('.splash .ver').textContent = msg;
+  };
+
+  window.reviewError = function(msg){
+    document.querySelector('.splash .ver').textContent = msg;
   };
 </script>
 </body>

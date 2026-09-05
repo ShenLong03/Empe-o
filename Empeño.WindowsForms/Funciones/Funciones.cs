@@ -8,6 +8,7 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
+using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using System.Runtime.CompilerServices;
@@ -416,7 +417,7 @@ namespace Empeño.WindowsForms.Funciones
         {
             using (DataContext _context = new DataContext())
             {
-                var empeños = await _context.Empenos.Where(w => (w.Estado == Estado.Vigente
+                var empeños = await _context.Empenos.Where(w => !w.IsDelete && (w.Estado == Estado.Vigente
                      || w.Estado == Estado.Pendiente
                      || w.Estado == Estado.Vencido)).ToListAsync();
 
@@ -450,7 +451,7 @@ namespace Empeño.WindowsForms.Funciones
                         _context.Intereses.RemoveRange(_context.Intereses.Where(i => i.InteresesId > item.InteresesId && i.EmpenoId == item.EmpenoId && i.FechaVencimiento == item.FechaVencimiento));
                     }
                     var proximoMes = DateTime.Today.AddMonths(1).AddDays(1);
-                    _context.Intereses.RemoveRange(_context.Intereses.Where(i => i.FechaVencimiento > proximoMes && i.Pagado <= 0));
+                    _context.Intereses.RemoveRange(_context.Intereses.Where(i => i.EmpenoId == empeñoId && i.FechaVencimiento > proximoMes && i.Pagado <= 0));
                     await _context.SaveChangesAsync();
                 }
             }
@@ -460,51 +461,98 @@ namespace Empeño.WindowsForms.Funciones
             }
         }
 
-        public async Task ReviewEmpeños() 
+        // Resultado del barrido de intereses. NO es una entidad: no se mapea, no toca el modelo EF.
+        public class ReviewResumen
         {
+            public int EmpeñosRevisados { get; set; }
+            public int CuotasCreadas { get; set; }
+            public int EmpeñosConError { get; set; }
+            public bool Fallo { get; set; }          // true si el catch exterior atrapó algo o EmpeñosConError > 0
+            public double Segundos { get; set; }
+        }
+
+        // Avance del barrido: sirve para que el usuario vea QUÉ se está haciendo, no sólo un
+        // porcentaje corriendo. Tampoco es una entidad.
+        public class ReviewProgreso
+        {
+            public int Porcentaje { get; set; }
+            public int Procesados { get; set; }
+            public int Total { get; set; }
+            public int CuotasCreadas { get; set; }
+            public string Etapa { get; set; }
+        }
+
+        public async Task<ReviewResumen> ReviewEmpeños(IProgress<ReviewProgreso> progreso = null)
+        {
+            var resumen = new ReviewResumen();
+            var cronometro = Stopwatch.StartNew();
             try
             {
+                // La consulta inicial sobre una cartera grande no es instantánea: sin este aviso el
+                // anillo se queda en 0% sin explicar nada.
+                progreso?.Report(new ReviewProgreso { Etapa = "Consultando la cartera" });
                 using (DataContext _context = new DataContext())
                 {
-                    var empeños = await _context.Empenos.Where(w => (w.Estado == Estado.Vigente
+                    var empeños = await _context.Empenos.Where(w => !w.IsDelete && (w.Estado == Estado.Vigente
                           || w.Estado == Estado.Pendiente
                           || w.Estado == Estado.Vencido)).ToListAsync();
 
                     if (empeños.Count > 0)
                     {
+                        int total = empeños.Count;
+                        int procesados = 0;
+                        int ultimoPct = -1;
+                        progreso?.Report(new ReviewProgreso { Total = total, Etapa = "Actualizando intereses" });
                         foreach (var empeño in empeños)
                         {
                             try
                             {
-                                if (empeño.Estado == Estado.Vigente || empeño.Estado == Estado.Vencido
-                                        || empeño.Estado == Estado.Pendiente)
+                                if (!empeño.IsDelete && (empeño.Estado == Estado.Vigente || empeño.Estado == Estado.Vencido
+                                        || empeño.Estado == Estado.Pendiente))
                                 {
                                     // Generación mes a mes (calendario). El cursor avanza SIEMPRE, así una
                                     // cuota ya existente no estanca la generación de las siguientes.
                                     // Avalúo NO se acumula mensual (cargo único); bodegaje SÍ es mensual.
-                                    DateTime ultimaFecha = empeño.Intereses.Any()
-                                        ? empeño.Intereses.Max(i => i.FechaVencimiento)
-                                        : empeño.FechaVencimiento;
-                                    DateTime proxima = ultimaFecha.AddMonths(1);
-
-                                    while (proxima <= DateTime.Today)
+                                    await _context.Entry(empeño).Collection(e => e.Intereses).LoadAsync();
+                                    // Ancla FIJA en la fecha de apertura del empeno. Cada cuota k se calcula como
+                                    // Fecha.AddMonths(k), NUNCA encadenando desde la cuota anterior: encadenar pierde el dia
+                                    // de corte para siempre al pasar por un mes corto (31/01 -> 28/02 -> 28/03 -> 28/04...).
+                                    // Calculando desde el ancla, febrero se recorta pero marzo vuelve al 31.
+                                    // El duplicado se evita por ANO+MES, no por fecha exacta: las cuotas que ya estan en la
+                                    // base pueden tener el dia derivado y no coincidirian con el dia correcto recalculado.
+                                    // La cuota k se crea cuando ARRANCA su periodo (Fecha.AddMonths(k-1)), no cuando vence.
+                                    // El tope de 600 meses es una guarda: una Fecha corrupta no puede colgar el barrido.
+                                    var mesesExistentes = new HashSet<int>(empeño.Intereses
+                                        .Select(i => i.FechaVencimiento.Year * 12 + i.FechaVencimiento.Month));
+                                    
+                                    for (int k = 1; k <= 600 && empeño.Fecha.AddMonths(k - 1).Date <= DateTime.Today; k++)
                                     {
-                                        bool yaExiste = _context.Intereses.Any(x => x.EmpenoId == empeño.EmpenoId && x.FechaVencimiento == proxima);
-                                        if (!yaExiste)
+                                        DateTime proxima = empeño.Fecha.AddMonths(k);
+                                        int claveMes = proxima.Year * 12 + proxima.Month;
+                                        if (mesesExistentes.Contains(claveMes))
+                                            continue;
+                                    
+                                        // Sin saldo pendiente no hay interes que cobrar. Una cuota en CERO se daria por pagada
+                                        // sola (0 >= 0), adelantaria un mes el vencimiento del empeno y saldria una factura en
+                                        // cero: no debe crearse.
+                                        double montoCuota = Math.Truncate((double)empeño.MontoPendiente * ((double)empeño.Interes.Porcentaje / (double)100));
+                                        double bodegaCuota = empeño.Interes.Bodegaje != null ? Math.Truncate((double)empeño.MontoPendiente * (double)empeño.Interes.PorcentajeBodegaje) : 0;
+                                        if (montoCuota + bodegaCuota <= 0)
+                                        continue;
+                                    
+                                        var intereses = new Intereses
                                         {
-                                            var intereses = new Intereses
-                                            {
-                                                EmpenoId = empeño.EmpenoId,
-                                                FechaCreacion = DateTime.Now,
-                                                Monto = Math.Truncate((double)empeño.MontoPendiente * ((double)empeño.Interes.Porcentaje / (double)100)),
-                                                MontoBodega = empeño.Interes.Bodegaje != null ? Math.Truncate((double)empeño.MontoPendiente * (double)empeño.Interes.PorcentajeBodegaje) : 0,
-                                                FechaVencimiento = proxima
-                                            };
-                                            _context.Intereses.Add(intereses);
-                                            await _context.SaveChangesAsync();
-                                        }
-                                        proxima = proxima.AddMonths(1);
+                                            EmpenoId = empeño.EmpenoId,
+                                            FechaCreacion = DateTime.Now,
+                                            Monto = montoCuota,
+                                            MontoBodega = bodegaCuota,
+                                            FechaVencimiento = proxima
+                                        };
+                                        _context.Intereses.Add(intereses);
+                                        mesesExistentes.Add(claveMes);   // el guard sigue valido SIN SaveChanges
+                                        resumen.CuotasCreadas++;
                                     }
+                                    await _context.SaveChangesAsync();
                                 }
 
                                 var count = await _context.Intereses.Where(i => i.EmpenoId == empeño.EmpenoId).ToListAsync();
@@ -515,7 +563,13 @@ namespace Empeño.WindowsForms.Funciones
                                                 .FirstOrDefaultAsync();
                                     if (ultimoInteres != null)
                                     {
-                                        if (ultimoInteres.FechaVencimiento < DateTime.Today && Math.Truncate(Math.Round(ultimoInteres.Pagado)) < Math.Truncate(ultimoInteres.MontoTotal))
+                                        Estado estadoAnterior = empeño.Estado;
+                                        // Ahora que la cuota del mes en curso se crea al ARRANCAR el periodo, la ultima cuota
+                                        // siempre vence a futuro. Mirar solo la ultima daria Vigente siempre y taparia la
+                                        // mora, asi que se evalua si hay CUALQUIER cuota ya vencida y sin pagar.
+                                        // 'count' ya viene materializado, por eso se puede usar MontoTotal (propiedad calculada).
+                                        if (count.Any(i => i.FechaVencimiento < DateTime.Today
+                                            && Math.Truncate(Math.Round(i.Pagado)) < Math.Truncate(i.MontoTotal)))
                                         {
                                             empeño.Estado = Estado.Pendiente;
                                         }
@@ -523,7 +577,10 @@ namespace Empeño.WindowsForms.Funciones
                                         {
                                             empeño.Estado = Estado.Vigente;
                                         }
-                                        _context.Entry(empeño).State = EntityState.Modified;
+                                        if (empeño.Estado != estadoAnterior)
+                                        {
+                                            _context.Entry(empeño).State = EntityState.Modified;
+                                        }
                                         await _context.SaveChangesAsync();
                                     }
 
@@ -545,11 +602,19 @@ namespace Empeño.WindowsForms.Funciones
 
                                     await _context.SaveChangesAsync();
                                 }
+
+                                resumen.EmpeñosRevisados++;
+
+                                // Soltar el grafo de ESTE empeño: sin esto el change tracker acumula TODA la
+                                // cartera y DetectChanges se vuelve O(n²) en un barrido largo.
+                                foreach (var it in empeño.Intereses.ToList()) _context.Entry(it).State = EntityState.Detached;
+                                _context.Entry(empeño).State = EntityState.Detached;
                             }
                             catch (Exception exEmpeño)
                             {
                                 // Un empeño con datos inconsistentes (p.ej. Interes null) NO debe abortar
                                 // la revisión de los demás. Se registra y se continúa.
+                                resumen.EmpeñosConError++;
                                 await SaveBitacora(new ValorBitacora
                                 {
                                     Valor = "Error al revisar el empeño " + empeño.EmpenoId,
@@ -557,11 +622,33 @@ namespace Empeño.WindowsForms.Funciones
                                     Accion = "Error"
                                 }, 1, exEmpeño.Message);
                             }
+                            procesados++;
+                            int pct = procesados * 100 / total;
+                            // Se informa sólo cuando el porcentaje CAMBIA: en una cartera grande, avisar
+                            // por cada empeño serían cientos de llamadas seguidas al WebView.
+                            if (pct != ultimoPct)
+                            {
+                                ultimoPct = pct;
+                                progreso?.Report(new ReviewProgreso
+                                {
+                                    Porcentaje = pct,
+                                    Procesados = procesados,
+                                    Total = total,
+                                    CuotasCreadas = resumen.CuotasCreadas,
+                                    Etapa = "Actualizando intereses"
+                                });
+                            }
                         }
                     }
+                    cronometro.Stop();
+                    resumen.Segundos = cronometro.Elapsed.TotalSeconds;
+                    resumen.Fallo = resumen.EmpeñosConError > 0;
                     await SaveBitacora(new ValorBitacora
                     {
-                        Valor = "Revisión Automatica de Empeños",
+                        Valor = "Revisión Automática de Empeños — revisados: " + resumen.EmpeñosRevisados
+                              + ", cuotas creadas: " + resumen.CuotasCreadas
+                              + ", con error: " + resumen.EmpeñosConError
+                              + ", duración: " + resumen.Segundos.ToString("N1") + "s",
                         Modulo = "Revisar Empeños",
                         Accion = "Automatico"
                     });
@@ -569,8 +656,17 @@ namespace Empeño.WindowsForms.Funciones
             }
             catch (Exception ex)
             {
-
+                // Antes: catch VACÍO. Un fallo FUERA del bucle (la consulta inicial, la conexión) dejaba la
+                // revisión completa sin correr y SIN NINGÚN rastro. SaveBitacora abre su propio contexto.
+                resumen.Fallo = true;
+                await SaveBitacora(new ValorBitacora
+                {
+                    Valor = "Error en la revisión automática de empeños",
+                    Modulo = "Revisar Empeños",
+                    Accion = "Error"
+                }, 1, ex.Message);
             }
+            return resumen;
         }
 
 
@@ -584,34 +680,46 @@ namespace Empeño.WindowsForms.Funciones
 
                     if (empeño != null)
                     {
-                        if (empeño.Estado == Estado.Vigente || empeño.Estado == Estado.Vencido
-                                || empeño.Estado == Estado.Pendiente)
+                        if (!empeño.IsDelete && (empeño.Estado == Estado.Vigente || empeño.Estado == Estado.Vencido
+                                || empeño.Estado == Estado.Pendiente))
                         {
-                            // Generación mes a mes (calendario). El cursor avanza SIEMPRE, así una
-                            // cuota ya existente no estanca la generación de las siguientes.
-                            // Avalúo NO se acumula mensual (cargo único); bodegaje SÍ es mensual.
-                            DateTime ultimaFecha = empeño.Intereses.Any()
-                                ? empeño.Intereses.Max(i => i.FechaVencimiento)
-                                : empeño.FechaVencimiento;
-                            DateTime proxima = ultimaFecha.AddMonths(1);
-
-                            while (proxima <= DateTime.Today)
+                            // Ancla FIJA en la fecha de apertura del empeno. Cada cuota k se calcula como
+                            // Fecha.AddMonths(k), NUNCA encadenando desde la cuota anterior: encadenar pierde el dia
+                            // de corte para siempre al pasar por un mes corto (31/01 -> 28/02 -> 28/03 -> 28/04...).
+                            // Calculando desde el ancla, febrero se recorta pero marzo vuelve al 31.
+                            // El duplicado se evita por ANO+MES, no por fecha exacta: las cuotas que ya estan en la
+                            // base pueden tener el dia derivado y no coincidirian con el dia correcto recalculado.
+                            // La cuota k se crea cuando ARRANCA su periodo (Fecha.AddMonths(k-1)), no cuando vence.
+                            // El tope de 600 meses es una guarda: una Fecha corrupta no puede colgar el barrido.
+                            var mesesExistentes = new HashSet<int>(empeño.Intereses
+                                .Select(i => i.FechaVencimiento.Year * 12 + i.FechaVencimiento.Month));
+                            
+                            for (int k = 1; k <= 600 && empeño.Fecha.AddMonths(k - 1).Date <= DateTime.Today; k++)
                             {
-                                bool yaExiste = _context.Intereses.Any(x => x.EmpenoId == empeño.EmpenoId && x.FechaVencimiento == proxima);
-                                if (!yaExiste)
+                                DateTime proxima = empeño.Fecha.AddMonths(k);
+                                int claveMes = proxima.Year * 12 + proxima.Month;
+                                if (mesesExistentes.Contains(claveMes))
+                                    continue;
+                            
+                                // Sin saldo pendiente no hay interes que cobrar. Una cuota en CERO se daria por pagada
+                                // sola (0 >= 0), adelantaria un mes el vencimiento del empeno y saldria una factura en
+                                // cero: no debe crearse.
+                                double montoCuota = Math.Truncate((double)empeño.MontoPendiente * ((double)empeño.Interes.Porcentaje / (double)100));
+                                double bodegaCuota = empeño.Interes.Bodegaje != null ? Math.Truncate((double)empeño.MontoPendiente * (double)empeño.Interes.PorcentajeBodegaje) : 0;
+                                if (montoCuota + bodegaCuota <= 0)
+                                continue;
+                            
+                                var intereses = new Intereses
                                 {
-                                    var intereses = new Intereses
-                                    {
-                                        EmpenoId = empeño.EmpenoId,
-                                        FechaCreacion = DateTime.Now,
-                                        Monto = Math.Truncate((double)empeño.MontoPendiente * ((double)empeño.Interes.Porcentaje / (double)100)),
-                                        MontoBodega = empeño.Interes.Bodegaje != null ? Math.Truncate((double)empeño.MontoPendiente * (double)empeño.Interes.PorcentajeBodegaje) : 0,
-                                        FechaVencimiento = proxima
-                                    };
-                                    _context.Intereses.Add(intereses);
-                                    await _context.SaveChangesAsync();
-                                }
-                                proxima = proxima.AddMonths(1);
+                                    EmpenoId = empeño.EmpenoId,
+                                    FechaCreacion = DateTime.Now,
+                                    Monto = montoCuota,
+                                    MontoBodega = bodegaCuota,
+                                    FechaVencimiento = proxima
+                                };
+                                _context.Intereses.Add(intereses);
+                                mesesExistentes.Add(claveMes);
+                                await _context.SaveChangesAsync();
                             }
 
 
@@ -624,7 +732,12 @@ namespace Empeño.WindowsForms.Funciones
                                             .FirstOrDefaultAsync();
                                 if (ultimoInteres != null)
                                 {
-                                    if (ultimoInteres.FechaVencimiento < DateTime.Today && Math.Truncate(Math.Round(ultimoInteres.Pagado)) < Math.Truncate(ultimoInteres.MontoTotal))
+                                    // Ahora que la cuota del mes en curso se crea al ARRANCAR el periodo, la ultima cuota
+                                    // siempre vence a futuro. Mirar solo la ultima daria Vigente siempre y taparia la
+                                    // mora, asi que se evalua si hay CUALQUIER cuota ya vencida y sin pagar.
+                                    // 'count' ya viene materializado, por eso se puede usar MontoTotal (propiedad calculada).
+                                    if (count.Any(i => i.FechaVencimiento < DateTime.Today
+                                        && Math.Truncate(Math.Round(i.Pagado)) < Math.Truncate(i.MontoTotal)))
                                     {
                                         empeño.Estado = Estado.Pendiente;
                                     }
@@ -669,9 +782,14 @@ namespace Empeño.WindowsForms.Funciones
                     });
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-
+                await SaveBitacora(new ValorBitacora
+                {
+                    Valor = "Error al revisar el empeño " + id,
+                    Modulo = "Revisar Empeños",
+                    Accion = "Error"
+                }, 1, ex.Message);
             }
         }
 

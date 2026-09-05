@@ -737,7 +737,13 @@ namespace Empeño.WindowsForms.Views
                 }
 
                 // BLINDADO: montos desde datos persistidos, no textboxes (gemelo frmEmpeno.PrintRetiro).
-                cexcel.Cells[24, 3].value = _context.Intereses.Where(i => i.EmpenoId == empeno.EmpenoId).Sum(i => i.Monto).ToString("N2");
+                // Interes COBRADO en ESTA transaccion. Esta sobrecarga es la cancelacion SIN cobro de
+                // interes (el empeno estaba vigente / al dia y no se ingreso monto de interes), asi que la
+                // linea va VACIA. Antes se imprimia la suma de TODO el historico de Intereses del empeno,
+                // que mostraba en el comprobante plata que el cliente ya habia pagado en meses anteriores.
+                // La cancelacion que SI cobra interes usa la sobrecarga con pagoInteres, que imprime
+                // pagoInteres.MontoTotal y no se toca.
+                cexcel.Cells[24, 3].value = string.Empty;
                 // Saldo del empeño ANTES del pago. CobrarHeadless hace `empeñoTemp.MontoPendiente -= pago.Monto` ANTES
                 // de llamar acá, así que MontoPendiente ya está en 0. Recomponemos sumando pago.Monto para mostrar el
                 // saldo real que el cliente pagó por la prenda (regla del dueño: el saldo del comprobante es lo cobrado).

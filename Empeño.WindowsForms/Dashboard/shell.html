@@ -147,6 +147,24 @@
   .actions{display:flex;gap:8px;flex-wrap:wrap;align-items:center}.actions .btn{padding:9px 12px;font-size:.82rem;white-space:nowrap}.actions .btn svg{width:15px;height:15px}.actions .btn.primary{flex:0 0 auto}.pin{font-size:.58rem;background:rgba(255,180,77,.16);color:var(--amber);padding:1px 5px;border-radius:5px;font-weight:800}
   .hide{display:none!important}
   :focus-visible{outline:2px solid var(--violet);outline-offset:2px;border-radius:8px}
+  /* Overlay del detalle: gira mientras se recarga el empeno y confirma antes de revelar la card. */
+  @keyframes edpop{0%{transform:scale(.4);opacity:0}60%{transform:scale(1.12)}100%{transform:scale(1);opacity:1}}
+  @keyframes edspin{to{transform:rotate(360deg)}}
+  @keyframes edfade{to{opacity:0;visibility:hidden}}
+  #edet-load{position:absolute;inset:0;z-index:6;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:18px;
+    border-radius:16px;background:rgba(30,28,72,.93);backdrop-filter:blur(3px)}
+  html.light #edet-load{background:rgba(255,255,255,.95)}
+  #edet-load .ring{width:78px;height:78px;border-radius:50%;border:6px solid var(--line-2);border-top-color:var(--violet);animation:edspin .8s linear infinite}
+  #edet-load .chk{width:78px;height:78px;border-radius:50%;display:grid;place-items:center;background:rgba(46,211,167,.16);border:3px solid var(--green);animation:edpop .35s cubic-bezier(.2,.9,.3,1.4) both}
+  #edet-load .chk svg{width:40px;height:40px;color:var(--green)}
+  #edet-load .txt{font-size:.9rem;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);text-align:center;padding:0 20px}
+  #edet-load.ok .txt{color:var(--green)}
+  #edet-load.fuera{animation:edfade .45s ease forwards}
+  @keyframes campoMal{0%,100%{transform:translateX(0)}15%{transform:translateX(-7px)}30%{transform:translateX(7px)}45%{transform:translateX(-5px)}60%{transform:translateX(5px)}75%{transform:translateX(-2px)}}
+  @keyframes brillaMal{0%,100%{box-shadow:0 0 0 0 rgba(255,93,115,0)}50%{box-shadow:0 0 0 7px rgba(255,93,115,.32)}}
+  input.campo-mal{animation:campoMal .45s ease,brillaMal 1.1s ease 3;border-color:var(--red)!important;background:rgba(255,93,115,.10)!important;color:var(--red)!important;font-weight:800}
+  .clierr.grande{display:none;font-size:.92rem;font-weight:800;line-height:1.35;color:var(--red);background:rgba(255,93,115,.13);border:2px solid var(--red);border-radius:12px;padding:12px 14px;text-align:center}
+  .clierr.grande.show{display:block;animation:campoMal .45s ease}
 </style>
 </head>
 <body>
@@ -160,6 +178,7 @@
       <a data-nav="caja"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="6" width="18" height="12" rx="2"/><circle cx="12" cy="12" r="2.5"/></svg><span class="lbl">Caja</span></a>
       <a data-nav="reportes"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></svg><span class="lbl">Reportes</span></a>
       <a data-nav="config"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M5 5l2 2M17 17l2 2M19 5l-2 2M7 17l-2 2"/></svg><span class="lbl">Configuración</span></a>
+      <a data-nav="bitacora"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5V4.5A2.5 2.5 0 016.5 2H18a2 2 0 012 2v17l-3-2-3 2-3-2-3 2-3-2z"/><path d="M8 7h8M8 11h8M8 15h5"/></svg><span class="lbl">Bitácora</span></a>
     </nav>
     <div class="spacer"></div>
     <div class="foot">
@@ -332,6 +351,20 @@
           <div class="tbl-wrap" style="max-height:340px;overflow:auto"><table><thead><tr><th>Nombre</th><th>Usuario</th><th>Perfil</th><th>Correo</th><th>Teléfono</th><th></th></tr></thead><tbody id="cfg-emp-rows"><tr><td colspan="6" style="text-align:center;color:var(--faint);padding:16px">Cargando…</td></tr></tbody></table></div>
         </div>
       </div>
+
+      <!-- ===== BITÁCORA ===== -->
+      <div id="view-bitacora" class="hide">
+        <div class="pagehd"><h1>Bitácora</h1><div class="sub">Auditoría y errores registrados automáticamente por el sistema (solo lectura).</div></div>
+        <div style="display:grid;grid-template-columns:1fr 1fr auto auto auto;gap:10px;align-items:end;margin-bottom:14px">
+          <label>Desde (dd/MM/yyyy)<input id="bit-desde" autocomplete="off"></label>
+          <label>Hasta (dd/MM/yyyy)<input id="bit-hasta" autocomplete="off"></label>
+          <label style="flex-direction:row;align-items:center;gap:7px;text-transform:none;font-size:.8rem;color:var(--ink)"><input type="checkbox" id="bit-errores" style="width:15px;height:15px"> Solo errores</label>
+          <label class="search" style="padding:8px 12px;flex:none;min-width:260px"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4-4"/></svg><input id="bit-q" placeholder="Buscar en mensaje o detalle… (ej. 3943)"></label>
+          <button class="btn ghost" id="bit-ver" style="padding:10px 16px">Ver</button>
+        </div>
+        <div class="panel" style="padding:0;margin-bottom:8px"><div class="tbl-wrap" style="border:0;max-height:520px;overflow:auto"><table><thead><tr><th>Fecha</th><th>Módulo</th><th>Acción</th><th>Mensaje</th><th>Usuario</th><th></th></tr></thead><tbody id="bit-rows"><tr><td colspan="6" style="text-align:center;color:var(--faint);padding:16px">Cargando…</td></tr></tbody></table></div></div>
+        <div class="sub" id="bit-total"></div>
+      </div>
     </div>
   </div>
 </div>
@@ -379,17 +412,20 @@
   var T=null,cur='porVencer';
 
   /* ---------- navegación SPA + ventana ---------- */
-  var MOD={tablero:'Tablero',empenos:'Empeños',clientes:'Clientes',caja:'Caja',reportes:'Reportes',config:'Configuración'};
-  var LOCAL=['tablero','empenos','clientes','caja','reportes','config'],loaded={};
+  var MOD={tablero:'Tablero',empenos:'Empeños',clientes:'Clientes',caja:'Caja',reportes:'Reportes',config:'Configuración',bitacora:'Bitácora'};
+  var LOCAL=['tablero','empenos','clientes','caja','reportes','config','bitacora'],loaded={};
   var LOADMSG={empenos:'loadEmpenos',clientes:'loadClientes',caja:'loadCaja',config:'loadConfig'};
   function show(view){LOCAL.forEach(function(v){var el=document.getElementById('view-'+v);if(el)el.classList.toggle('hide',v!==view);});
     document.getElementById('crumbtxt').textContent=MOD[view]||'Tablero';}
   document.getElementById('nav').addEventListener('click',function(e){var a=e.target.closest('a');if(!a)return;var mod=a.dataset.nav;
     if(LOCAL.indexOf(mod)>=0){
-      // Configuración es solo para Administradores: pedir PIN ANTES de entrar (no se muestra si no pasa).
+      // Configuración y Bitácora son solo para Administradores: pedir PIN ANTES de entrar (no se muestran si no pasa).
       if(mod==='config'&&HOST){post({type:'configPin'});return;}
+      if(mod==='bitacora'&&HOST){post({type:'bitacoraPin'});return;}
       document.querySelectorAll('#nav a').forEach(function(x){x.classList.remove('on')});a.classList.add('on');show(mod);
-      if(mod==='empenos'){if(!loaded.empenos){loaded.empenos=true;if(window.abrirEmpenosView)window.abrirEmpenosView();}if(HOST)post({type:'diaResumen'});}
+      // Empenos se re-abre SIEMPRE: antes solo corria la primera vez (if(!loaded.empenos)), asi que
+      // volver a tocar la opcion no hacia nada y quedaba la lista y el detalle de la vez anterior.
+      if(mod==='empenos'){loaded.empenos=true;if(window.abrirEmpenosView)window.abrirEmpenosView();if(HOST)post({type:'diaResumen'});}
       else if(LOADMSG[mod]&&!loaded[mod]){loaded[mod]=true;if(HOST)post({type:LOADMSG[mod]});}
       if(mod==='reportes'&&window.__abrirReporte)window.__abrirReporte();return;}
     if(HOST)post({type:'nav',module:mod});});
@@ -402,6 +438,16 @@
     show('config');
     if(!loaded.config){loaded.config=true;if(HOST)post({type:'loadConfig'});}
     if(HOST)post({type:'loadEmpleados'});
+  };
+  // Respuesta del PIN de Bitácora (solo Admin): si pasa, recién ahí se entra a la sección. Se recarga
+  // SIEMPRE al entrar (no se cachea, como Arqueo) porque es un registro vivo que sigue creciendo.
+  window.__bitacoraPinResuelto=function(ok){
+    if(!ok){try{alert('La Bitácora es solo para Administradores.');}catch(e){}return;}
+    var a=document.querySelector('#nav a[data-nav="bitacora"]');
+    document.querySelectorAll('#nav a').forEach(function(x){x.classList.remove('on')});
+    if(a)a.classList.add('on');
+    show('bitacora');
+    if(window.abrirBitacora)window.abrirBitacora();
   };
   document.querySelector('.wctl').addEventListener('click',function(e){var b=e.target.closest('button');if(!b)return;if(HOST)post({type:b.dataset.win});});
   (function(){var ab=document.querySelector('.appbar');if(!ab)return;ab.style.cursor='default';ab.addEventListener('mousedown',function(e){if(e.button!==0||e.target.closest('button')||e.target.closest('input'))return;if(HOST)post({type:'startdrag'});});ab.addEventListener('dblclick',function(e){if(e.target.closest('button'))return;if(HOST)post({type:'max'});});})();
@@ -450,7 +496,16 @@
   function efilter(){var q=eq.trim().toLowerCase();var qn=/^[0-9]+$/.test(q)?parseInt(q,10):null;
     return E.filter(function(x){return !q||(x.cli+' '+x.ced+' '+x.prenda+' '+x.id).toLowerCase().indexOf(q)>=0||(qn!==null&&x.id===qn);});}
   function badge(e){return '<span class="badge '+bcl(e)+'">'+e+'</span>';}
-  function renderEList(){var L=efilter();var q=eq.trim();document.getElementById('ecnt').textContent=q?(L.length+' encontrado'+(L.length===1?'':'s')):(ETOTAL+(E.length<ETOTAL?' · mostrando '+E.length:''));
+  function renderEList(){
+    if(_listaOculta){
+      document.getElementById('ecnt').textContent='';
+      document.getElementById('elist').innerHTML='<div style="display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:54px 22px;color:var(--faint)">'
+        +'<svg width="46" height="46" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="opacity:.55;margin-bottom:12px"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>'
+        +'<div style="font-size:.9rem;font-weight:700;color:var(--muted);margin-bottom:4px">Buscá un empeño</div>'
+        +'<div style="font-size:.8rem;line-height:1.4;max-width:230px">Escribí una cédula, nombre, prenda o número, o elegí uno de los filtros de arriba.</div></div>';
+      return;
+    }
+    var L=efilter();var q=eq.trim();document.getElementById('ecnt').textContent=q?(L.length+' encontrado'+(L.length===1?'':'s')):(ETOTAL+(E.length<ETOTAL?' · mostrando '+E.length:''));
     document.getElementById('elist').innerHTML=L.length?L.map(function(x){return '<div class="erow'+(x.id===esel?' sel':'')+'" data-id="'+x.id+'"><div class="ico'+(x.oro?' oro':'')+'">'+gem+'</div><div class="mid"><div class="t"><span class="id">#'+x.id+'</span> '+x.prenda+'</div><div class="s">'+x.cli+' · '+x.ced+'</div></div><div class="end">'+badge(x.estado)+'<div class="m num">₡'+fmt(x.pend)+' <small>pend.</small></div></div></div>';}).join(''):'<div class="empty">Sin empeños en este filtro.</div>';}
   function renderEDetail(){var x=E.filter(function(e){return e.id===esel})[0];if(!x){var _pn=window.__proximoEmp;document.getElementById('edetail').innerHTML='<div style="display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:80px 40px;min-height:340px;border:2px dashed var(--line-2);border-radius:16px;background:linear-gradient(180deg,rgba(172,126,241,.04),transparent);color:var(--muted)">'+(_pn?'<div style="font-size:.7rem;letter-spacing:.09em;text-transform:uppercase;font-weight:800;color:var(--faint);margin-bottom:10px">Próximo empeño</div><div class="num" style="font-size:3rem;font-weight:800;color:var(--violet);line-height:1;margin-bottom:12px">#'+_pn+'</div><div style="font-size:.85rem;max-width:300px;line-height:1.4">Es el número que va a llevar el siguiente empeño que se cree. Elegí uno de la lista de la izquierda para ver sus cuotas, pagos y acciones.</div>':'<svg width="72" height="72" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="opacity:.5;margin-bottom:14px"><path d="M4 7h16M4 12h16M4 17h10"/><circle cx="19" cy="17" r="3"/><path d="M21.5 19.5L23 21"/></svg><div style="font-size:1.05rem;font-weight:700;color:var(--ink);margin-bottom:6px">Seleccioná un empeño</div><div style="font-size:.85rem;max-width:280px;line-height:1.4">Elegí uno de la lista de la izquierda para ver sus cuotas, pagos y acciones.</div>')+'</div>';return;}
     var blq=(x.estado==='Cancelado'||x.estado==='Perdido'||x.estado==='Anulado');
@@ -491,25 +546,37 @@
       E=nuevos;
       if(_deselOnRefresh){_deselOnRefresh=false;esel=null;det=null;}
       else if(_prevEsel&&E.some(function(x){return x.id===_prevEsel;})){/* sigue en la lista → conservar esel y det */}
-      else{esel=E.length?E[0].id:null;det=null;}
+      // Regla del duenno: la lista NUNCA arranca con un empeno seleccionado. Antes caia al
+      // primero de la lista y el detalle aparecia lleno sin que nadie lo hubiera elegido.
+      else{esel=null;det=null;}
     }
     ETOTAL=(d.total!=null?d.total:E.length);
     var _c=d.counts||{};document.getElementById('n-act').textContent=(_c.activos!=null?_c.activos:E.length);document.getElementById('n-ven').textContent=(_c.vencidos||0);document.getElementById('n-per').textContent=(_c.perdidos||0);var _na=document.getElementById('n-anu');if(_na)_na.textContent=(_c.anulados||0);document.getElementById('n-tod').textContent=(_c.todo!=null?_c.todo:E.length);
     ELOADING=false;
     renderEList();
     if(!append){renderEDetail();if(esel&&HOST)post({type:'empenoDet',id:esel});}};
-  window.renderEmpenoDetalle=function(d){det=d;renderEDetail();};
+  window.renderEmpenoDetalle=function(d){det=d;renderEDetail();
+    // Si el detalle se pidio tras un cobro, confirmar en pantalla y dejar el aviso a la vista.
+    if(_avisoPendiente){_avisoPendiente=false;listoDetalle();}
+  };
   // El panel de detalle sin selección muestra el próximo número de empeño, que llega en el payload de
   // loadPlanesFull. Este hook permite repintarlo cuando ese dato entra después del primer render.
   window._edetailRefresh=function(){try{renderEDetail();}catch(e){}};
   document.getElementById('elist').addEventListener('click',function(e){var r=e.target.closest('.erow');if(!r)return;esel=+r.dataset.id;det=null;subtab='cuotas';verPagadas=false;renderEList();renderEDetail();if(HOST)post({type:'empenoDet',id:esel});});
   document.getElementById('elist').addEventListener('scroll',function(){var el=this;if(ELOADING||E.length>=ETOTAL)return;if(el.scrollTop+el.clientHeight>=el.scrollHeight-48){ELOADING=true;var s=eq.trim();if(HOST)post(s?{type:'searchEmpenos',q:s,filtro:ef,skip:E.length}:{type:'loadEmpenos',filtro:ef,skip:E.length});}});
-  document.getElementById('echips').addEventListener('click',function(e){var c=e.target.closest('.chip');if(!c)return;document.querySelectorAll('#echips .chip').forEach(function(x){x.classList.remove('on')});c.classList.add('on');ef=c.dataset.f;PREFS.empFilter=ef;PREFS.empQ=eq;if(window.savePrefs)window.savePrefs();var s=eq.trim();if(HOST)post(s?{type:'searchEmpenos',q:s,filtro:ef}:{type:'loadEmpenos',filtro:ef});else renderEList();});
+  document.getElementById('echips').addEventListener('click',function(e){var c=e.target.closest('.chip');if(!c)return;document.querySelectorAll('#echips .chip').forEach(function(x){x.classList.remove('on')});c.classList.add('on');ef=c.dataset.f;PREFS.empFilter=ef;PREFS.empQ=eq;if(window.savePrefs)window.savePrefs();mostrarLista();var s=eq.trim();if(HOST)post(s?{type:'searchEmpenos',q:s,filtro:ef}:{type:'loadEmpenos',filtro:ef});else renderEList();});
   var eqTimer=null;
   document.getElementById('eq').addEventListener('input',function(e){eq=e.target.value;renderEList();
+    mostrarLista();
     if(HOST){clearTimeout(eqTimer);eqTimer=setTimeout(function(){var s=eq.trim();post(s?{type:'searchEmpenos',q:s,filtro:ef}:{type:'loadEmpenos',filtro:ef});PREFS.empQ=eq;PREFS.empFilter=ef;if(window.savePrefs)window.savePrefs();},250);}});
   // Abre Empeños respetando la búsqueda guardada (chip + texto) de la caché.
-  function abrirEmpenosView(){var eqEl=document.getElementById('eq');if(eqEl)eqEl.value=eq;document.querySelectorAll('#echips .chip').forEach(function(x){x.classList.toggle('on',x.dataset.f===ef);});var s=(eq||'').trim();if(HOST){post(s?{type:'searchEmpenos',q:s,filtro:ef}:{type:'loadEmpenos',filtro:ef});post({type:'loadPlanesFull'});}}
+  function abrirEmpenosView(){
+    // Al entrar por el menu se limpia TODO: lista y detalle en blanco mientras llegan los datos.
+    // _deselOnRefresh evita que renderEmpenos auto-seleccione el primero de la lista al responder:
+    // sin esto el detalle se vuelve a llenar solo y nunca se ve limpio.
+    limpiarVistaEmpenos();
+    _deselOnRefresh=true;
+    var eqEl=document.getElementById('eq');if(eqEl)eqEl.value=eq;document.querySelectorAll('#echips .chip').forEach(function(x){x.classList.toggle('on',x.dataset.f===ef);});var s=(eq||'').trim();if(HOST){post(s?{type:'searchEmpenos',q:s,filtro:ef}:{type:'loadEmpenos',filtro:ef});post({type:'loadPlanesFull'});}}
   // Refresco FORZADO: recarga la lista (respetando búsqueda/filtro), los contadores del día y el detalle abierto.
   // Combinado con el blindaje anti-staleness del backend, garantiza ver el estado real de la base (pagos, saldos).
   // Refrescar con FEEDBACK VISIBLE: loader global "Procesando…" + botón deshabilitado con spinner + "Actualizado ✓" al terminar.
@@ -518,6 +585,59 @@
   // empeño que la operadora no eligió deliberadamente.
   // NUEVO (v2.5.1): sin selección el panel derecho muestra el NÚMERO DEL PRÓXIMO EMPEÑO (el código que va a llevar
   // el siguiente que se cree), no un placeholder genérico.
+  // Overlay del detalle: spinner grande + "ACTUALIZANDO INFORMACION...", y al llegar el dato un
+  // check verde con "INFORMACION ACTUALIZADA" que se desvanece y deja ver la card ya al dia.
+  var _avisoPendiente=false,_avisoT=null,_fueCancelacion=false;
+  // La lista arranca VACIA a proposito: se carga igual (para tener los contadores de los chips)
+  // pero no se pinta hasta que el usuario busca o elige un filtro. Antes se repintaba sola y
+  // volvia a aparecer aunque se hubiera limpiado.
+  var _listaOculta=false;
+  // Tras crear un empeno lo UNICO visible debe ser ese: se limpia todo y se busca por su numero.
+  function verSoloEmpeno(id){
+    if(!id){return;}
+    limpiarVistaEmpenos();
+    _listaOculta=false; _deselOnRefresh=false;
+    eq=String(id); ef="todo"; esel=id;
+    var eqEl=document.getElementById("eq"); if(eqEl)eqEl.value=eq;
+    var chips=document.querySelectorAll("#echips .chip");
+    for(var k=0;k<chips.length;k++){chips[k].classList.toggle("on",chips[k].dataset.f===ef);}
+    if(window.PREFS){PREFS.empQ=eq;PREFS.empFilter=ef;if(window.savePrefs)window.savePrefs();}
+    if(HOST){post({type:"searchEmpenos",q:eq,filtro:ef});post({type:"empenoDet",id:id});post({type:"diaResumen"});}
+  }
+  function mostrarLista(){if(_listaOculta){_listaOculta=false;try{renderEList();}catch(e){}}}
+  function _edetOverlay(){
+    var h=document.getElementById("edetail"); if(!h)return null;
+    if(!h.style.position)h.style.position="relative";
+    var n=document.getElementById("edet-load");
+    if(!n||n.parentNode!==h){n=document.createElement("div");n.id="edet-load";h.appendChild(n);}
+    return n;
+  }
+  function cargandoDetalle(){
+    if(_avisoT){clearTimeout(_avisoT);_avisoT=null;}
+    var n=_edetOverlay(); if(!n)return;
+    n.className="";
+    n.innerHTML='<div class="ring"></div><div class="txt">Actualizando informaci\u00f3n\u2026</div>';
+  }
+  function listoDetalle(){
+    var n=_edetOverlay(); if(!n)return;
+    n.className="ok";
+    n.innerHTML='<div class="chk"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg></div><div class="txt">Informaci\u00f3n actualizada</div>';
+    if(_avisoT)clearTimeout(_avisoT);
+    _avisoT=setTimeout(function(){var q=document.getElementById("edet-load");
+      if(q){q.className="ok fuera";setTimeout(function(){if(q&&q.parentNode)q.parentNode.removeChild(q);},450);}},900);
+  }
+  function ocultarAvisoDetalle(){
+    if(_avisoT){clearTimeout(_avisoT);_avisoT=null;}
+    var q=document.getElementById("edet-load"); if(q&&q.parentNode)q.parentNode.removeChild(q);
+    _avisoPendiente=false;
+  }
+  // Limpieza total de la vista de empenos: lista vacia y detalle en blanco.
+  function limpiarVistaEmpenos(){
+    E=[];ETOTAL=0;ELOADING=false;esel=null;det=null;_listaOculta=true;
+    ocultarAvisoDetalle();
+    try{renderEList();}catch(e){}
+    try{renderEDetail();}catch(e){}
+  }
   var _refrRunning=false, _refrT=null, _refrBtnHtml=null, _deselOnRefresh=false;
   function refrescarEmpenos(){
     if(_refrRunning)return;   // anti-doble-click mientras hay uno en vuelo
@@ -525,8 +645,9 @@
     if(b&&_refrBtnHtml===null)_refrBtnHtml=b.innerHTML;
     _refrRunning=true;
     // Deseleccionar YA (visualmente): el detalle se queda con el placeholder mientras llega la respuesta.
-    _deselOnRefresh=true; esel=null; det=null;
-    try{renderEDetail();}catch(e){}
+    // Refrescar limpia lista Y detalle: se ven vacios hasta que llega la respuesta.
+    _deselOnRefresh=true;
+    limpiarVistaEmpenos();
     // Repedir el próximo número: si se creó un empeño desde la última carga, ya avanzó.
     if(HOST)post({type:'loadPlanesFull'});
     if(b){b.disabled=true;b.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="animation:ldspin 1s linear infinite"><path d="M21 12a9 9 0 1 1-2.64-6.36"/><path d="M21 3v6h-6"/></svg>Actualizando…';}
@@ -562,7 +683,8 @@
     document.getElementById("cst-btns").innerHTML=ESTADOS.map(function(e){return '<button class="btn ghost" data-cste="'+e.v+'" style="padding:10px">'+e.n+(e.v===3?'<div style="color:var(--amber);font-size:.64rem;margin-top:2px">sale de reportes</div>':'')+'</button>';}).join('');
     window.abrirCambiarEstado=function(id){if(!id)return;_id=id;document.getElementById("cst-num").textContent="#"+id;document.getElementById("cst-err").classList.remove("show");ov.classList.add("show");};
     document.getElementById("cst-btns").addEventListener("click",function(e){var b=e.target.closest("[data-cste]");if(!b)return;var v=+b.dataset.cste;var nom=ESTADOS.filter(function(x){return x.v===v;})[0].n;if(!confirm('¿Cambiar el empeño #'+_id+' al estado "'+nom+'"?'+(v===3?'\n\nAnulado lo saca de arqueo, cartera vencida y del acumulado del cierre.':'')))return;if(HOST)post({type:"cambiarEstado",id:_id,estado:v});});
-    window.estadoCambiado=function(r){var err=document.getElementById("cst-err");if(r&&r.ok){cerrar();if(HOST){post({type:"empenoDet",id:esel});post({type:"loadEmpenos"});post({type:"diaResumen"});}}else{err.textContent=(r&&r.error)||"No se pudo cambiar el estado.";err.classList.add("show");}};
+    window.estadoCambiado=function(r){var err=document.getElementById("cst-err");if(r&&r.ok){cerrar();// Anular o cambiar el estado saca al empeno de su lista: se limpia todo, igual que al refrescar.
+      if(HOST){_deselOnRefresh=true;limpiarVistaEmpenos();post({type:"loadEmpenos",filtro:ef});post({type:"diaResumen"});}}else{err.textContent=(r&&r.error)||"No se pudo cambiar el estado.";err.classList.add("show");}};
     document.getElementById("cstX").addEventListener("click",cerrar);
     document.getElementById("cstCerrar").addEventListener("click",cerrar);
     ov.addEventListener("click",function(e){/* click afuera NO cierra: solo X o Cancelar */});
@@ -583,7 +705,7 @@
     document.getElementById("ripX").addEventListener("click",cerrar);
     document.getElementById("ripCerrar").addEventListener("click",cerrar);
   })();
-  window.pagoAnulado=function(r){if(r&&r.ok){if(HOST){post({type:'empenoDet',id:esel});post({type:'loadEmpenos',filtro:ef});post({type:'diaResumen'});}}else{try{alert((r&&r.error)||'No se pudo anular el pago.');}catch(e){}}};
+  window.pagoAnulado=function(r){if(r&&r.ok){if(HOST){_deselOnRefresh=true;limpiarVistaEmpenos();post({type:'loadEmpenos',filtro:ef});post({type:'diaResumen'});}}else{try{alert((r&&r.error)||'No se pudo anular el pago.');}catch(e){}}};
 
   /* ---------- CLIENTES ---------- */
   var C=[],csel=null,cq='',cdet=null,cf='activos';
@@ -849,12 +971,12 @@
           err.textContent="⚠ Empeño #"+(nev_saved_id||"?")+" guardado, pero: "+r.warn+"\n\nRevisá la impresora / plantillas. Cuando estés listo, cerrá con el botón.";
           err.classList.add("show");
           if(b){b.disabled=false;b.textContent="Cerrar (empeño #"+(nev_saved_id||"?")+" guardado)";}
-          if(HOST){post({type:"loadEmpenos"});post({type:"diaResumen"});}
+          verSoloEmpeno(nev_saved_id);
         } else {
           // Guardado + impresión OK -> cerrar limpio.
           cerrar_hard();
           try{alert("Empeño #"+(nev_saved_id||"?")+" creado.");}catch(e){}
-          if(HOST){post({type:"loadEmpenos"});post({type:"diaResumen"});}
+          verSoloEmpeno(nev_saved_id);
         }
       } else {
         // NO se guardó nada (transacción hizo rollback o falló antes). NO cerrar, mostrar error, liberar botón.
@@ -998,6 +1120,68 @@
     document.getElementById("arq-hasta").addEventListener("keydown",function(e){if(e.key==='Enter')arqRecargar();});
     document.getElementById("arq-todos").addEventListener("change",function(){var c=document.getElementById("arq-todos").checked;document.getElementById("arq-desde").disabled=c;document.getElementById("arq-hasta").disabled=c;arqRecargar();});
   })();
+  /* ===== Bitácora (auditoría/errores, SOLO LECTURA) ===== */
+  (function(){
+    var L=[];
+    function bitToday(){var t=new Date();return ("0"+t.getDate()).slice(-2)+"/"+("0"+(t.getMonth()+1)).slice(-2)+"/"+t.getFullYear();}
+    // Ventana por defecto: últimos 7 días (igual que BitacoraData.Lista en C#, para que el input coincida con lo que se ve al abrir).
+    function bitDesdeDefault(){var t=new Date();t.setDate(t.getDate()-7);return ("0"+t.getDate()).slice(-2)+"/"+("0"+(t.getMonth()+1)).slice(-2)+"/"+t.getFullYear();}
+    function bitRecargar(){
+      document.getElementById("bit-rows").innerHTML='<tr><td colspan="6" style="text-align:center;color:var(--faint);padding:16px">Cargando…</td></tr>';
+      var desde=document.getElementById("bit-desde").value||bitDesdeDefault();
+      var hasta=document.getElementById("bit-hasta").value||bitToday();
+      var soloErrores=document.getElementById("bit-errores").checked;
+      var texto=document.getElementById("bit-q").value||"";
+      if(HOST)post({type:"loadBitacora",desde:desde,hasta:hasta,soloErrores:soloErrores,texto:texto});
+    }
+    window.renderBitacora=function(d){
+      L=(d&&d.lista)||[];
+      document.getElementById("bit-rows").innerHTML=L.length?L.map(function(x){
+        return '<tr'+(x.error?' style="color:var(--red)"':'')+'><td>'+x.fecha+'</td><td>'+esc(x.modulo||'—')+'</td><td>'+esc(x.accion||'—')+'</td><td style="max-width:340px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">'+esc(x.mensaje||'')+'</td><td>'+esc(x.usuario||'—')+'</td><td class="r"><button class="btn ghost" data-verbit="'+x.id+'" style="padding:3px 9px;font-size:.72rem">Ver</button></td></tr>';
+      }).join(''):'<tr><td colspan="6" style="text-align:center;color:var(--faint);padding:16px">Sin registros en el rango filtrado.</td></tr>';
+      var tot=document.getElementById("bit-total");
+      tot.textContent=(d&&d.total!=null)?(d.total+' registro'+(d.total===1?'':'s')+' en el rango'+(L.length<d.total?' · mostrando los '+L.length+' más recientes':'')):'';
+    };
+    document.getElementById("bit-rows").addEventListener("click",function(e){
+      var b=e.target.closest("[data-verbit]");if(!b)return;
+      var x=L.filter(function(r){return r.id===+b.dataset.verbit;})[0];if(!x)return;
+      if(window.abrirBitDetalle)window.abrirBitDetalle(x);
+    });
+    document.getElementById("bit-ver").addEventListener("click",bitRecargar);
+    document.getElementById("bit-desde").addEventListener("keydown",function(e){if(e.key==='Enter')bitRecargar();});
+    document.getElementById("bit-hasta").addEventListener("keydown",function(e){if(e.key==='Enter')bitRecargar();});
+    document.getElementById("bit-q").addEventListener("keydown",function(e){if(e.key==='Enter')bitRecargar();});
+    document.getElementById("bit-errores").addEventListener("change",bitRecargar);
+    // Se llama cada vez que se entra a la sección (ver __bitacoraPinResuelto): SIN caché, a diferencia de
+    // Configuración, porque la bitácora sigue creciendo mientras el sistema funciona.
+    window.abrirBitacora=function(){
+      document.getElementById("bit-desde").value=bitDesdeDefault();
+      document.getElementById("bit-hasta").value=bitToday();
+      document.getElementById("bit-errores").checked=false;
+      document.getElementById("bit-q").value="";
+      bitRecargar();
+    };
+  })();
+  /* ===== Modal Detalle de Bitácora (ver Mensaje/Valor completos, SOLO LECTURA) ===== */
+  (function(){
+    var html='<div class="cliov" id="bitov"><div class="clicard" style="width:640px;max-width:96vw"><div class="hd">Detalle de bitácora<span class="sp"></span><button class="x" id="bitX">&times;</button></div><div class="clibody"><div class="kv"><span class="k">Fecha</span><span class="v" id="bitd-fecha"></span></div><div class="kv"><span class="k">Módulo</span><span class="v" id="bitd-modulo"></span></div><div class="kv"><span class="k">Acción</span><span class="v" id="bitd-accion"></span></div><div class="kv"><span class="k">Usuario</span><span class="v" id="bitd-usuario"></span></div><label>Mensaje<textarea id="bitd-mensaje" rows="3" readonly></textarea></label><label>Valor (detalle crudo)<textarea id="bitd-valor" rows="9" readonly style="font-family:monospace;font-size:.78rem"></textarea></label></div><div class="clift"><span class="sp"></span><button class="btn violet" id="bitCerrar">Cerrar</button></div></div></div>';
+    document.body.insertAdjacentHTML("beforeend",html);
+    var ov=document.getElementById("bitov");
+    function cerrar(){ov.classList.remove("show");}
+    function pretty(v){if(!v)return "";try{return JSON.stringify(JSON.parse(v),null,2);}catch(e){return v;}}
+    window.abrirBitDetalle=function(x){
+      document.getElementById("bitd-fecha").textContent=x.fecha||"—";
+      document.getElementById("bitd-modulo").textContent=x.modulo||"—";
+      document.getElementById("bitd-accion").textContent=x.accion||"—";
+      document.getElementById("bitd-usuario").textContent=x.usuario||"—";
+      document.getElementById("bitd-mensaje").value=x.mensaje||"(sin mensaje)";
+      document.getElementById("bitd-valor").value=pretty(x.valor);
+      ov.classList.add("show");
+    };
+    document.getElementById("bitX").addEventListener("click",cerrar);
+    document.getElementById("bitCerrar").addEventListener("click",cerrar);
+    ov.addEventListener("click",function(e){/* click afuera NO cierra: solo X o Cerrar */});
+  })();
   /* ===== Modal Prórroga (UI nueva, reusa frmProroga.AplicarProrogaHeadless) ===== */
   (function(){
     var proid=0, origin='arqueo';
@@ -1105,6 +1289,9 @@
     document.getElementById("cob-int").addEventListener("input",recompute);
     document.getElementById("cob-cap").addEventListener("input",recompute);
     document.getElementById("cob-con").addEventListener("input",recompute);
+    (function(){var c=document.getElementById("cob-con");if(!c)return;
+      c.addEventListener("input",function(){c.classList.remove("campo-mal");
+        var e=document.getElementById("cob-err");if(e){e.classList.remove("show");e.classList.remove("grande");}});})();
     window.abrirCobrar=function(id){D=null;document.getElementById("cob-num").textContent="#"+id;document.getElementById("cob-cli").textContent="";document.getElementById("cob-kpis").innerHTML="";document.getElementById("cob-cuotas").innerHTML='<tr><td colspan="4" style="text-align:center;color:var(--faint);padding:14px">Cargando…</td></tr>';document.getElementById("cob-int").value="0";document.getElementById("cob-cap").value="0";document.getElementById("cob-con").value="0";document.getElementById("cob-com").value="";document.getElementById("cob-err").classList.remove("show");document.getElementById("cob-total").textContent="₡0";document.getElementById("cob-intr").value="";document.getElementById("cob-capr").value="";document.getElementById("cob-vuelto").value="";if(HOST)post({type:"cobrarInfo",id:id});ov.classList.add("show");};
     document.getElementById("cobX").addEventListener("click",cerrar);
     document.getElementById("cobCancel").addEventListener("click",cerrar);
@@ -1128,11 +1315,27 @@
       if(pi<=0&&pm<=0){err.textContent="Ingresá un pago de interés o un abono a capital.";err.classList.add("show");return;}
       if(pm>0&&pm<D.capital&&pi<(D.montoMinimo-1)){err.textContent="Para abonar a capital tenés que cubrir TODO el interés pendiente (₡"+fmt(D.montoMinimo)+").";err.classList.add("show");return;}
       var con=parseFloat(document.getElementById("cob-con").value)||0;
-      if(con>0&&con<(pi+pm)){err.textContent="«Paga con» es menor que el total a pagar.";err.classList.add("show");return;}
+      // «Paga con» es el dinero que entrega el cliente: DEBE cubrir el total. Antes la guarda solo
+      // corría si con>0, así que dejarlo en 0 la esquivaba por completo y el cobro pasaba igual.
+      var _tot=pi+pm;
+      if(_tot>0&&con<_tot){
+        // Un texto chico se pierde: se marca el campo, se le da foco y late en rojo.
+        err.textContent=con>0?("⚠ FALTA DINERO EN «PAGA CON» — puso ₡"+fmt(con)+" y el total es ₡"+fmt(_tot)+".")
+                            :("⚠ FALTA LLENAR «PAGA CON» — ingresá el dinero que entrega el cliente: ₡"+fmt(_tot)+".");
+        err.classList.add("grande"); err.classList.add("show");
+        var _cc=document.getElementById("cob-con");
+        if(_cc){_cc.classList.remove("campo-mal"); void _cc.offsetWidth; _cc.classList.add("campo-mal");
+          try{_cc.scrollIntoView({block:"center",behavior:"smooth"});}catch(e){}
+          setTimeout(function(){try{_cc.focus();_cc.select();}catch(e){}},80);
+          setTimeout(function(){_cc.classList.remove("campo-mal");},3400);}
+        return;}
       err.classList.remove("show");
+      // Si se cubre todo el capital el backend cancela el empeno (MontoPendiente < 1). En ese caso
+      // no tiene sentido dejarlo seleccionado: se limpia lista y detalle, igual que al refrescar.
+      _fueCancelacion=(pm>0&&((D.capital||0)-pm)<1);
       if(HOST)post({type:"cobrar",id:D.id,pagoIntereses:pi,pagoMonto:pm,comentario:document.getElementById("cob-com").value});else cerrar();
     });
-    window.cobrarResuelto=function(r){var err=document.getElementById("cob-err");if(r&&r.ok){cerrar();if(r.warn){try{alert(r.warn);}catch(e){}}if(HOST){post({type:"loadEmpenos"});post({type:"diaResumen"});}}else{err.textContent=(r&&r.error)||"No se pudo cobrar.";err.classList.add("show");}};
+    window.cobrarResuelto=function(r){var err=document.getElementById("cob-err");if(r&&r.ok){cerrar();if(r.warn){try{alert(r.warn);}catch(e){}}if(HOST){if(_fueCancelacion){_fueCancelacion=false;_deselOnRefresh=true;limpiarVistaEmpenos();post({type:"loadEmpenos",filtro:ef});post({type:"diaResumen"});}else{var _id=esel;_deselOnRefresh=false;if(_id){_avisoPendiente=true;cargandoDetalle();post({type:"empenoDet",id:_id});}post({type:"loadEmpenos",filtro:ef});post({type:"diaResumen"});}}}else{err.textContent=(r&&r.error)||"No se pudo cobrar.";err.classList.add("show");}};
   })();
   /* ===== REPORTES en páginas completas con gráficos (reemplaza los modales de reportes) ===== */
   (function(){
