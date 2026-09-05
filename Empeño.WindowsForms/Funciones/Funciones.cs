@@ -482,6 +482,121 @@ namespace Empeño.WindowsForms.Funciones
             public string Etapa { get; set; }
         }
 
+        // ===== Reparacion de intereses retroactivos ==========================================
+        // Los datos vienen migrados de otro sistema y SOLO se paso parte del historial. El barrido
+        // anterior rellenaba TODOS los meses faltantes desde la apertura del empeno, asi que invento
+        // cuotas de anos que el cliente ya habia saldado en el sistema viejo: el sistema quedo
+        // cobrando de mas. Este proceso borra unicamente esa basura.
+        //
+        // Reglas duras, las tres se cumplen a la vez o la cuota NO se toca:
+        //   1. La cuota no tiene ni un colon pagado (Pagado <= 0 y sin PagoId).
+        //   2. Vence ANTES del ultimo interes que el cliente realmente pago.
+        //   3. Se creo mas de SEIS meses DESPUES de su propio vencimiento: una cuota legitima nace
+        //      cuando arranca su periodo, y aun cuando el local tarde en abrir la aplicacion el atraso
+        //      se mide en semanas. Medido contra el respaldo real: lo legitimo llega a 3 meses de
+        //      hueco y lo inventado arranca en 8, asi que 6 cae en tierra de nadie.
+        // Nunca borra pagos. Nunca borra nada posterior al ultimo interes pagado.
+        public class ReparacionResumen
+        {
+            public int EmpeñosTocados { get; set; }
+            public int CuotasEliminadas { get; set; }
+            public double MontoLiberado { get; set; }
+            public bool YaSeHabiaCorrido { get; set; }
+            public bool Fallo { get; set; }
+            public string Detalle { get; set; }
+        }
+
+        // Marca en Bitacora: la reparacion corre UNA sola vez por base de datos.
+        // V2: la V1 escribia la marca aunque no borrara nada, asi que una corrida fallida
+        // bloqueaba el reintento para siempre. Al subir la version la reparacion vuelve a correr.
+        public const string MarcaReparacion = "REPARACION-INTERESES-RETROACTIVOS-V2";
+
+        public async Task<ReparacionResumen> RepararInteresesRetroactivos(bool soloSimular = false)
+        {
+            var r = new ReparacionResumen();
+            var lineas = new List<string>();
+            try
+            {
+                using (DataContext _context = new DataContext())
+                {
+                    if (!soloSimular && await _context.Bitacoras.AnyAsync(b => b.Mensaje == MarcaReparacion))
+                    {
+                        r.YaSeHabiaCorrido = true;
+                        return r;
+                    }
+
+                    var empeños = await _context.Empenos
+                        .Where(w => !w.IsDelete && (w.Estado == Estado.Vigente
+                              || w.Estado == Estado.Pendiente
+                              || w.Estado == Estado.Vencido))
+                        .Select(w => w.EmpenoId)
+                        .ToListAsync();
+
+                    foreach (var empeñoId in empeños)
+                    {
+                        var cuotas = await _context.Intereses
+                            .Where(i => i.EmpenoId == empeñoId)
+                            .ToListAsync();
+                        if (cuotas.Count == 0)
+                            continue;
+
+                        // Piso: el ultimo interes que el cliente REALMENTE pago. Sin un solo pago no
+                        // hay referencia de hasta donde estaba al dia, y sin referencia no se borra nada.
+                        var pagadas = cuotas.Where(i => i.Pagado > 0).ToList();
+                        if (pagadas.Count == 0)
+                            continue;
+                        DateTime ultimoPagado = pagadas.Max(i => i.FechaVencimiento);
+
+                        var basura = cuotas.Where(i => i.Pagado <= 0
+                                                    && (i.PagoId == null || i.PagoId == 0)
+                                                    && i.FechaVencimiento < ultimoPagado
+                                                    && i.FechaCreacion > i.FechaVencimiento.AddMonths(6))
+                                           .ToList();
+                        if (basura.Count == 0)
+                            continue;
+
+                        r.EmpeñosTocados++;
+                        r.CuotasEliminadas += basura.Count;
+                        r.MontoLiberado += basura.Sum(i => i.MontoTotal);
+                        lineas.Add("#" + empeñoId + ": " + basura.Count + " cuotas del "
+                            + basura.Min(i => i.FechaVencimiento).ToString("dd/MM/yyyy") + " al "
+                            + basura.Max(i => i.FechaVencimiento).ToString("dd/MM/yyyy")
+                            + " (ultimo interes pagado " + ultimoPagado.ToString("dd/MM/yyyy") + ")");
+
+                        if (!soloSimular)
+                            _context.Intereses.RemoveRange(basura);
+                    }
+
+                    r.Detalle = string.Join(" | ", lineas);
+
+                    if (!soloSimular && r.CuotasEliminadas > 0)
+                        await _context.SaveChangesAsync();
+                }
+
+                if (!soloSimular)
+                {
+                    await SaveBitacora(new ValorBitacora
+                    {
+                        Modulo = "Intereses",
+                        Accion = "Reparacion de intereses retroactivos",
+                        Valor = r.EmpeñosTocados + " empenos, " + r.CuotasEliminadas + " cuotas eliminadas, "
+                              + r.MontoLiberado.ToString("N2") + " liberados. " + r.Detalle
+                    }, 0, MarcaReparacion);
+                }
+            }
+            catch (Exception ex)
+            {
+                r.Fallo = true;
+                r.Detalle = ex.Message;
+                await SaveBitacora(new ValorBitacora
+                {
+                    Modulo = "Intereses",
+                    Accion = "Reparacion de intereses retroactivos",
+                    Valor = ex.ToString()
+                }, 1, "Fallo la reparacion de intereses retroactivos");
+            }
+            return r;
+        }
         public async Task<ReviewResumen> ReviewEmpeños(IProgress<ReviewProgreso> progreso = null)
         {
             var resumen = new ReviewResumen();
@@ -525,10 +640,20 @@ namespace Empeño.WindowsForms.Funciones
                                     var mesesExistentes = new HashSet<int>(empeño.Intereses
                                         .Select(i => i.FechaVencimiento.Year * 12 + i.FechaVencimiento.Month));
                                     
+                                    // PISO: el interes nuevo SOLO corre DESPUES del ultimo interes que ya existe, este
+                                    // pagado o no. Muchos empenos vienen migrados de otro sistema y su historial viejo no
+                                    // esta en esta base: rellenar hacia atras inventaba meses que el cliente nunca debio y
+                                    // cobraba de mas. Sin cuotas previas no hay piso y la generacion arranca en Fecha.
+                                    int pisoMes = empeño.Intereses.Any()
+                                        ? empeño.Intereses.Max(i => i.FechaVencimiento.Year * 12 + i.FechaVencimiento.Month)
+                                        : 0;
+                                    
                                     for (int k = 1; k <= 600 && empeño.Fecha.AddMonths(k - 1).Date <= DateTime.Today; k++)
                                     {
                                         DateTime proxima = empeño.Fecha.AddMonths(k);
                                         int claveMes = proxima.Year * 12 + proxima.Month;
+                                        if (claveMes <= pisoMes)
+                                            continue;
                                         if (mesesExistentes.Contains(claveMes))
                                             continue;
                                     
@@ -694,10 +819,20 @@ namespace Empeño.WindowsForms.Funciones
                             var mesesExistentes = new HashSet<int>(empeño.Intereses
                                 .Select(i => i.FechaVencimiento.Year * 12 + i.FechaVencimiento.Month));
                             
+                            // PISO: el interes nuevo SOLO corre DESPUES del ultimo interes que ya existe, este
+                            // pagado o no. Muchos empenos vienen migrados de otro sistema y su historial viejo no
+                            // esta en esta base: rellenar hacia atras inventaba meses que el cliente nunca debio y
+                            // cobraba de mas. Sin cuotas previas no hay piso y la generacion arranca en Fecha.
+                            int pisoMes = empeño.Intereses.Any()
+                                ? empeño.Intereses.Max(i => i.FechaVencimiento.Year * 12 + i.FechaVencimiento.Month)
+                                : 0;
+                            
                             for (int k = 1; k <= 600 && empeño.Fecha.AddMonths(k - 1).Date <= DateTime.Today; k++)
                             {
                                 DateTime proxima = empeño.Fecha.AddMonths(k);
                                 int claveMes = proxima.Year * 12 + proxima.Month;
+                                if (claveMes <= pisoMes)
+                                    continue;
                                 if (mesesExistentes.Contains(claveMes))
                                     continue;
                             

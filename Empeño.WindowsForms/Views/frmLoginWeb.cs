@@ -1,4 +1,4 @@
-using Empeño.CommonEF.Models;
+﻿using Empeño.CommonEF.Models;
 using Empeño.WindowsForms.Data;
 using Microsoft.Web.WebView2.Core;
 using Microsoft.Web.WebView2.WinForms;
@@ -109,6 +109,53 @@ namespace Empeño.WindowsForms.Views
                             }
                             catch { }
                         });
+                        // Reparacion de una sola vez ANTES del barrido: los datos vienen migrados y solo
+                        // se paso parte del historial, asi que la version anterior invento cuotas de anos
+                        // que el cliente ya habia saldado en el sistema viejo y quedo cobrando de mas.
+                        // Se deja marca en Bitacora, por eso a partir de la segunda entrada no hace nada.
+                        try
+                        {
+                            await web.CoreWebView2.ExecuteScriptAsync("window.reviewProgress("
+                                + JsonConvert.SerializeObject(new Funciones.Funciones.ReviewProgreso
+                                { Etapa = "Corrigiendo intereses mal generados" }) + ")");
+                            var reparacion = await funciones.RepararInteresesRetroactivos();
+                            // El resultado SIEMPRE se informa. Antes esto vivia detras de un catch vacio y de un
+                            // if (CuotasEliminadas > 0): si fallaba o no encontraba nada nadie se enteraba, y la
+                            // marca en bitacora quedaba escrita igual, asi que no se reintentaba nunca mas.
+                            if (reparacion == null || reparacion.Fallo)
+                            {
+                                MessageBox.Show(
+                                    "No se pudo corregir los intereses generados de mas." + Environment.NewLine + Environment.NewLine
+                                    + (reparacion != null ? reparacion.Detalle : "La reparacion no devolvio resultado.") + Environment.NewLine + Environment.NewLine
+                                    + "Avisa al administrador ANTES de cobrar: puede haber cuotas que el cliente no debe.",
+                                    "Correccion de intereses", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                            }
+                            else if (reparacion.YaSeHabiaCorrido)
+                            {
+                                // Nada que hacer: ya corrio en una entrada anterior. No se molesta al usuario.
+                            }
+                            else
+                            {
+                                MessageBox.Show(
+                                    (reparacion.CuotasEliminadas > 0
+                                        ? "Se corrigieron intereses que se habian generado de mas."
+                                        : "Se revisaron los intereses y no habia nada que corregir.")
+                                    + Environment.NewLine + Environment.NewLine
+                                    + "Empenos corregidos: " + reparacion.EmpeñosTocados + Environment.NewLine
+                                    + "Cuotas eliminadas: " + reparacion.CuotasEliminadas + Environment.NewLine
+                                    + "Monto que se dejo de cobrar: ₡" + reparacion.MontoLiberado.ToString("N2") + Environment.NewLine + Environment.NewLine
+                                    + "El detalle quedo en la bitacora. No se toco ningun pago.",
+                                    "Correccion de intereses", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                            }
+                        }
+                        catch (Exception exRep)
+                        {
+                            // Un fallo aca NO se puede tragar en silencio: si la reparacion no corrio,
+                            // el local sigue cobrando cuotas que el cliente no debe.
+                            MessageBox.Show("Fallo la correccion de intereses:" + Environment.NewLine + exRep.Message,
+                                "Correccion de intereses", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        }
+
                         var resumen = await funciones.ReviewEmpeños(progreso);
                         if (resumen == null || resumen.Fallo)
                         {

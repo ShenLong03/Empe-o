@@ -11,7 +11,7 @@
 
   <Bundle Name="Empeños Nueva Versión"
           Manufacturer="Tico Manager"
-          Version="2.5.22"
+          Version="2.5.24"
           UpgradeCode="5415855D-87DD-449C-9678-D2092AC6395A">
 
     <BootstrapperApplication>
@@ -37,7 +37,10 @@
           DetectCondition="Wv2Version" />
 
       <!-- La aplicación (instalación por-usuario, sin admin). -->
-      <MsiPackage SourceFile="Empenos-Nueva-V2.5.22.msi" Vital="yes" />
+      <!-- OJO: este SourceFile se olvida al subir de version y el bundle termina instalando
+           un MSI viejo con la version nueva en la caratula. Tiene que coincidir SIEMPRE
+           con el Version= de la linea 14. -->
+      <MsiPackage SourceFile="Empenos-Nueva-V2.5.24.msi" Vital="yes" />
     </Chain>
 
   </Bundle>
